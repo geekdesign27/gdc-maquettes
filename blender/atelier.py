@@ -76,7 +76,7 @@ def objets_asset():
 
 def monte_demonstration(plan):
     """Un kit (catalogue : kind kit) : ses pieces, posees a l'origine, sont rangees dans une collection cachee,
-    et la demonstration du script est montee par instances, sur son socle. Les captures et la mesure portent
+    et la demonstration du script est montee par instances, sur ses socles. Les captures et la mesure portent
     alors sur la demonstration, comme la galerie (src/kit.js) l'assemble depuis le GLB."""
     sources = {o.name: o for o in objets_asset()}
     rangement = bpy.data.collections.new(PIECES)
@@ -91,11 +91,11 @@ def monte_demonstration(plan):
     for i, p in enumerate(plan["pieces"]):
         nom = "%s_%03d_%s" % (racine, i, p["piece"][len(plan["prefixe"]):])
         c.instance(nom, sources[p["piece"]], tuple(p["position"]), p["rotation"])
-    s = plan["socle"]
-    l, p, h = s["taille"]
-    socle = c.boite(racine + "_PLINTH", (l, p, h), (s["centre"][0], s["centre"][1], -h), mat=s["materiau"],
-                    chanfrein=s["chanfrein"], segments=3)
-    c.lisse(socle)
+    for k, s in enumerate(plan["socles"]):
+        l, p, h = s["taille"]
+        socle = c.boite("%s_PLINTH_%d" % (racine, k), (l, p, h), (s["centre"][0], s["centre"][1], -h), mat=s["materiau"],
+                        chanfrein=s["chanfrein"], segments=3)
+        c.lisse(socle)
 
 
 def mesure():

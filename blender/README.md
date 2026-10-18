@@ -38,7 +38,7 @@ def construit(c):          # c : les outils communs (gdc_blender/commun.py)
 - Ancres : `c.ancre("ANCHOR_LABEL", position)` pour chaque ancre de la fiche.
 - Ni caméra ni lumière dans le fichier : l'éclairage appartient à la scène de référence.
 - Outils pour le rendu « 3D douce » : `boite(..., chanfrein=, segments=)` pour arrondir les arêtes, `lisse(objet)` pour lisser les normales sous un angle, `instance` pour réutiliser une géométrie (écrite une seule fois dans le GLB), `fusionne` pour regrouper les pièces fixes (jamais un pivot ni une pièce animée).
-- Outils pour les pièces d'un kit : `boite(..., droites=(...))` ou `chanfreine(objet, largeur, segments, droites)` laisse vives les faces de contact (deux pièces posées bout à bout ne font pas de sillon) ; `perce(objet, taille, position)` creuse une baie ou une porte, avant le chanfrein.
+- Outils pour les pièces d'un kit : `boite(..., droites=(...))` ou `chanfreine(objet, largeur, segments, droites)` laisse vives les faces de contact (deux pièces posées bout à bout ne font pas de sillon) ; `perce(objet, taille, position)` creuse une baie ou une porte, avant le chanfrein. `prisme(nom, profil, epaisseur)` extrude un profil plat (marches, pignon).
 - Un kit (`kind` « kit » au catalogue) : son script peut avoir une fonction `demonstration()` qui rend le plan d'un bâtiment de démonstration. L'atelier le monte pour les captures, `construit.py` l'écrit dans `demonstration.json`, à côté du GLB, et la galerie l'assemble depuis le GLB (entrée « … : démonstration »).
 
 ## L'atelier : la boucle rapide

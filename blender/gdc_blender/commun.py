@@ -9,6 +9,7 @@ import math
 import re
 from pathlib import Path
 
+import bmesh
 import bpy
 
 RACINE = Path(__file__).resolve().parents[2]
@@ -120,6 +121,31 @@ def perce(o, taille, position):
     maillage = outil.data
     bpy.data.objects.remove(outil)
     bpy.data.meshes.remove(maillage)
+    return o
+
+
+def prisme(nom, profil, epaisseur, position=(0, 0, 0), mat=None, parent=None):
+    """Profil plat extrude : profil = [(x, z), ...] dans le plan XZ (polygone simple, concave admis : marches,
+    pignon), extrude de y = 0 a y = epaisseur, puis decale de position. L'origine reste a (0, 0, 0) + position."""
+    n = len(profil)
+    sommets = [(x, 0.0, z) for x, z in profil] + [(x, epaisseur, z) for x, z in profil]
+    faces = [list(range(n)), list(range(2 * n - 1, n - 1, -1))]
+    faces += [[i, (i + 1) % n, n + (i + 1) % n, n + i] for i in range(n)]
+    maillage = bpy.data.meshes.new(nom)
+    maillage.from_pydata(sommets, [], faces)
+    maillage.update()
+    o = bpy.data.objects.new(nom, maillage)
+    bpy.context.scene.collection.objects.link(o)
+    b = bmesh.new()
+    b.from_mesh(maillage)
+    bmesh.ops.recalc_face_normals(b, faces=b.faces)  # normales vers l'exterieur, quel que soit le sens du profil
+    b.to_mesh(maillage)
+    b.free()
+    o.location = position
+    if mat:
+        o.data.materials.append(materiau(mat))
+    if parent:
+        rattache(o, parent)
     return o
 
 
