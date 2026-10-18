@@ -33,6 +33,7 @@ from mathutils import Vector  # noqa: E402
 from gdc_blender import commun as c  # noqa: E402
 
 STUDIO = "STUDIO"  # collection du studio : hors convention de nom, jamais mesuree ni exportee
+PIECES = "PIECES"  # collection cachee des pieces d'un kit, quand l'atelier en monte la demonstration
 CAPTURES = ICI / ".captures"
 # Taille d'affichage en vue generale sur l'affichage de reference, un portable de 13 pouces (1280 x 800 points) :
 # 25 pixels CSS par metre, mesure dans la galerie a son cadrage par defaut (bible, 18.3 et 18.7). Un ecran plus grand
@@ -65,9 +66,36 @@ def vide_scene():
 
 
 def objets_asset():
-    studio = bpy.data.collections.get(STUDIO)
-    exclus = set(studio.objects) if studio else set()
+    exclus = set()
+    for nom in (STUDIO, PIECES):
+        coll = bpy.data.collections.get(nom)
+        if coll:
+            exclus.update(coll.objects)
     return [o for o in bpy.data.objects if o not in exclus]
+
+
+def monte_demonstration(plan):
+    """Un kit (catalogue : kind kit) : ses pieces, posees a l'origine, sont rangees dans une collection cachee,
+    et la demonstration du script est montee par instances, sur son socle. Les captures et la mesure portent
+    alors sur la demonstration, comme la galerie (src/kit.js) l'assemble depuis le GLB."""
+    sources = {o.name: o for o in objets_asset()}
+    rangement = bpy.data.collections.new(PIECES)
+    bpy.context.scene.collection.children.link(rangement)
+    for o in sources.values():
+        for coll in list(o.users_collection):
+            coll.objects.unlink(o)
+        rangement.objects.link(o)
+    rangement.hide_render = True
+    rangement.hide_viewport = True
+    racine = plan["prefixe"] + "DEMO"
+    for i, p in enumerate(plan["pieces"]):
+        nom = "%s_%03d_%s" % (racine, i, p["piece"][len(plan["prefixe"]):])
+        c.instance(nom, sources[p["piece"]], tuple(p["position"]), p["rotation"])
+    s = plan["socle"]
+    l, p, h = s["taille"]
+    socle = c.boite(racine + "_PLINTH", (l, p, h), (s["centre"][0], s["centre"][1], -h), mat=s["materiau"],
+                    chanfrein=s["chanfrein"], segments=3)
+    c.lisse(socle)
 
 
 def mesure():
@@ -303,9 +331,14 @@ def essaie(ident, image=1, captures=True, force=False):
     _, mod = construit.charge_asset(ident)
     vide_scene()
     infos = mod.construit(c) or {}
+    kit = None
+    if hasattr(mod, "demonstration"):  # un kit : mesurer ses pieces, puis monter la demonstration pour les captures
+        kit = {k: v for k, v in mesure().items() if not k.startswith("_")}
+        monte_demonstration(mod.demonstration())
     bpy.context.scene.frame_set(image)
     m = mesure()
     resultat = {"id": ident, "nom": mod.ASSET["nom"], "blender": bpy.app.version_string, "infos": infos,
+                **({"kit": kit, "demonstration": "mesures ci-dessous"} if kit else {}),
                 **{k: v for k, v in m.items() if not k.startswith("_")}}
     if not captures or m["_bas"] is None:
         return resultat

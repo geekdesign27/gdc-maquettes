@@ -51,6 +51,8 @@ def main(ids):
             "animations": infos.get("animations", []),
             "statut": "a valider",
         }
+        if hasattr(mod, "demonstration"):  # un kit : le plan de sa demonstration, que la galerie assemble depuis le GLB
+            (dossier / "demonstration.json").write_text(json.dumps(mod.demonstration(), indent=1) + "\n", encoding="utf-8")
         (dossier / "asset.json").write_text(json.dumps(meta, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
         print("exporte : " + str(glb.relative_to(c.RACINE)))
 

@@ -52,9 +52,10 @@ def materiau(nom):
     return m
 
 
-def boite(nom, taille, position=(0, 0, 0), mat=None, parent=None, chanfrein=0.0, segments=1):
+def boite(nom, taille, position=(0, 0, 0), mat=None, parent=None, chanfrein=0.0, segments=1, droites=()):
     """Pave de dimensions taille=(x, y, z), pose par sa base : position est le centre de la face inferieure.
-    segments > 1 arrondit le chanfrein (rendu 3D douce : il accroche la lumiere ; a lisser ensuite)."""
+    segments > 1 arrondit le chanfrein (rendu 3D douce : il accroche la lumiere ; a lisser ensuite).
+    droites : faces dont les aretes restent vives (voir chanfreine), pour les pieces qui se touchent bout a bout."""
     bpy.ops.mesh.primitive_cube_add(size=1)
     o = bpy.context.active_object
     o.name = nom
@@ -63,15 +64,62 @@ def boite(nom, taille, position=(0, 0, 0), mat=None, parent=None, chanfrein=0.0,
     o.location = (position[0], position[1], position[2] + taille[2] / 2)
     applique(o, rotation=False)
     if chanfrein > 0:
-        b = o.modifiers.new("chanfrein", "BEVEL")
-        b.width = chanfrein
-        b.segments = segments
-        bpy.context.view_layer.objects.active = o
-        bpy.ops.object.modifier_apply(modifier=b.name)
+        chanfreine(o, chanfrein, segments, droites)
     if mat:
         o.data.materials.append(materiau(mat))
     if parent:
         rattache(o, parent)
+    return o
+
+
+FACES_BOITE = {"x-": (0, min), "x+": (0, max), "y-": (1, min), "y+": (1, max), "z-": (2, min), "z+": (2, max)}
+
+
+def chanfreine(o, largeur, segments=2, droites=()):
+    """Chanfrein applique a la geometrie (classes C1 a C3, bible 18.3), sous l'angle par defaut du modificateur.
+    droites : faces de la boite englobante ('x-', 'x+', 'y-', 'y+', 'z-', 'z+') dont les aretes restent vives.
+    Deux pieces chanfreinees posees bout a bout laissent un sillon ; leurs faces de contact restent donc droites
+    (rive de dalle continue, par exemple)."""
+    b = o.modifiers.new("chanfrein", "BEVEL")
+    b.width = largeur
+    b.segments = segments
+    if droites:
+        pts = [v.co for v in o.data.vertices]
+        plans = [(axe, sens(p[axe] for p in pts)) for axe, sens in (FACES_BOITE[f] for f in droites)]
+        poids = o.data.attributes.get("bevel_weight_edge") or o.data.attributes.new("bevel_weight_edge", "FLOAT", "EDGE")
+        for e in o.data.edges:
+            a, z = e.vertices
+            vive = any(abs(o.data.vertices[a].co[axe] - val) < 1e-5 and abs(o.data.vertices[z].co[axe] - val) < 1e-5 for axe, val in plans)
+            poids.data[e.index].value = 0.0 if vive else 1.0
+        b.limit_method = "WEIGHT"
+    bpy.ops.object.select_all(action="DESELECT")
+    o.select_set(True)
+    bpy.context.view_layer.objects.active = o
+    bpy.ops.object.modifier_apply(modifier=b.name)
+    if "bevel_weight_edge" in o.data.attributes:
+        o.data.attributes.remove(o.data.attributes["bevel_weight_edge"])
+    return o
+
+
+def perce(o, taille, position):
+    """Retire un pave (meme convention que boite : position = centre de la face inferieure) : baie, porte, cadre.
+    A faire avant chanfreine, pour que les tableaux de la baie soient arrondis comme le reste."""
+    bpy.ops.mesh.primitive_cube_add(size=1)
+    outil = bpy.context.active_object
+    outil.scale = taille
+    outil.location = (position[0], position[1], position[2] + taille[2] / 2)
+    applique(outil, rotation=False)
+    m = o.modifiers.new("percement", "BOOLEAN")
+    m.operation = "DIFFERENCE"
+    m.solver = "EXACT"
+    m.object = outil
+    bpy.ops.object.select_all(action="DESELECT")
+    o.select_set(True)
+    bpy.context.view_layer.objects.active = o
+    bpy.ops.object.modifier_apply(modifier=m.name)
+    maillage = outil.data
+    bpy.data.objects.remove(outil)
+    bpy.data.meshes.remove(maillage)
     return o
 
 
