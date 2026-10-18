@@ -1,25 +1,53 @@
 {
  "prefixe": "BLD_KIT_A_",
- "socle": {
-  "taille": [
-   11.0,
-   10.0,
-   0.6
-  ],
-  "centre": [
-   0.5,
-   0.0
-  ],
-  "materiau": "MAT_EARTH",
-  "chanfrein": 0.1
- },
+ "socles": [
+  {
+   "taille": [
+    11.0,
+    10.0,
+    0.6
+   ],
+   "centre": [
+    0.5,
+    0.0
+   ],
+   "materiau": "MAT_EARTH",
+   "chanfrein": 0.1
+  },
+  {
+   "taille": [
+    10.0,
+    10.0,
+    0.6
+   ],
+   "centre": [
+    12.0,
+    1.0
+   ],
+   "materiau": "MAT_EARTH",
+   "chanfrein": 0.1
+  },
+  {
+   "taille": [
+    9.0,
+    6.0,
+    0.6
+   ],
+   "centre": [
+    -1.0,
+    -10.5
+   ],
+   "materiau": "MAT_EARTH",
+   "chanfrein": 0.1
+  }
+ ],
  "pieces": [
   {
    "piece": "BLD_KIT_A_SLAB",
    "position": [
     -1.5,
     -1.5,
-    0.0
+    0
    ],
    "rotation": 0
   },
@@ -28,7 +56,7 @@
    "position": [
     -1.5,
     1.5,
-    0.0
+    0
    ],
    "rotation": 0
   },
@@ -37,7 +65,7 @@
    "position": [
     1.5,
     -1.5,
-    0.0
+    0
    ],
    "rotation": 0
   },
@@ -46,7 +74,7 @@
    "position": [
     1.5,
     1.5,
-    0.0
+    0
    ],
    "rotation": 0
   },
@@ -55,7 +83,7 @@
    "position": [
     -1.5,
     -3.0,
-    0.0
+    0
    ],
    "rotation": 0
   },
@@ -64,7 +92,7 @@
    "position": [
     1.5,
     -3.0,
-    0.0
+    0
    ],
    "rotation": 0
   },
@@ -73,7 +101,7 @@
    "position": [
     3.0,
     -1.5,
-    0.0
+    0
    ],
    "rotation": 90
   },
@@ -82,7 +110,7 @@
    "position": [
     3.0,
     1.5,
-    0.0
+    0
    ],
    "rotation": 90
   },
@@ -91,7 +119,7 @@
    "position": [
     1.5,
     3.0,
-    0.0
+    0
    ],
    "rotation": 180
   },
@@ -100,7 +128,7 @@
    "position": [
     -1.5,
     3.0,
-    0.0
+    0
    ],
    "rotation": 180
   },
@@ -109,7 +137,7 @@
    "position": [
     -3.0,
     1.5,
-    0.0
+    0
    ],
    "rotation": 270
   },
@@ -118,7 +146,7 @@
    "position": [
     -3.0,
     -1.5,
-    0.0
+    0
    ],
    "rotation": 270
   },
@@ -127,7 +155,7 @@
    "position": [
     -3.0,
     -3.0,
-    0.0
+    0
    ],
    "rotation": 0
   },
@@ -136,7 +164,7 @@
    "position": [
     3.0,
     -3.0,
-    0.0
+    0
    ],
    "rotation": 90
   },
@@ -145,7 +173,7 @@
    "position": [
     3.0,
     3.0,
-    0.0
+    0
    ],
    "rotation": 180
   },
@@ -154,7 +182,7 @@
    "position": [
     -3.0,
     3.0,
-    0.0
+    0
    ],
    "rotation": 270
   },
@@ -249,7 +277,16 @@
    "rotation": 0
   },
   {
-   "piece": "BLD_KIT_A_WALL_RENDER_WINDOW",
+   "piece": "BLD_KIT_A_CANOPY",
+   "position": [
+    -1.5,
+    -3.0,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_WALL_RENDER",
    "position": [
     1.5,
     -3.0,
@@ -312,6 +349,24 @@
    "rotation": 270
   },
   {
+   "piece": "BLD_KIT_A_STEPS",
+   "position": [
+    -1.5,
+    -3.0,
+    0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_STAIR",
+   "position": [
+    1.5,
+    -1.5,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
    "piece": "BLD_KIT_A_SLAB",
    "position": [
     -1.5,
@@ -325,15 +380,6 @@
    "position": [
     -1.5,
     1.5,
-    3.0
-   ],
-   "rotation": 0
-  },
-  {
-   "piece": "BLD_KIT_A_SLAB",
-   "position": [
-    1.5,
-    -1.5,
     3.0
    ],
    "rotation": 0
@@ -555,6 +601,15 @@
    "rotation": 0
   },
   {
+   "piece": "BLD_KIT_A_BEAM",
+   "position": [
+    1.5,
+    -3.0,
+    3.3
+   ],
+   "rotation": 0
+  },
+  {
    "piece": "BLD_KIT_A_WALL_BRICK",
    "position": [
     3.0,
@@ -753,7 +808,7 @@
    "rotation": 270
   },
   {
-   "piece": "BLD_KIT_A_GUARDRAIL",
+   "piece": "BLD_KIT_A_ROOF_PARAPET",
    "position": [
     -1.5,
     -3.0,
@@ -762,7 +817,7 @@
    "rotation": 0
   },
   {
-   "piece": "BLD_KIT_A_GUARDRAIL",
+   "piece": "BLD_KIT_A_ROOF_PARAPET",
    "position": [
     1.5,
     -3.0,
@@ -771,7 +826,7 @@
    "rotation": 0
   },
   {
-   "piece": "BLD_KIT_A_GUARDRAIL",
+   "piece": "BLD_KIT_A_ROOF_PARAPET",
    "position": [
     3.0,
     -1.5,
@@ -780,7 +835,7 @@
    "rotation": 90
   },
   {
-   "piece": "BLD_KIT_A_GUARDRAIL",
+   "piece": "BLD_KIT_A_ROOF_PARAPET",
    "position": [
     3.0,
     1.5,
@@ -789,7 +844,7 @@
    "rotation": 90
   },
   {
-   "piece": "BLD_KIT_A_GUARDRAIL",
+   "piece": "BLD_KIT_A_ROOF_PARAPET",
    "position": [
     1.5,
     3.0,
@@ -798,7 +853,7 @@
    "rotation": 180
   },
   {
-   "piece": "BLD_KIT_A_GUARDRAIL",
+   "piece": "BLD_KIT_A_ROOF_PARAPET",
    "position": [
     -1.5,
     3.0,
@@ -807,7 +862,7 @@
    "rotation": 180
   },
   {
-   "piece": "BLD_KIT_A_GUARDRAIL",
+   "piece": "BLD_KIT_A_ROOF_PARAPET",
    "position": [
     -3.0,
     1.5,
@@ -816,11 +871,119 @@
    "rotation": 270
   },
   {
-   "piece": "BLD_KIT_A_GUARDRAIL",
+   "piece": "BLD_KIT_A_ROOF_PARAPET",
    "position": [
     -3.0,
     -1.5,
     6.3
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_ROOF_PARAPET_CORNER",
+   "position": [
+    -3.0,
+    -3.0,
+    6.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_ROOF_PARAPET_CORNER",
+   "position": [
+    3.0,
+    -3.0,
+    6.3
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_ROOF_PARAPET_CORNER",
+   "position": [
+    3.0,
+    3.0,
+    6.3
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_ROOF_PARAPET_CORNER",
+   "position": [
+    -3.0,
+    3.0,
+    6.3
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_GUARDRAIL",
+   "position": [
+    -1.5,
+    -3.0,
+    6.8
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_GUARDRAIL",
+   "position": [
+    1.5,
+    -3.0,
+    6.8
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_GUARDRAIL",
+   "position": [
+    3.0,
+    -1.5,
+    6.8
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_GUARDRAIL",
+   "position": [
+    3.0,
+    1.5,
+    6.8
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_GUARDRAIL",
+   "position": [
+    1.5,
+    3.0,
+    6.8
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_GUARDRAIL",
+   "position": [
+    -1.5,
+    3.0,
+    6.8
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_GUARDRAIL",
+   "position": [
+    -3.0,
+    1.5,
+    6.8
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_GUARDRAIL",
+   "position": [
+    -3.0,
+    -1.5,
+    6.8
    ],
    "rotation": 270
   },
@@ -848,6 +1011,699 @@
     3.96,
     -1.5,
     6.0
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_SIGN_TOTEM",
+   "position": [
+    -3.8,
+    -4.3,
+    0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB",
+   "position": [
+    10.5,
+    -0.5,
+    0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB",
+   "position": [
+    10.5,
+    2.5,
+    0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB",
+   "position": [
+    13.5,
+    -0.5,
+    0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB",
+   "position": [
+    13.5,
+    2.5,
+    0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    10.5,
+    -2.0,
+    0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    13.5,
+    -2.0,
+    0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    15.0,
+    -0.5,
+    0
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    15.0,
+    2.5,
+    0
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    13.5,
+    4.0,
+    0
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    10.5,
+    4.0,
+    0
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    9.0,
+    2.5,
+    0
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    9.0,
+    -0.5,
+    0
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_CORNER",
+   "position": [
+    9.0,
+    -2.0,
+    0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_CORNER",
+   "position": [
+    15.0,
+    -2.0,
+    0
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_CORNER",
+   "position": [
+    15.0,
+    4.0,
+    0
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_CORNER",
+   "position": [
+    9.0,
+    4.0,
+    0
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    9.0,
+    -2.0,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    9.0,
+    1.0,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    9.0,
+    4.0,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    12.0,
+    -2.0,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    12.0,
+    1.0,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    12.0,
+    4.0,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    15.0,
+    -2.0,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    15.0,
+    1.0,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    15.0,
+    4.0,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_WALL_RENDER_DOOR",
+   "position": [
+    10.5,
+    -2.0,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_CANOPY",
+   "position": [
+    10.5,
+    -2.0,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_WALL_RENDER_WINDOW",
+   "position": [
+    13.5,
+    -2.0,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_WALL_RENDER_WINDOW",
+   "position": [
+    15.0,
+    -0.5,
+    0.3
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_WALL_RENDER_WINDOW",
+   "position": [
+    15.0,
+    2.5,
+    0.3
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_WALL_RENDER",
+   "position": [
+    13.5,
+    4.0,
+    0.3
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_WALL_RENDER_WINDOW",
+   "position": [
+    10.5,
+    4.0,
+    0.3
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_WALL_RENDER_WINDOW",
+   "position": [
+    9.0,
+    2.5,
+    0.3
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_WALL_RENDER",
+   "position": [
+    9.0,
+    -0.5,
+    0.3
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_STEPS",
+   "position": [
+    10.5,
+    -2.0,
+    0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB",
+   "position": [
+    10.5,
+    -0.5,
+    3.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB",
+   "position": [
+    10.5,
+    2.5,
+    3.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB",
+   "position": [
+    13.5,
+    -0.5,
+    3.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB",
+   "position": [
+    13.5,
+    2.5,
+    3.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    10.5,
+    -2.0,
+    3.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    13.5,
+    -2.0,
+    3.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    15.0,
+    -0.5,
+    3.0
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    15.0,
+    2.5,
+    3.0
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    13.5,
+    4.0,
+    3.0
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    10.5,
+    4.0,
+    3.0
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    9.0,
+    2.5,
+    3.0
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    9.0,
+    -0.5,
+    3.0
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_CORNER",
+   "position": [
+    9.0,
+    -2.0,
+    3.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_CORNER",
+   "position": [
+    15.0,
+    -2.0,
+    3.0
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_CORNER",
+   "position": [
+    15.0,
+    4.0,
+    3.0
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_CORNER",
+   "position": [
+    9.0,
+    4.0,
+    3.0
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_ROOF_SLOPE",
+   "position": [
+    10.5,
+    1.0,
+    3.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_ROOF_SLOPE",
+   "position": [
+    10.5,
+    1.0,
+    3.3
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_ROOF_SLOPE",
+   "position": [
+    13.5,
+    1.0,
+    3.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_ROOF_SLOPE",
+   "position": [
+    13.5,
+    1.0,
+    3.3
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_ROOF_GABLE",
+   "position": [
+    15.0,
+    1.0,
+    3.3
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_ROOF_GABLE",
+   "position": [
+    9.0,
+    1.0,
+    3.3
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_FOOTING",
+   "position": [
+    -4.0,
+    -12.0,
+    0.5
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN_STARTER",
+   "position": [
+    -4.0,
+    -12.0,
+    0.5
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_FOOTING",
+   "position": [
+    -4.0,
+    -9.0,
+    0.5
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN_STARTER",
+   "position": [
+    -4.0,
+    -9.0,
+    0.5
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_FOOTING",
+   "position": [
+    -1.0,
+    -12.0,
+    0.5
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN_STARTER",
+   "position": [
+    -1.0,
+    -12.0,
+    0.5
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_FOOTING",
+   "position": [
+    -1.0,
+    -9.0,
+    0.5
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN_STARTER",
+   "position": [
+    -1.0,
+    -9.0,
+    0.5
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_FOOTING",
+   "position": [
+    2.0,
+    -12.0,
+    0.5
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN_STARTER",
+   "position": [
+    2.0,
+    -12.0,
+    0.5
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_FOOTING",
+   "position": [
+    2.0,
+    -9.0,
+    0.5
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN_STARTER",
+   "position": [
+    2.0,
+    -9.0,
+    0.5
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_FOUNDATION_STRIP",
+   "position": [
+    -2.5,
+    -12.0,
+    0.5
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_FOUNDATION_STRIP",
+   "position": [
+    0.5,
+    -12.0,
+    0.5
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_FOUNDATION_STRIP",
+   "position": [
+    -2.5,
+    -9.0,
+    0.5
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_FOUNDATION_STRIP",
+   "position": [
+    0.5,
+    -9.0,
+    0.5
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_FOUNDATION_STRIP",
+   "position": [
+    -4.0,
+    -10.5,
+    0.5
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_FOUNDATION_STRIP",
+   "position": [
+    -1.0,
+    -10.5,
+    0.5
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_FOUNDATION_STRIP",
+   "position": [
+    2.0,
+    -10.5,
+    0.5
    ],
    "rotation": 90
   }

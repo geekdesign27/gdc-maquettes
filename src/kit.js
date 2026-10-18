@@ -39,7 +39,7 @@ export function metaKit(entry) {
 const versThree = ([x, y, z]) => [x, z, -y];
 
 // assets : le GLB du kit copie pour cette instance (chargeur.assetsPour). Les geometries et materiaux du GLB sont
-// partages : seuls ceux du socle sont liberes ici.
+// partages : seuls ceux des socles sont liberes ici.
 export function create(THREE, entry, plan, assets, ctx) {
   const root = new THREE.Group();
   root.name = `demonstration-${entry.id}`;
@@ -59,18 +59,26 @@ export function create(THREE, entry, plan, assets, ctx) {
     root.add(piece);
   }
 
-  // Le socle maquette (bible, 18.5) : dessus a y = 0, aretes arrondies en classe C3.
-  const s = plan.socle;
-  const [l, pr, h] = s.taille;
-  const geometrie = new RoundedBoxGeometry(l, h, pr, 3, s.chanfrein);
-  const materiau = materiauPalette(THREE, s.materiau);
-  const socle = new THREE.Mesh(geometrie, materiau);
-  socle.position.set(s.centre[0], -h / 2, -s.centre[1]);
-  root.add(socle);
+  // Les socles maquette (bible, 18.5) : dessus a y = 0, aretes arrondies en classe C3.
+  const jetables = [];
+  const socles = new Set();
+  const materiaux = new Map(); // un materiau par MAT_, partage par les socles
+  for (const s of plan.socles) {
+    const [l, pr, h] = s.taille;
+    const geometrie = new RoundedBoxGeometry(l, h, pr, 3, s.chanfrein);
+    if (!materiaux.has(s.materiau))
+      materiaux.set(s.materiau, materiauPalette(THREE, s.materiau));
+    const materiau = materiaux.get(s.materiau);
+    jetables.push(geometrie);
+    const socle = new THREE.Mesh(geometrie, materiau);
+    socle.position.set(s.centre[0], -h / 2, -s.centre[1]);
+    socles.add(socle);
+    root.add(socle);
+  }
 
   root.traverse((o) => {
     if (o.isMesh) {
-      o.castShadow = ombres && o !== socle;
+      o.castShadow = ombres && !socles.has(o);
       o.receiveShadow = ombres;
     }
   });
@@ -87,8 +95,7 @@ export function create(THREE, entry, plan, assets, ctx) {
       throw new Error(`ancre inconnue : ${nom}`);
     },
     dispose() {
-      geometrie.dispose();
-      materiau.dispose();
+      for (const x of [...jetables, ...materiaux.values()]) x.dispose();
     },
   };
 }
