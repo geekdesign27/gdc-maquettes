@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-39 éléments : 35 à faire, 1 livré, 3 exemple.
+42 éléments : 37 à faire, 2 livré, 3 exemple.
 
 ## G0 : La ligne graphique
 
@@ -12,7 +12,7 @@ Fixer le style avant de produire : mood board, bible WORKSITE, bibliothèque de 
 |---|---|---|---|---|---|
 | 1 | `moodboard` | Le mood board | Document de référence, pas de code | Réunir les images qui donnent le ton, avant toute production. | à faire |
 | 2 | `bible` | La bible graphique | Document de référence, pas de code | La règle de production : univers, palette, matériaux, personnages, bâtiments, engins, caméra, conventions Blender, budgets, contrôles. | livré |
-| 3 | `material-library` | La bibliothèque de matériaux | Document de référence, pas de code | Des matériaux MAT_ partagés par tous les modèles, définis une seule fois. | à faire |
+| 3 | `material-library` | La bibliothèque de matériaux | Document de référence, pas de code | Des matériaux MAT_ partagés par tous les modèles, définis une seule fois. | livré |
 | 4 | `reference-scene` | La scène de référence | Document de référence, pas de code | Servir d'étalon : chaque nouveau composant est posé à côté pour vérifier qu'il appartient au même monde. | à faire |
 
 ### Le mood board (`moodboard`)
@@ -26,15 +26,15 @@ Images dans moodboard/, une ligne chacune dans moodboard/notes.md : ce qu'on aim
 
 ### La bible graphique (`bible`)
 
-docs/bible/bible-worksite.md, version 1.1 : la version 1.0 de Pierre-Alain et ses amendements validés le 2026-10-18. Toute évolution produit une nouvelle version.
+docs/bible/bible-worksite.md, version 1.2 : la version 1.0 de Pierre-Alain, ses amendements 1.1 et la fiche DA de production 1.2 (section 18), validés le 2026-10-18. Toute évolution produit une nouvelle version.
 
 - Critères d'acceptation :
-  - Version 1.1 validée
+  - Version 1.2 validée
   - Toute évolution documentée comme amendement versionné
 
 ### La bibliothèque de matériaux (`material-library`)
 
-src/palette.json, section materiaux : compléter bois, caoutchouc, vitrages, métaux, tissus, peaux et cheveux (bible, sections 3 et 4), après validation des premiers assets.
+src/palette.json, section materiaux : 30 matériaux et plus (bible, 18.4), chacun avec sa couleur, sa rugosité et son caractère métallique ; un matériau nouveau s'ajoute par proposition validée.
 
 - Critères d'acceptation :
   - Chaque matériau a sa couleur, sa rugosité et son caractère métallique
@@ -65,6 +65,9 @@ Poser le plan du chantier dans l'ordre du parcours : bureau d'architecte, bureau
 | 6 | `site-office` | La baraque du conducteur de travaux | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu de la coordination : planning des lots, chef de chantier, répartition des agents. | à faire |
 | 7 | `parking` | Le parking : le carnet des demandes | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer les demandes en attente de tri, sous forme de caisses de matériel. | à faire |
 | 8 | `reception-area` | La zone de réception | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu des essais et de la visite, avant la remise des clés. | à faire |
+| 9 | `site-fence` | La clôture de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Cloisonner le chantier, comme tout chantier romand. | à faire |
+| 10 | `site-container` | Le conteneur de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le baraquement modulaire des chantiers romands : vestiaire, réfectoire, bureau. | à faire |
+| 11 | `waste-skip` | La benne de tri | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le tri des déchets de chantier, obligatoire (OLED, art. 17). | à faire |
 
 ### Le terrain (`ground`)
 
@@ -179,6 +182,53 @@ Une aire avec un pupitre d'essais et un panneau « réception » ; la commission
 - Budget : 10000 triangles, 8 matériaux
 - Critères d'acceptation :
   - Lisible comme un lieu de contrôle final
+
+### La clôture de chantier (`site-fence`)
+
+Une clôture mobile : panneaux en treillis gris sur plots en béton, sans orange, pour ne jamais ressembler à la barrière de blocage (bible, 18.8). Posée le long d'une longueur donnée, avec un portail si demandé.
+
+- Fichier : `components/site/site-fence/index.js`
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `ENV_SITE_FENCE_A_v001`
+- Paramètres : `length` (nombre, 2 à 60, défaut 12) ; `gate` (booléen, défaut false)
+- États : `default`
+- Ancres : `label`
+- Données reçues par setState : aucune
+- Budget : 4000 triangles, 3 matériaux
+- Critères d'acceptation :
+  - Reconnaissable comme clôture de chantier mobile, sans orange
+  - Impossible à confondre avec la barrière de blocage sur une planche côte à côte
+  - Les panneaux et les plots se répètent par instance
+
+### Le conteneur de chantier (`site-container`)
+
+Un module conteneur, porte et fenêtre aux cotes communes (bible, 18.2) ; deux modules peuvent s'empiler, avec un escalier extérieur.
+
+- Fichier : `components/site/site-container/index.js`
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `ENV_SITE_CONTAINER_A_v001`
+- Paramètres : `stack` (nombre, 1 à 2, défaut 1)
+- États : `default`
+- Ancres : `label`, `entry`
+- Données reçues par setState : aucune
+- Budget : 6000 triangles, 6 matériaux
+- Critères d'acceptation :
+  - Reconnaissable comme conteneur de chantier sans légende
+  - Couleurs proposées et validées par Pierre-Alain avant la fabrication
+  - Empilé sur deux niveaux, l'escalier mène à la porte du haut
+
+### La benne de tri (`waste-skip`)
+
+Une benne ouverte ; son contenu dit la matière par sa forme (planches, ferraille, gravats), sans texte. Plusieurs bennes s'alignent, une par matière.
+
+- Fichier : `components/site/waste-skip/index.js`
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `ENV_WASTE_SKIP_A_v001`
+- Paramètres : `content` (wood | metal | inert | mixed, défaut mixed)
+- États : `default`
+- Ancres : `label`
+- Données reçues par setState : aucune
+- Budget : 1500 triangles, 4 matériaux
+- Critères d'acceptation :
+  - Reconnaissable comme benne de chantier sans légende
+  - Les contenus se distinguent par leur forme en niveaux de gris
 
 ## G2 : Les bâtiments et leurs états
 

@@ -74,9 +74,9 @@
       "category": "style",
       "name": "La bible graphique",
       "purpose": "La règle de production : univers, palette, matériaux, personnages, bâtiments, engins, caméra, conventions Blender, budgets, contrôles.",
-      "description": "docs/bible/bible-worksite.md, version 1.1 : la version 1.0 de Pierre-Alain et ses amendements validés le 2026-10-18. Toute évolution produit une nouvelle version.",
+      "description": "docs/bible/bible-worksite.md, version 1.2 : la version 1.0 de Pierre-Alain, ses amendements 1.1 et la fiche DA de production 1.2 (section 18), validés le 2026-10-18. Toute évolution produit une nouvelle version.",
       "acceptance": [
-        "Version 1.1 validée",
+        "Version 1.2 validée",
         "Toute évolution documentée comme amendement versionné"
       ],
       "status": "livré"
@@ -89,13 +89,13 @@
       "category": "style",
       "name": "La bibliothèque de matériaux",
       "purpose": "Des matériaux MAT_ partagés par tous les modèles, définis une seule fois.",
-      "description": "src/palette.json, section materiaux : compléter bois, caoutchouc, vitrages, métaux, tissus, peaux et cheveux (bible, sections 3 et 4), après validation des premiers assets.",
+      "description": "src/palette.json, section materiaux : 30 matériaux et plus (bible, 18.4), chacun avec sa couleur, sa rugosité et son caractère métallique ; un matériau nouveau s'ajoute par proposition validée.",
       "acceptance": [
         "Chaque matériau a sa couleur, sa rugosité et son caractère métallique",
         "Compatible glTF, sans nœud Blender non reproductible",
         "Les scripts Blender et Three.js lisent la même source"
       ],
-      "status": "à faire"
+      "status": "livré"
     },
     {
       "id": "reference-scene",
@@ -380,6 +380,103 @@
       "production": "blender",
       "blender": "BLD_DELIVERY_AREA_A_v001",
       "famille_bible": "BLD_DELIVERY"
+    },
+    {
+      "id": "site-fence",
+      "lot": "G1",
+      "order": 9,
+      "kind": "component",
+      "category": "site",
+      "name": "La clôture de chantier",
+      "purpose": "Cloisonner le chantier, comme tout chantier romand.",
+      "description": "Une clôture mobile : panneaux en treillis gris sur plots en béton, sans orange, pour ne jamais ressembler à la barrière de blocage (bible, 18.8). Posée le long d'une longueur donnée, avec un portail si demandé.",
+      "params": {
+        "length": "nombre, 2 à 60, défaut 12",
+        "gate": "booléen, défaut false"
+      },
+      "states": [
+        "default"
+      ],
+      "anchors": [
+        "label"
+      ],
+      "budget": {
+        "triangles": 4000,
+        "materials": 3
+      },
+      "acceptance": [
+        "Reconnaissable comme clôture de chantier mobile, sans orange",
+        "Impossible à confondre avec la barrière de blocage sur une planche côte à côte",
+        "Les panneaux et les plots se répètent par instance"
+      ],
+      "status": "à faire",
+      "data": {},
+      "production": "blender",
+      "blender": "ENV_SITE_FENCE_A_v001"
+    },
+    {
+      "id": "site-container",
+      "lot": "G1",
+      "order": 10,
+      "kind": "component",
+      "category": "site",
+      "name": "Le conteneur de chantier",
+      "purpose": "Le baraquement modulaire des chantiers romands : vestiaire, réfectoire, bureau.",
+      "description": "Un module conteneur, porte et fenêtre aux cotes communes (bible, 18.2) ; deux modules peuvent s'empiler, avec un escalier extérieur.",
+      "params": {
+        "stack": "nombre, 1 à 2, défaut 1"
+      },
+      "states": [
+        "default"
+      ],
+      "anchors": [
+        "label",
+        "entry"
+      ],
+      "budget": {
+        "triangles": 6000,
+        "materials": 6
+      },
+      "acceptance": [
+        "Reconnaissable comme conteneur de chantier sans légende",
+        "Couleurs proposées et validées par Pierre-Alain avant la fabrication",
+        "Empilé sur deux niveaux, l'escalier mène à la porte du haut"
+      ],
+      "status": "à faire",
+      "data": {},
+      "production": "blender",
+      "blender": "ENV_SITE_CONTAINER_A_v001"
+    },
+    {
+      "id": "waste-skip",
+      "lot": "G1",
+      "order": 11,
+      "kind": "component",
+      "category": "site",
+      "name": "La benne de tri",
+      "purpose": "Le tri des déchets de chantier, obligatoire (OLED, art. 17).",
+      "description": "Une benne ouverte ; son contenu dit la matière par sa forme (planches, ferraille, gravats), sans texte. Plusieurs bennes s'alignent, une par matière.",
+      "params": {
+        "content": "wood | metal | inert | mixed, défaut mixed"
+      },
+      "states": [
+        "default"
+      ],
+      "anchors": [
+        "label"
+      ],
+      "budget": {
+        "triangles": 1500,
+        "materials": 4
+      },
+      "acceptance": [
+        "Reconnaissable comme benne de chantier sans légende",
+        "Les contenus se distinguent par leur forme en niveaux de gris"
+      ],
+      "status": "à faire",
+      "data": {},
+      "production": "blender",
+      "blender": "ENV_WASTE_SKIP_A_v001"
     },
     {
       "id": "building-kit",
@@ -1170,7 +1267,7 @@
       "outputs": {}
     }
   ],
-  "bible": "WORKSITE 1.1 (docs/bible/bible-worksite.md)",
+  "bible": "WORKSITE 1.2 (docs/bible/bible-worksite.md)",
   "productions": {
     "code": "Géométrie générée par le code du composant (paramétrique, liée aux données)",
     "blender": "Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres)",
