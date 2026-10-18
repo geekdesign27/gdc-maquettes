@@ -736,8 +736,8 @@ Le plus petit fixe la règle : 25 pixels par mètre, donc la taille minimale d'u
 **Vigilance de signalétique** : la barrière de blocage (`blocked-sign`) est une barrière de chantier orange avec un triangle, donc un signal d'état. Rien d'autre dans la scène ne doit lui ressembler.
 - La clôture périphérique a une forme nettement différente : panneaux en treillis gris sur plots en béton, **sans orange**.
 - Mesures de couleur (ΔE 2000), pour un orange fluo de gilet candidat #FF6A13 :
-  - il reste distinct de l'orange des engins (19,5) et de l'équipe « site » #C9A227 (28) ;
+  - il reste distinct de l'orange des engins (19,5) et de l'ancienne couleur de l'équipe « site » #C9A227 (28) ;
   - il est proche de la brique (17) et de l'orange d'état « bloqué » de l'interface (13) ;
   - par ailleurs, l'équipe « site » n'est qu'à 11,6 de l'orange des engins : un casque « site » peut se confondre avec une grue.
 - Le gilet est validé en **#FF6A13** (`MAT_FABRIC_HIVIS`), bandes claires en `MAT_SURFACE`.
-- La couleur de l'équipe « site » sera rendue plus jaune ; sa teinte reste **à valider** par Pierre-Alain. Une planche les vérifie côte à côte : personnage au gilet, barrière de blocage, grue, mur de brique.
+- L'équipe « site » passe de #C9A227 à **#EBCB2E**, un jaune franc. Écart avec l'orange des engins : de 11,6 à 16,7. Écart avec le gilet : 36. Le casque couvre les cheveux, si bien que la proximité du blond (11,3) ne gêne pas. Une planche les vérifie côte à côte : personnage au gilet, barrière de blocage, grue, mur de brique.

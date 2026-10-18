@@ -9,6 +9,7 @@
 - Atelier Blender : `npm run atelier -- etalon` mesure le calage ; ciel corrigé pour éclairer comme Three.js ; plus de sol de studio.
 - Affichage de référence (portable de 13 à 14 pouces, 25 px par mètre) et ancrage en Suisse romande (bible, 18.7) ; `PX_PAR_METRE` de l'atelier passe de 24 à 25.
 - Le chantier romand (bible, 18.8) : casques de la couleur d'équipe, clôture, conteneurs, bennes de tri, gilet orange fluo (`MAT_FABRIC_HIVIS`), vigilance de signalétique.
+- Équipe « site » en #EBCB2E (jaune franc), plus loin de l'orange des engins (bible, 18.8).
 - Catalogue : trois éléments séparés au lot G1 (`site-fence`, `site-container`, `waste-skip`) ; la bibliothèque de matériaux est livrée.
 - La grue est reconstruite (palette et bible 1.2).
 

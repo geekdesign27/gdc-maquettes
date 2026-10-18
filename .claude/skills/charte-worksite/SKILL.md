@@ -45,7 +45,7 @@ Les sources font foi, ce résumé non : bible `docs/bible/bible-worksite.md` (1.
 
 - **Chantier romand** (18.8) : casques de la couleur d'équipe ; grue orange ; pelle classique sur chenilles ; clôture périphérique en treillis gris sur plots béton, **jamais orange** (l'orange à triangle est la barrière de blocage) ; conteneurs modulaires ; bennes de tri ; gilet orange fluo #FF6A13 (`MAT_FABRIC_HIVIS`) à bandes claires près des engins.
 
-Ce qui n'est pas encore fixé (teinte plus jaune de l'équipe « site », trop proche de l'orange des engins ; yeux ; morphologie exacte du personnage) se décide avec `CHR_BASE_MASTER` : **demande à PA** au lieu de fixer un chiffre toi-même.
+Ce qui n'est pas encore fixé (yeux ; morphologie exacte du personnage) se décide avec `CHR_BASE_MASTER` : **demande à PA** au lieu de fixer un chiffre toi-même.
 
 ## Interdits
 
