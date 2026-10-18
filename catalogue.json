@@ -1,0 +1,967 @@
+{
+  "version": 1,
+  "kinds": {
+    "document": "Document de référence, pas de code",
+    "component": "Composant 3D Three.js, conforme à docs/contrat-composant.md",
+    "html": "Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface",
+    "illustration": "Illustration ou icône SVG, animée en CSS si besoin"
+  },
+  "lots": [
+    {
+      "id": "G0",
+      "name": "La ligne graphique",
+      "goal": "Fixer le style avant de produire : mood board, décisions de style, scène de référence."
+    },
+    {
+      "id": "G1",
+      "name": "Le terrain et les lieux",
+      "goal": "Poser le plan du chantier dans l'ordre du parcours : bureau d'architecte, bureau d'études, bureau du client, chantier, parking, réception."
+    },
+    {
+      "id": "G2",
+      "name": "Les bâtiments et leurs états",
+      "goal": "Montrer l'avancement d'une application par l'état de son bâtiment."
+    },
+    {
+      "id": "G3",
+      "name": "Les personnages et les engins",
+      "goal": "Montrer qui travaille, où, et dans quel état."
+    },
+    {
+      "id": "G4",
+      "name": "Les vues intérieures",
+      "goal": "Au clic, entrer dans un bâtiment ou un bureau : une pièce par fiche, les ouvriers au travail."
+    },
+    {
+      "id": "G5",
+      "name": "Les signaux dans la scène",
+      "goal": "Désigner ce qui est choisi, ce qui attend, ce qui bloque."
+    },
+    {
+      "id": "G6",
+      "name": "Les éléments d'interface",
+      "goal": "Barre du haut, navigation, inspecteur, fiche d'agent, badges, barres de progression, copie et actions rapides."
+    },
+    {
+      "id": "G7",
+      "name": "Les illustrations et les icônes",
+      "goal": "Donner un visage aux agents et une icône à chaque étape et chaque lieu."
+    }
+  ],
+  "items": [
+    {
+      "id": "moodboard",
+      "lot": "G0",
+      "order": 1,
+      "kind": "document",
+      "category": "style",
+      "name": "Le mood board",
+      "purpose": "Réunir les images qui donnent le ton, avant toute production.",
+      "description": "Images dans moodboard/, une ligne chacune dans moodboard/notes.md : ce qu'on aime, ce qu'on ne veut pas, la source.",
+      "acceptance": [
+        "Au moins dix images commentées",
+        "Les références du brief (Smart Logistics, VeloHub) et de l'ERP de carrosserie y figurent",
+        "Validé ensemble"
+      ],
+      "status": "à faire"
+    },
+    {
+      "id": "style-guide",
+      "lot": "G0",
+      "order": 2,
+      "kind": "document",
+      "category": "style",
+      "name": "Les décisions de style",
+      "purpose": "Traduire le mood board en règles : vue, formes, matières, palette, personnages, rythme des animations, mode sombre.",
+      "description": "Le tableau de docs/direction-artistique.md rempli, et src/tokens.js mis à jour en conséquence.",
+      "acceptance": [
+        "Chaque ligne du tableau tranchée",
+        "src/tokens.js à jour",
+        "Couleurs d'état inchangées"
+      ],
+      "status": "à faire"
+    },
+    {
+      "id": "reference-scene",
+      "lot": "G0",
+      "order": 3,
+      "kind": "document",
+      "category": "style",
+      "name": "La scène de référence",
+      "purpose": "Servir d'étalon : chaque nouveau composant est posé à côté pour vérifier qu'il appartient au même monde.",
+      "description": "Un assemblage dans la galerie : terrain, bureau d'architecte, bâtiment dans quatre états, un personnage, l'anneau de sélection, le panneau de décision. Se complète au fil des lots G1 à G5.",
+      "acceptance": [
+        "Lisible en clair et en sombre",
+        "Fluide sur un ordinateur portable ordinaire",
+        "Validée ensemble"
+      ],
+      "status": "à faire"
+    },
+    {
+      "id": "ground",
+      "lot": "G1",
+      "order": 1,
+      "kind": "component",
+      "category": "site",
+      "name": "Le terrain",
+      "purpose": "Le sol du projet, sur lequel tout se pose.",
+      "description": "Une dalle de terrain avec sa bordure ; la zone du chantier en gravier est un second composant posé dessus.",
+      "params": {
+        "width": "nombre, 4 à 60, défaut 18",
+        "depth": "nombre, 4 à 60, défaut 12"
+      },
+      "states": [
+        "default"
+      ],
+      "anchors": [
+        "label"
+      ],
+      "budget": {
+        "triangles": 2000,
+        "materials": 3
+      },
+      "acceptance": [
+        "Exemple fourni : sert de modèle de composant statique"
+      ],
+      "status": "exemple",
+      "data": {}
+    },
+    {
+      "id": "architect-office",
+      "lot": "G1",
+      "order": 2,
+      "kind": "component",
+      "category": "site",
+      "name": "Le bureau d'architecte",
+      "purpose": "Le lieu de l'idée, des plans et du permis de construire ; le premier lieu du parcours.",
+      "description": "Un petit bâtiment de bureau ouvert ou vitré : table à dessin, plans au mur. Les personnages s'y placent ; l'intérieur détaillé est le composant office-interior.",
+      "params": {
+        "size": "small | medium, défaut small"
+      },
+      "states": [
+        "idle",
+        "active"
+      ],
+      "anchors": [
+        "label",
+        "badge",
+        "door"
+      ],
+      "budget": {
+        "triangles": 4000,
+        "materials": 5
+      },
+      "acceptance": [
+        "Reconnaissable comme un bureau d'architecte sans légende",
+        "La porte (ancre door) est l'endroit où entrent les personnages",
+        "État active : une lumière ou un détail animé discret, figé si reducedMotion"
+      ],
+      "status": "à faire",
+      "data": {}
+    },
+    {
+      "id": "design-office",
+      "lot": "G1",
+      "order": 3,
+      "kind": "component",
+      "category": "site",
+      "name": "Le bureau d'études",
+      "purpose": "Le lieu des plans d'exécution, où travaillent les spécialistes.",
+      "description": "Un bureau plus technique que celui de l'architecte : écrans, tablettes, maquettes en cours.",
+      "params": {
+        "size": "small | medium, défaut small"
+      },
+      "states": [
+        "idle",
+        "active"
+      ],
+      "anchors": [
+        "label",
+        "badge",
+        "door"
+      ],
+      "budget": {
+        "triangles": 4000,
+        "materials": 5
+      },
+      "acceptance": [
+        "Distinct du bureau d'architecte au premier regard",
+        "Même famille de formes et de matières"
+      ],
+      "status": "à faire",
+      "data": {}
+    },
+    {
+      "id": "client-office",
+      "lot": "G1",
+      "order": 4,
+      "kind": "component",
+      "category": "site",
+      "name": "Le bureau du client",
+      "purpose": "Le lieu des décisions qui t'attendent.",
+      "description": "Un petit pavillon avec un tableau d'affichage extérieur ; en état waiting, le tableau porte le panneau rouge et l'ancre badge reçoit le nombre de décisions.",
+      "params": {},
+      "states": [
+        "idle",
+        "waiting"
+      ],
+      "anchors": [
+        "label",
+        "badge",
+        "board"
+      ],
+      "budget": {
+        "triangles": 3000,
+        "materials": 4
+      },
+      "acceptance": [
+        "En waiting, visible de loin sans être criard",
+        "Seul lieu qui utilise le rouge de signalisation"
+      ],
+      "status": "à faire",
+      "data": {
+        "count": "nombre de décisions attendues (affiché par GDC sur l'ancre badge)"
+      }
+    },
+    {
+      "id": "control-office",
+      "lot": "G1",
+      "order": 5,
+      "kind": "component",
+      "category": "site",
+      "name": "Le bureau de contrôle",
+      "purpose": "Le poste qui mesure et tamponne les preuves ; c'est un programme, pas un personnage.",
+      "description": "Une guérite technique avec un tampon ou un appareil de mesure ; une impulsion à chaque preuve enregistrée.",
+      "params": {},
+      "states": [
+        "idle",
+        "active",
+        "error"
+      ],
+      "anchors": [
+        "label",
+        "badge"
+      ],
+      "budget": {
+        "triangles": 2500,
+        "materials": 4
+      },
+      "acceptance": [
+        "Ne ressemble pas à un bureau habité : c'est une machine",
+        "État error lisible sans animation"
+      ],
+      "status": "à faire",
+      "data": {}
+    },
+    {
+      "id": "parking",
+      "lot": "G1",
+      "order": 6,
+      "kind": "component",
+      "category": "site",
+      "name": "Le parking : le carnet des demandes",
+      "purpose": "Montrer les demandes en attente de tri, sous forme de caisses de matériel.",
+      "description": "Une aire marquée ; data.count place de 0 à 12 caisses, au-delà une pile et le nombre en badge.",
+      "params": {
+        "capacity": "nombre, 4 à 24, défaut 12"
+      },
+      "states": [
+        "default"
+      ],
+      "anchors": [
+        "label",
+        "badge"
+      ],
+      "budget": {
+        "triangles": 3000,
+        "materials": 3
+      },
+      "acceptance": [
+        "Le nombre de caisses suit data.count",
+        "Chaque caisse est désignable (ancre item:n) pour ouvrir sa demande"
+      ],
+      "status": "à faire",
+      "data": {
+        "count": "nombre de fiches au carnet des demandes, 0 ou plus"
+      }
+    },
+    {
+      "id": "reception-area",
+      "lot": "G1",
+      "order": 7,
+      "kind": "component",
+      "category": "site",
+      "name": "La zone de réception",
+      "purpose": "Le lieu des essais et de la visite, avant la remise des clés.",
+      "description": "Une aire avec un pupitre d'essais et un panneau « réception » ; la commission de réception s'y tient.",
+      "params": {},
+      "states": [
+        "idle",
+        "active",
+        "waiting"
+      ],
+      "anchors": [
+        "label",
+        "badge"
+      ],
+      "budget": {
+        "triangles": 2500,
+        "materials": 4
+      },
+      "acceptance": [
+        "Lisible comme un lieu de contrôle final"
+      ],
+      "status": "à faire",
+      "data": {}
+    },
+    {
+      "id": "building",
+      "lot": "G2",
+      "order": 1,
+      "kind": "component",
+      "category": "building",
+      "name": "Le bâtiment (une application)",
+      "purpose": "Montrer l'avancement d'une application par l'état de son bâtiment.",
+      "description": "Paramétrable en type et en taille. États : plot (terrain préparé), excavation (fouille avec une pelleteuse), foundations (fondations coulées), structure (murs qui montent, échafaudage, data.progress de 0 à 1), finishing (second œuvre : fenêtres posées, ouvriers visibles à l'intérieur), completed (habité : fenêtres éclairées), inspection (réception en cours). Un défaut ouvert ne change pas l'état : GDC pose le composant defect-sign sur la façade.",
+      "params": {
+        "type": "house | block | hall, défaut block",
+        "floors": "nombre, 1 à 6, défaut 3",
+        "wings": "nombre de fiches, 1 à 8, défaut 3"
+      },
+      "states": [
+        "plot",
+        "excavation",
+        "foundations",
+        "structure",
+        "finishing",
+        "completed",
+        "inspection"
+      ],
+      "anchors": [
+        "label",
+        "badge",
+        "progress",
+        "door"
+      ],
+      "budget": {
+        "triangles": 12000,
+        "materials": 8
+      },
+      "acceptance": [
+        "Chaque état reconnaissable sans légende",
+        "data.progress fait monter la structure sans saut",
+        "En qualité low, moins de 6000 triangles",
+        "Clic sur le bâtiment : GDC ouvre la vue intérieure (building-interior)"
+      ],
+      "status": "à faire",
+      "data": {
+        "progress": "0 à 1, avancement dans l'état courant (fait monter la structure)"
+      }
+    },
+    {
+      "id": "survey-poles",
+      "lot": "G2",
+      "order": 2,
+      "kind": "component",
+      "category": "building",
+      "name": "Les gabarits",
+      "purpose": "Une fiche à l'étude : les perches qui montrent le volume futur, comme pendant la mise à l'enquête.",
+      "description": "Quatre perches et les rubans qui dessinent le volume ; paramètres de taille.",
+      "params": {
+        "width": "nombre, 2 à 30, défaut 8",
+        "depth": "nombre, 2 à 30, défaut 6",
+        "height": "nombre, 2 à 20, défaut 6"
+      },
+      "states": [
+        "default"
+      ],
+      "anchors": [
+        "label",
+        "badge"
+      ],
+      "budget": {
+        "triangles": 800,
+        "materials": 2
+      },
+      "acceptance": [
+        "Reconnaissable comme des gabarits suisses"
+      ],
+      "status": "à faire",
+      "data": {}
+    },
+    {
+      "id": "shared-basement",
+      "lot": "G2",
+      "order": 3,
+      "kind": "component",
+      "category": "building",
+      "name": "Le sous-sol commun",
+      "purpose": "Les ouvrages communs : base de données ou composants partagés par plusieurs applications.",
+      "description": "Une galerie souterraine visible en coupe, qui relie les bâtiments concernés.",
+      "params": {
+        "length": "nombre, 4 à 60, défaut 12",
+        "links": "nombre de bâtiments reliés, 2 à 6, défaut 2"
+      },
+      "states": [
+        "default",
+        "active"
+      ],
+      "anchors": [
+        "label",
+        "badge"
+      ],
+      "budget": {
+        "triangles": 3000,
+        "materials": 4
+      },
+      "acceptance": [
+        "Compréhensible comme un ouvrage commun, pas comme un tunnel décoratif"
+      ],
+      "status": "à faire",
+      "data": {
+        "progress": "0 à 1, avancement de la galerie"
+      }
+    },
+    {
+      "id": "character",
+      "lot": "G3",
+      "order": 1,
+      "kind": "component",
+      "category": "character",
+      "name": "Le personnage (un agent)",
+      "purpose": "Montrer qui travaille, où, et dans quel état.",
+      "description": "Un petit personnage, couleur de son équipe, tenue de son métier. Les ingénieurs portent une tablette, les ouvriers leurs outils. GDC le déplace ; le composant anime la marche et le travail.",
+      "params": {
+        "trade": "architect | engineer | mason | electrician | plumber | painter | inspector | concierge | representative",
+        "team": "architecture | studies | site | reception | operations"
+      },
+      "states": [
+        "idle",
+        "walk",
+        "work",
+        "wait",
+        "blocked",
+        "done",
+        "unknown"
+      ],
+      "anchors": [
+        "label",
+        "badge"
+      ],
+      "budget": {
+        "triangles": 1500,
+        "materials": 4
+      },
+      "acceptance": [
+        "Le métier se lit à la tenue et à l'outil",
+        "L'équipe se lit à la couleur",
+        "unknown : gris, pointillé, immobile",
+        "reducedMotion : aucune animation, posture lisible"
+      ],
+      "status": "à faire",
+      "data": {
+        "facing": "angle en radians, sens du regard ou de la marche"
+      }
+    },
+    {
+      "id": "excavator",
+      "lot": "G3",
+      "order": 2,
+      "kind": "component",
+      "category": "machine",
+      "name": "La pelleteuse",
+      "purpose": "L'état fouille d'un bâtiment : le terrassement d'une nouvelle application.",
+      "description": "Une pelleteuse à chenilles ; en état digging, le bras creuse.",
+      "params": {},
+      "states": [
+        "idle",
+        "digging"
+      ],
+      "anchors": [
+        "label"
+      ],
+      "budget": {
+        "triangles": 3000,
+        "materials": 4
+      },
+      "acceptance": [
+        "Utilisable seule ou dans le bâtiment en état excavation"
+      ],
+      "status": "à faire",
+      "data": {}
+    },
+    {
+      "id": "crane",
+      "lot": "G3",
+      "order": 3,
+      "kind": "component",
+      "category": "machine",
+      "name": "La grue",
+      "purpose": "La fusion vers dev, à la réception : on pose la pièce finie.",
+      "description": "Une grue à tour ; en état lifting, une charge monte et se pose.",
+      "params": {
+        "height": "nombre, 6 à 30, défaut 14"
+      },
+      "states": [
+        "idle",
+        "lifting"
+      ],
+      "anchors": [
+        "label"
+      ],
+      "budget": {
+        "triangles": 2500,
+        "materials": 3
+      },
+      "acceptance": [
+        "Ne masque pas les bâtiments voisins en vue isométrique"
+      ],
+      "status": "à faire",
+      "data": {}
+    },
+    {
+      "id": "delivery-truck",
+      "lot": "G3",
+      "order": 4,
+      "kind": "component",
+      "category": "machine",
+      "name": "Le camion de livraison",
+      "purpose": "L'arrivée d'une nouvelle dépendance : un événement à surveiller pour la sécurité.",
+      "description": "Un camion de chantier ; en état arriving, il entre et décharge.",
+      "params": {},
+      "states": [
+        "idle",
+        "arriving"
+      ],
+      "anchors": [
+        "label",
+        "badge"
+      ],
+      "budget": {
+        "triangles": 2500,
+        "materials": 4
+      },
+      "acceptance": [
+        "Lot plus tardif : utile quand le harnais enregistre les dépendances ajoutées"
+      ],
+      "status": "à faire",
+      "data": {}
+    },
+    {
+      "id": "building-interior",
+      "lot": "G4",
+      "order": 1,
+      "kind": "component",
+      "category": "interior",
+      "name": "L'intérieur d'un bâtiment",
+      "purpose": "La vue micro : une pièce par fiche, et les ouvriers au travail dans chacune.",
+      "description": "Une coupe du bâtiment en pièces ; data.rooms donne, pour chaque pièce, son état (study, waiting, construction, reception, done, defect) et les métiers présents. Les personnages sont des composants character posés par GDC aux ancres room:n.",
+      "params": {
+        "rooms": "nombre, 1 à 12, défaut 4"
+      },
+      "states": [
+        "default"
+      ],
+      "anchors": [
+        "label",
+        "room:*"
+      ],
+      "budget": {
+        "triangles": 15000,
+        "materials": 8
+      },
+      "acceptance": [
+        "Chaque pièce lisible et désignable (ancre room:n)",
+        "L'état d'une pièce se voit à son aménagement : vide, en travaux, finie, défaut",
+        "Transition d'entrée et de sortie douce, figée si reducedMotion"
+      ],
+      "status": "à faire",
+      "data": {
+        "rooms": "liste, une entrée par fiche : { state: study | waiting | construction | reception | done | defect, trades: [métiers présents] }"
+      }
+    },
+    {
+      "id": "office-interior",
+      "lot": "G4",
+      "order": 2,
+      "kind": "component",
+      "category": "interior",
+      "name": "L'intérieur d'un bureau",
+      "purpose": "La vue micro d'un bureau : l'architecte devant ses plans, les ingénieurs avec leur tablette.",
+      "description": "Paramétrable pour le bureau d'architecte ou le bureau d'études ; des postes de travail aux ancres desk:n.",
+      "params": {
+        "kind": "architect | studies, défaut architect",
+        "desks": "nombre, 1 à 8, défaut 4"
+      },
+      "states": [
+        "idle",
+        "active"
+      ],
+      "anchors": [
+        "label",
+        "desk:*"
+      ],
+      "budget": {
+        "triangles": 10000,
+        "materials": 6
+      },
+      "acceptance": [
+        "Ambiance intellectuelle, distincte du chantier"
+      ],
+      "status": "à faire",
+      "data": {
+        "activeDesks": "nombre de postes occupés"
+      }
+    },
+    {
+      "id": "selection-ring",
+      "lot": "G5",
+      "order": 1,
+      "kind": "component",
+      "category": "signals",
+      "name": "L'anneau de sélection",
+      "purpose": "Montrer l'élément survolé ou choisi.",
+      "description": "Un anneau au sol, discret au survol, marqué à la sélection, avec une respiration lente si les animations sont permises.",
+      "params": {
+        "radius": "nombre, 0.3 à 10, défaut 1"
+      },
+      "states": [
+        "hidden",
+        "hover",
+        "selected"
+      ],
+      "anchors": [],
+      "budget": {
+        "triangles": 600,
+        "materials": 1
+      },
+      "acceptance": [
+        "Exemple fourni : sert de modèle de composant animé"
+      ],
+      "status": "exemple",
+      "data": {}
+    },
+    {
+      "id": "decision-sign",
+      "lot": "G5",
+      "order": 2,
+      "kind": "component",
+      "category": "signals",
+      "name": "Le panneau de décision",
+      "purpose": "Une décision t'attend à cet endroit.",
+      "description": "Un panneau de chantier rouge sur poteau ; une impulsion à son apparition, puis fixe.",
+      "params": {},
+      "states": [
+        "default"
+      ],
+      "anchors": [
+        "badge"
+      ],
+      "budget": {
+        "triangles": 500,
+        "materials": 2
+      },
+      "acceptance": [
+        "Le seul signal rouge de la scène"
+      ],
+      "status": "à faire",
+      "data": {}
+    },
+    {
+      "id": "blocked-sign",
+      "lot": "G5",
+      "order": 3,
+      "kind": "component",
+      "category": "signals",
+      "name": "La barrière de blocage",
+      "purpose": "Un travail est bloqué ici.",
+      "description": "Une barrière de chantier orange avec un triangle.",
+      "params": {},
+      "states": [
+        "default"
+      ],
+      "anchors": [
+        "badge"
+      ],
+      "budget": {
+        "triangles": 600,
+        "materials": 2
+      },
+      "acceptance": [
+        "Distincte du panneau de décision par la forme et la couleur"
+      ],
+      "status": "à faire",
+      "data": {}
+    },
+    {
+      "id": "defect-sign",
+      "lot": "G5",
+      "order": 4,
+      "kind": "component",
+      "category": "signals",
+      "name": "Le signal de défaut",
+      "purpose": "Un défaut est ouvert sur une partie habitée.",
+      "description": "Un cône ou un ruban posé sur la façade ou dans la pièce concernée.",
+      "params": {},
+      "states": [
+        "default"
+      ],
+      "anchors": [
+        "badge"
+      ],
+      "budget": {
+        "triangles": 500,
+        "materials": 2
+      },
+      "acceptance": [
+        "Lisible même sur un bâtiment fini et éclairé"
+      ],
+      "status": "à faire",
+      "data": {}
+    },
+    {
+      "id": "top-bar",
+      "lot": "G6",
+      "order": 1,
+      "kind": "html",
+      "category": "interface",
+      "name": "La barre du haut",
+      "purpose": "Le projet, ce qui t'attend, qui travaille, la fraîcheur des données.",
+      "description": "Nom et logo du projet, nombre de décisions attendues, agents actifs, bloqués, inconnus, heure de la dernière mise à jour.",
+      "acceptance": [
+        "Tient sur un téléphone",
+        "La fraîcheur passe en avertissement au-delà d'un délai"
+      ],
+      "status": "à faire",
+      "inputs": {
+        "project": "nom du projet",
+        "decisions": "nombre de décisions attendues",
+        "agents": "{ active, blocked, unknown } : nombres",
+        "updatedAt": "date ISO de la dernière mise à jour",
+        "staleAfter": "secondes avant avertissement de fraîcheur"
+      },
+      "outputs": {
+        "gdc-select": "clic sur le compteur de décisions ou d'agents ; detail.id = decisions | agents"
+      }
+    },
+    {
+      "id": "side-nav",
+      "lot": "G6",
+      "order": 2,
+      "kind": "html",
+      "category": "interface",
+      "name": "La navigation",
+      "purpose": "Aller à un lieu, un bâtiment, une fiche ou un agent ; la caméra suit.",
+      "description": "Liste groupée avec pastille d'état ; recherche intégrée.",
+      "acceptance": [
+        "Utilisable au clavier",
+        "Devient une rangée défilante sur téléphone"
+      ],
+      "status": "à faire",
+      "inputs": {
+        "groups": "liste de { title, items: [{ id, name, state }] }",
+        "selected": "identifiant sélectionné"
+      },
+      "outputs": {
+        "gdc-select": "detail.id = identifiant choisi"
+      }
+    },
+    {
+      "id": "inspector",
+      "lot": "G6",
+      "order": 3,
+      "kind": "html",
+      "category": "interface",
+      "name": "L'inspecteur",
+      "purpose": "La fiche de l'élément choisi : avancement, lots, tâches, blocages, réussites, actions attendues.",
+      "description": "Panneau latéral ; tout texte venu du harnais est affiché comme du texte, jamais comme du HTML.",
+      "acceptance": [
+        "Aucun contenu injecté comme du code",
+        "Sections repliables",
+        "Lisible en clair et en sombre"
+      ],
+      "status": "à faire",
+      "inputs": {
+        "id": "identifiant stable",
+        "kind": "nature (fiche, lot, agent, lieu…)",
+        "title": "nom affiché",
+        "sections": "liste de { title, rows: [{ label, value, state? }] } : progression, lots, tâches, blocages, réussites, actions attendues"
+      },
+      "outputs": {
+        "gdc-close": "fermeture",
+        "gdc-copy": "detail.id, detail.text",
+        "gdc-select": "clic sur un élément cité ; detail.id"
+      }
+    },
+    {
+      "id": "agent-popup",
+      "lot": "G6",
+      "order": 4,
+      "kind": "html",
+      "category": "interface",
+      "name": "La fiche d'un agent",
+      "purpose": "Au clic sur un personnage : son illustration animée, ce qu'il fait, ce qu'il va faire, ce qu'on peut lui demander.",
+      "description": "Fenêtre avec l'illustration (lot G7) à gauche et trois colonnes à droite ; actions rapides propres à l'agent.",
+      "acceptance": [
+        "Se ferme au clavier",
+        "Affiche « inconnu » quand le journal ne dit rien"
+      ],
+      "status": "à faire",
+      "inputs": {
+        "id": "identifiant de l'agent",
+        "name": "prénom et rôle",
+        "team": "équipe",
+        "state": "état (mêmes valeurs que character)",
+        "doing": "liste de textes : ce qu'il fait",
+        "next": "liste de textes : ce qu'il fera",
+        "can": "liste de textes : ce qu'il sait faire",
+        "actions": "liste de { label, prompt }"
+      },
+      "outputs": {
+        "gdc-close": "fermeture",
+        "gdc-copy": "detail.id, detail.text (prompt copié)"
+      }
+    },
+    {
+      "id": "notification-badge",
+      "lot": "G6",
+      "order": 5,
+      "kind": "html",
+      "category": "interface",
+      "name": "Le badge de notification",
+      "purpose": "Compter les alertes, les avertissements, ou montrer que tout est validé.",
+      "description": "Posé sur une ancre badge ; niveau le plus grave affiché, total en chiffre ; voir docs/signaletique.md.",
+      "acceptance": [
+        "Couleur, forme et icône pour chaque niveau",
+        "Masqué à zéro"
+      ],
+      "status": "à faire",
+      "inputs": {
+        "counts": "{ error, waiting, blocked, done } : nombres"
+      },
+      "outputs": {}
+    },
+    {
+      "id": "progress-bar",
+      "lot": "G6",
+      "order": 6,
+      "kind": "html",
+      "category": "interface",
+      "name": "La barre de progression",
+      "purpose": "Montrer l'avancement d'une fiche ou d'un lot, avec sa règle de calcul.",
+      "description": "Barre et fraction (« 3 / 7 critères prouvés ») ; la règle au survol.",
+      "acceptance": [
+        "Jamais de pourcentage sans sa règle"
+      ],
+      "status": "à faire",
+      "inputs": {
+        "done": "nombre prouvé",
+        "total": "nombre attendu",
+        "rule": "texte de la règle de calcul",
+        "state": "état (couleur)"
+      },
+      "outputs": {}
+    },
+    {
+      "id": "copy-button",
+      "lot": "G6",
+      "order": 7,
+      "kind": "html",
+      "category": "interface",
+      "name": "L'icône de copie",
+      "purpose": "Copier le nom et l'identifiant d'un élément, pour le coller dans l'outil d'IA.",
+      "description": "Petite icône à côté de tout élément désignable ; confirmation discrète ; repli si le presse-papiers est refusé.",
+      "acceptance": [
+        "Copie l'identifiant stable et le nom",
+        "Fonctionne au clavier"
+      ],
+      "status": "à faire",
+      "inputs": {
+        "id": "identifiant stable",
+        "text": "texte à copier"
+      },
+      "outputs": {
+        "gdc-copy": "detail.id, detail.text, detail.ok (false si le presse-papiers est refusé)"
+      }
+    },
+    {
+      "id": "quick-actions",
+      "lot": "G6",
+      "order": 8,
+      "kind": "html",
+      "category": "interface",
+      "name": "Les actions rapides",
+      "purpose": "Copier un petit prompt prêt à l'emploi qui vise l'élément choisi.",
+      "description": "Liste de boutons fournie par GDC selon le type d'élément ; le texte copié est visible avant la copie.",
+      "acceptance": [
+        "Le prompt cite l'identifiant",
+        "Ne déclenche jamais rien d'autre qu'une copie"
+      ],
+      "status": "à faire",
+      "inputs": {
+        "id": "identifiant de l'élément",
+        "actions": "liste de { label, prompt }"
+      },
+      "outputs": {
+        "gdc-copy": "detail.id, detail.text"
+      }
+    },
+    {
+      "id": "agent-portraits",
+      "lot": "G7",
+      "order": 1,
+      "kind": "illustration",
+      "category": "illustration",
+      "name": "Les portraits des agents",
+      "purpose": "Un visage par agent, le même sur le panneau, la page de la méthode et les rapports.",
+      "description": "Un portrait par prénom (Claire, Marc, Lina, David, Sarah, Noah, Tom, Paul, Iris, Yves, Emma, Robin, Julie, Olivier, Anne, Bernard, Fanny) ; états idle, talking, working ; SVG animé en CSS.",
+      "acceptance": [
+        "Cohérents avec les personnages 3D",
+        "Reconnaissables en petit (48 pixels)"
+      ],
+      "status": "à faire",
+      "inputs": {
+        "name": "prénom (nom du fichier SVG)",
+        "state": "idle | talking | working (classe CSS)"
+      },
+      "outputs": {}
+    },
+    {
+      "id": "step-icons",
+      "lot": "G7",
+      "order": 2,
+      "kind": "illustration",
+      "category": "illustration",
+      "name": "Les icônes des étapes",
+      "purpose": "Une icône pour chacune des dix étapes, de l'idée aux transformations.",
+      "description": "Jeu de dix icônes SVG, au trait, de même épaisseur.",
+      "acceptance": [
+        "Lisibles à 20 pixels",
+        "Une seule couleur, héritée du texte"
+      ],
+      "status": "à faire",
+      "inputs": {
+        "step": "identifiant de l'étape (nom du fichier SVG)"
+      },
+      "outputs": {}
+    },
+    {
+      "id": "place-icons",
+      "lot": "G7",
+      "order": 3,
+      "kind": "illustration",
+      "category": "illustration",
+      "name": "Les icônes des lieux",
+      "purpose": "Une icône par lieu, pour la navigation et les rapports.",
+      "description": "Bureau d'architecte, bureau d'études, bureau du client, bureau de contrôle, chantier, parking, réception, bâtiment habité.",
+      "acceptance": [
+        "Même famille que les icônes des étapes"
+      ],
+      "status": "à faire",
+      "inputs": {
+        "place": "identifiant du lieu (nom du fichier SVG)"
+      },
+      "outputs": {}
+    }
+  ]
+}

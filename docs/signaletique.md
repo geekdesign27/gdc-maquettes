@@ -1,0 +1,43 @@
+# La signalétique du panneau
+
+Le langage des signaux, à l'image des jeux de gestion et des interfaces de supervision : on comprend l'état d'un élément sans lire, et sans dépendre de la seule couleur. Ces principes sont des bonnes pratiques d'interface reconnues [I] ; la direction artistique les habille.
+
+## Principes
+
+1. **Trois indices pour un état** : une couleur, une forme et une icône (ou un mot). Une personne qui distingue mal les couleurs comprend quand même.
+2. **Les couleurs d'état sont fixes** : le thème du projet ne les change jamais.
+3. **Une seule priorité visible par élément** : s'il y a une alerte et un avertissement, on montre l'alerte, avec le total.
+4. **Les badges comptent**, ils ne racontent pas : un nombre et une icône ; le détail s'ouvre au clic.
+5. **Rien ne clignote en continu.** Une impulsion douce à l'apparition, puis un état fixe. Si l'utilisateur demande moins d'animations, rien ne bouge.
+6. **Ce qui t'attend est rouge, et seulement cela** : le rouge de signalisation est réservé aux décisions attendues.
+7. **Inconnu n'est pas une erreur** : gris, pointillé, avec un point d'interrogation.
+
+## Les états
+
+| État | Couleur | Forme | Icône ou mot | Où on le voit |
+|---|---|---|---|---|
+| Actif | Vert | Anneau plein | Engrenage ou outil | Agent, lot, fiche |
+| Attend ta décision | Rouge de signalisation | Panneau rectangulaire | Point d'exclamation | Fiche, bureau du client |
+| Bloqué | Orange | Triangle | Barrière | Lot, agent |
+| En erreur | Rouge foncé | Octogone | Croix | Contrôle, lot |
+| Terminé | Encre douce | Coche | Coche | Lot, fiche, tâche |
+| Inconnu | Gris | Anneau pointillé | Point d'interrogation | Agent, fiche |
+
+## Les badges (HTML, posés sur les ancres)
+
+| Badge | Contenu | Règle |
+|---|---|---|
+| Notification | Nombre, et l'icône du niveau le plus grave | Masqué à zéro |
+| Avertissement | Nombre d'avertissements ouverts | Orange |
+| Validé | Coche, sans nombre | Apparaît quand tout est prouvé |
+| Progression | Barre et fraction (« 3 / 7 ») | La fraction vient du harnais ; jamais de pourcentage sans sa règle |
+
+## Les signaux dans la scène (3D)
+
+| Signal | Ce qu'il dit |
+|---|---|
+| Panneau rouge | Une décision t'attend à cet endroit |
+| Triangle orange | Un travail est bloqué |
+| Anneau de sélection | L'élément choisi, ou survolé |
+| Gabarits plantés | Une fiche à l'étude : son volume futur |
+| Échafaudage | Une fiche en construction |

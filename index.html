@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Galerie des maquettes</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root { --bg: #f6f6f2; --panel: #ffffff; --ink: #1f242b; --muted: #5b6470; --line: #d9d6cc; --accent: #3a5a9b; --bad: #9c2a24; --good: #2f8a5c; }
+    :root[data-theme="dark"] { --bg: #1d2126; --panel: #262b31; --ink: #ecebe6; --muted: #a3aab2; --line: #3a4048; --accent: #8fa8dd; --bad: #e0776f; --good: #6cc49a; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font: 14px/1.4 system-ui, sans-serif; background: var(--bg); color: var(--ink); display: grid; grid-template-columns: 260px 1fr; grid-template-rows: 100vh; height: 100vh; }
+    aside { border-right: 1px solid var(--line); background: var(--panel); overflow: auto; padding: 12px; }
+    aside h1 { font-size: 16px; margin: 0 0 8px; }
+    aside h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin: 14px 0 4px; }
+    aside button { display: block; width: 100%; text-align: left; border: 0; background: none; color: var(--ink); padding: 5px 8px; border-radius: 6px; cursor: pointer; font: inherit; }
+    aside button[aria-current="true"] { background: var(--accent); color: #fff; }
+    aside button:disabled { color: var(--muted); cursor: default; }
+    main { display: grid; grid-template-rows: auto 1fr auto; min-width: 0; min-height: 0; }
+    aside { min-height: 0; }
+    .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 12px; border-bottom: 1px solid var(--line); background: var(--panel); }
+    .bar .group { display: flex; gap: 4px; align-items: center; }
+    .bar button { border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 6px; padding: 4px 10px; cursor: pointer; font: inherit; }
+    .bar button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .bar label { display: flex; gap: 4px; align-items: center; }
+    #stage { position: relative; overflow: hidden; }
+    #stage canvas { display: block; width: 100%; height: 100%; }
+    #anchors { position: absolute; inset: 0; pointer-events: none; }
+    .anchor { position: absolute; transform: translate(-50%, -100%); background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 4px; padding: 1px 6px; font-size: 12px; white-space: nowrap; }
+    footer { padding: 8px 12px; border-top: 1px solid var(--line); background: var(--panel); font-size: 13px; }
+    footer .ok { color: var(--good); } footer .ko { color: var(--bad); }
+    footer ul { margin: 4px 0 0; padding-left: 18px; }
+    @media (max-width: 700px) { body { grid-template-columns: 1fr; grid-template-rows: 180px 1fr; } aside { border-right: 0; border-bottom: 1px solid var(--line); } }
+  </style>
+</head>
+<body>
+  <aside>
+    <h1>Galerie des maquettes</h1>
+    <div id="list"></div>
+  </aside>
+  <main>
+    <div class="bar">
+      <div class="group" id="states" aria-label="États"></div>
+      <div class="group">
+        <button id="theme" aria-pressed="false">Sombre</button>
+        <button id="quality" aria-pressed="true">Qualité haute</button>
+        <button id="motion" aria-pressed="false">Sans animation</button>
+        <button id="showAnchors" aria-pressed="true">Ancres</button>
+      </div>
+    </div>
+    <div id="stage"><div id="anchors"></div></div>
+    <footer id="report"></footer>
+  </main>
+  <script type="module" src="/src/gallery.js"></script>
+</body>
+</html>

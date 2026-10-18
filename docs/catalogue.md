@@ -1,0 +1,505 @@
+# Le catalogue
+
+Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
+
+34 éléments : 32 à faire, 2 exemple.
+
+## G0 : La ligne graphique
+
+Fixer le style avant de produire : mood board, décisions de style, scène de référence.
+
+| Ordre | Identifiant | Nom | Nature | But | Statut |
+|---|---|---|---|---|---|
+| 1 | `moodboard` | Le mood board | Document de référence, pas de code | Réunir les images qui donnent le ton, avant toute production. | à faire |
+| 2 | `style-guide` | Les décisions de style | Document de référence, pas de code | Traduire le mood board en règles : vue, formes, matières, palette, personnages, rythme des animations, mode sombre. | à faire |
+| 3 | `reference-scene` | La scène de référence | Document de référence, pas de code | Servir d'étalon : chaque nouveau composant est posé à côté pour vérifier qu'il appartient au même monde. | à faire |
+
+### Le mood board (`moodboard`)
+
+Images dans moodboard/, une ligne chacune dans moodboard/notes.md : ce qu'on aime, ce qu'on ne veut pas, la source.
+
+- Critères d'acceptation :
+  - Au moins dix images commentées
+  - Les références du brief (Smart Logistics, VeloHub) et de l'ERP de carrosserie y figurent
+  - Validé ensemble
+
+### Les décisions de style (`style-guide`)
+
+Le tableau de docs/direction-artistique.md rempli, et src/tokens.js mis à jour en conséquence.
+
+- Critères d'acceptation :
+  - Chaque ligne du tableau tranchée
+  - src/tokens.js à jour
+  - Couleurs d'état inchangées
+
+### La scène de référence (`reference-scene`)
+
+Un assemblage dans la galerie : terrain, bureau d'architecte, bâtiment dans quatre états, un personnage, l'anneau de sélection, le panneau de décision. Se complète au fil des lots G1 à G5.
+
+- Critères d'acceptation :
+  - Lisible en clair et en sombre
+  - Fluide sur un ordinateur portable ordinaire
+  - Validée ensemble
+
+## G1 : Le terrain et les lieux
+
+Poser le plan du chantier dans l'ordre du parcours : bureau d'architecte, bureau d'études, bureau du client, chantier, parking, réception.
+
+| Ordre | Identifiant | Nom | Nature | But | Statut |
+|---|---|---|---|---|---|
+| 1 | `ground` | Le terrain | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le sol du projet, sur lequel tout se pose. | exemple |
+| 2 | `architect-office` | Le bureau d'architecte | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu de l'idée, des plans et du permis de construire ; le premier lieu du parcours. | à faire |
+| 3 | `design-office` | Le bureau d'études | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu des plans d'exécution, où travaillent les spécialistes. | à faire |
+| 4 | `client-office` | Le bureau du client | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu des décisions qui t'attendent. | à faire |
+| 5 | `control-office` | Le bureau de contrôle | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le poste qui mesure et tamponne les preuves ; c'est un programme, pas un personnage. | à faire |
+| 6 | `parking` | Le parking : le carnet des demandes | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer les demandes en attente de tri, sous forme de caisses de matériel. | à faire |
+| 7 | `reception-area` | La zone de réception | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu des essais et de la visite, avant la remise des clés. | à faire |
+
+### Le terrain (`ground`)
+
+Une dalle de terrain avec sa bordure ; la zone du chantier en gravier est un second composant posé dessus.
+
+- Fichier : `components/site/ground/index.js`
+- Paramètres : `width` (nombre, 4 à 60, défaut 18) ; `depth` (nombre, 4 à 60, défaut 12)
+- États : `default`
+- Ancres : `label`
+- Données reçues par setState : aucune
+- Budget : 2000 triangles, 3 matériaux
+- Critères d'acceptation :
+  - Exemple fourni : sert de modèle de composant statique
+
+### Le bureau d'architecte (`architect-office`)
+
+Un petit bâtiment de bureau ouvert ou vitré : table à dessin, plans au mur. Les personnages s'y placent ; l'intérieur détaillé est le composant office-interior.
+
+- Fichier : `components/site/architect-office/index.js`
+- Paramètres : `size` (small | medium, défaut small)
+- États : `idle`, `active`
+- Ancres : `label`, `badge`, `door`
+- Données reçues par setState : aucune
+- Budget : 4000 triangles, 5 matériaux
+- Critères d'acceptation :
+  - Reconnaissable comme un bureau d'architecte sans légende
+  - La porte (ancre door) est l'endroit où entrent les personnages
+  - État active : une lumière ou un détail animé discret, figé si reducedMotion
+
+### Le bureau d'études (`design-office`)
+
+Un bureau plus technique que celui de l'architecte : écrans, tablettes, maquettes en cours.
+
+- Fichier : `components/site/design-office/index.js`
+- Paramètres : `size` (small | medium, défaut small)
+- États : `idle`, `active`
+- Ancres : `label`, `badge`, `door`
+- Données reçues par setState : aucune
+- Budget : 4000 triangles, 5 matériaux
+- Critères d'acceptation :
+  - Distinct du bureau d'architecte au premier regard
+  - Même famille de formes et de matières
+
+### Le bureau du client (`client-office`)
+
+Un petit pavillon avec un tableau d'affichage extérieur ; en état waiting, le tableau porte le panneau rouge et l'ancre badge reçoit le nombre de décisions.
+
+- Fichier : `components/site/client-office/index.js`
+- États : `idle`, `waiting`
+- Ancres : `label`, `badge`, `board`
+- Données reçues par setState : `count` (nombre de décisions attendues (affiché par GDC sur l'ancre badge))
+- Budget : 3000 triangles, 4 matériaux
+- Critères d'acceptation :
+  - En waiting, visible de loin sans être criard
+  - Seul lieu qui utilise le rouge de signalisation
+
+### Le bureau de contrôle (`control-office`)
+
+Une guérite technique avec un tampon ou un appareil de mesure ; une impulsion à chaque preuve enregistrée.
+
+- Fichier : `components/site/control-office/index.js`
+- États : `idle`, `active`, `error`
+- Ancres : `label`, `badge`
+- Données reçues par setState : aucune
+- Budget : 2500 triangles, 4 matériaux
+- Critères d'acceptation :
+  - Ne ressemble pas à un bureau habité : c'est une machine
+  - État error lisible sans animation
+
+### Le parking : le carnet des demandes (`parking`)
+
+Une aire marquée ; data.count place de 0 à 12 caisses, au-delà une pile et le nombre en badge.
+
+- Fichier : `components/site/parking/index.js`
+- Paramètres : `capacity` (nombre, 4 à 24, défaut 12)
+- États : `default`
+- Ancres : `label`, `badge`
+- Données reçues par setState : `count` (nombre de fiches au carnet des demandes, 0 ou plus)
+- Budget : 3000 triangles, 3 matériaux
+- Critères d'acceptation :
+  - Le nombre de caisses suit data.count
+  - Chaque caisse est désignable (ancre item:n) pour ouvrir sa demande
+
+### La zone de réception (`reception-area`)
+
+Une aire avec un pupitre d'essais et un panneau « réception » ; la commission de réception s'y tient.
+
+- Fichier : `components/site/reception-area/index.js`
+- États : `idle`, `active`, `waiting`
+- Ancres : `label`, `badge`
+- Données reçues par setState : aucune
+- Budget : 2500 triangles, 4 matériaux
+- Critères d'acceptation :
+  - Lisible comme un lieu de contrôle final
+
+## G2 : Les bâtiments et leurs états
+
+Montrer l'avancement d'une application par l'état de son bâtiment.
+
+| Ordre | Identifiant | Nom | Nature | But | Statut |
+|---|---|---|---|---|---|
+| 1 | `building` | Le bâtiment (une application) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer l'avancement d'une application par l'état de son bâtiment. | à faire |
+| 2 | `survey-poles` | Les gabarits | Composant 3D Three.js, conforme à docs/contrat-composant.md | Une fiche à l'étude : les perches qui montrent le volume futur, comme pendant la mise à l'enquête. | à faire |
+| 3 | `shared-basement` | Le sous-sol commun | Composant 3D Three.js, conforme à docs/contrat-composant.md | Les ouvrages communs : base de données ou composants partagés par plusieurs applications. | à faire |
+
+### Le bâtiment (une application) (`building`)
+
+Paramétrable en type et en taille. États : plot (terrain préparé), excavation (fouille avec une pelleteuse), foundations (fondations coulées), structure (murs qui montent, échafaudage, data.progress de 0 à 1), finishing (second œuvre : fenêtres posées, ouvriers visibles à l'intérieur), completed (habité : fenêtres éclairées), inspection (réception en cours). Un défaut ouvert ne change pas l'état : GDC pose le composant defect-sign sur la façade.
+
+- Fichier : `components/building/building/index.js`
+- Paramètres : `type` (house | block | hall, défaut block) ; `floors` (nombre, 1 à 6, défaut 3) ; `wings` (nombre de fiches, 1 à 8, défaut 3)
+- États : `plot`, `excavation`, `foundations`, `structure`, `finishing`, `completed`, `inspection`
+- Ancres : `label`, `badge`, `progress`, `door`
+- Données reçues par setState : `progress` (0 à 1, avancement dans l'état courant (fait monter la structure))
+- Budget : 12000 triangles, 8 matériaux
+- Critères d'acceptation :
+  - Chaque état reconnaissable sans légende
+  - data.progress fait monter la structure sans saut
+  - En qualité low, moins de 6000 triangles
+  - Clic sur le bâtiment : GDC ouvre la vue intérieure (building-interior)
+
+### Les gabarits (`survey-poles`)
+
+Quatre perches et les rubans qui dessinent le volume ; paramètres de taille.
+
+- Fichier : `components/building/survey-poles/index.js`
+- Paramètres : `width` (nombre, 2 à 30, défaut 8) ; `depth` (nombre, 2 à 30, défaut 6) ; `height` (nombre, 2 à 20, défaut 6)
+- États : `default`
+- Ancres : `label`, `badge`
+- Données reçues par setState : aucune
+- Budget : 800 triangles, 2 matériaux
+- Critères d'acceptation :
+  - Reconnaissable comme des gabarits suisses
+
+### Le sous-sol commun (`shared-basement`)
+
+Une galerie souterraine visible en coupe, qui relie les bâtiments concernés.
+
+- Fichier : `components/building/shared-basement/index.js`
+- Paramètres : `length` (nombre, 4 à 60, défaut 12) ; `links` (nombre de bâtiments reliés, 2 à 6, défaut 2)
+- États : `default`, `active`
+- Ancres : `label`, `badge`
+- Données reçues par setState : `progress` (0 à 1, avancement de la galerie)
+- Budget : 3000 triangles, 4 matériaux
+- Critères d'acceptation :
+  - Compréhensible comme un ouvrage commun, pas comme un tunnel décoratif
+
+## G3 : Les personnages et les engins
+
+Montrer qui travaille, où, et dans quel état.
+
+| Ordre | Identifiant | Nom | Nature | But | Statut |
+|---|---|---|---|---|---|
+| 1 | `character` | Le personnage (un agent) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer qui travaille, où, et dans quel état. | à faire |
+| 2 | `excavator` | La pelleteuse | Composant 3D Three.js, conforme à docs/contrat-composant.md | L'état fouille d'un bâtiment : le terrassement d'une nouvelle application. | à faire |
+| 3 | `crane` | La grue | Composant 3D Three.js, conforme à docs/contrat-composant.md | La fusion vers dev, à la réception : on pose la pièce finie. | à faire |
+| 4 | `delivery-truck` | Le camion de livraison | Composant 3D Three.js, conforme à docs/contrat-composant.md | L'arrivée d'une nouvelle dépendance : un événement à surveiller pour la sécurité. | à faire |
+
+### Le personnage (un agent) (`character`)
+
+Un petit personnage, couleur de son équipe, tenue de son métier. Les ingénieurs portent une tablette, les ouvriers leurs outils. GDC le déplace ; le composant anime la marche et le travail.
+
+- Fichier : `components/character/character/index.js`
+- Paramètres : `trade` (architect | engineer | mason | electrician | plumber | painter | inspector | concierge | representative) ; `team` (architecture | studies | site | reception | operations)
+- États : `idle`, `walk`, `work`, `wait`, `blocked`, `done`, `unknown`
+- Ancres : `label`, `badge`
+- Données reçues par setState : `facing` (angle en radians, sens du regard ou de la marche)
+- Budget : 1500 triangles, 4 matériaux
+- Critères d'acceptation :
+  - Le métier se lit à la tenue et à l'outil
+  - L'équipe se lit à la couleur
+  - unknown : gris, pointillé, immobile
+  - reducedMotion : aucune animation, posture lisible
+
+### La pelleteuse (`excavator`)
+
+Une pelleteuse à chenilles ; en état digging, le bras creuse.
+
+- Fichier : `components/machine/excavator/index.js`
+- États : `idle`, `digging`
+- Ancres : `label`
+- Données reçues par setState : aucune
+- Budget : 3000 triangles, 4 matériaux
+- Critères d'acceptation :
+  - Utilisable seule ou dans le bâtiment en état excavation
+
+### La grue (`crane`)
+
+Une grue à tour ; en état lifting, une charge monte et se pose.
+
+- Fichier : `components/machine/crane/index.js`
+- Paramètres : `height` (nombre, 6 à 30, défaut 14)
+- États : `idle`, `lifting`
+- Ancres : `label`
+- Données reçues par setState : aucune
+- Budget : 2500 triangles, 3 matériaux
+- Critères d'acceptation :
+  - Ne masque pas les bâtiments voisins en vue isométrique
+
+### Le camion de livraison (`delivery-truck`)
+
+Un camion de chantier ; en état arriving, il entre et décharge.
+
+- Fichier : `components/machine/delivery-truck/index.js`
+- États : `idle`, `arriving`
+- Ancres : `label`, `badge`
+- Données reçues par setState : aucune
+- Budget : 2500 triangles, 4 matériaux
+- Critères d'acceptation :
+  - Lot plus tardif : utile quand le harnais enregistre les dépendances ajoutées
+
+## G4 : Les vues intérieures
+
+Au clic, entrer dans un bâtiment ou un bureau : une pièce par fiche, les ouvriers au travail.
+
+| Ordre | Identifiant | Nom | Nature | But | Statut |
+|---|---|---|---|---|---|
+| 1 | `building-interior` | L'intérieur d'un bâtiment | Composant 3D Three.js, conforme à docs/contrat-composant.md | La vue micro : une pièce par fiche, et les ouvriers au travail dans chacune. | à faire |
+| 2 | `office-interior` | L'intérieur d'un bureau | Composant 3D Three.js, conforme à docs/contrat-composant.md | La vue micro d'un bureau : l'architecte devant ses plans, les ingénieurs avec leur tablette. | à faire |
+
+### L'intérieur d'un bâtiment (`building-interior`)
+
+Une coupe du bâtiment en pièces ; data.rooms donne, pour chaque pièce, son état (study, waiting, construction, reception, done, defect) et les métiers présents. Les personnages sont des composants character posés par GDC aux ancres room:n.
+
+- Fichier : `components/interior/building-interior/index.js`
+- Paramètres : `rooms` (nombre, 1 à 12, défaut 4)
+- États : `default`
+- Ancres : `label`, `room:*`
+- Données reçues par setState : `rooms` (liste, une entrée par fiche : { state: study \| waiting \| construction \| reception \| done \| defect, trades: [métiers présents] })
+- Budget : 15000 triangles, 8 matériaux
+- Critères d'acceptation :
+  - Chaque pièce lisible et désignable (ancre room:n)
+  - L'état d'une pièce se voit à son aménagement : vide, en travaux, finie, défaut
+  - Transition d'entrée et de sortie douce, figée si reducedMotion
+
+### L'intérieur d'un bureau (`office-interior`)
+
+Paramétrable pour le bureau d'architecte ou le bureau d'études ; des postes de travail aux ancres desk:n.
+
+- Fichier : `components/interior/office-interior/index.js`
+- Paramètres : `kind` (architect | studies, défaut architect) ; `desks` (nombre, 1 à 8, défaut 4)
+- États : `idle`, `active`
+- Ancres : `label`, `desk:*`
+- Données reçues par setState : `activeDesks` (nombre de postes occupés)
+- Budget : 10000 triangles, 6 matériaux
+- Critères d'acceptation :
+  - Ambiance intellectuelle, distincte du chantier
+
+## G5 : Les signaux dans la scène
+
+Désigner ce qui est choisi, ce qui attend, ce qui bloque.
+
+| Ordre | Identifiant | Nom | Nature | But | Statut |
+|---|---|---|---|---|---|
+| 1 | `selection-ring` | L'anneau de sélection | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer l'élément survolé ou choisi. | exemple |
+| 2 | `decision-sign` | Le panneau de décision | Composant 3D Three.js, conforme à docs/contrat-composant.md | Une décision t'attend à cet endroit. | à faire |
+| 3 | `blocked-sign` | La barrière de blocage | Composant 3D Three.js, conforme à docs/contrat-composant.md | Un travail est bloqué ici. | à faire |
+| 4 | `defect-sign` | Le signal de défaut | Composant 3D Three.js, conforme à docs/contrat-composant.md | Un défaut est ouvert sur une partie habitée. | à faire |
+
+### L'anneau de sélection (`selection-ring`)
+
+Un anneau au sol, discret au survol, marqué à la sélection, avec une respiration lente si les animations sont permises.
+
+- Fichier : `components/signals/selection-ring/index.js`
+- Paramètres : `radius` (nombre, 0.3 à 10, défaut 1)
+- États : `hidden`, `hover`, `selected`
+- Ancres : aucune
+- Données reçues par setState : aucune
+- Budget : 600 triangles, 1 matériaux
+- Critères d'acceptation :
+  - Exemple fourni : sert de modèle de composant animé
+
+### Le panneau de décision (`decision-sign`)
+
+Un panneau de chantier rouge sur poteau ; une impulsion à son apparition, puis fixe.
+
+- Fichier : `components/signals/decision-sign/index.js`
+- États : `default`
+- Ancres : `badge`
+- Données reçues par setState : aucune
+- Budget : 500 triangles, 2 matériaux
+- Critères d'acceptation :
+  - Le seul signal rouge de la scène
+
+### La barrière de blocage (`blocked-sign`)
+
+Une barrière de chantier orange avec un triangle.
+
+- Fichier : `components/signals/blocked-sign/index.js`
+- États : `default`
+- Ancres : `badge`
+- Données reçues par setState : aucune
+- Budget : 600 triangles, 2 matériaux
+- Critères d'acceptation :
+  - Distincte du panneau de décision par la forme et la couleur
+
+### Le signal de défaut (`defect-sign`)
+
+Un cône ou un ruban posé sur la façade ou dans la pièce concernée.
+
+- Fichier : `components/signals/defect-sign/index.js`
+- États : `default`
+- Ancres : `badge`
+- Données reçues par setState : aucune
+- Budget : 500 triangles, 2 matériaux
+- Critères d'acceptation :
+  - Lisible même sur un bâtiment fini et éclairé
+
+## G6 : Les éléments d'interface
+
+Barre du haut, navigation, inspecteur, fiche d'agent, badges, barres de progression, copie et actions rapides.
+
+| Ordre | Identifiant | Nom | Nature | But | Statut |
+|---|---|---|---|---|---|
+| 1 | `top-bar` | La barre du haut | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Le projet, ce qui t'attend, qui travaille, la fraîcheur des données. | à faire |
+| 2 | `side-nav` | La navigation | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Aller à un lieu, un bâtiment, une fiche ou un agent ; la caméra suit. | à faire |
+| 3 | `inspector` | L'inspecteur | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | La fiche de l'élément choisi : avancement, lots, tâches, blocages, réussites, actions attendues. | à faire |
+| 4 | `agent-popup` | La fiche d'un agent | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Au clic sur un personnage : son illustration animée, ce qu'il fait, ce qu'il va faire, ce qu'on peut lui demander. | à faire |
+| 5 | `notification-badge` | Le badge de notification | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Compter les alertes, les avertissements, ou montrer que tout est validé. | à faire |
+| 6 | `progress-bar` | La barre de progression | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Montrer l'avancement d'une fiche ou d'un lot, avec sa règle de calcul. | à faire |
+| 7 | `copy-button` | L'icône de copie | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Copier le nom et l'identifiant d'un élément, pour le coller dans l'outil d'IA. | à faire |
+| 8 | `quick-actions` | Les actions rapides | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Copier un petit prompt prêt à l'emploi qui vise l'élément choisi. | à faire |
+
+### La barre du haut (`top-bar`)
+
+Nom et logo du projet, nombre de décisions attendues, agents actifs, bloqués, inconnus, heure de la dernière mise à jour.
+
+- Élément : `<gdc-top-bar>`
+- Entrées (propriété data) : `project` (nom du projet) ; `decisions` (nombre de décisions attendues) ; `agents` ({ active, blocked, unknown } : nombres) ; `updatedAt` (date ISO de la dernière mise à jour) ; `staleAfter` (secondes avant avertissement de fraîcheur)
+- Sorties (événements) : `gdc-select` (clic sur le compteur de décisions ou d'agents ; detail.id = decisions \| agents)
+- Critères d'acceptation :
+  - Tient sur un téléphone
+  - La fraîcheur passe en avertissement au-delà d'un délai
+
+### La navigation (`side-nav`)
+
+Liste groupée avec pastille d'état ; recherche intégrée.
+
+- Élément : `<gdc-side-nav>`
+- Entrées (propriété data) : `groups` (liste de { title, items: [{ id, name, state }] }) ; `selected` (identifiant sélectionné)
+- Sorties (événements) : `gdc-select` (detail.id = identifiant choisi)
+- Critères d'acceptation :
+  - Utilisable au clavier
+  - Devient une rangée défilante sur téléphone
+
+### L'inspecteur (`inspector`)
+
+Panneau latéral ; tout texte venu du harnais est affiché comme du texte, jamais comme du HTML.
+
+- Élément : `<gdc-inspector>`
+- Entrées (propriété data) : `id` (identifiant stable) ; `kind` (nature (fiche, lot, agent, lieu…)) ; `title` (nom affiché) ; `sections` (liste de { title, rows: [{ label, value, state? }] } : progression, lots, tâches, blocages, réussites, actions attendues)
+- Sorties (événements) : `gdc-close` (fermeture) ; `gdc-copy` (detail.id, detail.text) ; `gdc-select` (clic sur un élément cité ; detail.id)
+- Critères d'acceptation :
+  - Aucun contenu injecté comme du code
+  - Sections repliables
+  - Lisible en clair et en sombre
+
+### La fiche d'un agent (`agent-popup`)
+
+Fenêtre avec l'illustration (lot G7) à gauche et trois colonnes à droite ; actions rapides propres à l'agent.
+
+- Élément : `<gdc-agent-popup>`
+- Entrées (propriété data) : `id` (identifiant de l'agent) ; `name` (prénom et rôle) ; `team` (équipe) ; `state` (état (mêmes valeurs que character)) ; `doing` (liste de textes : ce qu'il fait) ; `next` (liste de textes : ce qu'il fera) ; `can` (liste de textes : ce qu'il sait faire) ; `actions` (liste de { label, prompt })
+- Sorties (événements) : `gdc-close` (fermeture) ; `gdc-copy` (detail.id, detail.text (prompt copié))
+- Critères d'acceptation :
+  - Se ferme au clavier
+  - Affiche « inconnu » quand le journal ne dit rien
+
+### Le badge de notification (`notification-badge`)
+
+Posé sur une ancre badge ; niveau le plus grave affiché, total en chiffre ; voir docs/signaletique.md.
+
+- Élément : `<gdc-notification-badge>`
+- Entrées (propriété data) : `counts` ({ error, waiting, blocked, done } : nombres)
+- Sorties (événements) : aucune
+- Critères d'acceptation :
+  - Couleur, forme et icône pour chaque niveau
+  - Masqué à zéro
+
+### La barre de progression (`progress-bar`)
+
+Barre et fraction (« 3 / 7 critères prouvés ») ; la règle au survol.
+
+- Élément : `<gdc-progress-bar>`
+- Entrées (propriété data) : `done` (nombre prouvé) ; `total` (nombre attendu) ; `rule` (texte de la règle de calcul) ; `state` (état (couleur))
+- Sorties (événements) : aucune
+- Critères d'acceptation :
+  - Jamais de pourcentage sans sa règle
+
+### L'icône de copie (`copy-button`)
+
+Petite icône à côté de tout élément désignable ; confirmation discrète ; repli si le presse-papiers est refusé.
+
+- Élément : `<gdc-copy-button>`
+- Entrées (propriété data) : `id` (identifiant stable) ; `text` (texte à copier)
+- Sorties (événements) : `gdc-copy` (detail.id, detail.text, detail.ok (false si le presse-papiers est refusé))
+- Critères d'acceptation :
+  - Copie l'identifiant stable et le nom
+  - Fonctionne au clavier
+
+### Les actions rapides (`quick-actions`)
+
+Liste de boutons fournie par GDC selon le type d'élément ; le texte copié est visible avant la copie.
+
+- Élément : `<gdc-quick-actions>`
+- Entrées (propriété data) : `id` (identifiant de l'élément) ; `actions` (liste de { label, prompt })
+- Sorties (événements) : `gdc-copy` (detail.id, detail.text)
+- Critères d'acceptation :
+  - Le prompt cite l'identifiant
+  - Ne déclenche jamais rien d'autre qu'une copie
+
+## G7 : Les illustrations et les icônes
+
+Donner un visage aux agents et une icône à chaque étape et chaque lieu.
+
+| Ordre | Identifiant | Nom | Nature | But | Statut |
+|---|---|---|---|---|---|
+| 1 | `agent-portraits` | Les portraits des agents | Illustration ou icône SVG, animée en CSS si besoin | Un visage par agent, le même sur le panneau, la page de la méthode et les rapports. | à faire |
+| 2 | `step-icons` | Les icônes des étapes | Illustration ou icône SVG, animée en CSS si besoin | Une icône pour chacune des dix étapes, de l'idée aux transformations. | à faire |
+| 3 | `place-icons` | Les icônes des lieux | Illustration ou icône SVG, animée en CSS si besoin | Une icône par lieu, pour la navigation et les rapports. | à faire |
+
+### Les portraits des agents (`agent-portraits`)
+
+Un portrait par prénom (Claire, Marc, Lina, David, Sarah, Noah, Tom, Paul, Iris, Yves, Emma, Robin, Julie, Olivier, Anne, Bernard, Fanny) ; états idle, talking, working ; SVG animé en CSS.
+
+- Entrées (propriété data) : `name` (prénom (nom du fichier SVG)) ; `state` (idle \| talking \| working (classe CSS))
+- Sorties (événements) : aucune
+- Critères d'acceptation :
+  - Cohérents avec les personnages 3D
+  - Reconnaissables en petit (48 pixels)
+
+### Les icônes des étapes (`step-icons`)
+
+Jeu de dix icônes SVG, au trait, de même épaisseur.
+
+- Entrées (propriété data) : `step` (identifiant de l'étape (nom du fichier SVG))
+- Sorties (événements) : aucune
+- Critères d'acceptation :
+  - Lisibles à 20 pixels
+  - Une seule couleur, héritée du texte
+
+### Les icônes des lieux (`place-icons`)
+
+Bureau d'architecte, bureau d'études, bureau du client, bureau de contrôle, chantier, parking, réception, bâtiment habité.
+
+- Entrées (propriété data) : `place` (identifiant du lieu (nom du fichier SVG))
+- Sorties (événements) : aucune
+- Critères d'acceptation :
+  - Même famille que les icônes des étapes
