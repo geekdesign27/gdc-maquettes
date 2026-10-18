@@ -30,6 +30,10 @@ Des composants visuels pour le panneau de chantier de GDC, listés dans `catalog
 
 Avec Codex, ces rôles se donnent dans la demande (« en tant que modeleur, fabrique… ») : le contenu des fichiers de rôle s'applique de la même façon.
 
+## Méthodes
+
+Les façons de faire sont dans `docs/` et `blender/README.md`. Avec Claude Code, quatre skills les appliquent (`.claude/skills/`) : `charte-worksite` (les règles de style à relire avant de produire), `fabrique-asset` (le parcours complet d'un élément), `blender-live` (la boucle de l'atelier et le connecteur Blender), `revue-planche` (la revue visuelle). Avec Codex, demander de suivre le fichier `SKILL.md` correspondant.
+
 ## Commandes
 
-`npm run blender -- <id>` (modèle 3D), `npm run dev` (galerie), `npm run check` (contrôle), `npm run catalogue` (catalogue lisible), `npm run build` (bibliothèque pour GDC).
+`npm run atelier -- <id>` (essai sans export et captures), `npm run blender -- <id>` (modèle 3D), `npm run dev` (galerie), `npm run check` (contrôle), `npm run catalogue` (catalogue lisible), `npm run build` (bibliothèque pour GDC).

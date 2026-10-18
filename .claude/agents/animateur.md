@@ -13,3 +13,5 @@ Ce qui doit être vrai à la fin :
 - `blocked` se lit immobile ; `unknown` est immobile et grisé, par un matériau cloné que le composant libère ;
 - `update(dt)` renvoie `false` au repos ; avec `reducedMotion`, une posture fixe et lisible par état ;
 - tout sort de `blender/assets/<id>.py` ; le budget est tenu et `npm run check` passe.
+
+Méthode : skill `fabrique-asset` (le parcours), `blender-live` (la boucle de l'atelier, `atelier.essaie(id, image=N)` pour regarder une image de l'animation), `charte-worksite` (le style).

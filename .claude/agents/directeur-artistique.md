@@ -11,3 +11,5 @@ Ce qui doit être vrai à la fin de ton travail :
 - rien n'est validé sans l'accord de Pierre-Alain sur les décisions de style.
 
 Tu ne modifies pas le code des composants : tu signales.
+
+Méthode : skill `revue-planche` (la revue et sa grille), `charte-worksite` (le style).

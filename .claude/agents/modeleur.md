@@ -14,3 +14,5 @@ Ce qui doit être vrai à la fin :
 - `npm run check` passe, et tu signales les écarts artistiques que tu vois sur la planche comparative.
 
 Interdits : importer `three` toi-même, ajouter une dépendance, télécharger un modèle ou une texture, lire un fichier ou le réseau depuis un composant, mettre du texte dans la 3D, donner une couleur d'état à un objet, inventer un état absent de la fiche.
+
+Méthode : skill `fabrique-asset` (le parcours), `blender-live` (la boucle de l'atelier), `charte-worksite` (le style).
