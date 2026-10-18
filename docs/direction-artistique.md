@@ -1,32 +1,19 @@
 # La direction artistique
 
-On fixe la ligne graphique **ensemble, avant de produire les composants**, sur la base d'un mood board. Elle s'écrit ici, puis se traduit en couleurs partagées (`src/tokens.js`) et en règles que le directeur artistique fait respecter.
+La règle graphique est la **bible WORKSITE** (`docs/bible/bible-worksite.md`, version 1.1). Ce fichier dit comment on s'en sert et comment elle évolue.
 
-## Étape 1 : le mood board
+## Ce qui est fixé
 
-Dans `moodboard/` : des images de référence (captures, illustrations, jeux), chacune avec une ligne dans `moodboard/notes.md` :
+- L'univers, le style, les principes, la palette, les matériaux, les personnages, les bâtiments, les engins, la caméra, les conventions Blender, les budgets et les contrôles : la bible.
+- Les couleurs et les matériaux, en une seule source : `src/palette.json`, lue par les scripts Blender et par Three.js.
+- Les couleurs d'état : dans l'interface seulement (bible, 17.3 ; `docs/signaletique.md`).
 
-- ce qu'on aime dans l'image (la lumière, les proportions, les couleurs, le niveau de détail) ;
-- ce qu'on n'en veut pas ;
-- la source et sa licence, si l'image doit être reprise telle quelle (rare : on s'en inspire, on ne la copie pas).
+## Le lot G0, dans l'ordre
 
-Points de départ déjà reçus : le dépliant SIA « suivez le guide » (parcours sur un plan), l'ERP de carrosserie isométrique (vue de jeu vivante). À ajouter : les références Smart Logistics et VeloHub citées dans le brief.
+1. **Le mood board** : les deux références maîtresses (REF_ENV_001, REF_CHR_001) et les autres images dans `moodboard/`, une ligne chacune dans `moodboard/notes.md`.
+2. **La bibliothèque de matériaux** : compléter `src/palette.json` (bois, caoutchouc, vitrages, métaux, tissus, peaux, cheveux) au fil des premiers modèles validés.
+3. **La scène de référence et la planche comparative** : dans la galerie, bouton « Planche » ; chaque nouvel élément est vu à côté de deux modèles de référence, même caméra, même lumière.
 
-## Étape 2 : les décisions de style
+## Faire évoluer la bible
 
-| Décision | À trancher | Proposition de départ |
-|---|---|---|
-| Vue | Angle, caméra | Isométrique, caméra orthographique, quatre angles par paliers |
-| Formes | Niveau de détail | Formes simples, arêtes adoucies, petits détails qui racontent (fenêtres, échafaudage, outils) |
-| Matières | Rendu | Mat, sans reflet ; une lumière principale douce et une lumière d'ambiance |
-| Palette de base | Sol, bâtiments, bois, béton, verre | Celle de l'esquisse de l'atelier 3 : papier, béton clair, bois, gravier |
-| Couleurs d'équipe | Une par groupe | Bureau d'architecte, bureau d'études, chantier, réception, exploitation |
-| Couleurs d'état | Fixes | Voir `docs/signaletique.md` |
-| Personnages | Proportions, visages | Petits personnages ronds, visage minimal ; la tenue dit le métier |
-| Animations | Rythme | Lent et calme ; une impulsion à chaque événement, puis le repos |
-| Mode sombre | Équivalent | Même scène, sol et murs assombris, couleurs d'état inchangées |
-| Illustrations des agents | Style | À choisir sur le mood board : dessin au trait, plat coloré, ou rendu des personnages 3D |
-
-## Étape 3 : la scène de référence
-
-Un premier assemblage (terrain, un bureau, un bâtiment dans quatre états, un personnage, l'anneau de sélection, un panneau rouge) sert d'étalon : chaque nouveau composant est posé à côté pour vérifier qu'il appartient au même monde.
+Une difficulté de modélisation ne se règle jamais par une exception silencieuse (bible, section 13) : on propose un amendement écrit, Pierre-Alain le valide, la bible change de version, et les modèles gardent la version avec laquelle ils ont été produits (`asset.json`).

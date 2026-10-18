@@ -2,7 +2,7 @@
 
 ## Ce qu'on livre
 
-- `dist/maquettes.js` : la bibliothèque, un seul module JavaScript, sans Three.js à l'intérieur (GDC fournit Three.js, à la même version) ;
+- `dist/maquettes.js` : la bibliothèque, un seul module JavaScript, avec les modèles 3D intégrés et sans Three.js à l'intérieur : GDC fournit Three.js, `GLTFLoader` et `SkeletonUtils`, à la même version que `package.json` ;
 - `catalogue.json` : la liste des composants, avec leur statut et leur version ;
 - une étiquette de version sur le dépôt (`v0.1.0`, puis majeure, mineure, correctif) et une entrée dans `CHANGELOG.md`.
 

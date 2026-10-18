@@ -27,6 +27,10 @@ for (const lot of catalogue.lots) {
     out.push(`### ${i.name} (\`${i.id}\`)`, '');
     if (i.description) out.push(i.description, '');
     if (i.kind === 'component') out.push(`- Fichier : \`components/${i.category}/${i.id}/index.js\``);
+    if (i.kind === 'kit') out.push(`- Dossier : \`components/kit/${i.id}/\`, script \`blender/assets/${i.id}.py\``);
+    if (i.production) out.push(`- Production : ${catalogue.productions?.[i.production] || i.production}${i.blender ? ` ; modèle \`${i.blender}\`` : ''}${i.kit ? ` ; kit \`${i.kit}\`` : ''}${i.famille_bible ? ` ; famille \`${i.famille_bible}\`` : ''}`);
+    if (i.assets) out.push(`- Modèles : ${list(i.assets)}`);
+    if (i.animations) out.push(`- Animations : ${list(i.animations)}`);
     if (i.kind === 'html') out.push(`- Élément : \`<gdc-${i.id}>\``);
     if (i.params && Object.keys(i.params).length) out.push(`- Paramètres : ${Object.entries(i.params).map(([k, v]) => `\`${k}\` (${v})`).join(' ; ')}`);
     if (i.states) out.push(`- États : ${list(i.states)}`);

@@ -47,6 +47,7 @@ Un composant ne sort jamais d'événement : le clic, le survol et la sélection 
   - `ctx.palette` : les couleurs de base du thème courant (sol, gravier, béton, bois, verre, papier, encre), déjà choisies selon `ctx.theme` ;
   - `ctx.quality` : `'low'` ou `'high'` ; en `'low'`, moins de détails, aucune ombre ;
   - `ctx.reducedMotion` : `true` si l'utilisateur demande moins d'animations ; le composant montre alors un état fixe, lisible.
+  - `ctx.assets` : la copie, pour cette instance, des modèles 3D déclarés dans `meta.assets` (voir « Les modèles 3D »).
 
 `create` renvoie une instance :
 
@@ -60,6 +61,17 @@ Un composant ne sort jamais d'événement : le clic, le survol et la sélection 
 }
 ```
 
+## Les modèles 3D (GLB produits par Blender)
+
+Un composant peut s'appuyer sur un ou plusieurs modèles produits par un script Blender (`blender/assets/<id>.py`, voir `blender/README.md`).
+
+- **Déclaration** : `meta.assets` liste les fichiers, identiques à la fiche du catalogue : `'VEH_TOWER_CRANE_A_v001.glb'` (dans le dossier du composant) ou `'kit:building-kit/BLD_KIT_A_v001.glb'` (dans le dossier d'un kit, `components/kit/<id>/`).
+- **Chargement par l'hôte** : la galerie, le contrôle et GDC chargent les modèles avant `create` et passent à chaque instance sa copie dans `ctx.assets[nom] = { scene, animations }`. Le composant ne charge jamais rien lui-même.
+- **Ressources partagées** : la géométrie et les matériaux du modèle sont partagés entre instances. `dispose()` retire la copie de la scène et arrête ses animations, mais ne libère jamais une ressource du modèle ; le contrôle le vérifie. Un matériau que le composant modifie (par exemple grisé pour `unknown`) est d'abord cloné, et ce clone, lui, est libéré.
+- **Animations** : les clips du modèle (`ANM_...`) sont joués avec `THREE.AnimationMixer`, avancé dans `update(dt)` ; avec `reducedMotion`, une image fixe et lisible de l'état.
+- **Ancres** : lues dans les nœuds `ANCHOR_<NOM>` du modèle (`label` donne `ANCHOR_LABEL`, `room:3` donne `ANCHOR_ROOM_3`), rendues dans le repère de `root`.
+- **Exemple** : `components/machine/crane` (la grue), avec son script `blender/assets/crane.py`.
+
 ## Règles
 
 1. **Aucune logique métier.** Un composant ne sait pas ce qu'est une fiche ou un agent. Il reçoit un état et des valeurs ; GDC décide lesquels.
@@ -70,7 +82,7 @@ Un composant ne sort jamais d'événement : le clic, le survol et la sélection 
 6. **La sélection est faite par GDC** : il cherche `root.userData.component` en remontant depuis l'objet touché. Le composant ne gère aucun événement de souris.
 7. **Le budget est un plafond** : triangles et matériaux mesurés par `npm run check`.
 8. **Tout se libère** : après `dispose()`, aucune géométrie ni matériau du composant ne reste en mémoire.
-9. **Les couleurs viennent de `ctx.tokens`.** Le thème d'un projet peut changer les couleurs principales, jamais les couleurs d'état.
+9. **Les couleurs viennent de `ctx.palette` et de `ctx.tokens`** (une seule source, `src/palette.json`). Les couleurs d'état ne colorent jamais un objet de la scène : elles vivent dans l'interface (bible, 17.3).
 10. **Les données sont facultatives** : `setState(state, data)` fonctionne avec `data` absent ou incomplet ; les clés attendues sont celles de la fiche (`data` dans `catalogue.json`), chacune avec une valeur par défaut raisonnable.
 11. **Licence claire** : tout est original, ou sous licence CC0 ou MIT, avec la mention dans la fiche.
 
@@ -80,7 +92,9 @@ Un composant ne sort jamais d'événement : le clic, le survol et la sélection 
 - `create` fonctionne avec les paramètres par défaut, `setState` accepte chaque état, `update` renvoie un booléen, `anchor` renvoie un point pour chaque ancre ;
 - triangles et matériaux sous le budget, dans chaque état ;
 - `dispose` libère ce qu'il a créé ;
-- aucun accès extérieur ni HTML injecté dans le code du composant.
+- aucun accès extérieur ni HTML injecté dans le code du composant ;
+- pour chaque modèle : nom conforme (`FAMILLE_TYPE_VARIANTE_v001.glb`), nœuds, matériaux (`MAT_`) et animations (`ANM_`) nommés selon la bible, aucune ressource externe, ni caméra ni lumière, extensions lisibles par le chargeur standard, animations de la fiche présentes, budget tenu ;
+- la provenance : `asset.json` présent, et ses empreintes (script, outils communs, palette, GLB) identiques aux fichiers actuels ; sinon, relancer `npm run blender -- <id>`.
 
 ## Les éléments d'interface (lot G6)
 

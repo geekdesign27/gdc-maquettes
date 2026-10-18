@@ -1,6 +1,6 @@
 {
   "name": "gdc-maquettes",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "L'atelier des maquettes : composants visuels du panneau de chantier de GDC",
   "type": "module",
@@ -8,7 +8,8 @@
     "dev": "vite",
     "check": "node scripts/check-components.mjs",
     "catalogue": "node scripts/build-catalogue-doc.mjs",
-    "build": "vite build"
+    "build": "vite build",
+    "blender": "node scripts/blender.mjs"
   },
   "devDependencies": {
     "three": "0.186.1",

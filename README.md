@@ -6,7 +6,7 @@ Sur un chantier, le maquettiste fabrique la maquette du bâtiment pour que le cl
 
 ## Ce que fait ce projet, et ce qu'il ne fait pas
 
-- **Il fabrique** des composants visuels en Three.js, chacun conforme au contrat (`docs/contrat-composant.md`).
+- **Il fabrique** des modèles 3D par scripts Blender et des composants Three.js qui les pilotent, selon la bible WORKSITE (`docs/bible/bible-worksite.md`) et le contrat (`docs/contrat-composant.md`).
 - **Il montre** chaque composant dans tous ses états, dans une galerie locale.
 - **Il vérifie** que chaque composant respecte le contrat et son budget (`npm run check`).
 - **Il livre** une bibliothèque unique (`dist/maquettes.js`) et son catalogue, que GDC intègre.
@@ -16,20 +16,21 @@ Sur un chantier, le maquettiste fabrique la maquette du bâtiment pour que le cl
 
 ```bash
 npm install          # installe three et vite, aux versions épinglées
+npm run blender -- crane   # construit un modèle 3D par son script Blender
 npm run dev          # ouvre la galerie locale
 npm run check        # vérifie tous les composants
 npm run catalogue    # régénère docs/catalogue.md depuis catalogue.json
 npm run build        # produit dist/maquettes.js pour GDC
 ```
 
-Node 20 ou plus récent. Aucune autre installation.
+Node 20 ou plus récent, et Blender pour les modèles 3D (voir `blender/README.md`).
 
 ## Par où commencer
 
 1. **Crée ton dépôt** : copie ce dossier dans un dépôt à part (par exemple `gdc-maquettes`), puis `npm install` et `npm run dev`. La galerie s'ouvre avec les deux composants d'exemple.
-2. **Le lot G0 d'abord, ensemble** : dépose tes images dans `moodboard/` avec une ligne chacune dans `moodboard/notes.md`, puis on tranche le tableau de `docs/direction-artistique.md`. Aucun composant avant que le style soit fixé : sinon tout est à refaire.
+2. **Le lot G0 d'abord, ensemble** : la bible WORKSITE 1.1 est fixée ; dépose les deux références maîtresses (REF_ENV_001, REF_CHR_001) et tes autres images dans `moodboard/`, une ligne chacune dans `moodboard/notes.md`. Puis la bibliothèque de matériaux et la planche comparative (`docs/direction-artistique.md`).
 3. **Puis les lots dans l'ordre** : G1 (terrain et lieux), G2 (bâtiments), G3 (personnages et engins), G4 (intérieurs), G5 (signaux), G6 (interface), G7 (illustrations). L'ordre et le détail de chaque élément sont dans `docs/catalogue.md`.
-4. **Pour chaque élément**, une demande à l'agent suffit, par exemple : « En tant que modeleur, fabrique `architect-office` selon sa fiche du catalogue, montre-le dans la galerie dans tous ses états, puis fais passer le contrôle. »
+4. **Pour chaque élément**, une demande à l'agent suffit, par exemple : « En tant que modeleur, fabrique `architect-office` selon sa fiche du catalogue et la bible : script Blender, composant, galerie dans tous ses états et planche comparative, puis le contrôle. »
 5. **Livre par petites versions** (`docs/livraison.md`) : un lot terminé suffit pour une version.
 
 ## Le chemin d'un composant
@@ -51,11 +52,13 @@ Node 20 ou plus récent. Aucune autre installation.
 | `docs/catalogue.md` | Sa version lisible, générée |
 | `docs/contrat-composant.md` | Ce que chaque composant doit exposer |
 | `docs/signaletique.md` | Le langage des signaux : états, badges, couleurs, formes |
-| `docs/direction-artistique.md` | Comment on fixe la ligne graphique |
+| `docs/bible/bible-worksite.md` | La bible graphique WORKSITE 1.1 : la règle de production |
+| `docs/direction-artistique.md` | Comment on s'en sert et comment elle évolue |
+| `blender/` | Les scripts Blender : un par modèle, et les outils communs |
 | `docs/livraison.md` | Comment une version part vers GDC |
 | `components/` | Les composants, un dossier chacun |
 | `src/` | Le contrat en code, les couleurs partagées, la galerie, la bibliothèque |
 | `scripts/` | Le contrôle et la génération du catalogue lisible |
 | `moodboard/` | Les images de référence et leurs notes |
 
-Deux composants d'exemple montrent le contrat en entier : `components/site/ground` (statique) et `components/signals/selection-ring` (animé).
+Trois exemples montrent le contrat en entier : `components/site/ground` (géométrie par le code, statique), `components/signals/selection-ring` (par le code, animé) et `components/machine/crane` (modèle Blender piloté par le code, avec son script `blender/assets/crane.py`). La grue démontre la chaîne ; sa forme n'est pas encore validée sur la planche.

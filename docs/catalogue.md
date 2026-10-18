@@ -2,17 +2,18 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-34 éléments : 32 à faire, 2 exemple.
+39 éléments : 35 à faire, 1 livré, 3 exemple.
 
 ## G0 : La ligne graphique
 
-Fixer le style avant de produire : mood board, décisions de style, scène de référence.
+Fixer le style avant de produire : mood board, bible WORKSITE, bibliothèque de matériaux, scène de référence et planche comparative.
 
 | Ordre | Identifiant | Nom | Nature | But | Statut |
 |---|---|---|---|---|---|
 | 1 | `moodboard` | Le mood board | Document de référence, pas de code | Réunir les images qui donnent le ton, avant toute production. | à faire |
-| 2 | `style-guide` | Les décisions de style | Document de référence, pas de code | Traduire le mood board en règles : vue, formes, matières, palette, personnages, rythme des animations, mode sombre. | à faire |
-| 3 | `reference-scene` | La scène de référence | Document de référence, pas de code | Servir d'étalon : chaque nouveau composant est posé à côté pour vérifier qu'il appartient au même monde. | à faire |
+| 2 | `bible` | La bible graphique | Document de référence, pas de code | La règle de production : univers, palette, matériaux, personnages, bâtiments, engins, caméra, conventions Blender, budgets, contrôles. | livré |
+| 3 | `material-library` | La bibliothèque de matériaux | Document de référence, pas de code | Des matériaux MAT_ partagés par tous les modèles, définis une seule fois. | à faire |
+| 4 | `reference-scene` | La scène de référence | Document de référence, pas de code | Servir d'étalon : chaque nouveau composant est posé à côté pour vérifier qu'il appartient au même monde. | à faire |
 
 ### Le mood board (`moodboard`)
 
@@ -20,30 +21,39 @@ Images dans moodboard/, une ligne chacune dans moodboard/notes.md : ce qu'on aim
 
 - Critères d'acceptation :
   - Au moins dix images commentées
-  - Les références du brief (Smart Logistics, VeloHub) et de l'ERP de carrosserie y figurent
+  - Les deux références maîtresses de la bible (REF_ENV_001, REF_CHR_001) y figurent
   - Validé ensemble
 
-### Les décisions de style (`style-guide`)
+### La bible graphique (`bible`)
 
-Le tableau de docs/direction-artistique.md rempli, et src/tokens.js mis à jour en conséquence.
+docs/bible/bible-worksite.md, version 1.1 : la version 1.0 de Pierre-Alain et ses amendements validés le 2026-10-18. Toute évolution produit une nouvelle version.
 
 - Critères d'acceptation :
-  - Chaque ligne du tableau tranchée
-  - src/tokens.js à jour
-  - Couleurs d'état inchangées
+  - Version 1.1 validée
+  - Toute évolution documentée comme amendement versionné
+
+### La bibliothèque de matériaux (`material-library`)
+
+src/palette.json, section materiaux : compléter bois, caoutchouc, vitrages, métaux, tissus, peaux et cheveux (bible, sections 3 et 4), après validation des premiers assets.
+
+- Critères d'acceptation :
+  - Chaque matériau a sa couleur, sa rugosité et son caractère métallique
+  - Compatible glTF, sans nœud Blender non reproductible
+  - Les scripts Blender et Three.js lisent la même source
 
 ### La scène de référence (`reference-scene`)
 
-Un assemblage dans la galerie : terrain, bureau d'architecte, bâtiment dans quatre états, un personnage, l'anneau de sélection, le panneau de décision. Se complète au fil des lots G1 à G5.
+Un assemblage dans la galerie, même caméra et même lumière : terrain, grue, un bureau, un bâtiment dans quatre états, un personnage, l'anneau de sélection, un panneau. La planche comparative (bible, section 14) pose chaque nouvel asset à côté de deux modèles maîtres validés.
 
 - Critères d'acceptation :
   - Lisible en clair et en sombre
   - Fluide sur un ordinateur portable ordinaire
+  - Planche comparative disponible pour chaque composant
   - Validée ensemble
 
 ## G1 : Le terrain et les lieux
 
-Poser le plan du chantier dans l'ordre du parcours : bureau d'architecte, bureau d'études, bureau du client, chantier, parking, réception.
+Poser le plan du chantier dans l'ordre du parcours : bureau d'architecte, bureau d'études, bureau du client, bureau de contrôle, baraque du conducteur de travaux, chantier, parking, réception.
 
 | Ordre | Identifiant | Nom | Nature | But | Statut |
 |---|---|---|---|---|---|
@@ -52,14 +62,16 @@ Poser le plan du chantier dans l'ordre du parcours : bureau d'architecte, bureau
 | 3 | `design-office` | Le bureau d'études | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu des plans d'exécution, où travaillent les spécialistes. | à faire |
 | 4 | `client-office` | Le bureau du client | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu des décisions qui t'attendent. | à faire |
 | 5 | `control-office` | Le bureau de contrôle | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le poste qui mesure et tamponne les preuves ; c'est un programme, pas un personnage. | à faire |
-| 6 | `parking` | Le parking : le carnet des demandes | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer les demandes en attente de tri, sous forme de caisses de matériel. | à faire |
-| 7 | `reception-area` | La zone de réception | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu des essais et de la visite, avant la remise des clés. | à faire |
+| 6 | `site-office` | La baraque du conducteur de travaux | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu de la coordination : planning des lots, chef de chantier, répartition des agents. | à faire |
+| 7 | `parking` | Le parking : le carnet des demandes | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer les demandes en attente de tri, sous forme de caisses de matériel. | à faire |
+| 8 | `reception-area` | La zone de réception | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu des essais et de la visite, avant la remise des clés. | à faire |
 
 ### Le terrain (`ground`)
 
 Une dalle de terrain avec sa bordure ; la zone du chantier en gravier est un second composant posé dessus.
 
 - Fichier : `components/site/ground/index.js`
+- Production : Géométrie générée par le code du composant (paramétrique, liée aux données)
 - Paramètres : `width` (nombre, 4 à 60, défaut 18) ; `depth` (nombre, 4 à 60, défaut 12)
 - États : `default`
 - Ancres : `label`
@@ -73,11 +85,12 @@ Une dalle de terrain avec sa bordure ; la zone du chantier en gravier est un sec
 Un petit bâtiment de bureau ouvert ou vitré : table à dessin, plans au mur. Les personnages s'y placent ; l'intérieur détaillé est le composant office-interior.
 
 - Fichier : `components/site/architect-office/index.js`
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `BLD_ARCHITECT_OFFICE_A_v001` ; famille `BLD_ARCHITECT`
 - Paramètres : `size` (small | medium, défaut small)
 - États : `idle`, `active`
 - Ancres : `label`, `badge`, `door`
 - Données reçues par setState : aucune
-- Budget : 4000 triangles, 5 matériaux
+- Budget : 20000 triangles, 10 matériaux
 - Critères d'acceptation :
   - Reconnaissable comme un bureau d'architecte sans légende
   - La porte (ancre door) est l'endroit où entrent les personnages
@@ -88,11 +101,12 @@ Un petit bâtiment de bureau ouvert ou vitré : table à dessin, plans au mur. L
 Un bureau plus technique que celui de l'architecte : écrans, tablettes, maquettes en cours.
 
 - Fichier : `components/site/design-office/index.js`
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `BLD_ENGINEERING_OFFICE_A_v001` ; famille `BLD_ENGINEERING`
 - Paramètres : `size` (small | medium, défaut small)
 - États : `idle`, `active`
 - Ancres : `label`, `badge`, `door`
 - Données reçues par setState : aucune
-- Budget : 4000 triangles, 5 matériaux
+- Budget : 20000 triangles, 10 matériaux
 - Critères d'acceptation :
   - Distinct du bureau d'architecte au premier regard
   - Même famille de formes et de matières
@@ -102,10 +116,11 @@ Un bureau plus technique que celui de l'architecte : écrans, tablettes, maquett
 Un petit pavillon avec un tableau d'affichage extérieur ; en état waiting, le tableau porte le panneau rouge et l'ancre badge reçoit le nombre de décisions.
 
 - Fichier : `components/site/client-office/index.js`
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `BLD_CLIENT_OFFICE_A_v001`
 - États : `idle`, `waiting`
 - Ancres : `label`, `badge`, `board`
 - Données reçues par setState : `count` (nombre de décisions attendues (affiché par GDC sur l'ancre badge))
-- Budget : 3000 triangles, 4 matériaux
+- Budget : 20000 triangles, 10 matériaux
 - Critères d'acceptation :
   - En waiting, visible de loin sans être criard
   - Seul lieu qui utilise le rouge de signalisation
@@ -115,24 +130,39 @@ Un petit pavillon avec un tableau d'affichage extérieur ; en état waiting, le 
 Une guérite technique avec un tampon ou un appareil de mesure ; une impulsion à chaque preuve enregistrée.
 
 - Fichier : `components/site/control-office/index.js`
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `BLD_QA_OFFICE_A_v001` ; famille `BLD_QA`
 - États : `idle`, `active`, `error`
 - Ancres : `label`, `badge`
 - Données reçues par setState : aucune
-- Budget : 2500 triangles, 4 matériaux
+- Budget : 20000 triangles, 10 matériaux
 - Critères d'acceptation :
   - Ne ressemble pas à un bureau habité : c'est une machine
   - État error lisible sans animation
+
+### La baraque du conducteur de travaux (`site-office`)
+
+Une baraque de chantier à deux niveaux, planning affiché, écrans ; famille BLD_COORDINATION de la bible. Yves, le conducteur de travaux, s'y tient ; le chef de chantier (programme) n'a pas de corps.
+
+- Fichier : `components/site/site-office/index.js`
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `BLD_COORDINATION_CABIN_A_v001` ; famille `BLD_COORDINATION`
+- États : `idle`, `active`
+- Ancres : `label`, `badge`, `entry`
+- Budget : 20000 triangles, 10 matériaux
+- Critères d'acceptation :
+  - Reconnaissable comme baraque de chantier sans légende
+  - État active : un détail animé discret, figé si reducedMotion
 
 ### Le parking : le carnet des demandes (`parking`)
 
 Une aire marquée ; data.count place de 0 à 12 caisses, au-delà une pile et le nombre en badge.
 
 - Fichier : `components/site/parking/index.js`
+- Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; modèle `ENV_PARKING_A_v001`
 - Paramètres : `capacity` (nombre, 4 à 24, défaut 12)
 - États : `default`
 - Ancres : `label`, `badge`
 - Données reçues par setState : `count` (nombre de fiches au carnet des demandes, 0 ou plus)
-- Budget : 3000 triangles, 3 matériaux
+- Budget : 5000 triangles, 6 matériaux
 - Critères d'acceptation :
   - Le nombre de caisses suit data.count
   - Chaque caisse est désignable (ancre item:n) pour ouvrir sa demande
@@ -142,10 +172,11 @@ Une aire marquée ; data.count place de 0 à 12 caisses, au-delà une pile et le
 Une aire avec un pupitre d'essais et un panneau « réception » ; la commission de réception s'y tient.
 
 - Fichier : `components/site/reception-area/index.js`
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `BLD_DELIVERY_AREA_A_v001` ; famille `BLD_DELIVERY`
 - États : `idle`, `active`, `waiting`
 - Ancres : `label`, `badge`
 - Données reçues par setState : aucune
-- Budget : 2500 triangles, 4 matériaux
+- Budget : 10000 triangles, 8 matériaux
 - Critères d'acceptation :
   - Lisible comme un lieu de contrôle final
 
@@ -155,20 +186,35 @@ Montrer l'avancement d'une application par l'état de son bâtiment.
 
 | Ordre | Identifiant | Nom | Nature | But | Statut |
 |---|---|---|---|---|---|
-| 1 | `building` | Le bâtiment (une application) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer l'avancement d'une application par l'état de son bâtiment. | à faire |
-| 2 | `survey-poles` | Les gabarits | Composant 3D Three.js, conforme à docs/contrat-composant.md | Une fiche à l'étude : les perches qui montrent le volume futur, comme pendant la mise à l'enquête. | à faire |
-| 3 | `shared-basement` | Le sous-sol commun | Composant 3D Three.js, conforme à docs/contrat-composant.md | Les ouvrages communs : base de données ou composants partagés par plusieurs applications. | à faire |
+| 1 | `building-kit` | Le kit de bâtiment | Bibliothèque de modèles 3D produite par un script Blender (blender/assets/<id>.py) et réutilisée par plusieurs composants : components/kit/<id>/ | Les pièces modulaires communes à tous les bâtiments, aux mêmes dimensions d'assemblage. | à faire |
+| 2 | `building` | Le bâtiment (une application) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer l'avancement d'une application par l'état de son bâtiment. | à faire |
+| 3 | `survey-poles` | Les gabarits | Composant 3D Three.js, conforme à docs/contrat-composant.md | Une fiche à l'étude : les perches qui montrent le volume futur, comme pendant la mise à l'enquête. | à faire |
+| 4 | `shared-basement` | Le sous-sol commun | Composant 3D Three.js, conforme à docs/contrat-composant.md | Les ouvrages communs : base de données ou composants partagés par plusieurs applications. | à faire |
+
+### Le kit de bâtiment (`building-kit`)
+
+Sols, fondations, poteaux, poutres, dalles, murs, portes, fenêtres, toitures, escaliers, échafaudages, enseignes (bible, section 6) ; trame commune de 3 mètres. Utilisé par building, building-interior et les bureaux.
+
+- Dossier : `components/kit/building-kit/`, script `blender/assets/building-kit.py`
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres)
+- Modèles : `BLD_KIT_A_v001.glb`
+- Budget : 20000 triangles, 10 matériaux
+- Critères d'acceptation :
+  - Toutes les pièces partagent la même trame et la même hauteur d'étage
+  - Chaque pièce est un nœud nommé BLD_KIT_A_<PIECE>
+  - Un bâtiment de démonstration s'assemble sans retouche
 
 ### Le bâtiment (une application) (`building`)
 
-Paramétrable en type et en taille. États : plot (terrain préparé), excavation (fouille avec une pelleteuse), foundations (fondations coulées), structure (murs qui montent, échafaudage, data.progress de 0 à 1), finishing (second œuvre : fenêtres posées, ouvriers visibles à l'intérieur), completed (habité : fenêtres éclairées), inspection (réception en cours). Un défaut ouvert ne change pas l'état : GDC pose le composant defect-sign sur la façade.
+Assemblé par le code à partir du kit de bâtiment, selon le type et la taille. États : plot (terrain préparé), excavation (fouille avec la pelleteuse), foundations (fondations coulées), structure (poteaux, dalles et échafaudage ; data.progress de 0 à 1), envelope (murs et toiture fermés), finishing (second œuvre : fenêtres posées, ouvriers visibles), completed (habité : fenêtres éclairées), inspection (réception en cours). Un défaut ne change pas l'état : GDC pose defect-sign sur la façade. Familles de la bible : le bâtiment d'une application relève du chantier (BLD_DEVELOPMENT n'est pas un bureau, c'est ce bâtiment).
 
 - Fichier : `components/building/building/index.js`
+- Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `building-kit`
 - Paramètres : `type` (house | block | hall, défaut block) ; `floors` (nombre, 1 à 6, défaut 3) ; `wings` (nombre de fiches, 1 à 8, défaut 3)
-- États : `plot`, `excavation`, `foundations`, `structure`, `finishing`, `completed`, `inspection`
+- États : `plot`, `excavation`, `foundations`, `structure`, `envelope`, `finishing`, `completed`, `inspection`
 - Ancres : `label`, `badge`, `progress`, `door`
 - Données reçues par setState : `progress` (0 à 1, avancement dans l'état courant (fait monter la structure))
-- Budget : 12000 triangles, 8 matériaux
+- Budget : 20000 triangles, 10 matériaux
 - Critères d'acceptation :
   - Chaque état reconnaissable sans légende
   - data.progress fait monter la structure sans saut
@@ -180,11 +226,12 @@ Paramétrable en type et en taille. États : plot (terrain préparé), excavatio
 Quatre perches et les rubans qui dessinent le volume ; paramètres de taille.
 
 - Fichier : `components/building/survey-poles/index.js`
+- Production : Géométrie générée par le code du composant (paramétrique, liée aux données)
 - Paramètres : `width` (nombre, 2 à 30, défaut 8) ; `depth` (nombre, 2 à 30, défaut 6) ; `height` (nombre, 2 à 20, défaut 6)
 - États : `default`
 - Ancres : `label`, `badge`
 - Données reçues par setState : aucune
-- Budget : 800 triangles, 2 matériaux
+- Budget : 1000 triangles, 3 matériaux
 - Critères d'acceptation :
   - Reconnaissable comme des gabarits suisses
 
@@ -193,11 +240,12 @@ Quatre perches et les rubans qui dessinent le volume ; paramètres de taille.
 Une galerie souterraine visible en coupe, qui relie les bâtiments concernés.
 
 - Fichier : `components/building/shared-basement/index.js`
+- Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `building-kit`
 - Paramètres : `length` (nombre, 4 à 60, défaut 12) ; `links` (nombre de bâtiments reliés, 2 à 6, défaut 2)
 - États : `default`, `active`
 - Ancres : `label`, `badge`
 - Données reçues par setState : `progress` (0 à 1, avancement de la galerie)
-- Budget : 3000 triangles, 4 matériaux
+- Budget : 10000 triangles, 6 matériaux
 - Critères d'acceptation :
   - Compréhensible comme un ouvrage commun, pas comme un tunnel décoratif
 
@@ -207,36 +255,56 @@ Montrer qui travaille, où, et dans quel état.
 
 | Ordre | Identifiant | Nom | Nature | But | Statut |
 |---|---|---|---|---|---|
-| 1 | `character` | Le personnage (un agent) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer qui travaille, où, et dans quel état. | à faire |
-| 2 | `excavator` | La pelleteuse | Composant 3D Three.js, conforme à docs/contrat-composant.md | L'état fouille d'un bâtiment : le terrassement d'une nouvelle application. | à faire |
-| 3 | `crane` | La grue | Composant 3D Three.js, conforme à docs/contrat-composant.md | La fusion vers dev, à la réception : on pose la pièce finie. | à faire |
-| 4 | `delivery-truck` | Le camion de livraison | Composant 3D Three.js, conforme à docs/contrat-composant.md | L'arrivée d'une nouvelle dépendance : un événement à surveiller pour la sécurité. | à faire |
+| 1 | `character-kit` | Le personnage maître et son équipe | Bibliothèque de modèles 3D produite par un script Blender (blender/assets/<id>.py) et réutilisée par plusieurs composants : components/kit/<id>/ | Un squelette, une morphologie et des animations communes pour tous les agents. | à faire |
+| 2 | `character` | Le personnage (un agent) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer qui travaille, où, et dans quel état. | à faire |
+| 3 | `excavator` | La pelleteuse | Composant 3D Three.js, conforme à docs/contrat-composant.md | L'état fouille d'un bâtiment : le terrassement d'une nouvelle application. | à faire |
+| 4 | `crane` | La grue | Composant 3D Three.js, conforme à docs/contrat-composant.md | La fusion vers dev, à la réception : on pose la pièce finie. | exemple |
+| 5 | `delivery-truck` | Le camion de livraison | Composant 3D Three.js, conforme à docs/contrat-composant.md | L'arrivée d'une nouvelle dépendance : un événement à surveiller pour la sécurité. | à faire |
+
+### Le personnage maître et son équipe (`character-kit`)
+
+CHR_BASE_MASTER (1,70 m, 4,5 à 5 têtes), son armature RIG_CHR_BASE, les douze animations communes, les tenues par métier (architect, engineer, mason, electrician, plumber, painter, inspector, concierge, representative) et les accessoires (tablette, casque, outils). Bible, section 5.
+
+- Dossier : `components/kit/character-kit/`, script `blender/assets/character-kit.py`
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres)
+- Modèles : `CHR_BASE_MASTER_v001.glb`
+- Animations : `ANM_CHR_IDLE`, `ANM_CHR_WALK`, `ANM_CHR_WORK`, `ANM_CHR_TYPING`, `ANM_CHR_INSPECT`, `ANM_CHR_READ`, `ANM_CHR_THINKING`, `ANM_CHR_WAITING`, `ANM_CHR_TALK`, `ANM_CHR_CELEBRATE`, `ANM_CHR_BLOCKED`
+- Budget : 8000 triangles, 6 matériaux
+- Critères d'acceptation :
+  - Planche comparative des morphologies validée avant les variantes
+  - Un seul squelette pour tous
+  - Le portrait (G7) et le corps se correspondent
 
 ### Le personnage (un agent) (`character`)
 
-Un petit personnage, couleur de son équipe, tenue de son métier. Les ingénieurs portent une tablette, les ouvriers leurs outils. GDC le déplace ; le composant anime la marche et le travail.
+Un personnage par agent, à partir du personnage maître : tenue et outil de son métier, couleur de son équipe. GDC le déplace ; le composant joue l'animation de l'état, sur place. blocked : posture d'arrêt devant la barrière ; unknown : immobile, matériaux grisés, lisible sans animation.
 
 - Fichier : `components/character/character/index.js`
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; kit `character-kit`
+- Animations : `ANM_CHR_IDLE`, `ANM_CHR_WALK`, `ANM_CHR_WORK`, `ANM_CHR_TYPING`, `ANM_CHR_INSPECT`, `ANM_CHR_READ`, `ANM_CHR_THINKING`, `ANM_CHR_WAITING`, `ANM_CHR_TALK`, `ANM_CHR_CELEBRATE`, `ANM_CHR_BLOCKED`
 - Paramètres : `trade` (architect | engineer | mason | electrician | plumber | painter | inspector | concierge | representative) ; `team` (architecture | studies | site | reception | operations)
-- États : `idle`, `walk`, `work`, `wait`, `blocked`, `done`, `unknown`
+- États : `idle`, `walk`, `work`, `typing`, `inspect`, `read`, `thinking`, `waiting`, `talk`, `celebrate`, `blocked`, `unknown`
 - Ancres : `label`, `badge`
 - Données reçues par setState : `facing` (angle en radians, sens du regard ou de la marche)
-- Budget : 1500 triangles, 4 matériaux
+- Budget : 8000 triangles, 6 matériaux
 - Critères d'acceptation :
   - Le métier se lit à la tenue et à l'outil
-  - L'équipe se lit à la couleur
-  - unknown : gris, pointillé, immobile
-  - reducedMotion : aucune animation, posture lisible
+  - L'équipe se lit à la couleur de la tenue
+  - unknown : gris, immobile, lisible
+  - reducedMotion : posture fixe et lisible pour chaque état
+  - Animations sur place, sans déplacement non maîtrisé
 
 ### La pelleteuse (`excavator`)
 
 Une pelleteuse à chenilles ; en état digging, le bras creuse.
 
 - Fichier : `components/machine/excavator/index.js`
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `VEH_EXCAVATOR_A_v001`
+- Animations : `ANM_EXCAVATOR_A_DIGGING`
 - États : `idle`, `digging`
 - Ancres : `label`
 - Données reçues par setState : aucune
-- Budget : 3000 triangles, 4 matériaux
+- Budget : 10000 triangles, 6 matériaux
 - Critères d'acceptation :
   - Utilisable seule ou dans le bâtiment en état excavation
 
@@ -245,23 +313,30 @@ Une pelleteuse à chenilles ; en état digging, le bras creuse.
 Une grue à tour ; en état lifting, une charge monte et se pose.
 
 - Fichier : `components/machine/crane/index.js`
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `VEH_TOWER_CRANE_A_v001`
+- Modèles : `VEH_TOWER_CRANE_A_v001.glb`
+- Animations : `ANM_TOWER_CRANE_A_LIFTING`
 - Paramètres : `height` (nombre, 6 à 30, défaut 14)
 - États : `idle`, `lifting`
-- Ancres : `label`
+- Ancres : `label`, `badge`
 - Données reçues par setState : aucune
-- Budget : 2500 triangles, 3 matériaux
+- Budget : 15000 triangles, 8 matériaux
 - Critères d'acceptation :
-  - Ne masque pas les bâtiments voisins en vue isométrique
+  - Exemple fourni : sert de modèle de composant produit par Blender
+  - Grue reconnaissable à son mât, sa flèche et son crochet
+  - lifting sans animation : charge levée, image fixe
 
 ### Le camion de livraison (`delivery-truck`)
 
-Un camion de chantier ; en état arriving, il entre et décharge.
+Un camion de chantier ; en état arriving, GDC le déplace jusqu'à l'aire et le composant joue le déchargement.
 
 - Fichier : `components/machine/delivery-truck/index.js`
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `VEH_DELIVERY_TRUCK_A_v001`
+- Animations : `ANM_DELIVERY_TRUCK_A_UNLOAD`
 - États : `idle`, `arriving`
 - Ancres : `label`, `badge`
 - Données reçues par setState : aucune
-- Budget : 2500 triangles, 4 matériaux
+- Budget : 10000 triangles, 6 matériaux
 - Critères d'acceptation :
   - Lot plus tardif : utile quand le harnais enregistre les dépendances ajoutées
 
@@ -279,11 +354,12 @@ Au clic, entrer dans un bâtiment ou un bureau : une pièce par fiche, les ouvri
 Une coupe du bâtiment en pièces ; data.rooms donne, pour chaque pièce, son état (study, waiting, construction, reception, done, defect) et les métiers présents. Les personnages sont des composants character posés par GDC aux ancres room:n.
 
 - Fichier : `components/interior/building-interior/index.js`
+- Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `building-kit`
 - Paramètres : `rooms` (nombre, 1 à 12, défaut 4)
 - États : `default`
 - Ancres : `label`, `room:*`
 - Données reçues par setState : `rooms` (liste, une entrée par fiche : { state: study \| waiting \| construction \| reception \| done \| defect, trades: [métiers présents] })
-- Budget : 15000 triangles, 8 matériaux
+- Budget : 20000 triangles, 10 matériaux
 - Critères d'acceptation :
   - Chaque pièce lisible et désignable (ancre room:n)
   - L'état d'une pièce se voit à son aménagement : vide, en travaux, finie, défaut
@@ -294,11 +370,12 @@ Une coupe du bâtiment en pièces ; data.rooms donne, pour chaque pièce, son é
 Paramétrable pour le bureau d'architecte ou le bureau d'études ; des postes de travail aux ancres desk:n.
 
 - Fichier : `components/interior/office-interior/index.js`
+- Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `building-kit`
 - Paramètres : `kind` (architect | studies, défaut architect) ; `desks` (nombre, 1 à 8, défaut 4)
 - États : `idle`, `active`
 - Ancres : `label`, `desk:*`
 - Données reçues par setState : `activeDesks` (nombre de postes occupés)
-- Budget : 10000 triangles, 6 matériaux
+- Budget : 15000 triangles, 8 matériaux
 - Critères d'acceptation :
   - Ambiance intellectuelle, distincte du chantier
 
@@ -318,6 +395,7 @@ Désigner ce qui est choisi, ce qui attend, ce qui bloque.
 Un anneau au sol, discret au survol, marqué à la sélection, avec une respiration lente si les animations sont permises.
 
 - Fichier : `components/signals/selection-ring/index.js`
+- Production : Géométrie générée par le code du composant (paramétrique, liée aux données)
 - Paramètres : `radius` (nombre, 0.3 à 10, défaut 1)
 - États : `hidden`, `hover`, `selected`
 - Ancres : aucune
@@ -328,39 +406,45 @@ Un anneau au sol, discret au survol, marqué à la sélection, avec une respirat
 
 ### Le panneau de décision (`decision-sign`)
 
-Un panneau de chantier rouge sur poteau ; une impulsion à son apparition, puis fixe.
+Un panneau de chantier rectangulaire sur poteau, avec une impulsion à son apparition, puis fixe. La couleur d'état n'est pas dans le modèle : le rouge est porté par le badge HTML posé sur l'ancre badge.
 
 - Fichier : `components/signals/decision-sign/index.js`
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `PRP_DECISION_SIGN_A_v001`
 - États : `default`
 - Ancres : `badge`
 - Données reçues par setState : aucune
-- Budget : 500 triangles, 2 matériaux
+- Budget : 1000 triangles, 3 matériaux
 - Critères d'acceptation :
-  - Le seul signal rouge de la scène
+  - Reconnaissable à sa forme seule, sans couleur d'état
+  - Distinct de tout autre objet de la scène à taille normale
 
 ### La barrière de blocage (`blocked-sign`)
 
 Une barrière de chantier orange avec un triangle.
 
 - Fichier : `components/signals/blocked-sign/index.js`
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `PRP_BLOCKED_BARRIER_A_v001`
 - États : `default`
 - Ancres : `badge`
 - Données reçues par setState : aucune
-- Budget : 600 triangles, 2 matériaux
+- Budget : 1000 triangles, 3 matériaux
 - Critères d'acceptation :
-  - Distincte du panneau de décision par la forme et la couleur
+  - Reconnaissable à sa forme seule (barrière et triangle)
+  - La couleur d'état est portée par le badge HTML
 
 ### Le signal de défaut (`defect-sign`)
 
 Un cône ou un ruban posé sur la façade ou dans la pièce concernée.
 
 - Fichier : `components/signals/defect-sign/index.js`
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `PRP_DEFECT_CONE_A_v001`
 - États : `default`
 - Ancres : `badge`
 - Données reçues par setState : aucune
-- Budget : 500 triangles, 2 matériaux
+- Budget : 1000 triangles, 3 matériaux
 - Critères d'acceptation :
-  - Lisible même sur un bâtiment fini et éclairé
+  - Reconnaissable à sa forme seule
+  - Se pose sur une façade ou dans une pièce
 
 ## G6 : Les éléments d'interface
 
@@ -368,6 +452,7 @@ Barre du haut, navigation, inspecteur, fiche d'agent, badges, barres de progress
 
 | Ordre | Identifiant | Nom | Nature | But | Statut |
 |---|---|---|---|---|---|
+| 0 | `fonts` | Les polices | Document de référence, pas de code | Manrope pour les titres, Inter pour l'interface, une police à chasse fixe pour les références. | à faire |
 | 1 | `top-bar` | La barre du haut | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Le projet, ce qui t'attend, qui travaille, la fraîcheur des données. | à faire |
 | 2 | `side-nav` | La navigation | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Aller à un lieu, un bâtiment, une fiche ou un agent ; la caméra suit. | à faire |
 | 3 | `inspector` | L'inspecteur | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | La fiche de l'élément choisi : avancement, lots, tâches, blocages, réussites, actions attendues. | à faire |
@@ -376,6 +461,14 @@ Barre du haut, navigation, inspecteur, fiche d'agent, badges, barres de progress
 | 6 | `progress-bar` | La barre de progression | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Montrer l'avancement d'une fiche ou d'un lot, avec sa règle de calcul. | à faire |
 | 7 | `copy-button` | L'icône de copie | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Copier le nom et l'identifiant d'un élément, pour le coller dans l'outil d'IA. | à faire |
 | 8 | `quick-actions` | Les actions rapides | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Copier un petit prompt prêt à l'emploi qui vise l'élément choisi. | à faire |
+
+### Les polices (`fonts`)
+
+Fichiers de police copiés dans le projet avec leur licence (OFL attendue, à vérifier) ; jamais chargés depuis Internet : le panneau fonctionne hors ligne.
+
+- Critères d'acceptation :
+  - Licence vérifiée et jointe
+  - Aucune requête vers un service de polices
 
 ### La barre du haut (`top-bar`)
 
@@ -477,8 +570,9 @@ Donner un visage aux agents et une icône à chaque étape et chaque lieu.
 
 ### Les portraits des agents (`agent-portraits`)
 
-Un portrait par prénom (Claire, Marc, Lina, David, Sarah, Noah, Tom, Paul, Iris, Yves, Emma, Robin, Julie, Olivier, Anne, Bernard, Fanny) ; états idle, talking, working ; SVG animé en CSS.
+Un portrait par prénom (Claire, Marc, Lina, David, Sarah, Noah, Tom, Paul, Iris, Yves, Emma, Robin, Julie, Olivier, Anne, Bernard, Fanny), rendu depuis le personnage du kit dans un cadrage commun (bible, section 5 : Agent Portrait) ; états idle, talking, working.
 
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres)
 - Entrées (propriété data) : `name` (prénom (nom du fichier SVG)) ; `state` (idle \| talking \| working (classe CSS))
 - Sorties (événements) : aucune
 - Critères d'acceptation :

@@ -1,22 +1,24 @@
-// La galerie : chaque composant du catalogue, dans chacun de ses états, avec son contrôle en direct.
-// Outil de fabrication seulement : il n'est pas livré à GDC.
+// La galerie : chaque composant du catalogue, dans chacun de ses etats, avec son controle en direct,
+// et la planche comparative (bible, section 14). Outil de fabrication seulement : il n'est pas livre a GDC.
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import catalogue from '../catalogue.json';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils.js';
+import catalogue from '../catalogue.json' with { type: 'json' };
 import { makeContext } from './tokens.js';
 import { checkMeta, checkInstance, defaultParams, measure, sampleData } from './contract.js';
+import { components as byId, chargeur } from './library.js';
 
-const modules = import.meta.glob('../components/*/*/index.js', { eager: true });
-const byId = Object.fromEntries(Object.values(modules).map((m) => [m.meta.id, m]));
+const charge = chargeur({ GLTFLoader, SkeletonUtils });
 const entries = catalogue.items.filter((i) => i.kind === 'component');
-
 const $ = (id) => document.getElementById(id);
 const stage = $('stage');
-const options = { theme: 'light', quality: 'high', reducedMotion: false, anchors: true };
-let current = { entry: null, inst: null, state: null };
+const options = { theme: 'light', quality: 'high', reducedMotion: false, anchors: true, planche: false };
+let current = { entry: null, inst: null, state: null, voisins: [] };
 let dirty = true;
 
-// La scène : vue isométrique (caméra orthographique), lumière simple, rendu à la demande.
+// La scene de reference : camera orthographique a 45 degres et 35 degres d'elevation (bible, section 8),
+// lumiere directionnelle douce, ambiance moderee, rendu a la demande.
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 stage.prepend(renderer.domElement);
@@ -25,20 +27,21 @@ const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 500);
 camera.position.set(20, 20, 20);
 camera.lookAt(0, 0, 0);
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping = false;
 controls.addEventListener('change', () => { dirty = true; });
 scene.add(new THREE.HemisphereLight(0xffffff, 0x8a8678, 1.6));
-const sun = new THREE.DirectionalLight(0xffffff, 1.4);
-sun.position.set(8, 14, 6);
+const sun = new THREE.DirectionalLight(0xffffff, 2.4);
+sun.position.set(10, 18, 8);
+sun.shadow.mapSize.set(2048, 2048);
+Object.assign(sun.shadow.camera, { left: -30, right: 30, top: 30, bottom: -30 });
 scene.add(sun);
-const grid = new THREE.GridHelper(40, 40, 0x999999, 0xcccccc);
+const grid = new THREE.GridHelper(60, 60, 0x999999, 0xcccccc);
 grid.position.y = -0.31;
 scene.add(grid);
 
 function resize() {
   const { clientWidth: w, clientHeight: h } = stage;
   renderer.setSize(w, h, false);
-  const view = 12;
+  const view = options.planche ? 18 : 12;
   const aspect = w / Math.max(h, 1);
   Object.assign(camera, { left: -view * aspect, right: view * aspect, top: view, bottom: -view });
   camera.updateProjectionMatrix();
@@ -52,9 +55,10 @@ function applyTheme() {
   scene.background = new THREE.Color(ctx.palette.paper);
   grid.material.opacity = options.theme === 'dark' ? 0.25 : 0.5;
   grid.material.transparent = true;
+  renderer.shadowMap.enabled = options.quality === 'high';
+  sun.castShadow = options.quality === 'high';
 }
 
-// La liste, groupée par lot ; les composants pas encore fabriqués sont grisés.
 function buildList() {
   const list = $('list');
   list.replaceChildren();
@@ -76,47 +80,73 @@ function buildList() {
   }
 }
 
-function select(id, state) {
-  const entry = entries.find((e) => e.id === id);
+async function instance(id, state) {
   const mod = byId[id];
-  if (current.inst) { scene.remove(current.inst.root); current.inst.dispose(); }
-  const ctx = makeContext(options);
-  const inst = mod.create(THREE, defaultParams(mod.meta), ctx);
-  const first = state && mod.meta.states.includes(state) ? state : mod.meta.states.find((s) => s !== 'hidden') || mod.meta.states[0];
-  inst.setState(first, sampleData(entry));
-  scene.add(inst.root);
-  current = { entry, inst, state: first };
-  for (const b of $('list').querySelectorAll('button')) b.setAttribute('aria-current', String(b.dataset.id === id));
-  buildStates(mod);
-  report(mod, entry);
-  dirty = true;
-  try { history.replaceState(null, '', `#${id}/${first}`); } catch { /* sans importance */ }
+  const entry = entries.find((e) => e.id === id);
+  await charge.prepare(mod.meta);
+  const inst = mod.create(THREE, defaultParams(mod.meta), makeContext(options, await charge.assetsPour(mod.meta)));
+  const premier = state && mod.meta.states.includes(state) ? state : mod.meta.states.find((s) => s !== 'hidden') || mod.meta.states[0];
+  inst.setState(premier, sampleData(entry));
+  return { inst, state: premier, entry, mod };
 }
 
-function buildStates(mod) {
+function retire(x) { if (x && x.inst) { scene.remove(x.inst.root); x.inst.dispose(); } }
+
+// La planche : le composant choisi entre deux modeles de reference (livres d'abord, exemples a defaut).
+function references(id) {
+  const rang = (e) => (e.status === 'livré' ? 0 : e.status === 'exemple' ? 1 : 9);
+  return entries.filter((e) => e.id !== id && byId[e.id] && rang(e) < 9 && e.id !== 'selection-ring').sort((a, b) => rang(a) - rang(b)).slice(0, 2).map((e) => e.id);
+}
+
+async function select(id, state) {
+  retire(current);
+  for (const v of current.voisins) retire(v);
+  const x = await instance(id, state);
+  scene.add(x.inst.root);
+  const voisins = [];
+  if (options.planche) {
+    let pos = -1;
+    for (const rid of references(id)) {
+      const v = await instance(rid);
+      v.inst.root.position.x = pos * 20;
+      scene.add(v.inst.root);
+      voisins.push(v);
+      pos += 2;
+    }
+  }
+  current = { ...x, voisins };
+  for (const b of $('list').querySelectorAll('button')) b.setAttribute('aria-current', String(b.dataset.id === id));
+  buildStates();
+  await report();
+  dirty = true;
+  try { history.replaceState(null, '', `#${id}/${current.state}${options.planche ? '/planche' : ''}`); } catch { /* sans importance */ }
+}
+
+function buildStates() {
   const box = $('states');
   box.replaceChildren();
-  for (const s of mod.meta.states) {
+  for (const s of current.mod.meta.states) {
     const b = document.createElement('button');
     b.textContent = s;
     b.setAttribute('aria-pressed', String(s === current.state));
-    b.addEventListener('click', () => {
+    b.addEventListener('click', async () => {
       current.inst.setState(s, sampleData(current.entry));
       current.state = s;
       for (const x of box.children) x.setAttribute('aria-pressed', String(x === b));
-      report(mod, current.entry);
+      await report();
       dirty = true;
-      try { history.replaceState(null, '', `#${mod.meta.id}/${s}`); } catch { /* sans importance */ }
+      try { history.replaceState(null, '', `#${current.mod.meta.id}/${s}${options.planche ? '/planche' : ''}`); } catch { /* sans importance */ }
     });
     box.append(b);
   }
 }
 
-// Le compte rendu : mesure de l'état affiché, et contrôle complet du contrat dans le contexte courant.
-function report(mod, entry) {
+// Le compte rendu : mesure de l'etat affiche, et controle complet du contrat dans le contexte courant.
+async function report() {
+  const { mod, entry } = current;
   const m = measure(current.inst.root);
   const problems = [...checkMeta(mod.meta, entry)];
-  if (!problems.length) problems.push(...checkInstance(THREE, mod, entry, makeContext(options)));
+  if (!problems.length) problems.push(...checkInstance(THREE, mod, entry, makeContext(options, await charge.assetsPour(mod.meta)), await charge.partagees(mod.meta)));
   const el = $('report');
   el.replaceChildren();
   const line = document.createElement('div');
@@ -133,14 +163,14 @@ function report(mod, entry) {
   }
 }
 
-// Les ancres : de simples étiquettes HTML, comme celles que GDC posera.
+// Les ancres : de simples etiquettes HTML, comme celles que GDC posera.
 const tmp = new THREE.Vector3();
 function drawAnchors() {
   const layer = $('anchors');
   layer.replaceChildren();
   if (!options.anchors || !current.inst) return;
   const { clientWidth: w, clientHeight: h } = stage;
-  for (const a of current.inst ? byId[current.entry.id].meta.anchors : []) {
+  for (const a of current.mod.meta.anchors) {
     const name = a.replace('*', '0');
     let v;
     try { v = current.inst.anchor(name); } catch { continue; }
@@ -159,7 +189,7 @@ function drawAnchors() {
 const clock = new THREE.Clock();
 function loop() {
   const dt = Math.min(clock.getDelta(), 0.1);
-  if (current.inst && current.inst.update(dt)) dirty = true;
+  for (const x of [current, ...current.voisins]) if (x.inst && x.inst.update(dt)) dirty = true;
   if (dirty) {
     renderer.render(scene, camera);
     drawAnchors();
@@ -169,12 +199,14 @@ function loop() {
 }
 
 function toggle(id, key, on, off, label) {
-  $(id).addEventListener('click', (ev) => {
+  $(id).addEventListener('click', async (ev) => {
+    const btn = ev.currentTarget;
     options[key] = options[key] === on ? off : on;
-    ev.currentTarget.setAttribute('aria-pressed', String(options[key] === on));
-    if (label) ev.currentTarget.textContent = label(options[key]);
+    btn.setAttribute('aria-pressed', String(options[key] === on));
+    if (label) btn.textContent = label(options[key]);
     applyTheme();
-    if (current.entry) select(current.entry.id, current.state);
+    resize();
+    if (current.entry) await select(current.entry.id, current.state);
     dirty = true;
   });
 }
@@ -182,11 +214,13 @@ toggle('theme', 'theme', 'dark', 'light');
 toggle('quality', 'quality', 'high', 'low', (q) => (q === 'high' ? 'Qualité haute' : 'Qualité basse'));
 toggle('motion', 'reducedMotion', true, false);
 toggle('showAnchors', 'anchors', true, false);
+toggle('planche', 'planche', true, false);
 
 applyTheme();
 buildList();
 resize();
-const [hashId, hashState] = decodeURIComponent(location.hash.slice(1)).split('/');
+const [hashId, hashState, hashPlanche] = decodeURIComponent(location.hash.slice(1)).split('/');
+if (hashPlanche === 'planche') { options.planche = true; $('planche').setAttribute('aria-pressed', 'true'); resize(); }
 const start = byId[hashId] ? hashId : entries.find((e) => byId[e.id])?.id;
-if (start) select(start, hashState);
+if (start) await select(start, hashState);
 loop();

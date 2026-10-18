@@ -1,8 +1,13 @@
-// La bibliothèque livrée à GDC : tous les composants, indexés par leur identifiant.
-// Three.js n'y est pas : GDC l'injecte dans create().
+// La bibliotheque livree a GDC : les composants indexes par identifiant, leurs modeles 3D integres,
+// et le chargeur. Three.js, GLTFLoader et SkeletonUtils n'y sont pas : GDC les injecte, a la meme version.
 import { tokens, paletteFor, makeContext } from './tokens.js';
+import { creeChargeur, cleAsset } from './assets.js';
 
 const modules = import.meta.glob('../components/*/*/index.js', { eager: true });
+const glbs = import.meta.glob('../components/*/*/*.glb', { eager: true, query: '?inline', import: 'default' });
 
 export const components = Object.fromEntries(Object.values(modules).map((m) => [m.meta.id, m]));
-export { tokens, paletteFor, makeContext };
+// cle 'categorie/id/FICHIER.glb' -> data URL : la page du panneau ne va rien chercher ailleurs
+export const sources = Object.fromEntries(Object.entries(glbs).map(([p, url]) => [p.replace('../components/', ''), url]));
+export const chargeur = (outils) => creeChargeur(outils, sources);
+export { tokens, paletteFor, makeContext, cleAsset };

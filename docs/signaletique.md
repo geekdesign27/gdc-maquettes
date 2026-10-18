@@ -9,7 +9,7 @@ Le langage des signaux, à l'image des jeux de gestion et des interfaces de supe
 3. **Une seule priorité visible par élément** : s'il y a une alerte et un avertissement, on montre l'alerte, avec le total.
 4. **Les badges comptent**, ils ne racontent pas : un nombre et une icône ; le détail s'ouvre au clic.
 5. **Rien ne clignote en continu.** Une impulsion douce à l'apparition, puis un état fixe. Si l'utilisateur demande moins d'animations, rien ne bouge.
-6. **Ce qui t'attend est rouge, et seulement cela** : le rouge de signalisation est réservé aux décisions attendues.
+6. **Ce qui t'attend est rouge, et seulement cela** : dans l'interface, le rouge de signalisation est réservé aux décisions attendues. Dans la scène, les couleurs d'état n'existent pas (bible, 17.3) : un signal 3D se reconnaît à sa forme, et le badge HTML posé sur son ancre porte la couleur.
 7. **Inconnu n'est pas une erreur** : gris, pointillé, avec un point d'interrogation.
 
 ## Les états
@@ -36,8 +36,9 @@ Le langage des signaux, à l'image des jeux de gestion et des interfaces de supe
 
 | Signal | Ce qu'il dit |
 |---|---|
-| Panneau rouge | Une décision t'attend à cet endroit |
-| Triangle orange | Un travail est bloqué |
+| Panneau rectangulaire sur poteau, avec son badge rouge | Une décision t'attend à cet endroit |
+| Barrière de chantier, avec son badge orange | Un travail est bloqué |
+| Cône posé sur la façade ou dans la pièce | Un défaut ouvert |
 | Anneau de sélection | L'élément choisi, ou survolé |
 | Gabarits plantés | Une fiche à l'étude : son volume futur |
 | Échafaudage | Une fiche en construction |

@@ -2,6 +2,7 @@
 // Chaque fonction renvoie une liste de problèmes, en français ; une liste vide veut dire conforme.
 
 const META_KEYS = ['id', 'version', 'category', 'states', 'params', 'anchors', 'budget', 'animated'];
+// Clé facultative : assets, la liste des modèles 3D (GLB) du composant, identique à celle du catalogue.
 
 // Ce qu'un composant ne doit jamais contenir : accès extérieur, HTML injecté, code évalué, import hors de son dossier.
 const FORBIDDEN = [
@@ -30,6 +31,7 @@ export function checkMeta(meta, entry) {
   if (!same(meta.anchors, entry.anchors)) problems.push(`ancres différentes du catalogue : ${JSON.stringify(meta.anchors)} au lieu de ${JSON.stringify(entry.anchors)}`);
   if (entry.budget && JSON.stringify(meta.budget) !== JSON.stringify(entry.budget)) problems.push('budget différent du catalogue');
   for (const [name, p] of Object.entries(meta.params || {})) if (!('default' in p)) problems.push(`paramètre ${name} sans valeur par défaut`);
+  if (!same(meta.assets || [], entry.assets || [])) problems.push(`modèles différents du catalogue : ${JSON.stringify(meta.assets || [])} au lieu de ${JSON.stringify(entry.assets || [])}`);
   return problems;
 }
 
@@ -71,7 +73,8 @@ export function sampleData(entry) {
 }
 
 // Crée une instance, la passe dans chaque état et vérifie le reste du contrat.
-export function checkInstance(THREE, mod, entry, ctx) {
+// partagees : géométries et matériaux des modèles 3D, partagés entre instances : le composant ne doit pas les libérer.
+export function checkInstance(THREE, mod, entry, ctx, partagees = new Set()) {
   const problems = [];
   const label = `[${ctx.quality}${ctx.reducedMotion ? ', sans animation' : ''}, ${ctx.theme}]`;
   let inst;
@@ -100,7 +103,9 @@ export function checkInstance(THREE, mod, entry, ctx) {
   const disposed = new Set();
   for (const d of seen) d.addEventListener('dispose', () => disposed.add(d));
   inst.dispose();
-  const left = [...seen].filter((d) => !disposed.has(d));
+  const left = [...seen].filter((d) => !disposed.has(d) && !partagees.has(d));
   if (left.length) problems.push(`${label} dispose() laisse ${left.length} géométrie(s), matériau(x) ou texture(s)`);
+  const abimees = [...seen].filter((d) => disposed.has(d) && partagees.has(d));
+  if (abimees.length) problems.push(`${label} dispose() libère ${abimees.length} ressource(s) partagée(s) d'un modèle 3D : les autres instances la perdraient`);
   return problems;
 }

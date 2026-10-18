@@ -1,21 +1,22 @@
 {
-  "version": 1,
+  "version": 2,
   "kinds": {
     "document": "Document de référence, pas de code",
     "component": "Composant 3D Three.js, conforme à docs/contrat-composant.md",
     "html": "Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface",
-    "illustration": "Illustration ou icône SVG, animée en CSS si besoin"
+    "illustration": "Illustration ou icône SVG, animée en CSS si besoin",
+    "kit": "Bibliothèque de modèles 3D produite par un script Blender (blender/assets/<id>.py) et réutilisée par plusieurs composants : components/kit/<id>/"
   },
   "lots": [
     {
       "id": "G0",
       "name": "La ligne graphique",
-      "goal": "Fixer le style avant de produire : mood board, décisions de style, scène de référence."
+      "goal": "Fixer le style avant de produire : mood board, bible WORKSITE, bibliothèque de matériaux, scène de référence et planche comparative."
     },
     {
       "id": "G1",
       "name": "Le terrain et les lieux",
-      "goal": "Poser le plan du chantier dans l'ordre du parcours : bureau d'architecte, bureau d'études, bureau du client, chantier, parking, réception."
+      "goal": "Poser le plan du chantier dans l'ordre du parcours : bureau d'architecte, bureau d'études, bureau du client, bureau de contrôle, baraque du conducteur de travaux, chantier, parking, réception."
     },
     {
       "id": "G2",
@@ -60,39 +61,55 @@
       "description": "Images dans moodboard/, une ligne chacune dans moodboard/notes.md : ce qu'on aime, ce qu'on ne veut pas, la source.",
       "acceptance": [
         "Au moins dix images commentées",
-        "Les références du brief (Smart Logistics, VeloHub) et de l'ERP de carrosserie y figurent",
+        "Les deux références maîtresses de la bible (REF_ENV_001, REF_CHR_001) y figurent",
         "Validé ensemble"
       ],
       "status": "à faire"
     },
     {
-      "id": "style-guide",
+      "id": "bible",
       "lot": "G0",
       "order": 2,
       "kind": "document",
       "category": "style",
-      "name": "Les décisions de style",
-      "purpose": "Traduire le mood board en règles : vue, formes, matières, palette, personnages, rythme des animations, mode sombre.",
-      "description": "Le tableau de docs/direction-artistique.md rempli, et src/tokens.js mis à jour en conséquence.",
+      "name": "La bible graphique",
+      "purpose": "La règle de production : univers, palette, matériaux, personnages, bâtiments, engins, caméra, conventions Blender, budgets, contrôles.",
+      "description": "docs/bible/bible-worksite.md, version 1.1 : la version 1.0 de Pierre-Alain et ses amendements validés le 2026-10-18. Toute évolution produit une nouvelle version.",
       "acceptance": [
-        "Chaque ligne du tableau tranchée",
-        "src/tokens.js à jour",
-        "Couleurs d'état inchangées"
+        "Version 1.1 validée",
+        "Toute évolution documentée comme amendement versionné"
+      ],
+      "status": "livré"
+    },
+    {
+      "id": "material-library",
+      "lot": "G0",
+      "order": 3,
+      "kind": "document",
+      "category": "style",
+      "name": "La bibliothèque de matériaux",
+      "purpose": "Des matériaux MAT_ partagés par tous les modèles, définis une seule fois.",
+      "description": "src/palette.json, section materiaux : compléter bois, caoutchouc, vitrages, métaux, tissus, peaux et cheveux (bible, sections 3 et 4), après validation des premiers assets.",
+      "acceptance": [
+        "Chaque matériau a sa couleur, sa rugosité et son caractère métallique",
+        "Compatible glTF, sans nœud Blender non reproductible",
+        "Les scripts Blender et Three.js lisent la même source"
       ],
       "status": "à faire"
     },
     {
       "id": "reference-scene",
       "lot": "G0",
-      "order": 3,
+      "order": 4,
       "kind": "document",
       "category": "style",
       "name": "La scène de référence",
       "purpose": "Servir d'étalon : chaque nouveau composant est posé à côté pour vérifier qu'il appartient au même monde.",
-      "description": "Un assemblage dans la galerie : terrain, bureau d'architecte, bâtiment dans quatre états, un personnage, l'anneau de sélection, le panneau de décision. Se complète au fil des lots G1 à G5.",
+      "description": "Un assemblage dans la galerie, même caméra et même lumière : terrain, grue, un bureau, un bâtiment dans quatre états, un personnage, l'anneau de sélection, un panneau. La planche comparative (bible, section 14) pose chaque nouvel asset à côté de deux modèles maîtres validés.",
       "acceptance": [
         "Lisible en clair et en sombre",
         "Fluide sur un ordinateur portable ordinaire",
+        "Planche comparative disponible pour chaque composant",
         "Validée ensemble"
       ],
       "status": "à faire"
@@ -124,7 +141,8 @@
         "Exemple fourni : sert de modèle de composant statique"
       ],
       "status": "exemple",
-      "data": {}
+      "data": {},
+      "production": "code"
     },
     {
       "id": "architect-office",
@@ -148,8 +166,8 @@
         "door"
       ],
       "budget": {
-        "triangles": 4000,
-        "materials": 5
+        "triangles": 20000,
+        "materials": 10
       },
       "acceptance": [
         "Reconnaissable comme un bureau d'architecte sans légende",
@@ -157,7 +175,10 @@
         "État active : une lumière ou un détail animé discret, figé si reducedMotion"
       ],
       "status": "à faire",
-      "data": {}
+      "data": {},
+      "production": "blender",
+      "blender": "BLD_ARCHITECT_OFFICE_A_v001",
+      "famille_bible": "BLD_ARCHITECT"
     },
     {
       "id": "design-office",
@@ -181,15 +202,18 @@
         "door"
       ],
       "budget": {
-        "triangles": 4000,
-        "materials": 5
+        "triangles": 20000,
+        "materials": 10
       },
       "acceptance": [
         "Distinct du bureau d'architecte au premier regard",
         "Même famille de formes et de matières"
       ],
       "status": "à faire",
-      "data": {}
+      "data": {},
+      "production": "blender",
+      "blender": "BLD_ENGINEERING_OFFICE_A_v001",
+      "famille_bible": "BLD_ENGINEERING"
     },
     {
       "id": "client-office",
@@ -211,8 +235,8 @@
         "board"
       ],
       "budget": {
-        "triangles": 3000,
-        "materials": 4
+        "triangles": 20000,
+        "materials": 10
       },
       "acceptance": [
         "En waiting, visible de loin sans être criard",
@@ -221,7 +245,10 @@
       "status": "à faire",
       "data": {
         "count": "nombre de décisions attendues (affiché par GDC sur l'ancre badge)"
-      }
+      },
+      "production": "blender",
+      "blender": "BLD_CLIENT_OFFICE_A_v001",
+      "famille_bible": null
     },
     {
       "id": "control-office",
@@ -243,20 +270,55 @@
         "badge"
       ],
       "budget": {
-        "triangles": 2500,
-        "materials": 4
+        "triangles": 20000,
+        "materials": 10
       },
       "acceptance": [
         "Ne ressemble pas à un bureau habité : c'est une machine",
         "État error lisible sans animation"
       ],
       "status": "à faire",
-      "data": {}
+      "data": {},
+      "production": "blender",
+      "blender": "BLD_QA_OFFICE_A_v001",
+      "famille_bible": "BLD_QA"
+    },
+    {
+      "id": "site-office",
+      "lot": "G1",
+      "order": 6,
+      "kind": "component",
+      "category": "site",
+      "name": "La baraque du conducteur de travaux",
+      "purpose": "Le lieu de la coordination : planning des lots, chef de chantier, répartition des agents.",
+      "description": "Une baraque de chantier à deux niveaux, planning affiché, écrans ; famille BLD_COORDINATION de la bible. Yves, le conducteur de travaux, s'y tient ; le chef de chantier (programme) n'a pas de corps.",
+      "params": {},
+      "states": [
+        "idle",
+        "active"
+      ],
+      "anchors": [
+        "label",
+        "badge",
+        "entry"
+      ],
+      "budget": {
+        "triangles": 20000,
+        "materials": 10
+      },
+      "production": "blender",
+      "blender": "BLD_COORDINATION_CABIN_A_v001",
+      "famille_bible": "BLD_COORDINATION",
+      "acceptance": [
+        "Reconnaissable comme baraque de chantier sans légende",
+        "État active : un détail animé discret, figé si reducedMotion"
+      ],
+      "status": "à faire"
     },
     {
       "id": "parking",
       "lot": "G1",
-      "order": 6,
+      "order": 7,
       "kind": "component",
       "category": "site",
       "name": "Le parking : le carnet des demandes",
@@ -273,8 +335,8 @@
         "badge"
       ],
       "budget": {
-        "triangles": 3000,
-        "materials": 3
+        "triangles": 5000,
+        "materials": 6
       },
       "acceptance": [
         "Le nombre de caisses suit data.count",
@@ -283,12 +345,14 @@
       "status": "à faire",
       "data": {
         "count": "nombre de fiches au carnet des demandes, 0 ou plus"
-      }
+      },
+      "production": "mixte",
+      "blender": "ENV_PARKING_A_v001"
     },
     {
       "id": "reception-area",
       "lot": "G1",
-      "order": 7,
+      "order": 8,
       "kind": "component",
       "category": "site",
       "name": "La zone de réception",
@@ -305,24 +369,51 @@
         "badge"
       ],
       "budget": {
-        "triangles": 2500,
-        "materials": 4
+        "triangles": 10000,
+        "materials": 8
       },
       "acceptance": [
         "Lisible comme un lieu de contrôle final"
       ],
       "status": "à faire",
-      "data": {}
+      "data": {},
+      "production": "blender",
+      "blender": "BLD_DELIVERY_AREA_A_v001",
+      "famille_bible": "BLD_DELIVERY"
+    },
+    {
+      "id": "building-kit",
+      "lot": "G2",
+      "order": 1,
+      "kind": "kit",
+      "category": "kit",
+      "name": "Le kit de bâtiment",
+      "purpose": "Les pièces modulaires communes à tous les bâtiments, aux mêmes dimensions d'assemblage.",
+      "description": "Sols, fondations, poteaux, poutres, dalles, murs, portes, fenêtres, toitures, escaliers, échafaudages, enseignes (bible, section 6) ; trame commune de 3 mètres. Utilisé par building, building-interior et les bureaux.",
+      "assets": [
+        "BLD_KIT_A_v001.glb"
+      ],
+      "budget": {
+        "triangles": 20000,
+        "materials": 10
+      },
+      "production": "blender",
+      "acceptance": [
+        "Toutes les pièces partagent la même trame et la même hauteur d'étage",
+        "Chaque pièce est un nœud nommé BLD_KIT_A_<PIECE>",
+        "Un bâtiment de démonstration s'assemble sans retouche"
+      ],
+      "status": "à faire"
     },
     {
       "id": "building",
       "lot": "G2",
-      "order": 1,
+      "order": 2,
       "kind": "component",
       "category": "building",
       "name": "Le bâtiment (une application)",
       "purpose": "Montrer l'avancement d'une application par l'état de son bâtiment.",
-      "description": "Paramétrable en type et en taille. États : plot (terrain préparé), excavation (fouille avec une pelleteuse), foundations (fondations coulées), structure (murs qui montent, échafaudage, data.progress de 0 à 1), finishing (second œuvre : fenêtres posées, ouvriers visibles à l'intérieur), completed (habité : fenêtres éclairées), inspection (réception en cours). Un défaut ouvert ne change pas l'état : GDC pose le composant defect-sign sur la façade.",
+      "description": "Assemblé par le code à partir du kit de bâtiment, selon le type et la taille. États : plot (terrain préparé), excavation (fouille avec la pelleteuse), foundations (fondations coulées), structure (poteaux, dalles et échafaudage ; data.progress de 0 à 1), envelope (murs et toiture fermés), finishing (second œuvre : fenêtres posées, ouvriers visibles), completed (habité : fenêtres éclairées), inspection (réception en cours). Un défaut ne change pas l'état : GDC pose defect-sign sur la façade. Familles de la bible : le bâtiment d'une application relève du chantier (BLD_DEVELOPMENT n'est pas un bureau, c'est ce bâtiment).",
       "params": {
         "type": "house | block | hall, défaut block",
         "floors": "nombre, 1 à 6, défaut 3",
@@ -333,6 +424,7 @@
         "excavation",
         "foundations",
         "structure",
+        "envelope",
         "finishing",
         "completed",
         "inspection"
@@ -344,8 +436,8 @@
         "door"
       ],
       "budget": {
-        "triangles": 12000,
-        "materials": 8
+        "triangles": 20000,
+        "materials": 10
       },
       "acceptance": [
         "Chaque état reconnaissable sans légende",
@@ -356,12 +448,14 @@
       "status": "à faire",
       "data": {
         "progress": "0 à 1, avancement dans l'état courant (fait monter la structure)"
-      }
+      },
+      "production": "mixte",
+      "kit": "building-kit"
     },
     {
       "id": "survey-poles",
       "lot": "G2",
-      "order": 2,
+      "order": 3,
       "kind": "component",
       "category": "building",
       "name": "Les gabarits",
@@ -380,19 +474,20 @@
         "badge"
       ],
       "budget": {
-        "triangles": 800,
-        "materials": 2
+        "triangles": 1000,
+        "materials": 3
       },
       "acceptance": [
         "Reconnaissable comme des gabarits suisses"
       ],
       "status": "à faire",
-      "data": {}
+      "data": {},
+      "production": "code"
     },
     {
       "id": "shared-basement",
       "lot": "G2",
-      "order": 3,
+      "order": 4,
       "kind": "component",
       "category": "building",
       "name": "Le sous-sol commun",
@@ -411,8 +506,8 @@
         "badge"
       ],
       "budget": {
-        "triangles": 3000,
-        "materials": 4
+        "triangles": 10000,
+        "materials": 6
       },
       "acceptance": [
         "Compréhensible comme un ouvrage commun, pas comme un tunnel décoratif"
@@ -420,17 +515,56 @@
       "status": "à faire",
       "data": {
         "progress": "0 à 1, avancement de la galerie"
-      }
+      },
+      "production": "mixte",
+      "kit": "building-kit"
+    },
+    {
+      "id": "character-kit",
+      "lot": "G3",
+      "order": 1,
+      "kind": "kit",
+      "category": "kit",
+      "name": "Le personnage maître et son équipe",
+      "purpose": "Un squelette, une morphologie et des animations communes pour tous les agents.",
+      "description": "CHR_BASE_MASTER (1,70 m, 4,5 à 5 têtes), son armature RIG_CHR_BASE, les douze animations communes, les tenues par métier (architect, engineer, mason, electrician, plumber, painter, inspector, concierge, representative) et les accessoires (tablette, casque, outils). Bible, section 5.",
+      "assets": [
+        "CHR_BASE_MASTER_v001.glb"
+      ],
+      "animations": [
+        "ANM_CHR_IDLE",
+        "ANM_CHR_WALK",
+        "ANM_CHR_WORK",
+        "ANM_CHR_TYPING",
+        "ANM_CHR_INSPECT",
+        "ANM_CHR_READ",
+        "ANM_CHR_THINKING",
+        "ANM_CHR_WAITING",
+        "ANM_CHR_TALK",
+        "ANM_CHR_CELEBRATE",
+        "ANM_CHR_BLOCKED"
+      ],
+      "budget": {
+        "triangles": 8000,
+        "materials": 6
+      },
+      "production": "blender",
+      "acceptance": [
+        "Planche comparative des morphologies validée avant les variantes",
+        "Un seul squelette pour tous",
+        "Le portrait (G7) et le corps se correspondent"
+      ],
+      "status": "à faire"
     },
     {
       "id": "character",
       "lot": "G3",
-      "order": 1,
+      "order": 2,
       "kind": "component",
       "category": "character",
       "name": "Le personnage (un agent)",
       "purpose": "Montrer qui travaille, où, et dans quel état.",
-      "description": "Un petit personnage, couleur de son équipe, tenue de son métier. Les ingénieurs portent une tablette, les ouvriers leurs outils. GDC le déplace ; le composant anime la marche et le travail.",
+      "description": "Un personnage par agent, à partir du personnage maître : tenue et outil de son métier, couleur de son équipe. GDC le déplace ; le composant joue l'animation de l'état, sur place. blocked : posture d'arrêt devant la barrière ; unknown : immobile, matériaux grisés, lisible sans animation.",
       "params": {
         "trade": "architect | engineer | mason | electrician | plumber | painter | inspector | concierge | representative",
         "team": "architecture | studies | site | reception | operations"
@@ -439,9 +573,14 @@
         "idle",
         "walk",
         "work",
-        "wait",
+        "typing",
+        "inspect",
+        "read",
+        "thinking",
+        "waiting",
+        "talk",
+        "celebrate",
         "blocked",
-        "done",
         "unknown"
       ],
       "anchors": [
@@ -449,24 +588,40 @@
         "badge"
       ],
       "budget": {
-        "triangles": 1500,
-        "materials": 4
+        "triangles": 8000,
+        "materials": 6
       },
       "acceptance": [
         "Le métier se lit à la tenue et à l'outil",
-        "L'équipe se lit à la couleur",
-        "unknown : gris, pointillé, immobile",
-        "reducedMotion : aucune animation, posture lisible"
+        "L'équipe se lit à la couleur de la tenue",
+        "unknown : gris, immobile, lisible",
+        "reducedMotion : posture fixe et lisible pour chaque état",
+        "Animations sur place, sans déplacement non maîtrisé"
       ],
       "status": "à faire",
       "data": {
         "facing": "angle en radians, sens du regard ou de la marche"
-      }
+      },
+      "production": "blender",
+      "kit": "character-kit",
+      "animations": [
+        "ANM_CHR_IDLE",
+        "ANM_CHR_WALK",
+        "ANM_CHR_WORK",
+        "ANM_CHR_TYPING",
+        "ANM_CHR_INSPECT",
+        "ANM_CHR_READ",
+        "ANM_CHR_THINKING",
+        "ANM_CHR_WAITING",
+        "ANM_CHR_TALK",
+        "ANM_CHR_CELEBRATE",
+        "ANM_CHR_BLOCKED"
+      ]
     },
     {
       "id": "excavator",
       "lot": "G3",
-      "order": 2,
+      "order": 3,
       "kind": "component",
       "category": "machine",
       "name": "La pelleteuse",
@@ -481,19 +636,24 @@
         "label"
       ],
       "budget": {
-        "triangles": 3000,
-        "materials": 4
+        "triangles": 10000,
+        "materials": 6
       },
       "acceptance": [
         "Utilisable seule ou dans le bâtiment en état excavation"
       ],
       "status": "à faire",
-      "data": {}
+      "data": {},
+      "production": "blender",
+      "blender": "VEH_EXCAVATOR_A_v001",
+      "animations": [
+        "ANM_EXCAVATOR_A_DIGGING"
+      ]
     },
     {
       "id": "crane",
       "lot": "G3",
-      "order": 3,
+      "order": 4,
       "kind": "component",
       "category": "machine",
       "name": "La grue",
@@ -507,27 +667,38 @@
         "lifting"
       ],
       "anchors": [
-        "label"
+        "label",
+        "badge"
       ],
       "budget": {
-        "triangles": 2500,
-        "materials": 3
+        "triangles": 15000,
+        "materials": 8
       },
       "acceptance": [
-        "Ne masque pas les bâtiments voisins en vue isométrique"
+        "Exemple fourni : sert de modèle de composant produit par Blender",
+        "Grue reconnaissable à son mât, sa flèche et son crochet",
+        "lifting sans animation : charge levée, image fixe"
       ],
-      "status": "à faire",
-      "data": {}
+      "status": "exemple",
+      "data": {},
+      "production": "blender",
+      "blender": "VEH_TOWER_CRANE_A_v001",
+      "assets": [
+        "VEH_TOWER_CRANE_A_v001.glb"
+      ],
+      "animations": [
+        "ANM_TOWER_CRANE_A_LIFTING"
+      ]
     },
     {
       "id": "delivery-truck",
       "lot": "G3",
-      "order": 4,
+      "order": 5,
       "kind": "component",
       "category": "machine",
       "name": "Le camion de livraison",
       "purpose": "L'arrivée d'une nouvelle dépendance : un événement à surveiller pour la sécurité.",
-      "description": "Un camion de chantier ; en état arriving, il entre et décharge.",
+      "description": "Un camion de chantier ; en état arriving, GDC le déplace jusqu'à l'aire et le composant joue le déchargement.",
       "params": {},
       "states": [
         "idle",
@@ -538,14 +709,19 @@
         "badge"
       ],
       "budget": {
-        "triangles": 2500,
-        "materials": 4
+        "triangles": 10000,
+        "materials": 6
       },
       "acceptance": [
         "Lot plus tardif : utile quand le harnais enregistre les dépendances ajoutées"
       ],
       "status": "à faire",
-      "data": {}
+      "data": {},
+      "production": "blender",
+      "blender": "VEH_DELIVERY_TRUCK_A_v001",
+      "animations": [
+        "ANM_DELIVERY_TRUCK_A_UNLOAD"
+      ]
     },
     {
       "id": "building-interior",
@@ -567,8 +743,8 @@
         "room:*"
       ],
       "budget": {
-        "triangles": 15000,
-        "materials": 8
+        "triangles": 20000,
+        "materials": 10
       },
       "acceptance": [
         "Chaque pièce lisible et désignable (ancre room:n)",
@@ -578,7 +754,9 @@
       "status": "à faire",
       "data": {
         "rooms": "liste, une entrée par fiche : { state: study | waiting | construction | reception | done | defect, trades: [métiers présents] }"
-      }
+      },
+      "production": "mixte",
+      "kit": "building-kit"
     },
     {
       "id": "office-interior",
@@ -602,8 +780,8 @@
         "desk:*"
       ],
       "budget": {
-        "triangles": 10000,
-        "materials": 6
+        "triangles": 15000,
+        "materials": 8
       },
       "acceptance": [
         "Ambiance intellectuelle, distincte du chantier"
@@ -611,7 +789,9 @@
       "status": "à faire",
       "data": {
         "activeDesks": "nombre de postes occupés"
-      }
+      },
+      "production": "mixte",
+      "kit": "building-kit"
     },
     {
       "id": "selection-ring",
@@ -639,7 +819,8 @@
         "Exemple fourni : sert de modèle de composant animé"
       ],
       "status": "exemple",
-      "data": {}
+      "data": {},
+      "production": "code"
     },
     {
       "id": "decision-sign",
@@ -649,7 +830,7 @@
       "category": "signals",
       "name": "Le panneau de décision",
       "purpose": "Une décision t'attend à cet endroit.",
-      "description": "Un panneau de chantier rouge sur poteau ; une impulsion à son apparition, puis fixe.",
+      "description": "Un panneau de chantier rectangulaire sur poteau, avec une impulsion à son apparition, puis fixe. La couleur d'état n'est pas dans le modèle : le rouge est porté par le badge HTML posé sur l'ancre badge.",
       "params": {},
       "states": [
         "default"
@@ -658,14 +839,17 @@
         "badge"
       ],
       "budget": {
-        "triangles": 500,
-        "materials": 2
+        "triangles": 1000,
+        "materials": 3
       },
       "acceptance": [
-        "Le seul signal rouge de la scène"
+        "Reconnaissable à sa forme seule, sans couleur d'état",
+        "Distinct de tout autre objet de la scène à taille normale"
       ],
       "status": "à faire",
-      "data": {}
+      "data": {},
+      "production": "blender",
+      "blender": "PRP_DECISION_SIGN_A_v001"
     },
     {
       "id": "blocked-sign",
@@ -684,14 +868,17 @@
         "badge"
       ],
       "budget": {
-        "triangles": 600,
-        "materials": 2
+        "triangles": 1000,
+        "materials": 3
       },
       "acceptance": [
-        "Distincte du panneau de décision par la forme et la couleur"
+        "Reconnaissable à sa forme seule (barrière et triangle)",
+        "La couleur d'état est portée par le badge HTML"
       ],
       "status": "à faire",
-      "data": {}
+      "data": {},
+      "production": "blender",
+      "blender": "PRP_BLOCKED_BARRIER_A_v001"
     },
     {
       "id": "defect-sign",
@@ -710,14 +897,32 @@
         "badge"
       ],
       "budget": {
-        "triangles": 500,
-        "materials": 2
+        "triangles": 1000,
+        "materials": 3
       },
       "acceptance": [
-        "Lisible même sur un bâtiment fini et éclairé"
+        "Reconnaissable à sa forme seule",
+        "Se pose sur une façade ou dans une pièce"
       ],
       "status": "à faire",
-      "data": {}
+      "data": {},
+      "production": "blender",
+      "blender": "PRP_DEFECT_CONE_A_v001"
+    },
+    {
+      "id": "fonts",
+      "lot": "G6",
+      "order": 0,
+      "kind": "document",
+      "category": "interface",
+      "name": "Les polices",
+      "purpose": "Manrope pour les titres, Inter pour l'interface, une police à chasse fixe pour les références.",
+      "description": "Fichiers de police copiés dans le projet avec leur licence (OFL attendue, à vérifier) ; jamais chargés depuis Internet : le panneau fonctionne hors ligne.",
+      "acceptance": [
+        "Licence vérifiée et jointe",
+        "Aucune requête vers un service de polices"
+      ],
+      "status": "à faire"
     },
     {
       "id": "top-bar",
@@ -914,7 +1119,7 @@
       "category": "illustration",
       "name": "Les portraits des agents",
       "purpose": "Un visage par agent, le même sur le panneau, la page de la méthode et les rapports.",
-      "description": "Un portrait par prénom (Claire, Marc, Lina, David, Sarah, Noah, Tom, Paul, Iris, Yves, Emma, Robin, Julie, Olivier, Anne, Bernard, Fanny) ; états idle, talking, working ; SVG animé en CSS.",
+      "description": "Un portrait par prénom (Claire, Marc, Lina, David, Sarah, Noah, Tom, Paul, Iris, Yves, Emma, Robin, Julie, Olivier, Anne, Bernard, Fanny), rendu depuis le personnage du kit dans un cadrage commun (bible, section 5 : Agent Portrait) ; états idle, talking, working.",
       "acceptance": [
         "Cohérents avec les personnages 3D",
         "Reconnaissables en petit (48 pixels)"
@@ -924,7 +1129,8 @@
         "name": "prénom (nom du fichier SVG)",
         "state": "idle | talking | working (classe CSS)"
       },
-      "outputs": {}
+      "outputs": {},
+      "production": "blender"
     },
     {
       "id": "step-icons",
@@ -963,5 +1169,11 @@
       },
       "outputs": {}
     }
-  ]
+  ],
+  "bible": "WORKSITE 1.1 (docs/bible/bible-worksite.md)",
+  "productions": {
+    "code": "Géométrie générée par le code du composant (paramétrique, liée aux données)",
+    "blender": "Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres)",
+    "mixte": "Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces)"
+  }
 }

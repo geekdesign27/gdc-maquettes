@@ -1,0 +1,90 @@
+{
+  "commentaire": "Source unique des couleurs : lue par src/tokens.js (Three.js et interface) et par les scripts Blender (materiaux). Valeurs sRGB. Bible WORKSITE v1.1, section 3.",
+  "monde": {
+    "background": "#F8F8F6",
+    "surface": "#F1EFEB",
+    "concrete": "#D9DDE1",
+    "asphalt": "#6C6674",
+    "graphite": "#303841",
+    "construction": "#F5A000",
+    "brick": "#EF655F",
+    "tech": "#4D9DBD",
+    "landscape": "#83A78F"
+  },
+  "materiaux": {
+    "MAT_CONCRETE": {
+      "couleur": "concrete",
+      "rugosite": 0.85,
+      "metal": 0.0
+    },
+    "MAT_ASPHALT": {
+      "couleur": "asphalt",
+      "rugosite": 0.95,
+      "metal": 0.0
+    },
+    "MAT_PAINTED_METAL_ORANGE": {
+      "couleur": "construction",
+      "rugosite": 0.55,
+      "metal": 0.0
+    },
+    "MAT_PAINTED_METAL_GRAPHITE": {
+      "couleur": "graphite",
+      "rugosite": 0.55,
+      "metal": 0.0
+    },
+    "MAT_STEEL": {
+      "couleur": "concrete",
+      "rugosite": 0.35,
+      "metal": 0.6
+    },
+    "MAT_BRICK": {
+      "couleur": "brick",
+      "rugosite": 0.8,
+      "metal": 0.0
+    },
+    "MAT_TECH": {
+      "couleur": "tech",
+      "rugosite": 0.5,
+      "metal": 0.1
+    },
+    "MAT_LANDSCAPE": {
+      "couleur": "landscape",
+      "rugosite": 0.9,
+      "metal": 0.0
+    },
+    "MAT_SURFACE": {
+      "couleur": "surface",
+      "rugosite": 0.9,
+      "metal": 0.0
+    }
+  },
+  "interface": {
+    "light": {
+      "background": "#F8F8F6",
+      "surface": "#FFFFFF",
+      "ink": "#303841",
+      "muted": "#6C6674"
+    },
+    "dark": {
+      "background": "#1E2328",
+      "surface": "#262C33",
+      "ink": "#ECEBE6",
+      "muted": "#A3AAB2"
+    }
+  },
+  "etat": {
+    "active": "#2F8A5C",
+    "waiting": "#D8343F",
+    "blocked": "#C8761A",
+    "error": "#9C2A24",
+    "done": "#5B6470",
+    "unknown": "#8A929B"
+  },
+  "equipe": {
+    "architecture": "#3A5A9B",
+    "studies": "#6B4FA0",
+    "site": "#C9A227",
+    "reception": "#1F8A8A",
+    "operations": "#7A5C45"
+  }
+}

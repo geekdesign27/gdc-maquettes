@@ -10,12 +10,32 @@ Ce que GDC enverra aux composants. Le projet n'a pas à le programmer, mais chaq
 | Une fiche à l'étude | `survey-poles` dans la pièce ou l'aile prévue | default |
 | Une fiche en construction | pièce de `building-interior` | construction |
 | Un lot en cours | `character` des développeurs, dans la pièce de la fiche | work, blocked |
-| Une décision attendue | `decision-sign` et `client-office` | waiting |
+| Une décision attendue | `decision-sign` (forme) et `client-office`, badge rouge sur l'ancre | waiting |
 | Une demande au carnet | caisse du `parking` | default |
-| Un agent | `character` | idle, walk, work, wait, blocked, done, unknown |
+| Un agent | `character` | idle, walk, work, typing, inspect, read, thinking, waiting, talk, celebrate, blocked, unknown |
 | Une preuve enregistrée | impulsion du `control-office` | active |
 | Une fusion vers dev | `crane` près du bâtiment | lifting |
 | Un défaut ouvert | `defect-sign` sur la pièce | default |
+
+## Les lieux et les familles de la bible
+
+Voir la bible, 17.2 : bureau d'architecte (`BLD_ARCHITECT`), bureau d'études (`BLD_ENGINEERING`), bureau du client (`BLD_CLIENT`), bureau de contrôle (`BLD_QA`), baraque du conducteur de travaux (`BLD_COORDINATION`), le chantier et ses bâtiments d'application (`BLD_DEVELOPMENT`), l'aire de réception (`BLD_DELIVERY`).
+
+## Ce que fait un agent et son animation
+
+| Dans le journal | État de `character` |
+|---|---|
+| Se déplace vers une fiche | walk |
+| Écrit du code ou un document | typing |
+| Travaille sur un lot (chantier) | work |
+| Relit, contrôle | inspect |
+| Lit une pièce du dossier | read |
+| Réfléchit, prépare un plan | thinking |
+| Attend une décision ou un autre agent | waiting |
+| Pose une question, présente | talk |
+| Lot ou fiche prouvé | celebrate (une fois, puis idle) |
+| Bloqué | blocked |
+| Rien d'enregistré | unknown |
 
 ## Étapes d'une application et états du bâtiment
 
@@ -25,6 +45,7 @@ Ce que GDC enverra aux composants. Le projet n'a pas à le programmer, mais chaq
 | Première fiche aux plans d'exécution | excavation |
 | Feu vert donné, préparation | foundations |
 | Construction | structure (progress = lots terminés sur lots) |
+| Construction, gros œuvre terminé | envelope |
 | Réception en cours | inspection |
 | Première fiche en production, d'autres en cours | finishing |
 | Toutes les fiches en production | completed |
