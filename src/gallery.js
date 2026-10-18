@@ -10,6 +10,7 @@ import { makeContext } from './tokens.js';
 import { checkMeta, checkInstance, defaultParams, measure, sampleData } from './contract.js';
 import { components as byId, chargeur } from './library.js';
 import * as etalon from './etalon.js';
+import * as kit from './kit.js';
 
 const charge = chargeur({ GLTFLoader, SkeletonUtils });
 const entries = catalogue.items.filter((i) => i.kind === 'component');
@@ -80,6 +81,15 @@ function buildList() {
   b0.dataset.id = etalon.ETALON_ID;
   b0.addEventListener('click', () => select(etalon.ETALON_ID));
   list.append(h0, b0);
+  // Les kits : leur batiment de demonstration, assemble depuis le GLB du kit (critere « s'assemble sans retouche »).
+  for (const { entry } of kit.demonstrations(catalogue)) {
+    const b = document.createElement('button');
+    b.textContent = `${entry.name} : démonstration`;
+    b.title = `${entry.purpose} Bâtiment de démonstration assemblé depuis le kit.`;
+    b.dataset.id = kit.PREFIXE_ID + entry.id;
+    b.addEventListener('click', () => select(b.dataset.id));
+    list.append(b);
+  }
   for (const lot of catalogue.lots) {
     const items = entries.filter((e) => e.lot === lot.id).sort((a, b) => a.order - b.order);
     if (!items.length) continue;
@@ -101,6 +111,13 @@ function buildList() {
 async function instance(id, state) {
   if (id === etalon.ETALON_ID) {
     return { inst: etalon.create(THREE, makeContext(options)), state: 'default', entry: { id, name: 'Cube étalon' }, mod: etalon };
+  }
+  if (id.startsWith(kit.PREFIXE_ID)) {
+    const d = kit.demonstrations(catalogue).find((x) => kit.PREFIXE_ID + x.entry.id === id);
+    const meta = kit.metaKit(d.entry);
+    await charge.prepare(meta);
+    const inst = kit.create(THREE, d.entry, d.plan, await charge.assetsPour(meta), makeContext(options));
+    return { inst, state: 'default', entry: { ...d.entry, id, name: `${d.entry.name} : démonstration` }, mod: { meta }, kit: d.entry };
   }
   const mod = byId[id];
   const entry = entries.find((e) => e.id === id);
@@ -166,6 +183,7 @@ function buildStates() {
 async function report() {
   const { mod, entry } = current;
   if (mod === etalon) return; // le compte rendu de l'etalon est sa mesure, ecrite apres chaque rendu (rapportEtalon)
+  if (current.kit) return rapportKit();
   const m = measure(current.inst.root);
   const problems = [...checkMeta(mod.meta, entry)];
   if (!problems.length) problems.push(...checkInstance(THREE, mod, entry, makeContext(options, await charge.assetsPour(mod.meta)), await charge.partagees(mod.meta)));
@@ -206,6 +224,19 @@ function drawAnchors() {
     tag.style.top = `${((1 - tmp.y) / 2) * h}px`;
     layer.append(tag);
   }
+}
+
+// La demonstration d'un kit : ce que le batiment assemble mesure, et si toutes les pieces du plan sont dans le GLB.
+// Le budget de la fiche porte sur le GLB du kit (npm run check) ; la demonstration est indicative.
+function rapportKit() {
+  const m = measure(current.inst.root);
+  const { manquantes, pieces } = current.inst;
+  const el = $('report');
+  el.replaceChildren(`${current.entry.name} · ${pieces} pièces posées · ${m.triangles} triangles · ${m.materials} matériaux (socle compris) · `);
+  const verdict = document.createElement('span');
+  verdict.className = manquantes.length ? 'ko' : 'ok';
+  verdict.textContent = manquantes.length ? `pièces absentes du GLB : ${manquantes.join(', ')}` : 's\u2019assemble sans retouche';
+  el.append(verdict);
 }
 
 // La mesure du cube etalon (bible, 18.1) : valeur affichee de chaque face, rapportee a la couleur de palette pour le
@@ -266,6 +297,6 @@ buildList();
 resize();
 const [hashId, hashState, hashPlanche] = decodeURIComponent(location.hash.slice(1)).split('/');
 if (hashPlanche === 'planche') { options.planche = true; $('planche').setAttribute('aria-pressed', 'true'); resize(); }
-const start = byId[hashId] || hashId === etalon.ETALON_ID ? hashId : entries.find((e) => byId[e.id])?.id;
+const start = byId[hashId] || hashId === etalon.ETALON_ID || hashId?.startsWith(kit.PREFIXE_ID) ? hashId : entries.find((e) => byId[e.id])?.id;
 if (start) await select(start, hashState);
 loop();

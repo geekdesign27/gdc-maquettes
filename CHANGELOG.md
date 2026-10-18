@@ -12,6 +12,9 @@
 - Équipe « site » en #EBCB2E (jaune franc), plus loin de l'orange des engins (bible, 18.8).
 - Catalogue : trois éléments séparés au lot G1 (`site-fence`, `site-container`, `waste-skip`) ; la bibliothèque de matériaux est livrée.
 - La grue est reconstruite (palette et bible 1.2).
+- Kit de bâtiment `BLD_KIT_A_v001`, premier étalon (validé sur planche par Pierre-Alain le 18 octobre 2026) : 11 pièces sur la trame de 3 m (poteau, dalle, rive et angle de dalle, murs en corail et en crépi, fenêtre, porte, garde-corps, échafaudage), 1 744 triangles, 8 matériaux. Restent à faire avant « livré » : fondations, toitures, escaliers, enseignes.
+- Outils Blender : `chanfreine` (faces de contact vives) et `perce` (baies) ; l'atelier et `construit.py` montent et écrivent la démonstration d'un kit. La grue est reconstruite (GLB identique, empreinte des outils changée).
+- Galerie : entrée « Le kit de bâtiment : démonstration », assemblée depuis le GLB du kit ; ombre du soleil avec `normalBias` 0,02 (`src/lumiere.json`) contre l'acné d'ombre. Le cube étalon reste conforme (218, 186, 142).
 
 ## 0.2.0, 18 octobre 2026
 

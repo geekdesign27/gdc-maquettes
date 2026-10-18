@@ -1,0 +1,13 @@
+{
+  "nom": "BLD_KIT_A_v001",
+  "id": "building-kit",
+  "bible": "WORKSITE 1.2",
+  "blender": "5.3.0 Beta",
+  "script": "blender/assets/building-kit.py",
+  "script_sha256": "c1ec95ed43c5f326e8812d42133b23d1147e0b32eebb176ac4384588e7326247",
+  "commun_sha256": "c91a5b9c9eed2fe8cf15fde3511fca2212641882df22961105fd5099f1082757",
+  "palette_sha256": "4619544e028128ad0bd6ad6ffeb61ebdd1e746c7f537f5325be908690503b79d",
+  "glb_sha256": "8c2d530244fff21101601b0d88d57bba3dc8f9f8c43eff989251f2830ce5a90d",
+  "animations": [],
+  "statut": "a valider"
+}

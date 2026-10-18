@@ -1,0 +1,855 @@
+{
+ "prefixe": "BLD_KIT_A_",
+ "socle": {
+  "taille": [
+   11.0,
+   10.0,
+   0.6
+  ],
+  "centre": [
+   0.5,
+   0.0
+  ],
+  "materiau": "MAT_EARTH",
+  "chanfrein": 0.1
+ },
+ "pieces": [
+  {
+   "piece": "BLD_KIT_A_SLAB",
+   "position": [
+    -1.5,
+    -1.5,
+    0.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB",
+   "position": [
+    -1.5,
+    1.5,
+    0.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB",
+   "position": [
+    1.5,
+    -1.5,
+    0.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB",
+   "position": [
+    1.5,
+    1.5,
+    0.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    -1.5,
+    -3.0,
+    0.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    1.5,
+    -3.0,
+    0.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    3.0,
+    -1.5,
+    0.0
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    3.0,
+    1.5,
+    0.0
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    1.5,
+    3.0,
+    0.0
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    -1.5,
+    3.0,
+    0.0
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    -3.0,
+    1.5,
+    0.0
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    -3.0,
+    -1.5,
+    0.0
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_CORNER",
+   "position": [
+    -3.0,
+    -3.0,
+    0.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_CORNER",
+   "position": [
+    3.0,
+    -3.0,
+    0.0
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_CORNER",
+   "position": [
+    3.0,
+    3.0,
+    0.0
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_CORNER",
+   "position": [
+    -3.0,
+    3.0,
+    0.0
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    -3.0,
+    -3.0,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    -3.0,
+    0.0,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    -3.0,
+    3.0,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    0.0,
+    -3.0,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    0.0,
+    0.0,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    0.0,
+    3.0,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    3.0,
+    -3.0,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    3.0,
+    0.0,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    3.0,
+    3.0,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_WALL_RENDER_DOOR",
+   "position": [
+    -1.5,
+    -3.0,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_WALL_RENDER_WINDOW",
+   "position": [
+    1.5,
+    -3.0,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_WALL_RENDER_WINDOW",
+   "position": [
+    3.0,
+    -1.5,
+    0.3
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_WALL_RENDER",
+   "position": [
+    3.0,
+    1.5,
+    0.3
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_WALL_RENDER",
+   "position": [
+    1.5,
+    3.0,
+    0.3
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_WALL_RENDER",
+   "position": [
+    -1.5,
+    3.0,
+    0.3
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_WALL_RENDER",
+   "position": [
+    -3.0,
+    1.5,
+    0.3
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_WALL_RENDER_WINDOW",
+   "position": [
+    -3.0,
+    -1.5,
+    0.3
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB",
+   "position": [
+    -1.5,
+    -1.5,
+    3.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB",
+   "position": [
+    -1.5,
+    1.5,
+    3.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB",
+   "position": [
+    1.5,
+    -1.5,
+    3.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB",
+   "position": [
+    1.5,
+    1.5,
+    3.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    -1.5,
+    -3.0,
+    3.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    1.5,
+    -3.0,
+    3.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    3.0,
+    -1.5,
+    3.0
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    3.0,
+    1.5,
+    3.0
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    1.5,
+    3.0,
+    3.0
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    -1.5,
+    3.0,
+    3.0
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    -3.0,
+    1.5,
+    3.0
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    -3.0,
+    -1.5,
+    3.0
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_CORNER",
+   "position": [
+    -3.0,
+    -3.0,
+    3.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_CORNER",
+   "position": [
+    3.0,
+    -3.0,
+    3.0
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_CORNER",
+   "position": [
+    3.0,
+    3.0,
+    3.0
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_CORNER",
+   "position": [
+    -3.0,
+    3.0,
+    3.0
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    -3.0,
+    -3.0,
+    3.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    -3.0,
+    0.0,
+    3.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    -3.0,
+    3.0,
+    3.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    0.0,
+    -3.0,
+    3.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    0.0,
+    0.0,
+    3.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    0.0,
+    3.0,
+    3.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    3.0,
+    -3.0,
+    3.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    3.0,
+    0.0,
+    3.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_COLUMN",
+   "position": [
+    3.0,
+    3.0,
+    3.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_WALL_BRICK_WINDOW",
+   "position": [
+    -1.5,
+    -3.0,
+    3.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_GUARDRAIL",
+   "position": [
+    1.5,
+    -3.0,
+    3.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_WALL_BRICK",
+   "position": [
+    3.0,
+    -1.5,
+    3.3
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_WALL_BRICK",
+   "position": [
+    3.0,
+    1.5,
+    3.3
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_WALL_BRICK",
+   "position": [
+    1.5,
+    3.0,
+    3.3
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_WALL_BRICK",
+   "position": [
+    -1.5,
+    3.0,
+    3.3
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_WALL_BRICK",
+   "position": [
+    -3.0,
+    1.5,
+    3.3
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_WALL_BRICK_WINDOW",
+   "position": [
+    -3.0,
+    -1.5,
+    3.3
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB",
+   "position": [
+    -1.5,
+    -1.5,
+    6.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB",
+   "position": [
+    -1.5,
+    1.5,
+    6.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB",
+   "position": [
+    1.5,
+    -1.5,
+    6.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB",
+   "position": [
+    1.5,
+    1.5,
+    6.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    -1.5,
+    -3.0,
+    6.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    1.5,
+    -3.0,
+    6.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    3.0,
+    -1.5,
+    6.0
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    3.0,
+    1.5,
+    6.0
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    1.5,
+    3.0,
+    6.0
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    -1.5,
+    3.0,
+    6.0
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    -3.0,
+    1.5,
+    6.0
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_EDGE",
+   "position": [
+    -3.0,
+    -1.5,
+    6.0
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_CORNER",
+   "position": [
+    -3.0,
+    -3.0,
+    6.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_CORNER",
+   "position": [
+    3.0,
+    -3.0,
+    6.0
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_CORNER",
+   "position": [
+    3.0,
+    3.0,
+    6.0
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_SLAB_CORNER",
+   "position": [
+    -3.0,
+    3.0,
+    6.0
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_GUARDRAIL",
+   "position": [
+    -1.5,
+    -3.0,
+    6.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_GUARDRAIL",
+   "position": [
+    1.5,
+    -3.0,
+    6.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_GUARDRAIL",
+   "position": [
+    3.0,
+    -1.5,
+    6.3
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_GUARDRAIL",
+   "position": [
+    3.0,
+    1.5,
+    6.3
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_GUARDRAIL",
+   "position": [
+    1.5,
+    3.0,
+    6.3
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_GUARDRAIL",
+   "position": [
+    -1.5,
+    3.0,
+    6.3
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "BLD_KIT_A_GUARDRAIL",
+   "position": [
+    -3.0,
+    1.5,
+    6.3
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_GUARDRAIL",
+   "position": [
+    -3.0,
+    -1.5,
+    6.3
+   ],
+   "rotation": 270
+  },
+  {
+   "piece": "BLD_KIT_A_SCAFFOLD",
+   "position": [
+    3.0,
+    -1.5,
+    0.0
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_SCAFFOLD",
+   "position": [
+    3.0,
+    -1.5,
+    3.0
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_GUARDRAIL",
+   "position": [
+    3.96,
+    -1.5,
+    6.0
+   ],
+   "rotation": 90
+  }
+ ]
+}
