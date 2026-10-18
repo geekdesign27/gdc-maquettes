@@ -3,6 +3,7 @@
   "camera": { "position": [20, 20, 20], "cible": [0, 0, 0] },
   "ciel": { "couleur": "#FFFFFF", "sol": "#8A8678", "intensite": 1.95 },
   "soleil": { "couleur": "#FFFFFF", "intensite": 1.58, "position": [-5.4, 18, 14.8] },
+  "ombre": { "commentaire": "Galerie seulement : decale la lecture de la carte d'ombre le long de la normale (en metres), contre l'acne d'ombre (rayures sur les grandes faces planes). Sans effet sur les faces eclairees.", "normalBias": 0.02 },
   "cibles": {
     "commentaire": "Le cube etalon en MAT_CONCRETE : valeur de chaque face rapportee a celle du dessus ; le dessus vaut la couleur de palette a 3 % pres.",
     "tolerance": 0.03,

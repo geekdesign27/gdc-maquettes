@@ -34,6 +34,7 @@ scene.add(new THREE.HemisphereLight(lumiere.ciel.couleur, lumiere.ciel.sol, lumi
 const sun = new THREE.DirectionalLight(lumiere.soleil.couleur, lumiere.soleil.intensite);
 sun.position.set(...lumiere.soleil.position);
 sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.normalBias = lumiere.ombre.normalBias;
 Object.assign(sun.shadow.camera, { left: -30, right: 30, top: 30, bottom: -30 });
 scene.add(sun);
 const grid = new THREE.GridHelper(60, 60, 0x999999, 0xcccccc);
