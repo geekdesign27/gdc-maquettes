@@ -500,7 +500,7 @@
         "Chaque pièce est un nœud nommé BLD_KIT_A_<PIECE>",
         "Un bâtiment de démonstration s'assemble sans retouche"
       ],
-      "status": "à faire"
+      "status": "livré"
     },
     {
       "id": "building",
