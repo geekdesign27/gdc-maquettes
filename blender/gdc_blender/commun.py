@@ -52,8 +52,9 @@ def materiau(nom):
     return m
 
 
-def boite(nom, taille, position=(0, 0, 0), mat=None, parent=None, chanfrein=0.0):
-    """Pave de dimensions taille=(x, y, z), pose par sa base : position est le centre de la face inferieure."""
+def boite(nom, taille, position=(0, 0, 0), mat=None, parent=None, chanfrein=0.0, segments=1):
+    """Pave de dimensions taille=(x, y, z), pose par sa base : position est le centre de la face inferieure.
+    segments > 1 arrondit le chanfrein (rendu 3D douce : il accroche la lumiere ; a lisser ensuite)."""
     bpy.ops.mesh.primitive_cube_add(size=1)
     o = bpy.context.active_object
     o.name = nom
@@ -64,7 +65,7 @@ def boite(nom, taille, position=(0, 0, 0), mat=None, parent=None, chanfrein=0.0)
     if chanfrein > 0:
         b = o.modifiers.new("chanfrein", "BEVEL")
         b.width = chanfrein
-        b.segments = 1
+        b.segments = segments
         bpy.context.view_layer.objects.active = o
         bpy.ops.object.modifier_apply(modifier=b.name)
     if mat:
@@ -86,6 +87,44 @@ def cylindre(nom, rayon, hauteur, position=(0, 0, 0), mat=None, parent=None, cot
     if parent:
         rattache(o, parent)
     return o
+
+
+def lisse(o, angle=30):
+    """Normales lissees sous l'angle donne (degres), aretes vives au-dela : les chanfreins arrondis
+    accrochent la lumiere sans que les grandes faces se deforment. L'export glTF garde ces normales."""
+    bpy.ops.object.select_all(action="DESELECT")
+    o.select_set(True)
+    bpy.context.view_layer.objects.active = o
+    bpy.ops.object.shade_smooth_by_angle(angle=math.radians(angle))
+    return o
+
+
+def instance(nom, source, decalage=(0, 0, 0), rotation_z=0.0, parent=None):
+    """Copie qui partage la geometrie et les materiaux de la source : l'export glTF ne l'ecrit qu'une fois.
+    decalage est mesure depuis la position de la source ; rotation_z en degres."""
+    o = bpy.data.objects.new(nom, source.data)
+    bpy.context.scene.collection.objects.link(o)
+    o.location = (source.location[0] + decalage[0], source.location[1] + decalage[1], source.location[2] + decalage[2])
+    o.rotation_euler[2] = math.radians(rotation_z)
+    if parent:
+        rattache(o, parent)
+    return o
+
+
+def fusionne(nom, objets):
+    """Fusionne des pieces fixes en un seul objet (moins de noeuds, moins d'appels de dessin).
+    Jamais une piece animee ni un pivot : ils doivent rester separes. Le premier objet donne l'origine et le parent."""
+    actif = objets[0]
+    if actif.data.users > 1:
+        actif.data = actif.data.copy()  # ne pas modifier une geometrie partagee par des instances
+    bpy.ops.object.select_all(action="DESELECT")
+    for o in objets:
+        o.select_set(True)
+    bpy.context.view_layer.objects.active = actif
+    bpy.ops.object.join()
+    actif.name = nom
+    actif.data.name = nom
+    return actif
 
 
 def pivot(nom, position=(0, 0, 0), parent=None):

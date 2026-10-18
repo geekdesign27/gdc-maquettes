@@ -1,0 +1,6 @@
+{
+  "commentaire": "Source unique de la camera et de la lumiere de la scene de reference : lue par la galerie (src/gallery.js) et par le studio Blender (blender/atelier.py). Coordonnees Three.js (Y vertical). Separee de palette.json pour qu'un reglage de lumiere n'oblige pas a reconstruire les modeles. Recette provisoire : elle sera fixee par la fiche DA 1.2 (rendu 3D douce).",
+  "camera": { "position": [20, 20, 20], "cible": [0, 0, 0] },
+  "ciel": { "couleur": "#FFFFFF", "sol": "#8A8678", "intensite": 1.6 },
+  "soleil": { "couleur": "#FFFFFF", "intensite": 2.4, "position": [10, 18, 8] }
+}

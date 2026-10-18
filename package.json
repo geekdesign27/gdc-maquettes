@@ -9,7 +9,8 @@
     "check": "node scripts/check-components.mjs",
     "catalogue": "node scripts/build-catalogue-doc.mjs",
     "build": "vite build",
-    "blender": "node scripts/blender.mjs"
+    "blender": "node scripts/blender.mjs",
+    "atelier": "node scripts/blender.mjs --atelier"
   },
   "devDependencies": {
     "three": "0.186.1",

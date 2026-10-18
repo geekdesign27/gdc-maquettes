@@ -3,3 +3,5 @@ dist/
 __pycache__/
 *.blend
 *.blend1
+blender/.captures/
+.DS_Store

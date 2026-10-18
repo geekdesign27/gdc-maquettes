@@ -1,4 +1,5 @@
-// Lance un script Blender de l'atelier : npm run blender -- crane [autre-id ...]
+// Lance un script Blender de l'atelier : npm run blender -- crane [autre-id ...] (construit et exporte le GLB)
+// ou npm run atelier -- crane (construit sans exporter et rend les captures dans blender/.captures/<id>/).
 // Cherche Blender dans BLENDER, puis le PATH, puis les emplacements habituels ; a defaut, BLENDER_PYTHON
 // (un Python qui a le module bpy). Blender tourne sans fenetre, avec ses reglages d'usine.
 import { spawnSync } from 'node:child_process';
@@ -7,8 +8,9 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const ids = process.argv.slice(2);
-if (!ids.length) { console.error('usage : npm run blender -- <id du catalogue> [...]'); process.exit(2); }
+const atelier = process.argv[2] === '--atelier';
+const ids = process.argv.slice(atelier ? 3 : 2);
+if (!ids.length) { console.error(`usage : npm run ${atelier ? 'atelier' : 'blender'} -- <id du catalogue> [...]`); process.exit(2); }
 
 function trouveBlender() {
   if (process.env.BLENDER) return process.env.BLENDER;
@@ -24,7 +26,7 @@ function trouveBlender() {
   return null;
 }
 
-const script = join(ROOT, 'blender', 'construit.py');
+const script = join(ROOT, 'blender', atelier ? 'atelier.py' : 'construit.py');
 const blender = trouveBlender();
 let r;
 if (blender) r = spawnSync(blender, ['-b', '--factory-startup', '--python-exit-code', '1', '-P', script, '--', ...ids], { stdio: 'inherit', cwd: ROOT });

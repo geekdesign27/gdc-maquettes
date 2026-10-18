@@ -5,6 +5,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils.js';
 import catalogue from '../catalogue.json' with { type: 'json' };
+import lumiere from './lumiere.json' with { type: 'json' };
 import { makeContext } from './tokens.js';
 import { checkMeta, checkInstance, defaultParams, measure, sampleData } from './contract.js';
 import { components as byId, chargeur } from './library.js';
@@ -18,19 +19,19 @@ let current = { entry: null, inst: null, state: null, voisins: [] };
 let dirty = true;
 
 // La scene de reference : camera orthographique a 45 degres et 35 degres d'elevation (bible, section 8),
-// lumiere directionnelle douce, ambiance moderee, rendu a la demande.
+// lumiere directionnelle douce, ambiance moderee, rendu a la demande. Reglages : src/lumiere.json (partages avec le studio Blender).
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 stage.prepend(renderer.domElement);
 const scene = new THREE.Scene();
 const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 500);
-camera.position.set(20, 20, 20);
-camera.lookAt(0, 0, 0);
+camera.position.set(...lumiere.camera.position);
+camera.lookAt(...lumiere.camera.cible);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.addEventListener('change', () => { dirty = true; });
-scene.add(new THREE.HemisphereLight(0xffffff, 0x8a8678, 1.6));
-const sun = new THREE.DirectionalLight(0xffffff, 2.4);
-sun.position.set(10, 18, 8);
+scene.add(new THREE.HemisphereLight(lumiere.ciel.couleur, lumiere.ciel.sol, lumiere.ciel.intensite));
+const sun = new THREE.DirectionalLight(lumiere.soleil.couleur, lumiere.soleil.intensite);
+sun.position.set(...lumiere.soleil.position);
 sun.shadow.mapSize.set(2048, 2048);
 Object.assign(sun.shadow.camera, { left: -30, right: 30, top: 30, bottom: -30 });
 scene.add(sun);

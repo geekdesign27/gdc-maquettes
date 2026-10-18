@@ -17,16 +17,22 @@ from gdc_blender import commun as c  # noqa: E402
 import bpy  # noqa: E402
 
 
+def charge_asset(ident):
+    """Le module du script blender/assets/<ident>.py, relu a chaque appel (l'atelier s'en sert aussi)."""
+    script = ICI / "assets" / (ident + ".py")
+    if not script.exists():
+        raise SystemExit("aucun script pour " + ident + " : blender/assets/" + ident + ".py")
+    spec = importlib.util.spec_from_file_location("asset_" + ident.replace("-", "_"), script)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return script, mod
+
+
 def main(ids):
     if not ids:
         raise SystemExit("asset attendu : construit.py -- <id du catalogue>")
     for ident in ids:
-        script = ICI / "assets" / (ident + ".py")
-        if not script.exists():
-            raise SystemExit("aucun script pour " + ident + " : blender/assets/" + ident + ".py")
-        spec = importlib.util.spec_from_file_location("asset_" + ident.replace("-", "_"), script)
-        mod = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(mod)
+        script, mod = charge_asset(ident)
         a = mod.ASSET
         c.scene_vide()
         infos = mod.construit(c) or {}
