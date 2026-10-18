@@ -1,6 +1,6 @@
 // Couleurs partagees par tous les composants, lues dans src/palette.json (la meme source que les scripts Blender).
 // Les couleurs d'etat ne servent qu'aux badges et a l'interface HTML : elles ne colorent jamais les materiaux du monde
-// (bible WORKSITE 1.1). Les couleurs d'equipe habillent les tenues des personnages.
+// (bible WORKSITE 1.2). Les couleurs d'equipe habillent les tenues des personnages.
 import palette from './palette.json' with { type: 'json' };
 
 export const tokens = {

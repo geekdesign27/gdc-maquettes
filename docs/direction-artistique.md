@@ -1,19 +1,20 @@
 # La direction artistique
 
-La règle graphique est la **bible WORKSITE** (`docs/bible/bible-worksite.md`, version 1.1). Ce fichier dit comment on s'en sert et comment elle évolue.
+La règle graphique est la **bible WORKSITE** (`docs/bible/bible-worksite.md`, version 1.2). Ce fichier dit comment on s'en sert et comment elle évolue.
 
 ## Ce qui est fixé
 
 - L'univers, le style, les principes, la palette, les matériaux, les personnages, les bâtiments, les engins, la caméra, les conventions Blender, les budgets et les contrôles : la bible.
 - Les couleurs et les matériaux, en une seule source : `src/palette.json`, lue par les scripts Blender et par Three.js.
 - Les couleurs d'état : dans l'interface seulement (bible, 17.3 ; `docs/signaletique.md`).
-- La caméra et la lumière de la scène de référence : `src/lumiere.json`, lues par la galerie et par le studio Blender (`blender/atelier.py`), pour que l'aperçu Blender et la galerie se ressemblent.
+- La caméra et la lumière de la scène de référence : `src/lumiere.json`, lues par la galerie et par le studio Blender (`blender/atelier.py`), pour que l'aperçu Blender et la galerie se ressemblent. Le cube étalon vérifie qu'ils se ressemblent (bible, 18.1 et 18.6).
+- Les chiffres de production (lumière, cotes, chanfreins, taille minimale d'un détail, matériaux, socle) : la fiche DA de production, section 18 de la bible.
 
 ## Le lot G0, dans l'ordre
 
 1. **Le mood board** : les deux références maîtresses (REF_ENV_001, REF_CHR_001) et les autres images dans `moodboard/`, une ligne chacune dans `moodboard/notes.md`.
-2. **La bibliothèque de matériaux** : compléter `src/palette.json` (bois, caoutchouc, vitrages, métaux, tissus, peaux, cheveux) au fil des premiers modèles validés.
-3. **La scène de référence et la planche comparative** : dans la galerie, bouton « Planche » ; chaque nouvel élément est vu à côté de deux modèles de référence, même caméra, même lumière.
+2. **La bibliothèque de matériaux** : `src/palette.json`, complétée le 18 octobre 2026 (bible, 18.4) ; un matériau nouveau s'y ajoute par proposition validée.
+3. **La scène de référence et la planche comparative** : dans la galerie, le cube étalon et le nuancier, les bascules « Silhouette » et « Niveaux de gris », et le bouton « Planche » ; chaque nouvel élément est vu à côté de deux modèles de référence, même caméra, même lumière.
 
 ## Décisions de Pierre-Alain
 
@@ -22,6 +23,10 @@ La règle graphique est la **bible WORKSITE** (`docs/bible/bible-worksite.md`, v
 | 18 octobre 2026 | Rendu **3D douce** pour le monde : ombrage dégradé et reflets satinés discrets, plutôt que l'aplat vectoriel de REF_ENV. REF_ENV reste la référence des formes, des couleurs et de la composition. | La fiche DA de production (amendement 1.2) fixe la recette de lumière (`src/lumiere.json`), les rugosités et les chanfreins arrondis. |
 | 18 octobre 2026 | Chaque lieu est posé sur un **socle façon maquette** : dalle épaisse couleur terre, bord visible (REF_ENV). | Une couleur terre s'ajoute à la palette, avec la fiche 1.2. |
 | 18 octobre 2026 | Les modèles officiels sont exportés avec **Blender 5.3.0 Beta**. | `blender/README.md` ; `asset.json` garde la version de chaque GLB. |
+| 18 octobre 2026 | **Fiche DA de production**, bible 1.2 : avant éclairé, côtés à 0,85 et 0,65 du dessus ; socle de 0,60 m en terre #BF8B65 ; étage de 3 m, portes et fenêtres × 1,2 ; chanfreins C1 à C3 ; détail minimal 0,15 m ; bibliothèque de 30 matériaux, verre opaque, métal 0,2 au plus. | Bible, section 18 ; `src/lumiere.json` ; `src/palette.json` ; la grue est reconstruite. |
+| 18 octobre 2026 | **Affichage de référence** : un portable de 13 à 14 pouces est le cas prioritaire ; un grand écran ne fait que mieux. | Bible, 18.7 : 25 px par mètre en vue générale (mesuré dans la galerie), d'où le détail minimal et `PX_PAR_METRE` de l'atelier. |
+| 18 octobre 2026 | **Ancrage** : un chantier de Suisse romande reconnaissable (bâtiments, engins, barrières, équipements de protection, casques), crédible pour un œil SST. | Bible, 18.7 et 18.8. |
+| 18 octobre 2026 | **Le chantier romand** : casques de la couleur d'équipe (choix de DA, aucun code suisse par fonction) ; grue orange #F5A000 ; pelle classique sur chenilles ; clôture périphérique, conteneurs modulaires, bennes de tri, gilet orange fluo à bandes claires. Écartés : toits végétalisés, panneau STOP Suva, pelle araignée. | Bible, 18.8 : la clôture est en treillis gris sur plots béton, sans orange, pour que la barrière de blocage garde son sens. Gilet validé en #FF6A13 (`MAT_FABRIC_HIVIS`). Clôture, conteneur et benne de tri entrent au catalogue comme éléments séparés (`site-fence`, `site-container`, `waste-skip`) : le projet définit les éléments, pas leur agencement. Reste à valider : la teinte plus jaune de l'équipe « site ». |
 
 ## Faire évoluer la bible
 

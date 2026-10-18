@@ -28,7 +28,7 @@ Node 20 ou plus récent, et Blender pour les modèles 3D (voir `blender/README.m
 ## Par où commencer
 
 1. **Crée ton dépôt** : copie ce dossier dans un dépôt à part (par exemple `gdc-maquettes`), puis `npm install` et `npm run dev`. La galerie s'ouvre avec les deux composants d'exemple.
-2. **Le lot G0 d'abord, ensemble** : la bible WORKSITE 1.1 est fixée ; dépose les deux références maîtresses (REF_ENV_001, REF_CHR_001) et tes autres images dans `moodboard/`, une ligne chacune dans `moodboard/notes.md`. Puis la bibliothèque de matériaux et la planche comparative (`docs/direction-artistique.md`).
+2. **Le lot G0 d'abord, ensemble** : la bible WORKSITE 1.2 est fixée ; dépose les deux références maîtresses (REF_ENV_001, REF_CHR_001) et tes autres images dans `moodboard/`, une ligne chacune dans `moodboard/notes.md`. Puis la bibliothèque de matériaux et la planche comparative (`docs/direction-artistique.md`).
 3. **Puis les lots dans l'ordre** : G1 (terrain et lieux), G2 (bâtiments), G3 (personnages et engins), G4 (intérieurs), G5 (signaux), G6 (interface), G7 (illustrations). L'ordre et le détail de chaque élément sont dans `docs/catalogue.md`.
 4. **Pour chaque élément**, une demande à l'agent suffit, par exemple : « En tant que modeleur, fabrique `architect-office` selon sa fiche du catalogue et la bible : script Blender, composant, galerie dans tous ses états et planche comparative, puis le contrôle. »
 5. **Livre par petites versions** (`docs/livraison.md`) : un lot terminé suffit pour une version.
@@ -52,7 +52,7 @@ Node 20 ou plus récent, et Blender pour les modèles 3D (voir `blender/README.m
 | `docs/catalogue.md` | Sa version lisible, générée |
 | `docs/contrat-composant.md` | Ce que chaque composant doit exposer |
 | `docs/signaletique.md` | Le langage des signaux : états, badges, couleurs, formes |
-| `docs/bible/bible-worksite.md` | La bible graphique WORKSITE 1.1 : la règle de production |
+| `docs/bible/bible-worksite.md` | La bible graphique WORKSITE 1.2 : la règle de production |
 | `docs/direction-artistique.md` | Comment on s'en sert et comment elle évolue |
 | `blender/` | Les scripts Blender : un par modèle, et les outils communs |
 | `docs/livraison.md` | Comment une version part vers GDC |

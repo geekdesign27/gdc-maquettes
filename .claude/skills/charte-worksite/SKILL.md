@@ -5,7 +5,7 @@ description: La fiche courte de la direction artistique WORKSITE de l'atelier de
 
 # La charte WORKSITE, en une page
 
-Les sources font foi, ce résumé non : bible `docs/bible/bible-worksite.md` (1.1), décisions de PA dans `docs/direction-artistique.md`, `src/palette.json`, `src/lumiere.json`, `docs/signaletique.md`. En cas d'écart, la source gagne et tu signales l'écart.
+Les sources font foi, ce résumé non : bible `docs/bible/bible-worksite.md` (1.2), décisions de PA dans `docs/direction-artistique.md`, `src/palette.json`, `src/lumiere.json`, `docs/signaletique.md`. En cas d'écart, la source gagne et tu signales l'écart.
 
 ## Le monde
 
@@ -33,16 +33,19 @@ Les sources font foi, ce résumé non : bible `docs/bible/bible-worksite.md` (1.
 - Ni caméra, ni lumière, ni texte dans le modèle.
 - Budget : plafond de la fiche du catalogue, dans chaque état ; viser large en dessous. `instance` pour répéter une pièce, `fusionne` pour les pièces fixes d'un même ensemble.
 
-## Pas encore chiffré
+## Les chiffres de production (bible, section 18)
 
-Ces valeurs attendent la fiche DA de production (amendement 1.2) :
-- les cotes communes (trame de 3 m déjà fixée par `building-kit`, hauteur d'étage, portes, fenêtres) ;
-- les classes de chanfrein ;
-- les valeurs cibles de lumière ;
-- la taille minimale d'un détail ;
-- la couleur terre.
+- **Lumière** : le dessus d'un objet montre sa couleur de palette ; l'avant (gauche de l'écran) vaut 0,85 du dessus, la droite 0,65. Recette dans `src/lumiere.json`. Contrôle : le cube étalon de la galerie et `npm run atelier -- etalon` doivent afficher « conforme ».
+- **Cotes** : trame 3 m, étage 3 m (dalle 0,30 m), porte 1,10 × 2,40 m, fenêtre 1,50 × 1,50 m sur allège 0,90 m, garde-corps 1,10 m. Exagération × 1,2, la même pour toute une famille.
+- **Chanfreins** : C1 0,02 m (2 segments), C2 0,05 m (2 segments), C3 0,10 m (3 segments). Jamais plus du quart de la plus petite dimension. Lissage à 30°.
+- **Affichage de référence** : portable de 13 à 14 pouces, 25 px par mètre en vue générale (18.7).
+- **Détail minimal** : 0,15 m (environ 4 px en vue générale) ; 0,06 m pour un élément filiforme ; en qualité basse, sous 0,30 m, on supprime ou on fusionne.
+- **Socle** : dalle de 0,60 m en `MAT_EARTH` (#BF8B65), dessus à `z = 0`, arêtes du dessus en C3.
+- **Matériaux** : 30 `MAT_` dans `src/palette.json`. Métal 0,2 au plus (sans carte d'environnement, un métal plus fort ressort sombre) ; verre opaque.
 
-Si une décision en dépend, **demande à PA** au lieu de fixer un chiffre toi-même, et note la valeur retenue dans la fiche.
+- **Chantier romand** (18.8) : casques de la couleur d'équipe ; grue orange ; pelle classique sur chenilles ; clôture périphérique en treillis gris sur plots béton, **jamais orange** (l'orange à triangle est la barrière de blocage) ; conteneurs modulaires ; bennes de tri ; gilet orange fluo #FF6A13 (`MAT_FABRIC_HIVIS`) à bandes claires près des engins.
+
+Ce qui n'est pas encore fixé (teinte plus jaune de l'équipe « site », trop proche de l'orange des engins ; yeux ; morphologie exacte du personnage) se décide avec `CHR_BASE_MASTER` : **demande à PA** au lieu de fixer un chiffre toi-même.
 
 ## Interdits
 

@@ -10,7 +10,7 @@ Des composants visuels pour le panneau de chantier de GDC, listés dans `catalog
 
 1. **Le contrat** (`docs/contrat-composant.md`) : `meta` et `create`, Three.js injecté, aucune logique métier, aucun texte dans la 3D, animation pilotée par `update(dt)`, tout libéré par `dispose()`.
 2. **Rien d'extérieur** : ni réseau, ni fichier, ni stockage, ni dépendance ajoutée sans accord de Pierre-Alain. Aucun modèle ou image repris sans licence CC0 ou MIT notée dans la fiche.
-3. **Le style** : la bible WORKSITE (`docs/bible/bible-worksite.md`, version 1.1) et `src/palette.json`. Les couleurs d'état ne vivent que dans l'interface, jamais sur un objet de la scène.
+3. **Le style** : la bible WORKSITE (`docs/bible/bible-worksite.md`, version 1.2) et `src/palette.json`. Les couleurs d'état ne vivent que dans l'interface, jamais sur un objet de la scène.
 4. **La signalétique** : celle de `docs/signaletique.md` : couleur, forme et icône pour chaque état ; rien ne clignote en continu.
 5. **Le budget** : triangles et matériaux sous le plafond de la fiche ; en qualité basse, moins encore.
 6. **Langue** : le code (noms de fonctions, de paramètres, d'états, de fichiers) en anglais ; la documentation, les commentaires et les noms affichés en français.

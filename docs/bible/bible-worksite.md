@@ -1,5 +1,5 @@
 # WORKSITE — Bible graphique et contrat de production 3D
-**Version :** 1.1, référence de production (1.0 rédigée par Pierre-Alain le 18 octobre 2026 ; amendements de la section 17 validés le même jour)  
+**Version :** 1.2, référence de production (1.0 rédigée par Pierre-Alain le 18 octobre 2026 ; amendements des sections 17 (1.1) et 18 (1.2, fiche DA de production) validés le même jour)  
 **Destination :** Blender → glTF/GLB → Three.js  
 **Univers :** Jeu de gestion isométrique représentant un chantier numérique SIA  
 **Usage :** Production assistée par IA d'un catalogue important d'assets cohérents
@@ -598,3 +598,146 @@ Une ancre de la fiche du catalogue `label` correspond au nœud `ANCHOR_LABEL` ; 
 ### 17.8 Budgets (précise la section 10)
 
 Le plafond de chaque élément est dans sa fiche du catalogue et mesuré par `npm run check`, dans chaque état et en qualité basse comme haute.
+
+## 18. Amendements de la version 1.2 : fiche DA de production (18 octobre 2026)
+
+Validés par Pierre-Alain. Ils chiffrent le rendu « 3D douce » et le socle maquette décidés le même jour (`docs/direction-artistique.md`), et priment sur les sections qu'ils citent. Les valeurs vivent dans `src/lumiere.json` et `src/palette.json` ; ce chapitre dit ce qu'elles valent et pourquoi.
+
+### 18.1 Lumière « 3D douce » et cube étalon (précise la section 8)
+
+Principe : **le dessus d'un objet montre la couleur de sa palette** ; ses deux côtés visibles en sont des fractions fixes. Le code hexadécimal de la palette reste donc ce qu'on voit.
+
+L'**avant** des modèles (`-Y` dans Blender, à gauche de l'écran) est du côté éclairé, pour que les entrées, les enseignes et les visages soient lisibles : c'est REF_ENV_001 en miroir, plus douce.
+
+| Face du cube étalon (3 m, `MAT_CONCRETE`) | Cible |
+|---|---|
+| Dessus | la couleur de palette (#D9DDE1), à 3 % près |
+| Côté éclairé (avant, gauche de l'écran) | 0,85 du dessus, à 0,03 près |
+| Côté ombré (droite de l'écran) | 0,65 du dessus, à 0,03 près |
+
+Recette (`src/lumiere.json`) :
+- ciel (lumière hémisphérique) blanc, sol #8A8678, intensité 1,95 ;
+- soleil blanc, intensité 1,58, venant de l'avant et de la gauche, environ 50° d'élévation (position Three.js −5,4 ; 18 ; 14,8) ;
+- aucun tone mapping, pour que la palette reste exacte ;
+- une ombre portée au sol vaut environ 0,80 du dessus éclairé : visible, jamais noire.
+
+Mesures du 18 octobre 2026 :
+- galerie : 218, 186 et 142 ;
+- studio Blender : 220, 187 et 144 (`npm run atelier -- etalon`) ;
+- REF_ENV, pour comparaison : environ 0,50 entre la brique ombrée et la brique éclairée.
+
+Un réglage de lumière est conforme quand la galerie et l'atelier affichent tous deux « conforme à la recette ».
+
+### 18.2 Cotes communes (précise les sections 2.3 et 6)
+
+| Cote | Valeur | Réel |
+|---|---|---|
+| Trame | 3,00 m | — |
+| Hauteur d'étage, dalle à dalle | 3,00 m | 2,8 à 3,2 m |
+| Épaisseur de dalle | 0,30 m | 0,25 m |
+| Porte | 1,10 × 2,40 m | 0,90 × 2,10 m |
+| Fenêtre | 1,50 × 1,50 m, allège 0,90 m (linteau à 2,40 m, aligné sur la porte) | 1,20 × 1,20 m |
+| Garde-corps | 1,10 m | 1,00 m |
+| Personnage | 1,70 m (section 5) | — |
+
+Le cube étalon est un module : une trame sur un étage. L'exagération est de **× 1,2** pour les portes, fenêtres, poignées, casques et accessoires, la même pour toute une famille.
+
+### 18.3 Chanfreins, segments et taille minimale d'un détail (précise la section 2.2)
+
+| Classe | Largeur | Segments | Pour |
+|---|---|---|---|
+| C0 | aucun | — | arêtes cachées, pièces de moins de 0,15 m |
+| C1 fin | 0,02 m | 2 | petites pièces d'engin, mobilier, poignées, crochet |
+| C2 moyen | 0,05 m | 2 | cabines, contrepoids, socles d'engin, murs et poteaux |
+| C3 fort | 0,10 m | 3 | socle maquette, grandes pièces arrondies |
+
+Règles des chanfreins :
+- Un chanfrein ne dépasse jamais le quart de la plus petite dimension de sa pièce.
+- Les pièces chanfreinées sont lissées à 30° (`lisse`), les grandes faces restent planes.
+- Les personnages n'ont pas de classe : leurs normales sont lissées partout.
+
+En vue générale, sur l'affichage de référence (18.7), un mètre fait **25 pixels** (`PX_PAR_METRE` de l'atelier). Taille minimale d'un détail :
+- **0,15 m** dans sa plus petite dimension, soit environ 4 pixels ;
+- les éléments filiformes (câbles, garde-corps, mâts fins) peuvent descendre à 0,06 m ;
+- en qualité basse, ce qui mesure moins de 0,30 m est supprimé ou fusionné.
+
+### 18.4 Bibliothèque de matériaux (complète les sections 3 et 4)
+
+`src/palette.json` est la bibliothèque : chaque `MAT_` a sa couleur, sa rugosité et son caractère métallique, lus par les scripts Blender et par Three.js. Sa couleur est une clé de `monde`, d'`equipe` ou de `personnages`.
+
+| Famille | Matériaux | Rugosité | Métal |
+|---|---|---|---|
+| Bâtiment et sol | `MAT_CONCRETE`, `MAT_SURFACE`, `MAT_BRICK`, `MAT_ASPHALT`, `MAT_LANDSCAPE`, `MAT_EARTH` (#BF8B65) | 0,80 à 0,95 | 0 |
+| Bois | `MAT_WOOD` (#D2A273, bois clair chaud, distinct de la terre) | 0,80 | 0 |
+| Métal peint | `MAT_PAINTED_METAL_ORANGE`, `MAT_PAINTED_METAL_GRAPHITE`, `MAT_TECH` | 0,50 à 0,55 | 0 à 0,1 |
+| Métaux nus | `MAT_STEEL` (#A7AFB7, gris froid), `MAT_ALUMINIUM` (#C9CED3, menuiseries) | 0,40 à 0,45 | 0,2 |
+| Caoutchouc | `MAT_RUBBER` (#232426, plus foncé que le graphite) | 0,90 | 0 |
+| Verre | `MAT_GLASS` (#9CC3D5) : **opaque**, légèrement bleuté | 0,20 | 0 |
+| Tissus | `MAT_FABRIC_<ÉQUIPE>` (les cinq couleurs d'équipe), `MAT_FABRIC_GRAPHITE`, `MAT_FABRIC_HIVIS` (gilet orange fluo #FF6A13, bandes claires en `MAT_SURFACE`, 18.8) | 0,85 | 0 |
+| Peaux | `MAT_SKIN_A` à `MAT_SKIN_E` (#F2C8B6, #EDB69C, #D1876D, #B96C56, #8C4A40, tirées de REF_CHR_001) | 0,60 | 0 |
+| Cheveux | `MAT_HAIR_BLACK`, `_BROWN`, `_BLOND`, `_RED` (REF_CHR_001), `MAT_HAIR_GREY` | 0,60 | 0 |
+
+Règles :
+- **Métal 0,2 au plus** tant que la scène n'a pas de carte d'environnement : au-delà, un métal ressort sombre dans Three.js. C'est pourquoi `MAT_STEEL` passe de la couleur béton (rugosité 0,35, métal 0,6) à l'acier gris froid.
+- Le verre est opaque : pas de problème d'ordre de transparence. Les intérieurs se montrent en masquant les murs (section 6, *Cutaway*), pas à travers les vitres.
+- Les yeux seront fixés avec `CHR_BASE_MASTER`.
+- En niveaux de gris, l'orange chantier, la brique, le bleu et le vert sauge sont proches, et la terre (150) l'est de la brique éclairée. C'est déjà le cas dans REF_ENV et la palette ne change pas. Mais une planche vérifie que ces matières ne se touchent pas sans contraste de forme.
+
+### 18.5 Socle maquette (précise la section 8)
+
+Chaque lieu est posé sur un socle :
+- une dalle de **0,60 m** d'épaisseur en `MAT_EARTH`, dessus à `z = 0` ;
+- bord du même matériau : la lumière le fonce, comme dans REF_ENV ;
+- arêtes du dessus en classe C3.
+
+### 18.6 Scène de référence (précise les sections 8 et 14)
+
+- La galerie (`npm run dev`, *Cube étalon et nuancier*) montre le cube étalon sur son socle, la mesure de ses trois faces et un cube par matériau de la bibliothèque.
+- Deux bascules s'appliquent à tout composant : *Silhouette* (noir sur blanc) et *Niveaux de gris* (les valeurs sans la couleur).
+- Le studio Blender de l'atelier lit la même lumière, sans sol propre, comme la galerie. Son ciel est corrigé pour éclairer comme la lumière hémisphérique de Three.js. `npm run atelier -- etalon` en vérifie le calage.
+- La galerie reste la référence.
+
+### 18.7 Affichage de référence et ancrage (décisions de Pierre-Alain du 18 octobre 2026)
+
+**Affichage de référence : un portable de 13 à 14 pouces.** C'est le cas prioritaire ; un grand écran ne fait que mieux.
+
+Le zoom par défaut reste celui de la galerie : 24 m de hauteur visible en vue générale. Mesures dans la galerie, en pixels CSS par mètre :
+
+| Portable | Zone de page | Pixels par mètre |
+|---|---|---|
+| 13 pouces, 1280 × 800 points | 1280 × 690 | 25,3 |
+| 13,6 pouces, 1470 × 956 points | 1470 × 840 | 31,6 |
+| 14 pouces, 1512 × 982 points | 1512 × 860 | 32,4 |
+
+Le plus petit fixe la règle : 25 pixels par mètre, donc la taille minimale d'un détail (18.3) et la silhouette de l'atelier (`PX_PAR_METRE`). À recaler quand la mise en page du panneau de GDC sera connue : la galerie a sa propre barre latérale.
+
+**Ancrage : un chantier de Suisse romande**, reconnaissable et crédible pour un œil SST (18.8).
+
+### 18.8 Le chantier romand (décisions de Pierre-Alain du 18 octobre 2026, après la recherche de références)
+
+**Casques** : de la **couleur d'équipe** (`equipe` de `src/palette.json`).
+- C'est un choix de direction artistique : la recherche n'a trouvé aucun code suisse de couleur de casque par fonction.
+- L'OTConst (RS 832.311.141, art. 6) impose seulement le casque pour tous, jusqu'à la fin du gros œuvre et près des grues et des engins. Dans la scène, tout personnage sur le chantier le porte.
+
+**Engins** :
+- La grue à tour garde l'orange chantier #F5A000.
+- La pelleteuse est une pelle classique sur chenilles, pas une pelle araignée.
+
+**Marqueurs romands retenus** :
+- le chantier est cloisonné par une **clôture périphérique** ;
+- les baraquements sont des **conteneurs modulaires** ;
+- des **bennes de tri** sont alignées (OLED, art. 17 : tri obligatoire) ;
+- les ouvriers près des engins portent un **gilet orange fluo à bandes claires**. L'OTConst (art. 7) l'impose ; selon la Suva, il est « en principe orange, jaune ou rouge ».
+
+**Écartés** : toits végétalisés, panneau STOP de la Suva, pelle araignée.
+
+**Au catalogue** : la clôture (`site-fence`), le conteneur (`site-container`) et la benne de tri (`waste-skip`) sont des éléments séparés. Ce projet définit le catalogue des éléments, pas leur agencement.
+
+**Vigilance de signalétique** : la barrière de blocage (`blocked-sign`) est une barrière de chantier orange avec un triangle, donc un signal d'état. Rien d'autre dans la scène ne doit lui ressembler.
+- La clôture périphérique a une forme nettement différente : panneaux en treillis gris sur plots en béton, **sans orange**.
+- Mesures de couleur (ΔE 2000), pour un orange fluo de gilet candidat #FF6A13 :
+  - il reste distinct de l'orange des engins (19,5) et de l'équipe « site » #C9A227 (28) ;
+  - il est proche de la brique (17) et de l'orange d'état « bloqué » de l'interface (13) ;
+  - par ailleurs, l'équipe « site » n'est qu'à 11,6 de l'orange des engins : un casque « site » peut se confondre avec une grue.
+- Le gilet est validé en **#FF6A13** (`MAT_FABRIC_HIVIS`), bandes claires en `MAT_SURFACE`.
+- La couleur de l'équipe « site » sera rendue plus jaune ; sa teinte reste **à valider** par Pierre-Alain. Une planche les vérifie côte à côte : personnage au gilet, barrière de blocage, grue, mur de brique.
