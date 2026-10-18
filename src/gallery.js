@@ -9,12 +9,13 @@ import lumiere from './lumiere.json' with { type: 'json' };
 import { makeContext } from './tokens.js';
 import { checkMeta, checkInstance, defaultParams, measure, sampleData } from './contract.js';
 import { components as byId, chargeur } from './library.js';
+import * as etalon from './etalon.js';
 
 const charge = chargeur({ GLTFLoader, SkeletonUtils });
 const entries = catalogue.items.filter((i) => i.kind === 'component');
 const $ = (id) => document.getElementById(id);
 const stage = $('stage');
-const options = { theme: 'light', quality: 'high', reducedMotion: false, anchors: true, planche: false };
+const options = { theme: 'light', quality: 'high', reducedMotion: false, anchors: true, planche: false, silhouette: false, gris: false };
 let current = { entry: null, inst: null, state: null, voisins: [] };
 let dirty = true;
 
@@ -50,10 +51,16 @@ function resize() {
 }
 new ResizeObserver(resize).observe(stage);
 
+const silhouette = new THREE.MeshBasicMaterial({ color: 0x000000 });
+
 function applyTheme() {
   document.documentElement.dataset.theme = options.theme;
   const ctx = makeContext(options);
-  scene.background = new THREE.Color(ctx.palette.paper);
+  scene.background = new THREE.Color(options.silhouette ? '#FFFFFF' : ctx.palette.paper);
+  // Silhouette : tout en noir sur blanc, sans grille ni etiquettes. Niveaux de gris : les valeurs sans la couleur.
+  scene.overrideMaterial = options.silhouette ? silhouette : null;
+  grid.visible = !options.silhouette;
+  renderer.domElement.style.filter = options.gris ? 'grayscale(1)' : '';
   grid.material.opacity = options.theme === 'dark' ? 0.25 : 0.5;
   grid.material.transparent = true;
   renderer.shadowMap.enabled = options.quality === 'high';
@@ -63,6 +70,15 @@ function applyTheme() {
 function buildList() {
   const list = $('list');
   list.replaceChildren();
+  // L'etalon de la scene de reference (lot G0) : hors catalogue, toujours en tete.
+  const h0 = document.createElement('h2');
+  h0.textContent = 'Scène de référence';
+  const b0 = document.createElement('button');
+  b0.textContent = 'Cube étalon et nuancier';
+  b0.title = 'Le cube neutre dont on mesure les trois faces, et un cube par matériau de la palette';
+  b0.dataset.id = etalon.ETALON_ID;
+  b0.addEventListener('click', () => select(etalon.ETALON_ID));
+  list.append(h0, b0);
   for (const lot of catalogue.lots) {
     const items = entries.filter((e) => e.lot === lot.id).sort((a, b) => a.order - b.order);
     if (!items.length) continue;
@@ -82,6 +98,9 @@ function buildList() {
 }
 
 async function instance(id, state) {
+  if (id === etalon.ETALON_ID) {
+    return { inst: etalon.create(THREE, makeContext(options)), state: 'default', entry: { id, name: 'Cube étalon' }, mod: etalon };
+  }
   const mod = byId[id];
   const entry = entries.find((e) => e.id === id);
   await charge.prepare(mod.meta);
@@ -105,7 +124,7 @@ async function select(id, state) {
   const x = await instance(id, state);
   scene.add(x.inst.root);
   const voisins = [];
-  if (options.planche) {
+  if (options.planche && id !== etalon.ETALON_ID) {
     let pos = -1;
     for (const rid of references(id)) {
       const v = await instance(rid);
@@ -145,6 +164,7 @@ function buildStates() {
 // Le compte rendu : mesure de l'etat affiche, et controle complet du contrat dans le contexte courant.
 async function report() {
   const { mod, entry } = current;
+  if (mod === etalon) return; // le compte rendu de l'etalon est sa mesure, ecrite apres chaque rendu (rapportEtalon)
   const m = measure(current.inst.root);
   const problems = [...checkMeta(mod.meta, entry)];
   if (!problems.length) problems.push(...checkInstance(THREE, mod, entry, makeContext(options, await charge.assetsPour(mod.meta)), await charge.partagees(mod.meta)));
@@ -169,7 +189,7 @@ const tmp = new THREE.Vector3();
 function drawAnchors() {
   const layer = $('anchors');
   layer.replaceChildren();
-  if (!options.anchors || !current.inst) return;
+  if (!options.anchors || options.silhouette || !current.inst) return;
   const { clientWidth: w, clientHeight: h } = stage;
   for (const a of current.mod.meta.anchors) {
     const name = a.replace('*', '0');
@@ -187,12 +207,33 @@ function drawAnchors() {
   }
 }
 
+// La mesure du cube etalon (bible, 18.1) : valeur affichee de chaque face, rapportee a la couleur de palette pour le
+// dessus et au dessus pour les cotes, comparee aux cibles de src/lumiere.json. Ecrite apres chaque rendu.
+function rapportEtalon(faces) {
+  const { faces: cibles, tolerance } = lumiere.cibles;
+  const ecarts = [];
+  const morceaux = Object.entries(faces).map(([nom, f]) => {
+    // le dessus se compare a la couleur de palette, les cotes au dessus
+    const reference = nom === 'dessus' ? etalon.valeurPalette('MAT_CONCRETE') : faces.dessus.valeur;
+    const rapport = f.valeur / Math.max(reference, 1);
+    if (Math.abs(rapport - cibles[nom]) > tolerance) ecarts.push(nom);
+    return `${nom} ${f.hex} (${f.valeur}) ${rapport.toFixed(2)} / cible ${cibles[nom].toFixed(2)}`;
+  });
+  const el = $('report');
+  el.replaceChildren(`Cube étalon MAT_CONCRETE · ${morceaux.join(' · ')} · `);
+  const verdict = document.createElement('span');
+  verdict.className = ecarts.length ? 'ko' : 'ok';
+  verdict.textContent = ecarts.length ? `hors tolérance : ${ecarts.join(', ')}` : `conforme à la recette (± ${tolerance})`;
+  el.append(verdict);
+}
+
 const clock = new THREE.Clock();
 function loop() {
   const dt = Math.min(clock.getDelta(), 0.1);
   for (const x of [current, ...current.voisins]) if (x.inst && x.inst.update(dt)) dirty = true;
   if (dirty) {
     renderer.render(scene, camera);
+    if (current.mod === etalon && !options.silhouette) rapportEtalon(etalon.mesureFaces(THREE, renderer, camera, current.inst.root));
     drawAnchors();
     dirty = false;
   }
@@ -216,12 +257,14 @@ toggle('quality', 'quality', 'high', 'low', (q) => (q === 'high' ? 'Qualité hau
 toggle('motion', 'reducedMotion', true, false);
 toggle('showAnchors', 'anchors', true, false);
 toggle('planche', 'planche', true, false);
+toggle('silhouette', 'silhouette', true, false);
+toggle('gris', 'gris', true, false);
 
 applyTheme();
 buildList();
 resize();
 const [hashId, hashState, hashPlanche] = decodeURIComponent(location.hash.slice(1)).split('/');
 if (hashPlanche === 'planche') { options.planche = true; $('planche').setAttribute('aria-pressed', 'true'); resize(); }
-const start = byId[hashId] ? hashId : entries.find((e) => byId[e.id])?.id;
+const start = byId[hashId] || hashId === etalon.ETALON_ID ? hashId : entries.find((e) => byId[e.id])?.id;
 if (start) await select(start, hashState);
 loop();

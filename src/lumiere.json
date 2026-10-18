@@ -1,6 +1,11 @@
 {
-  "commentaire": "Source unique de la camera et de la lumiere de la scene de reference : lue par la galerie (src/gallery.js) et par le studio Blender (blender/atelier.py). Coordonnees Three.js (Y vertical). Separee de palette.json pour qu'un reglage de lumiere n'oblige pas a reconstruire les modeles. Recette provisoire : elle sera fixee par la fiche DA 1.2 (rendu 3D douce).",
+  "commentaire": "Source unique de la camera et de la lumiere de la scene de reference : lue par la galerie (src/gallery.js) et par le studio Blender (blender/atelier.py). Coordonnees Three.js (Y vertical). Separee de palette.json pour qu'un reglage de lumiere n'oblige pas a reconstruire les modeles. Recette 3D douce de la bible 1.2 (section 18.1) : le dessus d'un objet montre la couleur de sa palette, l'avant (cote gauche de l'ecran) est eclaire, la droite est a l'ombre. Aucun tone mapping.",
   "camera": { "position": [20, 20, 20], "cible": [0, 0, 0] },
-  "ciel": { "couleur": "#FFFFFF", "sol": "#8A8678", "intensite": 1.6 },
-  "soleil": { "couleur": "#FFFFFF", "intensite": 2.4, "position": [10, 18, 8] }
+  "ciel": { "couleur": "#FFFFFF", "sol": "#8A8678", "intensite": 1.95 },
+  "soleil": { "couleur": "#FFFFFF", "intensite": 1.58, "position": [-5.4, 18, 14.8] },
+  "cibles": {
+    "commentaire": "Le cube etalon en MAT_CONCRETE : valeur de chaque face rapportee a celle du dessus ; le dessus vaut la couleur de palette a 3 % pres.",
+    "tolerance": 0.03,
+    "faces": { "dessus": 1.0, "gauche": 0.85, "droite": 0.65 }
+  }
 }
