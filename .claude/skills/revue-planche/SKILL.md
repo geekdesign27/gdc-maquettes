@@ -9,14 +9,9 @@ La galerie Three.js tranche : c'est le rendu que GDC affichera. Les captures Ble
 
 ## 1. Ouvrir la galerie
 
-```bash
-P=/Users/pierre-alain_schutz/Dropbox/Webdesign/Dev/gdc-maquettes
-job_id="$(portly temp "$P/node_modules/.bin/vite --port 5321 --strictPort" --path "$P" --timeout 30m)"
-```
+La galerie est un serveur permanent de Portly : `gdc-maquettes/galerie`, sur `http://localhost:5320`. Vérifie avec `portly status` ; s'il est arrêté, lance `portly start gdc-maquettes/galerie`. Vite recharge tout seul après chaque modification : ne lance pas de second serveur.
 
-(`npx vite` sous Portly tente de télécharger vite : utiliser le binaire local.)
-
-Dans le navigateur intégré, ouvre `http://localhost:5321/#<id>/<etat>/planche`. Les boutons du haut basculent l'état, le thème sombre, la qualité, l'animation, les ancres et la planche.
+Dans le navigateur intégré, ouvre `http://localhost:5320/#<id>/<etat>/planche`. Les boutons du haut basculent l'état, le thème sombre, la qualité, l'animation, les ancres et la planche.
 
 ## 2. Ce qu'on capture
 
@@ -52,4 +47,4 @@ Pour chaque critère sous 2 : **quoi, où, pourquoi, comment corriger** (par exe
 - à reprendre (la liste) ;
 - question de style pour PA (une décision qui manque à la charte devient un amendement proposé).
 
-Arrête le serveur à la fin : `portly stop "$job_id"`.
+Laisse la galerie tourner : PA s'en sert aussi.
