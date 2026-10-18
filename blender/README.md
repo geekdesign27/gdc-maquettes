@@ -6,6 +6,7 @@ Chaque modèle 3D livré sort d'un script de ce dossier. On ne retouche jamais u
 
 ```bash
 npm run atelier -- crane          # construit sans exporter et rend les captures (blender/.captures/crane/)
+npm run atelier -- etalon         # le cube etalon : verifie que le studio est cale sur la galerie (bible, 18.1)
 npm run blender -- crane          # construit blender/assets/crane.py et exporte le GLB a cote du composant
 npm run check                     # controle le GLB, sa provenance et le composant
 npm run dev                       # le regarder dans la galerie, puis bouton « Planche »
@@ -50,6 +51,8 @@ def construit(c):          # c : les outils communs (gdc_blender/commun.py)
 | `silhouette.png` | En noir, à la taille d'affichage réelle : se reconnaît-il ? |
 
 Il renvoie aussi les mesures que le contrôle regardera : triangles, matériaux, noms hors convention, ancres, animations, emprise.
+
+Le studio n'a pas de sol, comme la galerie : l'ombre de contact tombe sur le socle ou le terrain du modèle. Son ciel est réglé pour éclairer comme la lumière hémisphérique de Three.js. `npm run atelier -- etalon` rend le cube étalon et compare ses trois faces aux cibles de `src/lumiere.json` : après tout changement de lumière, il doit dire « conforme a la recette », comme la galerie.
 
 On modifie le script, on relance, on regarde ; quand c'est bon, `npm run blender -- <id>` produit le GLB officiel. L'atelier n'exporte jamais rien.
 

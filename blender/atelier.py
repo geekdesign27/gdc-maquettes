@@ -9,12 +9,14 @@ Dans Blender ouvert, par le connecteur (MCP), dans un fichier vide reserve a l'a
     import atelier; importlib.reload(atelier)
     result = atelier.essaie("crane")
 Sans fenetre :   npm run atelier -- crane
+Calage du studio sur la galerie (bible, 18.1) :   npm run atelier -- etalon
 
 Captures dans blender/.captures/<id>/ (non versionne) :
     iso.png         la vue de la galerie (45 degres, 35 degres d'elevation), rendu couleur
     valeurs.png     la meme en niveaux de gris : les matieres se distinguent-elles sans la couleur ?
     face.png        de face (l'avant est -Y), pour les proportions
     silhouette.png  en noir, a la taille reelle d'affichage (PX_PAR_METRE) : se reconnait-il ?
+    etalon/iso.png  le cube etalon et son socle, avec la mesure de ses trois faces (etalon())
 """
 import importlib
 import math
@@ -32,9 +34,10 @@ from gdc_blender import commun as c  # noqa: E402
 
 STUDIO = "STUDIO"  # collection du studio : hors convention de nom, jamais mesuree ni exportee
 CAPTURES = ICI / ".captures"
-# Taille d'affichage dans la galerie a son cadrage par defaut (environ 24 pixels par metre) ;
-# a recaler quand la fiche DA 1.2 fixera les niveaux de zoom du panneau.
-PX_PAR_METRE = 24
+# Taille d'affichage en vue generale sur l'affichage de reference, un portable de 13 pouces (1280 x 800 points) :
+# 25 pixels CSS par metre, mesure dans la galerie a son cadrage par defaut (bible, 18.3 et 18.7). Un ecran plus grand
+# ne fait que mieux (31,6 sur un 13,6 pouces, 32,4 sur un 14 pouces).
+PX_PAR_METRE = 25
 
 
 def _vers_blender(v):
@@ -103,7 +106,12 @@ def mesure():
 
 
 def _monde(lum, fond):
-    """Ciel en degrade comme la HemisphereLight de Three.js ; fond uni pour la camera."""
+    """Ciel en degrade qui eclaire comme la HemisphereLight de Three.js ; fond uni pour la camera.
+
+    Three.js donne a une face de normale n l'eclairement I * melange(sol, ciel, 0,5 + 0,5 n.z). Un ciel dont la
+    luminance varie lineairement avec la hauteur z de la direction donne, une fois integre sur l'hemisphere,
+    pi * (a + 2/3 b n.z) : pour retrouver Three.js, le melange va de -0,25 (sous l'horizon) a 1,25 (au zenith)
+    au lieu de 0 a 1. Sans cela, le dessus des objets recoit 17 % de ciel en moins que dans la galerie."""
     w = bpy.data.worlds.get("STUDIO_MONDE") or bpy.data.worlds.new("STUDIO_MONDE")
     w.use_nodes = True
     nt = w.node_tree
@@ -112,8 +120,11 @@ def _monde(lum, fond):
     sep = nt.nodes.new("ShaderNodeSeparateXYZ")
     plage = nt.nodes.new("ShaderNodeMapRange")
     plage.inputs["From Min"].default_value = -1.0
+    plage.inputs["To Min"].default_value = -0.25
+    plage.inputs["To Max"].default_value = 1.25
     melange = nt.nodes.new("ShaderNodeMix")
     melange.data_type = "RGBA"
+    melange.clamp_factor = False
     # le noeud Mix a des entrees A et B par type de donnee : prendre celles de couleur
     entree_a, entree_b = [i for i in melange.inputs if i.type == "RGBA"]
     sortie_couleur = next(o for o in melange.outputs if o.type == "RGBA")
@@ -140,7 +151,8 @@ def _monde(lum, fond):
 
 
 def installe_studio():
-    """Camera orthographique et soleil de src/lumiere.json, sol mat pour l'ombre de contact."""
+    """Camera orthographique et soleil de src/lumiere.json. Pas de sol, comme dans la galerie : l'ombre de contact
+    tombe sur le socle ou le terrain du modele ; un sol de studio cacherait le bord d'un socle pose a z = 0."""
     import json
     lum = json.loads((c.RACINE / "src" / "lumiere.json").read_text(encoding="utf-8"))
     fond = c.PALETTE["interface"]["light"]["background"]
@@ -162,23 +174,10 @@ def installe_studio():
     soleil.rotation_euler = direction.to_track_quat("-Z", "Y").to_euler()
     studio.objects.link(soleil)
 
-    bpy.ops.mesh.primitive_plane_add(size=200)
-    sol = bpy.context.active_object
-    sol.name = "STUDIO_SOL"
-    for coll in list(sol.users_collection):
-        coll.objects.unlink(sol)
-    studio.objects.link(sol)
-    m = bpy.data.materials.new("STUDIO_SOL")
-    m.use_nodes = True
-    bsdf = m.node_tree.nodes.get("Principled BSDF")
-    bsdf.inputs["Base Color"].default_value = _couleur(fond)
-    bsdf.inputs["Roughness"].default_value = 1.0
-    sol.data.materials.append(m)
-
     s.world = _monde(lum, fond)
     s.view_settings.view_transform = "Standard"  # comme Three.js sans tone mapping
     s.view_settings.look = "None"
-    return {"camera": cam, "sol": sol, "direction_iso": _vers_blender(lum["camera"]["position"]).normalized()}
+    return {"camera": cam, "direction_iso": _vers_blender(lum["camera"]["position"]).normalized()}
 
 
 def _moteur(prefere):
@@ -226,6 +225,73 @@ def _niveaux_de_gris(source, cible):
     return str(cible)
 
 
+def _lit_image(chemin):
+    """Pixels sRGB (0 a 255) d'un PNG rendu, lus tels quels, ligne du bas en premier."""
+    import numpy as np
+    img = bpy.data.images.load(str(chemin))
+    img.colorspace_settings.name = "Non-Color"
+    largeur, hauteur = img.size
+    px = np.empty(largeur * hauteur * 4, dtype=np.float32)
+    img.pixels.foreach_get(px)
+    bpy.data.images.remove(img)
+    return px.reshape(hauteur, largeur, 4)[:, :, :3] * 255
+
+
+def valeur(rgb):
+    """Valeur affichee d'un pixel sRGB : la meme formule que la galerie (src/etalon.js)."""
+    lin = [x / 12.92 if x <= 0.04045 else ((x + 0.055) / 1.055) ** 2.4 for x in (v / 255 for v in rgb)]
+    y = 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2]
+    return round((y * 12.92 if y <= 0.0031308 else 1.055 * y ** (1 / 2.4) - 0.055) * 255)
+
+
+def etalon(force=False):
+    """Le cube etalon de la galerie (3 m, MAT_CONCRETE, sur un socle MAT_EARTH de 7 m sur 0,60 m), rendu dans le
+    studio a la camera iso, et la mesure de ses trois faces comparee aux cibles de src/lumiere.json (bible, 18.1).
+    C'est le calage : si l'atelier est conforme, son apercu ressemble a la galerie."""
+    import json
+    from bpy_extras.object_utils import world_to_camera_view
+    if bpy.data.filepath and not force:
+        raise RuntimeError("le fichier ouvert serait efface : ouvre un fichier vide, ou passe force=True")
+    importlib.reload(c)
+    vide_scene()
+    c.boite("ENV_ETALON_CUBE", (3, 3, 3), mat="MAT_CONCRETE")
+    c.boite("ENV_ETALON_SOCLE", (7, 7, 0.6), (0, 0, -0.6), mat="MAT_EARTH")
+    studio = installe_studio()
+    s = bpy.context.scene
+    s.render.engine = _moteur(("BLENDER_EEVEE", "BLENDER_EEVEE_NEXT"))
+    if hasattr(s, "eevee"):
+        s.eevee.taa_render_samples = 32
+    cam = studio["camera"]
+    _cadre(cam, Vector((-3.5, -3.5, -0.6)), Vector((3.5, 3.5, 3)), studio["direction_iso"])
+    dossier = CAPTURES / "etalon"
+    dossier.mkdir(parents=True, exist_ok=True)
+    chemin = _rend(dossier / "iso.png", 512)
+    bpy.context.view_layer.update()
+    px = _lit_image(chemin)
+    hauteur, largeur = px.shape[:2]
+    lum = json.loads((c.RACINE / "src" / "lumiere.json").read_text(encoding="utf-8"))["cibles"]
+    # centres des faces visibles : dessus, gauche (l'avant, -Y) et droite (+X) ; les memes que FACES dans src/etalon.js
+    faces = {"dessus": (0, 0, 3), "gauche": (0, -1.5, 1.5), "droite": (1.5, 0, 1.5)}
+    mesures = {}
+    for nom, p in faces.items():
+        v = world_to_camera_view(s, cam, Vector(p))
+        x, y = round(v.x * largeur), round(v.y * hauteur)
+        rgb = [int(round(k)) for k in px[y - 2:y + 3, x - 2:x + 3].reshape(-1, 3).mean(0)]
+        mesures[nom] = {"hex": "#%02X%02X%02X" % tuple(rgb), "valeur": valeur(rgb)}
+    hexa = c.PALETTE["monde"][c.PALETTE["materiaux"]["MAT_CONCRETE"]["couleur"]].lstrip("#")
+    reference = {"dessus": valeur([int(hexa[i:i + 2], 16) for i in (0, 2, 4)]), "gauche": mesures["dessus"]["valeur"],
+                 "droite": mesures["dessus"]["valeur"]}
+    ecarts = []
+    for nom, m in mesures.items():
+        m["rapport"] = round(m["valeur"] / max(reference[nom], 1), 3)
+        m["cible"] = lum["faces"][nom]
+        if abs(m["rapport"] - m["cible"]) > lum["tolerance"]:
+            ecarts.append(nom)
+    return {"id": "etalon", "blender": bpy.app.version_string, "moteur": s.render.engine, "faces": mesures,
+            "verdict": "hors tolerance : " + ", ".join(ecarts) if ecarts else "conforme a la recette",
+            "captures": {"iso": chemin}}
+
+
 def essaie(ident, image=1, captures=True, force=False):
     """Construit l'asset dans la scene ouverte, mesure, et rend les captures. Renvoie un dict (pour le MCP)."""
     if bpy.data.filepath and not force:
@@ -264,10 +330,8 @@ def essaie(ident, image=1, captures=True, force=False):
     s.render.engine = "BLENDER_WORKBENCH"
     sh = s.display.shading
     sh.light, sh.color_type, sh.single_color = "FLAT", "SINGLE", (0, 0, 0)
-    studio["sol"].hide_render = True
     rayon = _cadre(cam, bas, haut, studio["direction_iso"], marge=1.0)
     fichiers["silhouette"] = _rend(dossier / "silhouette.png", max(32, round(rayon * 2 * PX_PAR_METRE)))
-    studio["sol"].hide_render = False
     s.render.engine = _moteur(("BLENDER_EEVEE", "BLENDER_EEVEE_NEXT"))
 
     resultat["captures"] = fichiers
@@ -281,5 +345,5 @@ if __name__ == "__main__":
     if not ids:
         raise SystemExit("asset attendu : atelier.py -- <id du catalogue>")
     for ident in ids:
-        r = essaie(ident, force=True)
+        r = etalon(force=True) if ident == "etalon" else essaie(ident, force=True)
         print(json.dumps(r, indent=2, ensure_ascii=False, default=str))
