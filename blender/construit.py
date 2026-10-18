@@ -41,7 +41,7 @@ def main(ids):
         meta = {
             "nom": a["nom"],
             "id": a["id"],
-            "bible": "WORKSITE 1.1",
+            "bible": "WORKSITE 1.2",
             "blender": bpy.app.version_string,
             "script": "blender/assets/" + ident + ".py",
             "script_sha256": hashlib.sha256(script.read_bytes()).hexdigest(),

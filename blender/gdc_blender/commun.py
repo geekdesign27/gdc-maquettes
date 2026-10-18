@@ -32,8 +32,8 @@ def srgb_vers_lineaire(c):
 
 
 def couleur(cle):
-    """Couleur de la palette (cle de 'monde' ou hexadecimal), en RGBA lineaire pour Blender."""
-    hexa = PALETTE["monde"].get(cle, cle).lstrip("#")
+    """Couleur de la palette (cle de 'monde', 'equipe' ou 'personnages', ou hexadecimal), en RGBA lineaire pour Blender."""
+    hexa = next((PALETTE[s][cle] for s in ("monde", "equipe", "personnages") if cle in PALETTE.get(s, {})), cle).lstrip("#")
     rgb = [srgb_vers_lineaire(int(hexa[i:i + 2], 16) / 255) for i in (0, 2, 4)]
     return (*rgb, 1.0)
 

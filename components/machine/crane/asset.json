@@ -1,13 +1,13 @@
 {
   "nom": "VEH_TOWER_CRANE_A_v001",
   "id": "crane",
-  "bible": "WORKSITE 1.1",
+  "bible": "WORKSITE 1.2",
   "blender": "5.3.0 Beta",
   "script": "blender/assets/crane.py",
   "script_sha256": "d7b304a4e8947155e1834df7d6046c5664c92b94e1c4689831135c29b632a15b",
-  "commun_sha256": "35016fede2e99902c053a55bb71a107bab5414931fc7be1b799bbafb1816c9ac",
-  "palette_sha256": "7163b4c94653ce3e7b249377372fcd5e17d9c87e6fcc34af5b43dfbb37ebdc6e",
-  "glb_sha256": "38637f8d6b1e757d2638788d4e57b2cd020442a0b2ed01341d1e919946e2c6f1",
+  "commun_sha256": "0b93a1d8b476db7c5edb6106e99afbfc0a7b12e8212a5b938f4d3d9c869c0e0b",
+  "palette_sha256": "96aa64679943e0bd09dbbe03f5efd698f2d499b6e845356033565326e0b05aa4",
+  "glb_sha256": "3b28eef3406395e512cfee4fa1fbab8bb97cff05f8b76735c89bc86c56f1ee0e",
   "animations": [
     "ANM_TOWER_CRANE_A_LIFTING"
   ],

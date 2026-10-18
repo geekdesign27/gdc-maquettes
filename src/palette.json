@@ -1,5 +1,5 @@
 {
-  "commentaire": "Source unique des couleurs : lue par src/tokens.js (Three.js et interface) et par les scripts Blender (materiaux). Valeurs sRGB. Bible WORKSITE v1.1, section 3.",
+  "commentaire": "Source unique des couleurs : lue par src/tokens.js (Three.js et interface) et par les scripts Blender (materiaux). Valeurs sRGB. Bible WORKSITE 1.2, sections 3, 4 et 18.4. La couleur d'un materiau est une cle de monde, d'equipe ou de personnages ; metal 0,2 au plus tant que la scene n'a pas de carte d'environnement (18.4).",
   "monde": {
     "background": "#F8F8F6",
     "surface": "#F1EFEB",
@@ -9,7 +9,26 @@
     "construction": "#F5A000",
     "brick": "#EF655F",
     "tech": "#4D9DBD",
-    "landscape": "#83A78F"
+    "landscape": "#83A78F",
+    "earth": "#BF8B65",
+    "wood": "#D2A273",
+    "rubber": "#232426",
+    "glass": "#9CC3D5",
+    "steel": "#A7AFB7",
+    "aluminium": "#C9CED3"
+  },
+  "personnages": {
+    "skin_a": "#F2C8B6",
+    "skin_b": "#EDB69C",
+    "skin_c": "#D1876D",
+    "skin_d": "#B96C56",
+    "skin_e": "#8C4A40",
+    "hair_black": "#2E2B2A",
+    "hair_brown": "#634644",
+    "hair_blond": "#DFCE8A",
+    "hair_red": "#CF7D5A",
+    "hair_grey": "#A7A6A2",
+    "hivis": "#FF6A13"
   },
   "materiaux": {
     "MAT_CONCRETE": {
@@ -33,9 +52,9 @@
       "metal": 0.0
     },
     "MAT_STEEL": {
-      "couleur": "concrete",
-      "rugosite": 0.35,
-      "metal": 0.6
+      "couleur": "steel",
+      "rugosite": 0.45,
+      "metal": 0.2
     },
     "MAT_BRICK": {
       "couleur": "brick",
@@ -55,6 +74,116 @@
     "MAT_SURFACE": {
       "couleur": "surface",
       "rugosite": 0.9,
+      "metal": 0.0
+    },
+    "MAT_EARTH": {
+      "couleur": "earth",
+      "rugosite": 0.95,
+      "metal": 0.0
+    },
+    "MAT_WOOD": {
+      "couleur": "wood",
+      "rugosite": 0.8,
+      "metal": 0.0
+    },
+    "MAT_RUBBER": {
+      "couleur": "rubber",
+      "rugosite": 0.9,
+      "metal": 0.0
+    },
+    "MAT_GLASS": {
+      "couleur": "glass",
+      "rugosite": 0.2,
+      "metal": 0.0
+    },
+    "MAT_ALUMINIUM": {
+      "couleur": "aluminium",
+      "rugosite": 0.4,
+      "metal": 0.2
+    },
+    "MAT_FABRIC_ARCHITECTURE": {
+      "couleur": "architecture",
+      "rugosite": 0.85,
+      "metal": 0.0
+    },
+    "MAT_FABRIC_STUDIES": {
+      "couleur": "studies",
+      "rugosite": 0.85,
+      "metal": 0.0
+    },
+    "MAT_FABRIC_SITE": {
+      "couleur": "site",
+      "rugosite": 0.85,
+      "metal": 0.0
+    },
+    "MAT_FABRIC_RECEPTION": {
+      "couleur": "reception",
+      "rugosite": 0.85,
+      "metal": 0.0
+    },
+    "MAT_FABRIC_OPERATIONS": {
+      "couleur": "operations",
+      "rugosite": 0.85,
+      "metal": 0.0
+    },
+    "MAT_FABRIC_GRAPHITE": {
+      "couleur": "graphite",
+      "rugosite": 0.85,
+      "metal": 0.0
+    },
+    "MAT_SKIN_A": {
+      "couleur": "skin_a",
+      "rugosite": 0.6,
+      "metal": 0.0
+    },
+    "MAT_SKIN_B": {
+      "couleur": "skin_b",
+      "rugosite": 0.6,
+      "metal": 0.0
+    },
+    "MAT_SKIN_C": {
+      "couleur": "skin_c",
+      "rugosite": 0.6,
+      "metal": 0.0
+    },
+    "MAT_SKIN_D": {
+      "couleur": "skin_d",
+      "rugosite": 0.6,
+      "metal": 0.0
+    },
+    "MAT_SKIN_E": {
+      "couleur": "skin_e",
+      "rugosite": 0.6,
+      "metal": 0.0
+    },
+    "MAT_HAIR_BLACK": {
+      "couleur": "hair_black",
+      "rugosite": 0.6,
+      "metal": 0.0
+    },
+    "MAT_HAIR_BROWN": {
+      "couleur": "hair_brown",
+      "rugosite": 0.6,
+      "metal": 0.0
+    },
+    "MAT_HAIR_BLOND": {
+      "couleur": "hair_blond",
+      "rugosite": 0.6,
+      "metal": 0.0
+    },
+    "MAT_HAIR_RED": {
+      "couleur": "hair_red",
+      "rugosite": 0.6,
+      "metal": 0.0
+    },
+    "MAT_HAIR_GREY": {
+      "couleur": "hair_grey",
+      "rugosite": 0.6,
+      "metal": 0.0
+    },
+    "MAT_FABRIC_HIVIS": {
+      "couleur": "hivis",
+      "rugosite": 0.85,
       "metal": 0.0
     }
   },
