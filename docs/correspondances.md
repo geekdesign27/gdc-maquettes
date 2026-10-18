@@ -23,19 +23,21 @@ Voir la bible, 17.2 : bureau d'architecte (`BLD_ARCHITECT`), bureau d'études (`
 
 ## Ce que fait un agent et son animation
 
-| Dans le journal | État de `character` |
+GDC lit l'activité des agents (`gdc activite`, ou `activites` dans `gdc etat --json`, depuis la version 0.12.0) et la traduit en état du composant `character`. Le vocabulaire de gauche est celui du harnais.
+
+| Activité dans GDC (`etat` / `action`) | État de `character` |
 |---|---|
-| Se déplace vers une fiche | walk |
-| Écrit du code ou un document | typing |
-| Travaille sur un lot (chantier) | work |
-| Relit, contrôle | inspect |
-| Lit une pièce du dossier | read |
-| Réfléchit, prépare un plan | thinking |
-| Attend une décision ou un autre agent | waiting |
-| Pose une question, présente | talk |
-| Lot ou fiche prouvé | celebrate (une fois, puis idle) |
-| Bloqué | blocked |
-| Rien d'enregistré | unknown |
+| `travaille` / `ecrit` | typing |
+| `travaille` / `lit` | read |
+| `travaille` / `controle` | inspect |
+| `travaille` / `reflechit` | thinking |
+| `travaille` / `echange` ou `delegue` | talk |
+| `travaille` / `execute`, ou sans action | work |
+| `attend` | waiting |
+| `bloque` | blocked |
+| `fini` | celebrate (une fois), puis idle |
+| `inconnu` (aucune nouvelle depuis le délai) | unknown |
+| L'agent change de lot ou de fiche (`sur`) | walk, le temps que GDC le déplace |
 
 ## Étapes d'une application et états du bâtiment
 
