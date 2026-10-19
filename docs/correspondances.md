@@ -17,6 +17,22 @@ Ce que GDC enverra aux composants. Le projet n'a pas à le programmer, mais chaq
 | Une fusion vers dev | `crane` près du bâtiment | lifting |
 | Un défaut ouvert | `defect-sign` sur la pièce | default |
 
+## Le projet avant les fiches (GDC 0.16)
+
+GDC calcule désormais la scène lui-même (`gdc scene`, depuis la version 0.16.1) : chaque élément avec son état et la source qui le justifie. Sa table des déclencheurs (`gdc scene --declencheurs`, et `docs/maquette.md` dans le dépôt GDC) dit, pour chaque événement du journal, quel élément il fait bouger ; un test de GDC refuse un élément ou un état absent de ce catalogue.
+
+| Dans le harnais | Composant | État |
+|---|---|---|
+| Le projet n'est pas ouvert | `ground` seul | default |
+| Le projet est ouvert | `building` pour chaque application du profil | plot |
+| Claire travaille (activité enregistrée, même sans fiche) | `character` au `architect-office`, et le bureau | selon l'activité ; active |
+| « On continue » ou le permis de construire prêt pour ta décision | `decision-sign` au `client-office` | default ; le bureau en waiting |
+| Une décision du projet périmée (une pièce a changé) | `decision-sign` au `client-office` | default ; le bureau en waiting |
+| Le dossier du projet | barre de progression de l'inspecteur, avec sa règle | « 5 pièces complètes sur 15 » |
+| Le permis de construire accordé, puis périmé | `permit-board`, **proposé** : le panneau du permis à l'entrée du chantier | absent, granted, expired |
+
+**Composant proposé, à décider par Pierre-Alain** : `permit-board`, le panneau du permis de construire, posé à l'entrée du chantier quand le permis est accordé, changé d'aspect (par sa forme, jamais par une couleur d'état dans la scène) quand il est périmé. Il n'entre au catalogue qu'avec son accord.
+
 ## Les lieux et les familles de la bible
 
 Voir la bible, 17.2 : bureau d'architecte (`BLD_ARCHITECT`), bureau d'études (`BLD_ENGINEERING`), bureau du client (`BLD_CLIENT`), bureau de contrôle (`BLD_QA`), baraque du conducteur de travaux (`BLD_COORDINATION`), le chantier et ses bâtiments d'application (`BLD_DEVELOPMENT`), l'aire de réception (`BLD_DELIVERY`).
