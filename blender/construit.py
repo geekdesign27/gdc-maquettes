@@ -51,6 +51,17 @@ def main(ids):
             "animations": infos.get("animations", []),
             "statut": "a valider",
         }
+        # un kit a plusieurs fichiers : VARIANTES = {nom: fonction}, chacune construite dans une scene vide et exportee a
+        # cote du fichier principal ; leurs empreintes vont dans asset.json, sous « fichiers »
+        fichiers = {}
+        for nom, fabrique in getattr(mod, "VARIANTES", {}).items():
+            c.scene_vide()
+            fabrique(c)
+            variante = c.exporte(dossier / (nom + ".glb"))
+            fichiers[nom] = hashlib.sha256(variante.read_bytes()).hexdigest()
+            print("exporte : " + str(variante.relative_to(c.RACINE)))
+        if fichiers:
+            meta["fichiers"] = fichiers
         if hasattr(mod, "demonstration"):  # un kit : le plan de sa demonstration, que la galerie assemble depuis le GLB
             (dossier / "demonstration.json").write_text(json.dumps(mod.demonstration(), indent=1) + "\n", encoding="utf-8")
         (dossier / "asset.json").write_text(json.dumps(meta, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")

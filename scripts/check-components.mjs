@@ -48,7 +48,20 @@ async function provenance(dossier, entry, fichiers) {
   if (!fichiers.includes(m.nom + '.glb')) p.push('asset.json decrit ' + m.nom + '.glb, absent de la fiche');
   else if (!existsSync(glbP)) p.push(m.nom + '.glb absent');
   else if (sha(await readFile(glbP)) !== m.glb_sha256) p.push(m.nom + '.glb modifie hors du script : relance npm run blender -- ' + entry.id);
+  // les autres fichiers d'un kit (tenues, coiffures, outils) : leurs empreintes sont dans asset.json, sous « fichiers »
+  for (const f of fichiers.filter((x) => x !== m.nom + '.glb')) {
+    const empreinte = (m.fichiers || {})[f.replace(/\.glb$/, '')];
+    if (!empreinte) p.push(`${f} absent de asset.json : il doit sortir de npm run blender -- ${entry.id}`);
+    else if (existsSync(join(dossier, f)) && sha(await readFile(join(dossier, f))) !== empreinte) p.push(f + ' modifie hors du script : relance npm run blender -- ' + entry.id);
+  }
   return p;
+}
+
+// Le fichier principal d'un kit (asset.json « nom ») porte le squelette et les animations de la fiche ; les autres
+// fichiers (tenues, coiffures, outils) se branchent dessus et n'ont pas a les repeter.
+async function fichierPrincipal(dossier) {
+  const metaP = join(dossier, 'asset.json');
+  return existsSync(metaP) ? JSON.parse(await readFile(metaP, 'utf8')).nom + '.glb' : null;
 }
 
 const errors = [];
@@ -68,11 +81,13 @@ for (const entry of items) {
   }
   const problems = [];
   // les modeles : convention, rien d'exterieur, animations, ancres, budget, provenance
+  const principal = propres.length > 1 ? await fichierPrincipal(dossier) : null;
   for (const f of propres) {
     const p = join(dossier, f);
     if (!existsSync(p)) { problems.push(f + ' absent'); continue; }
     try {
-      const { problemes } = checkGlb(lisGlb(await readFile(p)), f, entry);
+      const fiche = principal && f !== principal ? { ...entry, animations: [] } : entry;
+      const { problemes } = checkGlb(lisGlb(await readFile(p)), f, fiche);
       problems.push(...problemes);
     } catch (e) { problems.push(`${f} illisible : ${e.message}`); }
   }
