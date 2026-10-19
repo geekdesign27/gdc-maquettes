@@ -94,8 +94,8 @@ function buildList() {
   // Le personnage maitre (kit character-kit) : sa planche, avec et sans casque, et ses animations comme etats.
   if (personnage.entree(catalogue)) {
     const b = document.createElement('button');
-    b.textContent = 'Le personnage maître : planche';
-    b.title = 'Le corps commun, sans casque et avec casque, devant un mur à porte et un garde-corps du kit de bâtiment';
+    b.textContent = 'Le personnage maître : l\u2019équipe';
+    b.title = 'Chaque personne du tableau des correspondances, assemblée depuis les fichiers du kit (base, coiffure, tenue, outil)';
     b.dataset.id = personnage.PERSONNAGE_ID;
     b.addEventListener('click', () => select(personnage.PERSONNAGE_ID));
     list.append(b);
@@ -127,11 +127,11 @@ async function instance(id, state) {
     const meta = personnage.meta(e);
     await charge.prepare(meta);
     const copies = [];
-    for (let i = 0; i < personnage.NOMBRE; i++) copies.push(await charge.assetsPour(meta));
-    const inst = personnage.create(THREE, copies, makeContext(options));
+    for (const p of personnage.PERSONNES) copies.push(await charge.assetsPour(personnage.metaPersonne(e, p)));
+    const inst = personnage.create(THREE, copies, await charge.assetsPour(personnage.metaDecor(e)), makeContext(options));
     const premier = state && meta.states.includes(state) ? state : 'repos';
     inst.setState(premier);
-    return { inst, state: premier, entry: { ...e, id, name: 'Le personnage maître : planche' }, mod: { meta }, personnage: e };
+    return { inst, state: premier, entry: { ...e, id, name: 'L\u2019équipe' }, mod: { meta }, personnage: e };
   }
   if (id.startsWith(kit.PREFIXE_ID)) {
     const d = kit.demonstrations(catalogue).find((x) => kit.PREFIXE_ID + x.entry.id === id);
@@ -268,7 +268,7 @@ function rapportPersonnage() {
   const m = current.inst.personnages.map(measure).reduce((a, b) => (b.triangles + b.materials * 1e6 > a.triangles + a.materials * 1e6 ? b : a));
   const duree = current.inst.duree();
   const el = $('report');
-  el.replaceChildren(`${current.entry.name} · état ${current.state}${duree ? ` (clip de ${duree.toFixed(2)} s)` : ''} · le plus chargé : ${m.triangles} / ${budget.triangles} triangles · ${m.materials} / ${budget.materials} matériaux · `);
+  el.replaceChildren(`${current.entry.name} · état ${current.state}${duree ? ` (clip de ${duree.toFixed(2)} s)` : ''} · ${current.inst.personnages.length} personnes · le plus chargé : ${m.triangles} / ${budget.triangles} triangles · ${m.materials} / ${budget.materials} matériaux · `);
   const verdict = document.createElement('span');
   const dehors = m.triangles > budget.triangles || m.materials > budget.materials;
   verdict.className = dehors ? 'ko' : 'ok';

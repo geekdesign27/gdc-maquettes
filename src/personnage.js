@@ -1,20 +1,37 @@
-// La planche du personnage maitre (catalogue : character-kit) : la base sans casque (le client), la base avec casque
-// blanc, et l'ouvrier de l'equipe site (gilet orange, casque jaune, comme MB_04), sur un socle maquette, devant deux pieces du kit de batiment qui donnent l'echelle (mur a porte de
-// 1,10 x 2,40 m, garde-corps de 1,10 m). Les animations du kit se choisissent comme des etats. Le bouton « Planche »
-// de la galerie ajoute la grue a cote. Outil de la galerie seulement, comme l'etalon et la demonstration des kits :
-// il n'est pas dans la bibliotheque livree a GDC (c'est le composant character qui jouera les etats).
+// La planche de l'equipe (catalogue : character-kit) : chaque personne de equipe.json assemblee depuis les fichiers du
+// kit, comme le fera le composant character. La base (corps, visage, casque, squelette, animations) recoit la coiffure,
+// la tenue du metier et l'outil, rebranches sur ses os ; puis les couleurs de la personne : peau, cheveux, equipe
+// (casque et pieces _TEAM ; gilet de l'equipe site en orange fluo, bible 18.8), et la cle de forme FEMININE.
+// L'equipe est posee sur un socle maquette, devant un mur a porte et un garde-corps du kit de batiment (l'echelle). Les
+// animations se choisissent comme des etats. Outil de la galerie seulement : il n'est pas livre a GDC.
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 import { materiauPalette } from "./etalon.js";
+import equipe from "../components/kit/character-kit/equipe.json" with { type: "json" };
 
 export const PERSONNAGE_ID = "personnage";
-const MODELE = "CHR_BASE_MASTER_v001.glb";
+export const PERSONNES = equipe.personnes;
+const BASE = "CHR_BASE_MASTER_v001.glb";
+const COIFFURES = "CHR_HAIR_KIT_v001.glb";
+const OUTILS = "PRP_CHR_TOOLS_v001.glb";
 const KIT_BATIMENT = "kit:building-kit/BLD_KIT_A_v001.glb";
+const tenueDe = (metier) => `CHR_OUTFIT_${metier.toUpperCase()}_v001.glb`;
 const CASQUE = "CHR_BASE_MASTER_HELMET";
 const VISAGE = "CHR_BASE_MASTER_FACE";
-const GILET = "CHR_BASE_MASTER_VEST";
-const SOCLE = { taille: [7, 0.6, 3.4], chanfrein: 0.1 }; // bible 18.5 : 0,60 m de terre, aretes du dessus en C3
+const CILS = "CHR_BASE_MASTER_LASHES";
+const EQUIPE_GLB = "MAT_FABRIC_SITE"; // le materiau des parties d'equipe dans les GLB
+const EQUIPES = {
+  architecture: "MAT_FABRIC_ARCHITECTURE",
+  studies: "MAT_FABRIC_STUDIES",
+  site: "MAT_FABRIC_SITE",
+  reception: "MAT_FABRIC_RECEPTION",
+  operations: "MAT_FABRIC_OPERATIONS",
+  client: "MAT_SURFACE",
+};
+const RANG = 10; // personnes par rang sur le socle
+const PAS = 0.9;
+const SOCLE = { taille: [10.6, 0.6, 4.4], chanfrein: 0.1 }; // bible 18.5 : 0,60 m de terre, aretes du dessus en C3
 
-// repos : la pose de reference du squelette (en A), sans animation ; les autres : un clip ANM_CHR_<ETAT>.
+// repos : la pose de reference du squelette (en A) ; les autres : un clip ANM_CHR_<ETAT>.
 const ETATS = [
   "repos",
   "idle",
@@ -29,85 +46,186 @@ const ETATS = [
   "celebrate",
   "blocked",
 ];
-// Sans animation (reducedMotion) : l'instant du clip qui montre l'etat, en secondes (images 15 et 44 a 30 i/s ; celebrate : pose, bras leves).
+// Sans animation (reducedMotion) : l'instant du clip qui montre l'etat (images 15 et 44 a 30 i/s ; celebrate : pose, bras leves).
 const POSE_FIXE = { work: 15 / 30, talk: 15 / 30, celebrate: 44 / 30 };
 const UNE_FOIS = new Set(["celebrate"]); // joue une fois, puis idle (docs/correspondances.md)
 const IMMOBILE = new Set(["repos", "blocked"]); // blocked se lit immobile (bible 17.4)
-// Les personnages de la planche : position, casque, pieces de tenue montrees, materiau d'equipe du casque. La couleur
-// d'equipe n'est pas dans le GLB : le casque recoit un materiau MAT_FABRIC_<EQUIPE> cree ici, et libere avec la planche,
-// comme le fera le composant character.
-const DISTRIBUTION = [
-  { x: -1.4, casque: false, pieces: [] }, // le client : tenue civile, sans casque
-  { x: 0, casque: true, pieces: [] }, // la base, casque blanc
-  { x: 1.4, casque: true, pieces: [GILET], equipe: "MAT_FABRIC_SITE" }, // l'ouvrier de l'equipe site
-];
-const PIECES = [GILET];
-export const NOMBRE = DISTRIBUTION.length;
 
 export function entree(catalogue) {
   return catalogue.items.find((i) => i.id === "character-kit");
 }
 
-// Le meta pour le chargeur de modeles : le GLB du personnage et celui du kit de batiment.
+// Tous les modeles, pour les charger une fois (chargeur.prepare).
 export function meta(entry) {
   return {
     id: entry.id,
     category: entry.category,
-    assets: [MODELE, KIT_BATIMENT],
+    assets: [...entry.assets, KIT_BATIMENT],
     states: ETATS,
     anchors: [],
     budget: entry.budget,
   };
 }
 
+// Les fichiers d'une personne : une copie par personne (chargeur.assetsPour).
+export function metaPersonne(entry, p) {
+  return {
+    id: entry.id,
+    category: entry.category,
+    assets: [BASE, COIFFURES, tenueDe(p.metier), ...(p.outil ? [OUTILS] : [])],
+  };
+}
+
+export function metaDecor(entry) {
+  return { id: entry.id, category: entry.category, assets: [KIT_BATIMENT] };
+}
+
 const clipDe = (etat) => "ANM_CHR_" + etat.toUpperCase();
 
-// copies : une copie des modeles (chargeur.assetsPour), une par personnage. Les geometries et materiaux des GLB sont
-// partages : seuls ceux du socle sont liberes ici.
-export function create(THREE, copies, ctx) {
-  const root = new THREE.Group();
-  root.name = "planche-personnage";
-  const ombres = ctx.quality === "high";
-
-  // Blender (x, y, z) -> Three (x, z, -y). Une piece absente de la tenue est retiree de la copie (pas seulement cachee) :
-  // la mesure porte alors sur ce que le personnage montre vraiment.
-  const jetables = [];
-  const personnages = copies.map((assets, i) => {
-    const d = DISTRIBUTION[i];
-    const { scene, animations } = assets[MODELE];
-    scene.position.set(d.x, 0, 0);
-    const casque = scene.getObjectByName(CASQUE);
-    if (!d.casque) casque.removeFromParent();
-    else if (d.equipe) {
-      casque.material = materiauPalette(THREE, d.equipe);
-      jetables.push(casque.material);
+// Rebranche sur la base les pieces d'un autre fichier du kit dont le nom passe garder(nom) : une piece rigide (enfant
+// d'un os) passe sous l'os de meme nom de la base ; une piece deformee recoit un squelette fait des os de la base.
+function rebranche(THREE, base, source, garder) {
+  const os = new Map();
+  base.traverse((o) => {
+    if (o.isBone) os.set(o.name, o);
+  });
+  const pieces = [];
+  source.traverse((o) => {
+    if (!o.isBone && o.name && garder(o.name) && !garder(o.parent?.name ?? ""))
+      pieces.push(o);
+  });
+  for (const piece of pieces) {
+    const parent = piece.parent;
+    if (parent?.isBone) {
+      const cible = os.get(parent.name);
+      if (cible) cible.add(piece); // meme position locale sous le meme os
+      continue;
     }
-    for (const nom of PIECES) if (!d.pieces.includes(nom)) scene.getObjectByName(nom).removeFromParent();
-    // qualite basse : ce qui mesure moins de 0,30 m disparait (bible 18.3) ; les traits du visage font moins de 0,07 m
-    scene.getObjectByName(VISAGE).visible = ctx.quality === "high";
+    (base.getObjectByName(parent?.name ?? "") ?? base).add(piece);
+    piece.traverse((o) => {
+      if (!o.isSkinnedMesh) return;
+      const squelette = new THREE.Skeleton(
+        o.skeleton.bones.map((b) => os.get(b.name)),
+        o.skeleton.boneInverses,
+      );
+      o.bind(squelette, o.bindMatrix);
+    });
+  }
+  return pieces;
+}
+
+// Une personne : la base habillee et coloriee. materiau(nom) rend un materiau de palette partage par la planche.
+function assemble(THREE, p, assets, materiau, ctx) {
+  const { scene, animations } = assets[BASE];
+  const style = "CHR_HAIR_" + p.coiffure.toUpperCase();
+  rebranche(
+    THREE,
+    scene,
+    assets[COIFFURES].scene,
+    (n) =>
+      n === style ||
+      (p.barbe && n === "CHR_BEARD") ||
+      (p.lunettes && n === "CHR_GLASSES"),
+  );
+  rebranche(THREE, scene, assets[tenueDe(p.metier)].scene, (n) =>
+    n.startsWith("CHR_OUTFIT_"),
+  );
+  if (p.outil) {
+    const outil = "PRP_TOOL_" + p.outil.toUpperCase();
+    rebranche(
+      THREE,
+      scene,
+      assets[OUTILS].scene,
+      (n) => n === outil || n === outil + "_TEAM",
+    );
+  }
+
+  const casque = scene.getObjectByName(CASQUE);
+  if (!p.casque) casque.removeFromParent();
+  if (p.morpho !== "F") scene.getObjectByName(CILS).removeFromParent();
+  // qualite basse : ce qui mesure moins de 0,30 m disparait (bible 18.3) : les traits du visage et les cils
+  for (const nom of [VISAGE, CILS]) {
+    const o = scene.getObjectByName(nom);
+    if (o) o.visible = ctx.quality === "high";
+  }
+
+  const equipeMat = EQUIPES[p.equipe];
+  const echanges = {
+    MAT_SKIN_B: "MAT_SKIN_" + p.peau,
+    MAT_HAIR_BROWN: "MAT_HAIR_" + p.cheveux.toUpperCase(),
+  };
+  // la piece a laquelle appartient un maillage : le premier ancetre au nom de piece (pas une primitive « _1 », pas un os)
+  const pieceDe = (o) => {
+    for (let x = o; x; x = x.parent)
+      if (/^(CHR|PRP)_/.test(x.name) && !x.isBone && !/_\d+$/.test(x.name))
+        return x.name;
+    return "";
+  };
+  // Chaque fichier du kit apporte sa copie des materiaux : tout passe par les materiaux de palette de la planche, un par
+  // nom MAT_, si bien qu'un personnage compte ses materiaux comme la fiche (par nom).
+  scene.traverse((o) => {
+    if (!o.isMesh) return;
+    const nom = o.material.name;
+    const piece = pieceDe(o);
+    let final = nom;
+    if (echanges[nom]) final = echanges[nom];
+    else if (piece === CASQUE && equipeMat) final = equipeMat;
+    else if (nom === EQUIPE_GLB && piece.endsWith("_TEAM") && equipeMat)
+      final = piece.includes("_VEST_") && p.equipe === "site" ? "MAT_FABRIC_HIVIS" : equipeMat;
+    o.material = materiau(final);
+    const k = o.morphTargetDictionary?.FEMININE;
+    if (k !== undefined) o.morphTargetInfluences[k] = p.morpho === "F" ? 1 : 0;
+  });
+  return { scene, animations };
+}
+
+// copies : une copie des fichiers de chaque personne (metaPersonne), dans l'ordre de PERSONNES ; decor : une copie du
+// kit de batiment (metaDecor). Les geometries des GLB sont partagees : seuls le socle et les materiaux de palette crees
+// ici sont liberes.
+export function create(THREE, copies, decor, ctx) {
+  const root = new THREE.Group();
+  root.name = "planche-equipe";
+  const ombres = ctx.quality === "high";
+  const materiaux = new Map();
+  const materiau = (nom) => {
+    if (!materiaux.has(nom)) materiaux.set(nom, materiauPalette(THREE, nom));
+    return materiaux.get(nom);
+  };
+
+  // Deux rangs de dix, face a la camera ; Blender (x, y, z) -> Three (x, z, -y).
+  const personnages = PERSONNES.map((p, i) => {
+    const { scene, animations } = assemble(THREE, p, copies[i], materiau, ctx);
+    const rang = Math.floor(i / RANG);
+    scene.position.set(
+      ((i % RANG) - (RANG - 1) / 2) * PAS,
+      0,
+      rang === 0 ? -0.55 : 0.55,
+    );
     root.add(scene);
     return {
+      personne: p,
       scene,
       animations,
       mixer: new THREE.AnimationMixer(scene),
       action: null,
+      decalage: (i * 0.37) % 1,
     };
   });
 
   // L'echelle : le mur a porte et un garde-corps du kit de batiment.
-  const kit = copies[0][KIT_BATIMENT].scene;
+  const kit = decor[KIT_BATIMENT].scene;
   const mur = kit.getObjectByName("BLD_KIT_A_WALL_RENDER_DOOR").clone();
-  mur.position.set(0, 0, -0.9);
+  mur.position.set(0, 0, -1.6);
   const gardeCorps = kit.getObjectByName("BLD_KIT_A_GUARDRAIL").clone();
   gardeCorps.rotation.y = Math.PI / 2;
-  gardeCorps.position.set(2.6, 0, 0);
+  gardeCorps.position.set(5.0, 0, 0);
   root.add(mur, gardeCorps);
 
-  const [l, h, p] = SOCLE.taille;
-  const geometrie = new RoundedBoxGeometry(l, h, p, 3, SOCLE.chanfrein);
-  const materiau = materiauPalette(THREE, "MAT_EARTH");
-  const socle = new THREE.Mesh(geometrie, materiau);
-  socle.position.set(0.5, -h / 2, -0.2);
+  const [l, h, pr] = SOCLE.taille;
+  const geometrie = new RoundedBoxGeometry(l, h, pr, 3, SOCLE.chanfrein);
+  const sol = materiau("MAT_EARTH");
+  const socle = new THREE.Mesh(geometrie, sol);
+  socle.position.set(0.2, -h / 2, -0.4);
   root.add(socle);
 
   root.traverse((o) => {
@@ -119,37 +237,39 @@ export function create(THREE, copies, ctx) {
 
   let etat = "repos";
 
-  function joue(p, suivant) {
-    p.mixer.stopAllAction();
-    p.action = null;
+  function joue(x, suivant) {
+    x.mixer.stopAllAction();
+    x.action = null;
     if (suivant === "repos") return;
-    const clip = THREE.AnimationClip.findByName(p.animations, clipDe(suivant));
+    const clip = THREE.AnimationClip.findByName(x.animations, clipDe(suivant));
     if (!clip) throw new Error(`clip absent du GLB : ${clipDe(suivant)}`);
-    p.action = p.mixer.clipAction(clip);
-    p.action.setLoop(
+    x.action = x.mixer.clipAction(clip);
+    x.action.setLoop(
       UNE_FOIS.has(suivant) ? THREE.LoopOnce : THREE.LoopRepeat,
       Infinity,
     );
-    p.action.clampWhenFinished = true;
-    p.action.reset().play();
+    x.action.clampWhenFinished = true;
+    x.action.reset().play();
     if (ctx.reducedMotion) {
-      p.mixer.setTime(POSE_FIXE[suivant] ?? 0);
-      p.action.paused = true;
+      x.mixer.setTime(POSE_FIXE[suivant] ?? 0);
+      x.action.paused = true;
+    } else if (!UNE_FOIS.has(suivant)) {
+      x.mixer.setTime(x.decalage * clip.duration); // chacun a son rythme : la planche ne bouge pas comme un seul homme
     }
   }
 
   function setState(suivant) {
     if (!ETATS.includes(suivant)) throw new Error(`état inconnu : ${suivant}`);
     etat = suivant;
-    for (const p of personnages) {
-      joue(p, suivant);
-      p.mixer.update(0);
+    for (const x of personnages) {
+      joue(x, suivant);
+      x.mixer.update(0);
     }
   }
 
   return {
     root,
-    personnages: personnages.map((p) => p.scene),
+    personnages: personnages.map((x) => x.scene),
     get etat() {
       return etat;
     },
@@ -160,11 +280,10 @@ export function create(THREE, copies, ctx) {
     setState,
     update(dt) {
       if (ctx.reducedMotion || IMMOBILE.has(etat)) return false;
-      for (const p of personnages) {
-        p.mixer.update(dt);
-        // celebrate : une fois, puis retour au repos anime (idle)
-        if (UNE_FOIS.has(etat) && p.action && !p.action.isRunning())
-          joue(p, "idle");
+      for (const x of personnages) {
+        x.mixer.update(dt);
+        if (UNE_FOIS.has(etat) && x.action && !x.action.isRunning())
+          joue(x, "idle");
       }
       return true;
     },
@@ -172,13 +291,12 @@ export function create(THREE, copies, ctx) {
       throw new Error(`ancre inconnue : ${nom}`);
     },
     dispose() {
-      for (const p of personnages) {
-        p.mixer.stopAllAction();
-        p.mixer.uncacheRoot(p.scene);
+      for (const x of personnages) {
+        x.mixer.stopAllAction();
+        x.mixer.uncacheRoot(x.scene);
       }
       geometrie.dispose();
-      materiau.dispose();
-      for (const m of jetables) m.dispose();
+      for (const m of materiaux.values()) m.dispose();
     },
   };
 }
