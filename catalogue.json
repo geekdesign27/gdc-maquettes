@@ -1043,6 +1043,36 @@
       "blender": "PRP_DEFECT_CONE_A_v001"
     },
     {
+      "id": "permit-board",
+      "lot": "G5",
+      "order": 5,
+      "kind": "component",
+      "category": "signals",
+      "name": "Le panneau du permis de construire",
+      "purpose": "Le permis de construire est accordé ; périmé, il demande ta nouvelle décision.",
+      "description": "Un panneau de permis sur deux poteaux, posé à l'entrée du chantier quand le permis est accordé (comme sur un vrai chantier). Périmé, quand une pièce couverte a changé : le même panneau barré d'une bande en diagonale, reconnaissable à sa forme seule. Absent tant que le permis n'est pas accordé : GDC ne le pose pas. Aucune couleur d'état dans le modèle ; le badge HTML se pose sur l'ancre badge.",
+      "params": {},
+      "states": [
+        "granted",
+        "expired"
+      ],
+      "anchors": [
+        "badge"
+      ],
+      "budget": {
+        "triangles": 1200,
+        "materials": 3
+      },
+      "acceptance": [
+        "Reconnaissable comme un panneau de permis à sa forme seule, distinct du panneau de décision",
+        "L'état périmé se lit par la forme (la bande en diagonale), sans couleur d'état"
+      ],
+      "status": "à faire",
+      "data": {},
+      "production": "blender",
+      "blender": "PRP_PERMIT_BOARD_A_v001"
+    },
+    {
       "id": "fonts",
       "lot": "G6",
       "order": 0,
