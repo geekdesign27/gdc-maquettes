@@ -126,7 +126,9 @@ async function instance(id, state) {
     const e = personnage.entree(catalogue);
     const meta = personnage.meta(e);
     await charge.prepare(meta);
-    const inst = personnage.create(THREE, [await charge.assetsPour(meta), await charge.assetsPour(meta)], makeContext(options));
+    const copies = [];
+    for (let i = 0; i < personnage.NOMBRE; i++) copies.push(await charge.assetsPour(meta));
+    const inst = personnage.create(THREE, copies, makeContext(options));
     const premier = state && meta.states.includes(state) ? state : 'repos';
     inst.setState(premier);
     return { inst, state: premier, entry: { ...e, id, name: 'Le personnage maître : planche' }, mod: { meta }, personnage: e };
@@ -259,14 +261,14 @@ function rapportKit() {
   el.append(verdict);
 }
 
-// La planche du personnage : la mesure d'un personnage (casque compris, meme cache), comparee au budget de la fiche,
-// et la duree du clip affiche.
+// La planche du personnage : la mesure du personnage le plus charge (sa tenue complete), comparee au budget de la
+// fiche, et la duree du clip affiche.
 function rapportPersonnage() {
   const { budget } = current.personnage;
-  const m = measure(current.inst.personnages[1]);
+  const m = current.inst.personnages.map(measure).reduce((a, b) => (b.triangles + b.materials * 1e6 > a.triangles + a.materials * 1e6 ? b : a));
   const duree = current.inst.duree();
   const el = $('report');
-  el.replaceChildren(`${current.entry.name} · état ${current.state}${duree ? ` (clip de ${duree.toFixed(2)} s)` : ''} · un personnage : ${m.triangles} / ${budget.triangles} triangles · ${m.materials} / ${budget.materials} matériaux · `);
+  el.replaceChildren(`${current.entry.name} · état ${current.state}${duree ? ` (clip de ${duree.toFixed(2)} s)` : ''} · le plus chargé : ${m.triangles} / ${budget.triangles} triangles · ${m.materials} / ${budget.materials} matériaux · `);
   const verdict = document.createElement('span');
   const dehors = m.triangles > budget.triangles || m.materials > budget.materials;
   verdict.className = dehors ? 'ko' : 'ok';

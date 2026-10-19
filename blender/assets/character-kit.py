@@ -20,8 +20,8 @@ de repos, ecarte le membre gauche pendant (et le rapproche une fois leve au-dess
 cote gauche et se recopient en miroir.
 
 Animations : voir CLIPS, en bas du fichier (duree, boucle, posture de depart et mouvement des mains de chacune).
-Dans l'atelier seulement, deux variables d'environnement choisissent la vue : GDC_ATELIER_CLIP (le clip actif, sinon
-ANM_CHR_IDLE) et GDC_ATELIER_CASQUE=0 (sans casque).
+Dans l'atelier seulement, des variables d'environnement choisissent la vue : GDC_ATELIER_CLIP (le clip actif, sinon
+ANM_CHR_IDLE), GDC_ATELIER_CASQUE=0 (sans casque) et GDC_ATELIER_TENUE=site (gilet, casque de l'equipe site).
 """
 import math
 import os
@@ -53,8 +53,11 @@ EXAGERATION = 1.2  # chaussures et casque agrandis, comme les portes de la famil
 MAT_PEAU = "MAT_SKIN_B"
 MAT_HABITS = "MAT_FABRIC_GRAPHITE"  # sous-pull et pantalon : la tenue civile, base de toutes les tenues
 MAT_CHEVEUX = "MAT_HAIR_BROWN"  # cheveux et sourcils
-MAT_SOMBRE = "MAT_RUBBER"  # chaussures, yeux et bouche
-MAT_CLAIR = "MAT_SURFACE"  # casque blanc (decision du 19 octobre 2026) et reflet des yeux
+# chaussures, yeux et bouche : le graphite des habits, et non MAT_RUBBER, pour qu'un personnage en tenue (peau, cheveux,
+# graphite, blanc, gilet, casque d'equipe) tienne dans les 6 materiaux de la fiche
+MAT_SOMBRE = "MAT_FABRIC_GRAPHITE"
+MAT_CLAIR = "MAT_SURFACE"  # casque blanc (decision du 19 octobre 2026), reflet des yeux, bandes du gilet
+MAT_GILET = "MAT_FABRIC_HIVIS"  # gilet orange fluo de l'equipe site (bible 18.8)
 
 
 # --- Geometrie ---------------------------------------------------------------------------------------------------
@@ -466,6 +469,96 @@ def casque(rig, mat):
     return o
 
 
+# --- Les pieces de tenue ------------------------------------------------------------------------------------------
+# Une piece de tenue est un noeud a part, deforme par le meme squelette : le composant montre celles du metier et cache
+# les autres. La couleur d'equipe du casque n'est pas dans le GLB : le composant clone le materiau du casque et lui donne
+# la couleur de l'equipe (MAT_FABRIC_<EQUIPE>), ce qui garde le GLB sous son plafond de materiaux.
+
+# Le gilet suit le tronc (memes hauteurs), un peu plus large : (z, rx, ry, cx, cy).
+GILET = [
+    (0.790, 0.185, 0.129, 0, 0.004),
+    (0.800, 0.183, 0.127, 0, 0.004),
+    (0.900, 0.173, 0.121, 0, 0.0),
+    (0.990, 0.175, 0.121, 0, -0.004),
+    (1.090, 0.190, 0.129, 0, -0.008),
+    (1.180, 0.203, 0.131, 0, -0.004),
+    (1.250, 0.197, 0.123, 0, 0.0),
+    (1.288, 0.162, 0.102, 0, 0.0),
+]
+BANDES_H = ((0.850, 0.892), (0.930, 0.972))  # deux bandes claires autour de la taille (MB_04)
+BANDE_V = 0.085  # bretelles claires, devant et dans le dos : ecart a l'axe a la poitrine, en metres
+COTES_BANDES = 48  # colonnes de la peau des bandes : une bretelle en prend deux (environ 0,045 m)
+ENCOLURE = (0.075, 0.13)  # le V de l'encolure : demi-largeur et profondeur
+
+
+def _decoupe_v(o):
+    """Creuse le V de l'encolure devant : le haut du gilet descend vers le milieu de la poitrine."""
+    haut = GILET[-1][0]
+    demi, profond = ENCOLURE
+    for v in o.data.vertices:
+        if v.co.z > haut - 0.002 and v.co.y < 0 and abs(v.co.x) < demi:
+            v.co.z -= profond * (1 - abs(v.co.x) / demi)
+
+
+def gilet(rig, mat_gilet, mat_bandes):
+    """Gilet orange fluo a bandes claires (bible 18.8 ; OTConst, art. 7) : sans manches, ouvert au cou en V, du haut des
+    epaules au bas du ventre. Deux bandes autour de la taille, deux bretelles devant et dans le dos. Un tube ouvert en haut
+    et en bas : le tronc le remplit."""
+    corps_gilet = fuseau(P + "VEST", GILET, cotes=24, mat=mat_gilet)
+    _decoupe_v(corps_gilet)
+    # Les bandes : une peau a peine plus large que le gilet, dont on ne garde que les faces des bandes.
+    peau = [(z, rx + 0.004, ry + 0.004, cx, cy) for z, rx, ry, cx, cy in GILET]
+    fines = []
+    for (z0, rx0, ry0, cx0, cy0), (z1, rx1, ry1, cx1, cy1) in zip(peau, peau[1:]):
+        for k in range(1, 6):
+            t = k / 6
+            fines.append((z0 + (z1 - z0) * t, rx0 + (rx1 - rx0) * t, ry0 + (ry1 - ry0) * t, 0, cy0 + (cy1 - cy0) * t))
+    sections = sorted(peau + fines + [(z, *_interpole(peau, z)) for bande in BANDES_H for z in bande])
+    bandes = fuseau(P + "VEST_BANDS", sections, cotes=COTES_BANDES, mat=mat_bandes)
+    # Les bretelles suivent des colonnes fixes du maillage (et non une distance a l'axe, qui crenelerait le bord sur une
+    # surface courbe) : deux colonnes devant a gauche, et leurs symetriques a droite et dans le dos.
+    pas = 2 * math.pi / COTES_BANDES
+    rx_poitrine, ry_poitrine, _, cy_poitrine = _interpole(peau, 1.09)
+    angle = math.atan2(-math.sqrt(max(0.0, 1 - (BANDE_V / rx_poitrine) ** 2)), BANDE_V / rx_poitrine) % (2 * math.pi)
+    j = int(round(angle / pas))
+    devant = {j - 1, j}
+    colonnes = set()
+    for k in devant:
+        colonnes |= {k % COTES_BANDES, (COTES_BANDES // 2 - 1 - k) % COTES_BANDES}
+    colonnes |= {(COTES_BANDES - 1 - k) % COTES_BANDES for k in set(colonnes)}
+
+    def colonne(point):
+        rx, ry, cx, cy = _interpole(peau, min(max(point.z, peau[0][0]), peau[-1][0]))
+        return int((math.atan2((point.y - cy) / ry, (point.x - cx) / rx) % (2 * math.pi)) // pas)
+
+    b = bmesh.new()
+    b.from_mesh(bandes.data)
+    a_garder = set()
+    for f in b.faces:
+        c = f.calc_center_median()
+        horizontale = any(z0 - 1e-4 <= c.z <= z1 + 1e-4 for z0, z1 in BANDES_H)
+        verticale = c.z > BANDES_H[-1][1] and colonne(c) in colonnes
+        if horizontale or verticale:
+            a_garder.add(f)
+    bmesh.ops.delete(b, geom=[f for f in b.faces if f not in a_garder], context="FACES")
+    b.to_mesh(bandes.data)
+    b.free()
+    _decoupe_v(bandes)
+    o = reunit(P + "VEST", [corps_gilet, bandes])
+    poids_le_long(o, (0, 0, 0), (0, 0, 1), [(0.84, "HIPS"), (0.92, "SPINE"), (1.00, "SPINE"), (1.10, "CHEST")])
+    deforme(o, rig)
+    return o
+
+
+def _interpole(sections, z):
+    """La section (rx, ry, cx, cy) a la hauteur z, entre deux sections donnees."""
+    for (z0, *a), (z1, *b) in zip(sections, sections[1:]):
+        if z0 <= z <= z1:
+            t = (z - z0) / (z1 - z0)
+            return tuple(x + (y - x) * t for x, y in zip(a, b))
+    raise ValueError(z)
+
+
 # --- Animations ----------------------------------------------------------------------------------------------------
 
 def sym(x=0.0, y=0.0, z=0.0):
@@ -625,16 +718,27 @@ def construit(c):
     cheveux(rig, mats["cheveux"])
     visage(rig, mats)
     helmet = casque(rig, mats["clair"])
+    vest = gilet(rig, c.materiau(MAT_GILET), mats["clair"])
     animations = anime(rig)
 
     # Atelier seulement : le clip montre et le casque. L'export garde tout, sans action active (pose de repos).
     if "atelier" in sys.modules or any(Path(a).name == "atelier.py" for a in sys.argv):
-        vue_atelier(rig, helmet)
+        vue_atelier(c, rig, helmet, vest)
     return {"triangles_vises": 3500, "animations": animations}
 
 
-def vue_atelier(rig, helmet):
+def cache(o):
+    o.hide_render = o.hide_viewport = True
+    o.hide_set(True)
+
+
+def vue_atelier(c, rig, helmet, vest):
+    """La vue de l'atelier : le clip, le casque, et la tenue (base, ou site : gilet et casque de l'equipe, comme le fera
+    le composant). Ne sert qu'aux captures : la mesure compte toutes les pieces."""
     rig.animation_data.action = bpy.data.actions.get(os.environ.get("GDC_ATELIER_CLIP", "ANM_CHR_IDLE"))
     if os.environ.get("GDC_ATELIER_CASQUE") == "0":
-        helmet.hide_render = helmet.hide_viewport = True
-        helmet.hide_set(True)
+        cache(helmet)
+    if os.environ.get("GDC_ATELIER_TENUE") == "site":
+        helmet.data.materials[0] = c.materiau("MAT_FABRIC_SITE")
+    else:
+        cache(vest)

@@ -1,5 +1,5 @@
-// La planche du personnage maitre (catalogue : character-kit) : le corps commun, sans casque (le client) et avec
-// casque, sur un socle maquette, devant deux pieces du kit de batiment qui donnent l'echelle (mur a porte de
+// La planche du personnage maitre (catalogue : character-kit) : la base sans casque (le client), la base avec casque
+// blanc, et l'ouvrier de l'equipe site (gilet orange, casque jaune, comme MB_04), sur un socle maquette, devant deux pieces du kit de batiment qui donnent l'echelle (mur a porte de
 // 1,10 x 2,40 m, garde-corps de 1,10 m). Les animations du kit se choisissent comme des etats. Le bouton « Planche »
 // de la galerie ajoute la grue a cote. Outil de la galerie seulement, comme l'etalon et la demonstration des kits :
 // il n'est pas dans la bibliotheque livree a GDC (c'est le composant character qui jouera les etats).
@@ -11,7 +11,8 @@ const MODELE = "CHR_BASE_MASTER_v001.glb";
 const KIT_BATIMENT = "kit:building-kit/BLD_KIT_A_v001.glb";
 const CASQUE = "CHR_BASE_MASTER_HELMET";
 const VISAGE = "CHR_BASE_MASTER_FACE";
-const SOCLE = { taille: [6, 0.6, 3.4], chanfrein: 0.1 }; // bible 18.5 : 0,60 m de terre, aretes du dessus en C3
+const GILET = "CHR_BASE_MASTER_VEST";
+const SOCLE = { taille: [7, 0.6, 3.4], chanfrein: 0.1 }; // bible 18.5 : 0,60 m de terre, aretes du dessus en C3
 
 // repos : la pose de reference du squelette (en A), sans animation ; les autres : un clip ANM_CHR_<ETAT>.
 const ETATS = [
@@ -32,6 +33,16 @@ const ETATS = [
 const POSE_FIXE = { work: 15 / 30, talk: 15 / 30, celebrate: 44 / 30 };
 const UNE_FOIS = new Set(["celebrate"]); // joue une fois, puis idle (docs/correspondances.md)
 const IMMOBILE = new Set(["repos", "blocked"]); // blocked se lit immobile (bible 17.4)
+// Les personnages de la planche : position, casque, pieces de tenue montrees, materiau d'equipe du casque. La couleur
+// d'equipe n'est pas dans le GLB : le casque recoit un materiau MAT_FABRIC_<EQUIPE> cree ici, et libere avec la planche,
+// comme le fera le composant character.
+const DISTRIBUTION = [
+  { x: -1.4, casque: false, pieces: [] }, // le client : tenue civile, sans casque
+  { x: 0, casque: true, pieces: [] }, // la base, casque blanc
+  { x: 1.4, casque: true, pieces: [GILET], equipe: "MAT_FABRIC_SITE" }, // l'ouvrier de l'equipe site
+];
+const PIECES = [GILET];
+export const NOMBRE = DISTRIBUTION.length;
 
 export function entree(catalogue) {
   return catalogue.items.find((i) => i.id === "character-kit");
@@ -51,18 +62,27 @@ export function meta(entry) {
 
 const clipDe = (etat) => "ANM_CHR_" + etat.toUpperCase();
 
-// copies : deux copies des modeles (chargeur.assetsPour), une par personnage. Les geometries et materiaux des GLB sont
+// copies : une copie des modeles (chargeur.assetsPour), une par personnage. Les geometries et materiaux des GLB sont
 // partages : seuls ceux du socle sont liberes ici.
 export function create(THREE, copies, ctx) {
   const root = new THREE.Group();
   root.name = "planche-personnage";
   const ombres = ctx.quality === "high";
 
-  // Les deux personnages : sans casque devant le mur, avec casque devant la porte. Blender (x, y, z) -> Three (x, z, -y).
+  // Blender (x, y, z) -> Three (x, z, -y). Une piece absente de la tenue est retiree de la copie (pas seulement cachee) :
+  // la mesure porte alors sur ce que le personnage montre vraiment.
+  const jetables = [];
   const personnages = copies.map((assets, i) => {
+    const d = DISTRIBUTION[i];
     const { scene, animations } = assets[MODELE];
-    scene.position.set(i === 0 ? -1.4 : 0, 0, 0);
-    scene.getObjectByName(CASQUE).visible = i === 1;
+    scene.position.set(d.x, 0, 0);
+    const casque = scene.getObjectByName(CASQUE);
+    if (!d.casque) casque.removeFromParent();
+    else if (d.equipe) {
+      casque.material = materiauPalette(THREE, d.equipe);
+      jetables.push(casque.material);
+    }
+    for (const nom of PIECES) if (!d.pieces.includes(nom)) scene.getObjectByName(nom).removeFromParent();
     // qualite basse : ce qui mesure moins de 0,30 m disparait (bible 18.3) ; les traits du visage font moins de 0,07 m
     scene.getObjectByName(VISAGE).visible = ctx.quality === "high";
     root.add(scene);
@@ -80,14 +100,14 @@ export function create(THREE, copies, ctx) {
   mur.position.set(0, 0, -0.9);
   const gardeCorps = kit.getObjectByName("BLD_KIT_A_GUARDRAIL").clone();
   gardeCorps.rotation.y = Math.PI / 2;
-  gardeCorps.position.set(2.2, 0, 0);
+  gardeCorps.position.set(2.6, 0, 0);
   root.add(mur, gardeCorps);
 
   const [l, h, p] = SOCLE.taille;
   const geometrie = new RoundedBoxGeometry(l, h, p, 3, SOCLE.chanfrein);
   const materiau = materiauPalette(THREE, "MAT_EARTH");
   const socle = new THREE.Mesh(geometrie, materiau);
-  socle.position.set(0.3, -h / 2, -0.2);
+  socle.position.set(0.5, -h / 2, -0.2);
   root.add(socle);
 
   root.traverse((o) => {
@@ -158,6 +178,7 @@ export function create(THREE, copies, ctx) {
       }
       geometrie.dispose();
       materiau.dispose();
+      for (const m of jetables) m.dispose();
     },
   };
 }
