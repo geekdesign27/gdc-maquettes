@@ -22,6 +22,13 @@
 - Chaîne Blender : un kit peut produire plusieurs GLB (`VARIANTES`), avec leurs empreintes dans `asset.json` ; le contrôle n'exige les animations que dans le fichier principal. Jetons : `ctx.tokens.personnages`.
 - Galerie : planche « L'équipe », les 20 personnes jouées par le composant `character`.
 - Le personnage maître (`character-kit`) et le personnage (`character`) sont livrés : validés par Pierre-Alain le 19 octobre 2026.
+- Grue v002 (`VEH_TOWER_CRANE_A_v002`), troisième étalon, d'après MB_08 :
+  - mât en tronçons de treillis de 1,5 m, empilés selon le paramètre `height` (6 à 30 m) ;
+  - flèche en treillis triangulaire, pointe en A et tirants ;
+  - contre-flèche à garde-corps, contrepoids en blocs de béton, cabine claire vitrée ;
+  - socle béton à deux gradins, moufle graphite et palette de briques ;
+  - en qualité basse, des caissons pleins remplacent le treillis (bible 18.3) ;
+  - 8 488 triangles à 14 m, 14 824 à 30 m, 2 212 en qualité basse ; 8 matériaux.
 
 ## 0.2.0, 18 octobre 2026
 

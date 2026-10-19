@@ -815,9 +815,9 @@
       "status": "exemple",
       "data": {},
       "production": "blender",
-      "blender": "VEH_TOWER_CRANE_A_v001",
+      "blender": "VEH_TOWER_CRANE_A_v002",
       "assets": [
-        "VEH_TOWER_CRANE_A_v001.glb"
+        "VEH_TOWER_CRANE_A_v002.glb"
       ],
       "animations": [
         "ANM_TOWER_CRANE_A_LIFTING"
