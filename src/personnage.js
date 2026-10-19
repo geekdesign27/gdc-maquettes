@@ -12,6 +12,7 @@ export const PERSONNES = equipe.personnes;
 // planche ; GDC, lui, place ses propres personnages.
 export const OCCUPANTS = {
   "architect-office": ["claire"],
+  "client-office": ["client", "fanny"],
   "design-office": ["marc", "lina", "paul", "iris", "noah", "tom", "sarah", "david"],
 };
 const KIT_BATIMENT = "kit:building-kit/BLD_KIT_A_v001.glb";
