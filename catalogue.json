@@ -471,7 +471,10 @@
       "status": "à faire",
       "data": {},
       "production": "mixte",
-      "kit": "container-kit"
+      "kit": "container-kit",
+      "assets": [
+        "kit:container-kit/ENV_CONTAINER_KIT_A_v001.glb"
+      ]
     },
     {
       "id": "waste-skip",
