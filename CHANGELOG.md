@@ -29,6 +29,7 @@
   - socle béton à deux gradins, moufle graphite et palette de briques ;
   - en qualité basse, des caissons pleins remplacent le treillis (bible 18.3) ;
   - 8 488 triangles à 14 m, 14 824 à 30 m, 2 212 en qualité basse ; 8 matériaux.
+- La grue (`crane`, v002) est livrée : validée sur planche par Pierre-Alain le 19 octobre 2026. Les trois étalons (kit de bâtiment, personnage, grue) sont validés ; le lot G1 peut commencer.
 
 ## 0.2.0, 18 octobre 2026
 
