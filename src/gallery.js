@@ -200,13 +200,14 @@ async function select(id, state) {
   scene.add(x.inst.root);
   const voisins = await occupants(x);
   if (options.planche && id !== etalon.ETALON_ID) {
-    // les voisins a 20 m de part et d'autre, ou plus loin si le composant est plus large (un plateau de conteneurs)
+    // les voisins a 20 m de part et d'autre, ou plus loin si le composant ou le voisin est large (un plateau de
+    // conteneurs) : 6 m au moins entre leurs emprises
     const boite = new THREE.Box3().setFromObject(x.inst.root);
-    const ecart = Math.max(20, Math.max(-boite.min.x, boite.max.x) + 10);
     let pos = -1;
     for (const rid of references(id)) {
       const v = await instance(rid);
-      v.inst.root.position.x = pos * ecart;
+      const bv = new THREE.Box3().setFromObject(v.inst.root);
+      v.inst.root.position.x = pos < 0 ? Math.min(-20, boite.min.x - 6 - bv.max.x) : Math.max(20, boite.max.x + 6 - bv.min.x);
       scene.add(v.inst.root);
       voisins.push(v);
       pos += 2;
