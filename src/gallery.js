@@ -123,14 +123,21 @@ async function instance(id, state) {
     return { inst: etalon.create(THREE, makeContext(options)), state: 'default', entry: { id, name: 'Cube étalon' }, mod: etalon };
   }
   if (id === personnage.PERSONNAGE_ID) {
+    // l'equipe : une instance du composant character par personne d'equipe.json, avec les parametres de GDC
     const e = personnage.entree(catalogue);
-    const meta = personnage.meta(e);
-    await charge.prepare(meta);
-    const copies = [];
-    for (const p of personnage.PERSONNES) copies.push(await charge.assetsPour(personnage.metaPersonne(e, p)));
-    const inst = personnage.create(THREE, copies, await charge.assetsPour(personnage.metaDecor(e)), makeContext(options));
-    const premier = state && meta.states.includes(state) ? state : 'repos';
-    inst.setState(premier);
+    const ch = byId.character;
+    const insts = [];
+    for (const p of personnage.PERSONNES) {
+      const params = personnage.parametresDe(p);
+      const m = personnage.metaPersonne(params);
+      await charge.prepare(m);
+      insts.push(ch.create(THREE, params, makeContext(options, await charge.assetsPour(m))));
+    }
+    await charge.prepare(personnage.metaDecor());
+    const inst = personnage.create(THREE, insts, await charge.assetsPour(personnage.metaDecor()), makeContext(options));
+    const meta = { ...ch.meta, anchors: [] };
+    const premier = state && meta.states.includes(state) ? state : 'idle';
+    inst.setState(premier, sampleData(entries.find((x) => x.id === 'character')));
     return { inst, state: premier, entry: { ...e, id, name: 'L\u2019équipe' }, mod: { meta }, personnage: e };
   }
   if (id.startsWith(kit.PREFIXE_ID)) {
@@ -262,13 +269,12 @@ function rapportKit() {
 }
 
 // La planche du personnage : la mesure du personnage le plus charge (sa tenue complete), comparee au budget de la
-// fiche, et la duree du clip affiche.
+// fiche.
 function rapportPersonnage() {
   const { budget } = current.personnage;
   const m = current.inst.personnages.map(measure).reduce((a, b) => (b.triangles + b.materials * 1e6 > a.triangles + a.materials * 1e6 ? b : a));
-  const duree = current.inst.duree();
   const el = $('report');
-  el.replaceChildren(`${current.entry.name} · état ${current.state}${duree ? ` (clip de ${duree.toFixed(2)} s)` : ''} · ${current.inst.personnages.length} personnes · le plus chargé : ${m.triangles} / ${budget.triangles} triangles · ${m.materials} / ${budget.materials} matériaux · `);
+  el.replaceChildren(`${current.entry.name} · état ${current.state} · ${current.inst.personnages.length} personnes · le plus chargé : ${m.triangles} / ${budget.triangles} triangles · ${m.materials} / ${budget.materials} matériaux · `);
   const verdict = document.createElement('span');
   const dehors = m.triangles > budget.triangles || m.materials > budget.materials;
   verdict.className = dehors ? 'ko' : 'ok';
