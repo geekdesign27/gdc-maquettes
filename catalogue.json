@@ -359,7 +359,11 @@
         "État active : un détail animé discret, figé si reducedMotion"
       ],
       "status": "à faire",
-      "kit": "container-kit"
+      "kit": "container-kit",
+      "assets": [
+        "kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb",
+        "kit:building-kit/BLD_KIT_A_v001.glb"
+      ]
     },
     {
       "id": "parking",

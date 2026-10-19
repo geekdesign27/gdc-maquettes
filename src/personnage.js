@@ -14,9 +14,12 @@ export const OCCUPANTS = {
   "architect-office": ["claire"],
   "client-office": ["client", "fanny"],
   "control-office": ["helene"],
+  "site-office": ["yves", "victor"],
   "design-office": ["marc", "lina", "paul", "iris", "noah", "tom", "sarah", "david"],
 };
 // L'etat que jouent les occupants dans la galerie : work par defaut ; Helene controle (docs/ville.md : inspect).
+// Les agents de passage d'exemple, aux places crew:n d'un lieu (ceux qui ont fini reviennent a la baraque).
+export const PASSAGE = { "site-office": ["emma", "julie", "robin"] };
 export const ETAT_OCCUPANTS = { "control-office": "inspect" };
 const KIT_BATIMENT = "kit:building-kit/BLD_KIT_A_v001.glb";
 const RANG = 10; // personnes par rang sur le socle

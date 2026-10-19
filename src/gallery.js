@@ -172,19 +172,29 @@ function references(id) {
   return entries.filter((e) => e.id !== id && byId[e.id] && rang(e) < 9 && e.id !== 'selection-ring').sort((a, b) => rang(a) - rang(b)).slice(0, 2).map((e) => e.id);
 }
 
-// Les occupants d'un lieu : un personnage d'exemple a chaque ancre desk:n (personnage.OCCUPANTS), au travail, tourne
-// vers le fond du lieu. Ils sont retires et animes avec les voisins de la planche ; ils ne comptent pas au budget du lieu.
+// Les occupants d'un lieu : un personnage d'exemple a chaque ancre desk:n (personnage.OCCUPANTS), au travail, et a chaque
+// place crew:n (personnage.PASSAGE, les agents de passage), au repos ; tous tournes vers le fond du lieu. Ils sont retires et animes avec les voisins de la planche ; ils ne comptent pas au budget du lieu.
 async function occupants(x) {
-  const ids = (x.mod.meta.anchors || []).includes('desk:*') ? personnage.OCCUPANTS[x.entry.id] || [] : [];
+  const ancres = x.mod.meta.anchors || [];
+  const groupes = [['desk', personnage.OCCUPANTS[x.entry.id] || []], ['crew', personnage.PASSAGE[x.entry.id] || []]];
+  const out = [];
+  for (const [groupe, ids] of groupes) {
+    if (!ancres.includes(`${groupe}:*`)) continue;
+    out.push(...await poseOccupants(x, groupe, ids));
+  }
+  return out;
+}
+
+async function poseOccupants(x, groupe, ids) {
   const out = [];
   for (const [i, pid] of ids.entries()) {
     let poste;
-    try { poste = x.inst.anchor(`desk:${i + 1}`); } catch { break; }
+    try { poste = x.inst.anchor(`${groupe}:${i + 1}`); } catch { break; }
     const params = personnage.parametresDe(personnage.PERSONNES.find((p) => p.id === pid));
     const m = personnage.metaPersonne(params);
     await charge.prepare(m);
     const inst = byId.character.create(THREE, params, makeContext(options, await charge.assetsPour(m)));
-    inst.setState(personnage.ETAT_OCCUPANTS[x.entry.id] || 'work', { facing: Math.PI });
+    inst.setState(groupe === 'crew' ? 'idle' : personnage.ETAT_OCCUPANTS[x.entry.id] || 'work', { facing: Math.PI });
     x.inst.root.updateMatrixWorld(true);
     inst.root.position.copy(x.inst.root.localToWorld(poste));
     scene.add(inst.root);
