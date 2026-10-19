@@ -1,0 +1,25 @@
+{
+  "nom": "CHR_BASE_MASTER_v001",
+  "id": "character-kit",
+  "bible": "WORKSITE 1.2",
+  "blender": "5.3.0 Beta",
+  "script": "blender/assets/character-kit.py",
+  "script_sha256": "bf13e55f74706c74a7e56877d4e5610b55571a9998f3d46a13077c80ed5a0aff",
+  "commun_sha256": "ebb740c936d677a6da372d7de22a2fbd24c006eb86be05692f13983e069fb4c8",
+  "palette_sha256": "4d7c5c91813ad7950d154c5d52b5e7164c27aeda6a4bd02c10bce89f0ab20b4f",
+  "glb_sha256": "12903d837e3ecbfd24f974dd5ee40b1d868d0100c7c32149ac71fa0dc29d7e53",
+  "animations": [
+    "ANM_CHR_IDLE",
+    "ANM_CHR_WALK",
+    "ANM_CHR_WORK",
+    "ANM_CHR_TYPING",
+    "ANM_CHR_INSPECT",
+    "ANM_CHR_READ",
+    "ANM_CHR_THINKING",
+    "ANM_CHR_WAITING",
+    "ANM_CHR_TALK",
+    "ANM_CHR_CELEBRATE",
+    "ANM_CHR_BLOCKED"
+  ],
+  "statut": "a valider"
+}
