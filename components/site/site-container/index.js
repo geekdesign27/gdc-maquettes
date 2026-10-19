@@ -4,7 +4,7 @@
 // lieu, il se pose sur le chantier. Les faces que la camera iso ne voit pas (arriere, bout gauche) sont des parois
 // pleines sans nervures : c'est ce qui tient deux conteneurs empiles sous le budget.
 
-const KIT = "kit:container-kit/ENV_CONTAINER_KIT_A_v001.glb";
+const KIT = "kit:container-kit/ENV_CONTAINER_KIT_A_v002.glb";
 const P = "ENV_CONTAINER_KIT_A_";
 const HAUT = 3.0; // hauteur d'un conteneur : le second est pose a 3,00 m
 const NU = 1.45; // face exterieure d'un panneau de long pan
@@ -12,7 +12,7 @@ const X_PORTE = -2.0; // centre de la porte du long pan avant
 
 export const meta = {
   id: "site-container",
-  version: "1.0.0",
+  version: "1.1.0",
   category: "site",
   states: ["default"],
   params: { stack: { type: "number", default: 1, min: 1, max: 2 } },

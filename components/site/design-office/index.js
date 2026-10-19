@@ -8,7 +8,7 @@
 // Le socle et le partage des materiaux du totem reprennent ceux d'architect-office : le contrat interdit d'importer
 // d'un autre dossier de composant.
 
-const KIT = "kit:container-kit/ENV_CONTAINER_KIT_A_v001.glb";
+const KIT = "kit:container-kit/ENV_CONTAINER_KIT_A_v002.glb";
 const KIT_BATIMENT = "kit:building-kit/BLD_KIT_A_v001.glb";
 const P = "ENV_CONTAINER_KIT_A_";
 const LONG = 7.2; // pas des conteneurs bout a bout : leurs poteaux se touchent

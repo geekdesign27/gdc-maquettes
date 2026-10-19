@@ -9,6 +9,7 @@ dont l'origine est au centre de l'emprise, au sol : on pose toutes les pieces d'
 - bout : modele sur la face droite (+X) ; une rotation de 180 le pose a gauche ;
 - accoler deux conteneurs le long de Y (pas de 3,00 m) : ne pas poser les deux parois communes ;
 - conteneur habite (bureau) : FRAME_CUT, FLOOR, WALL_LONG_CUT a l'avant, sans ROOF ; on entre par WALL_END_DOOR ;
+- grappe de bureaux accoles par le long pan (v002) : FRAME_OPEN devant et au milieu, FRAME_CUT tourne de 180 au fond ;
 - empiler : le conteneur du haut est pose a z = 3,00 ; STAIR et WALKWAY sont modeles par rapport au conteneur du bas.
 Le mobilier est pose a son origine (centre au sol, avant vers -Y) ; dans un conteneur, son sol est a z = PLANCHER.
 
@@ -21,7 +22,7 @@ import math
 
 import bpy
 
-ASSET = {"id": "container-kit", "categorie": "kit", "nom": "ENV_CONTAINER_KIT_A_v001"}
+ASSET = {"id": "container-kit", "categorie": "kit", "nom": "ENV_CONTAINER_KIT_A_v002"}
 
 P = "ENV_CONTAINER_KIT_A_"
 LONG = 7.20  # longueur hors tout (20 pieds x 1,2)
@@ -93,14 +94,15 @@ def _boule(c, nom, rayon, centre, mat, aplati=1.0):
 
 # --- la coque -------------------------------------------------------------------------------------------------------
 
-def _cadre(c, nom="FRAME", coupe=False):
-    """Le cadre graphite. coupe : sans le longeron haut avant, qui barrerait la vue au-dessus des tetes (MB_13, A)."""
+def _cadre(c, nom="FRAME", coupe=False, ouvert=False):
+    """Le cadre graphite. coupe : sans le longeron haut avant, qui barrerait la vue au-dessus des tetes (MB_13, A).
+    ouvert : sans ses deux longerons hauts, pour une grappe de conteneurs accoles par le long pan (v002)."""
     l, w = LONG / 2 - CADRE / 2, LARGE / 2 - CADRE / 2
     morceaux = [c.boite(P + nom + "_POST_%d" % i, (CADRE, CADRE, HAUT), (x, y, 0), mat="MAT_PAINTED_METAL_GRAPHITE",
                         chanfrein=C2, segments=2) for i, (x, y) in enumerate(((-l, -w), (l, -w), (l, w), (-l, w)))]
     for k, z in enumerate((0, HAUT - CADRE)):
         for s, y in enumerate((-w, w)):
-            if coupe and k == 1 and s == 0:
+            if k == 1 and (ouvert or (coupe and s == 0)):
                 continue
             morceaux.append(c.boite(P + nom + "_RAIL_%d%d" % (k, s), (INT_LONG, CADRE, CADRE), (0, y, z),
                                     mat="MAT_PAINTED_METAL_GRAPHITE", chanfrein=C2, segments=2, droites=("x-", "x+")))
@@ -226,6 +228,7 @@ def _nervures(c, nom, longueur, trous, long_pan, coupe=False):
 def _coque(c):
     _cadre(c)
     _cadre(c, "FRAME_CUT", coupe=True)
+    _cadre(c, "FRAME_OPEN", ouvert=True)
     _piece(c, "FLOOR", [c.boite(P + "FLOOR", (INT_LONG, INT_LARGE, PLANCHER), mat="MAT_CONCRETE")], lisser=False)
     _piece(c, "ROOF", [c.boite(P + "ROOF", (INT_LONG, INT_LARGE, 0.15), (0, 0, HAUT - 0.20), mat="MAT_SURFACE")],
            lisser=False)

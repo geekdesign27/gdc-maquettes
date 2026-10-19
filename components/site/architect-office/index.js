@@ -5,7 +5,7 @@
 // socle et son materiau, crees par ce composant, sont liberes. Etat actif : la lampe est tendue au-dessus du plateau et
 // la regle parallele monte et descend, sans lumiere emissive.
 
-const KIT = "kit:container-kit/ENV_CONTAINER_KIT_A_v001.glb";
+const KIT = "kit:container-kit/ENV_CONTAINER_KIT_A_v002.glb";
 const KIT_BATIMENT = "kit:building-kit/BLD_KIT_A_v001.glb";
 const P = "ENV_CONTAINER_KIT_A_";
 const PLANCHER = 0.2; // dessus du plancher du conteneur
@@ -24,7 +24,7 @@ const SOCLE = {
 
 export const meta = {
   id: "architect-office",
-  version: "1.0.0",
+  version: "1.1.0",
   category: "site",
   states: ["idle", "active"],
   params: {},
