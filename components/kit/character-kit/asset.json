@@ -4,10 +4,10 @@
   "bible": "WORKSITE 1.2",
   "blender": "5.3.0 Beta",
   "script": "blender/assets/character-kit.py",
-  "script_sha256": "d77ee9ceb7275293a4197ac437bb09383e83e225b120f893f6ecd00c0315edfa",
+  "script_sha256": "5c5adc3d06f4b5282eecefe5ff15bb394c80eb6eb15d987207a4c53c8b2899bd",
   "commun_sha256": "ebb740c936d677a6da372d7de22a2fbd24c006eb86be05692f13983e069fb4c8",
   "palette_sha256": "4d7c5c91813ad7950d154c5d52b5e7164c27aeda6a4bd02c10bce89f0ab20b4f",
-  "glb_sha256": "4cfb62056a79d7b2d74cc9828be94737bd7281ddd50b12e9445672a05f49daa9",
+  "glb_sha256": "a36b42a369ee1f6b5b0970ed7182e53b1dc8d8a74aee48cc5862c7974969b8bc",
   "animations": [
     "ANM_CHR_IDLE",
     "ANM_CHR_WALK",

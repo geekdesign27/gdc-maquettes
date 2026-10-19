@@ -1267,6 +1267,9 @@ def construit(c):
     visage(rig, mats)
     lashes = cils(rig, mats["sombre"])
     helmet = casque(rig, mats["clair"])
+    # les ancres de la fiche character : l'etiquette au-dessus du casque, le badge a cote de la tete (bible 17.7)
+    c.ancre("ANCHOR_LABEL", (0, 0, 2.05))
+    c.ancre("ANCHOR_BADGE", (0.30, 0, 1.78))
     animations = anime(rig)
 
     # Atelier seulement : le clip, le casque, et une personne de l'equipe habillee. L'export garde la base seule.
