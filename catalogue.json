@@ -841,9 +841,9 @@
       "status": "livré",
       "data": {},
       "production": "blender",
-      "blender": "VEH_TOWER_CRANE_A_v002",
+      "blender": "VEH_TOWER_CRANE_A_v003",
       "assets": [
-        "VEH_TOWER_CRANE_A_v002.glb"
+        "VEH_TOWER_CRANE_A_v003.glb"
       ],
       "animations": [
         "ANM_TOWER_CRANE_A_LIFTING"

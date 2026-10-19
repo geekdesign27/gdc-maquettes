@@ -5,7 +5,7 @@
   "blender": "5.3.0 Beta",
   "script": "blender/assets/character-kit.py",
   "script_sha256": "5c5adc3d06f4b5282eecefe5ff15bb394c80eb6eb15d987207a4c53c8b2899bd",
-  "commun_sha256": "ebb740c936d677a6da372d7de22a2fbd24c006eb86be05692f13983e069fb4c8",
+  "commun_sha256": "d31db270f510bb4a40a645bc9a47a1af015eb52183477fb9e579cd8caf72edd7",
   "palette_sha256": "4d7c5c91813ad7950d154c5d52b5e7164c27aeda6a4bd02c10bce89f0ab20b4f",
   "glb_sha256": "a36b42a369ee1f6b5b0970ed7182e53b1dc8d8a74aee48cc5862c7974969b8bc",
   "animations": [

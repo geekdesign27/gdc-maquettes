@@ -379,8 +379,8 @@ Une pelleteuse à chenilles ; en état digging, le bras creuse.
 Une grue à tour ; en état lifting, une charge monte et se pose.
 
 - Fichier : `components/machine/crane/index.js`
-- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `VEH_TOWER_CRANE_A_v002`
-- Modèles : `VEH_TOWER_CRANE_A_v002.glb`
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `VEH_TOWER_CRANE_A_v003`
+- Modèles : `VEH_TOWER_CRANE_A_v003.glb`
 - Animations : `ANM_TOWER_CRANE_A_LIFTING`
 - Paramètres : `height` (nombre, 6 à 30, défaut 14)
 - États : `idle`, `lifting`

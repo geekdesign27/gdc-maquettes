@@ -1,4 +1,4 @@
-"""La grue a tour (catalogue : crane), v002 : troisieme etalon de l'atelier. Bible WORKSITE, section 7 (socle, mat,
+"""La grue a tour (catalogue : crane), v003 (la v002, pivots poses a leur place) : troisieme etalon de l'atelier. Bible WORKSITE, section 7 (socle, mat,
 pivot, fleche, contre-fleche, contrepoids, chariot, cable, crochet) ; cible MB_08 (moodboard/notes.md) : mat et fleche
 en treillis, pointe en A avec ses tirants, contre-fleche a garde-corps et contrepoids en blocs de beton, cabine claire,
 socle beton. Ecarte de MB_08 : le crochet rouge, les cables sous 0,06 m, le crepi du sol.
@@ -20,7 +20,7 @@ from pathlib import Path
 
 import bpy
 
-ASSET = {"id": "crane", "categorie": "machine", "nom": "VEH_TOWER_CRANE_A_v002"}
+ASSET = {"id": "crane", "categorie": "machine", "nom": "VEH_TOWER_CRANE_A_v003"}
 
 P = "VEH_TOWER_CRANE_A_"
 HAUTEUR = 14.0  # hauteur par defaut du haut du mat (parametre height de la fiche)
@@ -200,11 +200,8 @@ def construit(c):
     cable.scale = (1, 1, CABLE_BAS)
 
     # les ancres de la fiche : l'etiquette au-dessus de la pointe, le badge a cote de la cabine (elles suivent la hauteur)
-    # (commun.pivot rattache avant que Blender ait calcule la position : on pose, on met a jour, puis on rattache)
-    ancres = [c.ancre("ANCHOR_LABEL", (0, 0, z + pointe_h + 1.2)), c.ancre("ANCHOR_BADGE", (0.9, -1.6, haut + 0.6))]
-    bpy.context.view_layer.update()
-    for a in ancres:
-        c.rattache(a, dessus)
+    c.ancre("ANCHOR_LABEL", (0, 0, z + pointe_h + 1.2), parent=dessus)
+    c.ancre("ANCHOR_BADGE", (0.9, -1.6, haut + 0.6), parent=dessus)
 
     # une seule action pour les trois noeuds : un seul clip glTF, premiere cle a l'image 0
     clip = "ANM_TOWER_CRANE_A_LIFTING"

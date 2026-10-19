@@ -1,9 +1,9 @@
-// La grue a tour : signale une fusion vers dev (catalogue : crane). v002 : mat et fleche en treillis (MB_08).
+// La grue a tour : signale une fusion vers dev (catalogue : crane). v002 : mat et fleche en treillis (MB_08) ; v003 : pivots poses a leur place (correction de commun.rattache).
 // La geometrie et l'animation viennent du GLB (blender/assets/crane.py) ; le code empile les troncons du mat selon la
 // hauteur, choisit treillis ou caissons pleins selon la qualite, et pilote l'animation. Le modele est partage entre
 // instances : on ne libere jamais ses geometries ni ses materiaux ici.
 
-const MODELE = "VEH_TOWER_CRANE_A_v002.glb";
+const MODELE = "VEH_TOWER_CRANE_A_v003.glb";
 const CLIP = "ANM_TOWER_CRANE_A_LIFTING";
 const P = "VEH_TOWER_CRANE_A_";
 const SOCLE = 0.4; // dessus du socle beton
@@ -15,7 +15,7 @@ const TREILLIS = ["MAST_SECTION", "JIB", "COUNTERJIB", "PEAK", "TIES"].map(
 
 export const meta = {
   id: "crane",
-  version: "2.0.0",
+  version: "2.1.0",
   category: "machine",
   states: ["idle", "lifting"],
   params: { height: { type: "number", default: 14, min: 6, max: 30 } },

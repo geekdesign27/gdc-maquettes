@@ -222,7 +222,9 @@ def ancre(nom, position, parent=None):
 
 
 def rattache(enfant, parent):
-    """Rattache en conservant la position monde."""
+    """Rattache en conservant la position monde. Blender ne recalcule matrix_world qu'a la mise a jour de la scene :
+    un objet tout juste pose (pivot, ancre) garderait sinon une matrice perimee et sauterait a l'origine du parent."""
+    bpy.context.view_layer.update()
     m = enfant.matrix_world.copy()
     enfant.parent = parent
     enfant.matrix_world = m

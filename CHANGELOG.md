@@ -31,6 +31,8 @@
   - 8 488 triangles à 14 m, 14 824 à 30 m, 2 212 en qualité basse ; 8 matériaux.
 - La grue (`crane`, v002) est livrée : validée sur planche par Pierre-Alain le 19 octobre 2026. Les trois étalons (kit de bâtiment, personnage, grue) sont validés ; le lot G1 peut commencer.
 - Catalogue, lot G1 : les bureaux sont des conteneurs de chantier aménagés (décision de Pierre-Alain du 19 octobre 2026). Nouvelle fiche `container-kit` (ordre 1 : conteneur de 20 pieds agrandi × 1,2, soit 7,20 × 3,00 × 3,00 m, et mobilier commun) ; `site-container` passe à l'ordre 2 ; `site-container` et les cinq bureaux passent en `mixte` sur ce kit. `design-office` remplace `size` par `desks` (1 à 8, défaut 8, deux postes par conteneur) ; `architect-office` perd `size` ; ancres `desk:*` sur les deux. `control-office` est un conteneur équipé de matériel, sans poste occupé. Prompts MB_13 à MB_16 ajoutés au mood board (images à générer).
+- Outils Blender : `rattache` met la scène à jour avant de lire la position monde. Un pivot ou une ancre créé avec un parent ne saute plus à l'origine de son parent, et le contournement de la grue disparaît. Tout est reconstruit : le kit de bâtiment et le personnage ressortent identiques à l'octet près (seul leur `asset.json` change, ils gardent leur version).
+- Grue v003 (`VEH_TOWER_CRANE_A_v003`, composant 2.1.0) : la v002 dont le pivot du chariot et celui du crochet sont posés à leur vraie place, au lieu de l'origine. La géométrie, les ancres et l'animation sont les mêmes à l'écran.
 
 ## 0.2.0, 18 octobre 2026
 
