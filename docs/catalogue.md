@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-43 éléments : 35 à faire, 6 livré, 2 exemple.
+44 éléments : 36 à faire, 6 livré, 2 exemple.
 
 ## G0 : La ligne graphique
 
