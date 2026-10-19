@@ -35,6 +35,7 @@
 - Grue v003 (`VEH_TOWER_CRANE_A_v003`, composant 2.1.0) : la v002 dont le pivot du chariot et celui du crochet sont posés à leur vraie place, au lieu de l'origine. La géométrie, les ancres et l'animation sont les mêmes à l'écran.
 - Kit de conteneur `ENV_CONTAINER_KIT_A_v001` (`container-kit`) : le conteneur de chantier en pièces (cadre graphite, panneaux blanc cassé, liseré bleu tech, nervures), sa coque coupée des bureaux en maison de poupée (sans toit, mur avant coupé à 0,90 m, sans longeron haut avant), porte de bout, marches, escalier et coursive, et le mobilier des cinq bureaux ; 9 904 triangles, 9 matériaux. Livré : validé sur planche par Pierre-Alain le 19 octobre 2026.
 - Conteneur de chantier (`site-container`) : un conteneur fermé du kit, en une ou deux piles (`stack`), escalier et coursive à deux piles, sans socle ; 1 916 triangles à une pile, 5 452 à deux (plafond 6 000). La galerie lit les paramètres d'un composant dans l'adresse. Livré : validé sur planche par Pierre-Alain le 19 octobre 2026.
+- Bureau d'architecte (`architect-office`) : un conteneur du kit en coupe sur son socle, le poste de Claire (ancre `desk:1`), table à dessin, panneau de plans, table ronde et maquette blanche, rouleaux, étagère, totem d'enseigne ; en `active`, la lampe se tend et la règle monte et descend (image fixe avec `reducedMotion`). 3 328 triangles, 9 matériaux. La galerie pose les occupants d'un lieu à ses postes ; le contrôle compte les ancres numérotées depuis 1. Livré : validé sur planche par Pierre-Alain le 19 octobre 2026.
 
 ## 0.2.0, 18 octobre 2026
 
