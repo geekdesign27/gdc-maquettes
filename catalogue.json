@@ -358,7 +358,7 @@
         "Reconnaissable comme baraque de chantier sans légende",
         "État active : un détail animé discret, figé si reducedMotion"
       ],
-      "status": "à faire",
+      "status": "livré",
       "kit": "container-kit",
       "assets": [
         "kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb",
