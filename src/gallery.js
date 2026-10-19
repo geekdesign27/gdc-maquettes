@@ -11,6 +11,7 @@ import { checkMeta, checkInstance, defaultParams, measure, sampleData } from './
 import { components as byId, chargeur } from './library.js';
 import * as etalon from './etalon.js';
 import * as kit from './kit.js';
+import * as personnage from './personnage.js';
 
 const charge = chargeur({ GLTFLoader, SkeletonUtils });
 const entries = catalogue.items.filter((i) => i.kind === 'component');
@@ -90,6 +91,15 @@ function buildList() {
     b.addEventListener('click', () => select(b.dataset.id));
     list.append(b);
   }
+  // Le personnage maitre (kit character-kit) : sa planche, avec et sans casque, et ses animations comme etats.
+  if (personnage.entree(catalogue)) {
+    const b = document.createElement('button');
+    b.textContent = 'Le personnage maître : planche';
+    b.title = 'Le corps commun, sans casque et avec casque, devant un mur à porte et un garde-corps du kit de bâtiment';
+    b.dataset.id = personnage.PERSONNAGE_ID;
+    b.addEventListener('click', () => select(personnage.PERSONNAGE_ID));
+    list.append(b);
+  }
   for (const lot of catalogue.lots) {
     const items = entries.filter((e) => e.lot === lot.id).sort((a, b) => a.order - b.order);
     if (!items.length) continue;
@@ -111,6 +121,15 @@ function buildList() {
 async function instance(id, state) {
   if (id === etalon.ETALON_ID) {
     return { inst: etalon.create(THREE, makeContext(options)), state: 'default', entry: { id, name: 'Cube étalon' }, mod: etalon };
+  }
+  if (id === personnage.PERSONNAGE_ID) {
+    const e = personnage.entree(catalogue);
+    const meta = personnage.meta(e);
+    await charge.prepare(meta);
+    const inst = personnage.create(THREE, [await charge.assetsPour(meta), await charge.assetsPour(meta)], makeContext(options));
+    const premier = state && meta.states.includes(state) ? state : 'repos';
+    inst.setState(premier);
+    return { inst, state: premier, entry: { ...e, id, name: 'Le personnage maître : planche' }, mod: { meta }, personnage: e };
   }
   if (id.startsWith(kit.PREFIXE_ID)) {
     const d = kit.demonstrations(catalogue).find((x) => kit.PREFIXE_ID + x.entry.id === id);
@@ -173,7 +192,7 @@ function buildStates() {
       for (const x of box.children) x.setAttribute('aria-pressed', String(x === b));
       await report();
       dirty = true;
-      try { history.replaceState(null, '', `#${current.mod.meta.id}/${s}${options.planche ? '/planche' : ''}`); } catch { /* sans importance */ }
+      try { history.replaceState(null, '', `#${current.entry.id}/${s}${options.planche ? '/planche' : ''}`); } catch { /* sans importance */ }
     });
     box.append(b);
   }
@@ -184,6 +203,7 @@ async function report() {
   const { mod, entry } = current;
   if (mod === etalon) return; // le compte rendu de l'etalon est sa mesure, ecrite apres chaque rendu (rapportEtalon)
   if (current.kit) return rapportKit();
+  if (current.personnage) return rapportPersonnage();
   const m = measure(current.inst.root);
   const problems = [...checkMeta(mod.meta, entry)];
   if (!problems.length) problems.push(...checkInstance(THREE, mod, entry, makeContext(options, await charge.assetsPour(mod.meta)), await charge.partagees(mod.meta)));
@@ -236,6 +256,21 @@ function rapportKit() {
   const verdict = document.createElement('span');
   verdict.className = manquantes.length ? 'ko' : 'ok';
   verdict.textContent = manquantes.length ? `pièces absentes du GLB : ${manquantes.join(', ')}` : 's\u2019assemble sans retouche';
+  el.append(verdict);
+}
+
+// La planche du personnage : la mesure d'un personnage (casque compris, meme cache), comparee au budget de la fiche,
+// et la duree du clip affiche.
+function rapportPersonnage() {
+  const { budget } = current.personnage;
+  const m = measure(current.inst.personnages[1]);
+  const duree = current.inst.duree();
+  const el = $('report');
+  el.replaceChildren(`${current.entry.name} · état ${current.state}${duree ? ` (clip de ${duree.toFixed(2)} s)` : ''} · un personnage : ${m.triangles} / ${budget.triangles} triangles · ${m.materials} / ${budget.materials} matériaux · `);
+  const verdict = document.createElement('span');
+  const dehors = m.triangles > budget.triangles || m.materials > budget.materials;
+  verdict.className = dehors ? 'ko' : 'ok';
+  verdict.textContent = dehors ? 'hors budget' : 'dans le budget';
   el.append(verdict);
 }
 
@@ -297,6 +332,6 @@ buildList();
 resize();
 const [hashId, hashState, hashPlanche] = decodeURIComponent(location.hash.slice(1)).split('/');
 if (hashPlanche === 'planche') { options.planche = true; $('planche').setAttribute('aria-pressed', 'true'); resize(); }
-const start = byId[hashId] || hashId === etalon.ETALON_ID || hashId?.startsWith(kit.PREFIXE_ID) ? hashId : entries.find((e) => byId[e.id])?.id;
+const start = byId[hashId] || hashId === etalon.ETALON_ID || hashId === personnage.PERSONNAGE_ID || hashId?.startsWith(kit.PREFIXE_ID) ? hashId : entries.find((e) => byId[e.id])?.id;
 if (start) await select(start, hashState);
 loop();
