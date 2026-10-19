@@ -9,6 +9,7 @@ export const tokens = {
   interface: palette.interface,
   state: palette.etat,
   team: palette.equipe,
+  personnages: palette.personnages, // peaux, cheveux et orange fluo du gilet (materiaux MAT_SKIN_*, MAT_HAIR_*, MAT_FABRIC_HIVIS)
 };
 
 // Les couleurs de base pour un theme d'interface : celles du monde (identiques en clair et en sombre),
