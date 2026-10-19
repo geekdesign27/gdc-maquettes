@@ -150,12 +150,13 @@ Des conteneurs du kit container-kit accolés en un plateau, deux postes par cont
 
 ### Le bureau du client (`client-office`)
 
-Un conteneur du kit container-kit aménagé en salle de décision : table de réunion, deux fauteuils, une plante ; un tableau d'affichage extérieur. En état waiting, le tableau porte le panneau rouge et l'ancre badge reçoit le nombre de décisions.
+Un conteneur du kit container-kit aménagé en salle de décision : table de réunion, deux fauteuils, une plante ; un tableau d'affichage extérieur. Pierre-Alain et Fanny s'y tiennent (ancres desk:1 et desk:2). En état waiting, une feuille claire est épinglée sur le tableau, GDC pose decision-sign à l'ancre board, devant le tableau, et le badge HTML rouge, avec le nombre de décisions, sur l'ancre badge. Aucun rouge dans la 3D (bible, 17.3 ; décision de Pierre-Alain du 19 octobre 2026).
 
 - Fichier : `components/site/client-office/index.js`
 - Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `container-kit`
+- Modèles : `kit:container-kit/ENV_CONTAINER_KIT_A_v001.glb`, `kit:building-kit/BLD_KIT_A_v001.glb`
 - États : `idle`, `waiting`
-- Ancres : `label`, `badge`, `board`
+- Ancres : `label`, `badge`, `board`, `desk:*`
 - Données reçues par setState : `count` (nombre de décisions attendues (affiché par GDC sur l'ancre badge))
 - Budget : 20000 triangles, 10 matériaux
 - Critères d'acceptation :

@@ -257,7 +257,7 @@
       "category": "site",
       "name": "Le bureau du client",
       "purpose": "Le lieu des décisions qui t'attendent.",
-      "description": "Un conteneur du kit container-kit aménagé en salle de décision : table de réunion, deux fauteuils, une plante ; un tableau d'affichage extérieur. En état waiting, le tableau porte le panneau rouge et l'ancre badge reçoit le nombre de décisions.",
+      "description": "Un conteneur du kit container-kit aménagé en salle de décision : table de réunion, deux fauteuils, une plante ; un tableau d'affichage extérieur. Pierre-Alain et Fanny s'y tiennent (ancres desk:1 et desk:2). En état waiting, une feuille claire est épinglée sur le tableau, GDC pose decision-sign à l'ancre board, devant le tableau, et le badge HTML rouge, avec le nombre de décisions, sur l'ancre badge. Aucun rouge dans la 3D (bible, 17.3 ; décision de Pierre-Alain du 19 octobre 2026).",
       "params": {},
       "states": [
         "idle",
@@ -266,7 +266,8 @@
       "anchors": [
         "label",
         "badge",
-        "board"
+        "board",
+        "desk:*"
       ],
       "budget": {
         "triangles": 20000,
@@ -282,7 +283,11 @@
       },
       "production": "mixte",
       "famille_bible": null,
-      "kit": "container-kit"
+      "kit": "container-kit",
+      "assets": [
+        "kit:container-kit/ENV_CONTAINER_KIT_A_v001.glb",
+        "kit:building-kit/BLD_KIT_A_v001.glb"
+      ]
     },
     {
       "id": "control-office",
