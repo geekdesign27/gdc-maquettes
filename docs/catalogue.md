@@ -455,6 +455,7 @@ Désigner ce qui est choisi, ce qui attend, ce qui bloque.
 | 2 | `decision-sign` | Le panneau de décision | Composant 3D Three.js, conforme à docs/contrat-composant.md | Une décision t'attend à cet endroit. | à faire |
 | 3 | `blocked-sign` | La barrière de blocage | Composant 3D Three.js, conforme à docs/contrat-composant.md | Un travail est bloqué ici. | à faire |
 | 4 | `defect-sign` | Le signal de défaut | Composant 3D Three.js, conforme à docs/contrat-composant.md | Un défaut est ouvert sur une partie habitée. | à faire |
+| 5 | `permit-board` | Le panneau du permis de construire | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le permis de construire est accordé ; périmé, il demande ta nouvelle décision. | à faire |
 
 ### L'anneau de sélection (`selection-ring`)
 
@@ -511,6 +512,20 @@ Un cône ou un ruban posé sur la façade ou dans la pièce concernée.
 - Critères d'acceptation :
   - Reconnaissable à sa forme seule
   - Se pose sur une façade ou dans une pièce
+
+### Le panneau du permis de construire (`permit-board`)
+
+Un panneau de permis sur deux poteaux, posé à l'entrée du chantier quand le permis est accordé (comme sur un vrai chantier). Périmé, quand une pièce couverte a changé : le même panneau barré d'une bande en diagonale, reconnaissable à sa forme seule. Absent tant que le permis n'est pas accordé : GDC ne le pose pas. Aucune couleur d'état dans le modèle ; le badge HTML se pose sur l'ancre badge.
+
+- Fichier : `components/signals/permit-board/index.js`
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `PRP_PERMIT_BOARD_A_v001`
+- États : `granted`, `expired`
+- Ancres : `badge`
+- Données reçues par setState : aucune
+- Budget : 1200 triangles, 3 matériaux
+- Critères d'acceptation :
+  - Reconnaissable comme un panneau de permis à sa forme seule, distinct du panneau de décision
+  - L'état périmé se lit par la forme (la bande en diagonale), sans couleur d'état
 
 ## G6 : Les éléments d'interface
 

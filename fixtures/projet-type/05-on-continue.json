@@ -1,0 +1,174 @@
+{
+  "etape": "les plans",
+  "titre": "Tu as dit « On continue »",
+  "explication": "Le panneau de décision disparaît.",
+  "schema": 2,
+  "projet": "AuditApp",
+  "plan": {
+    "rue": [
+      {
+        "id": "bureau-architecte",
+        "element": "architect-office",
+        "nom": "Le bureau d'architecte"
+      },
+      {
+        "id": "bureau-etudes",
+        "element": "design-office",
+        "nom": "Le bureau d'études"
+      },
+      {
+        "id": "bureau-client",
+        "element": "client-office",
+        "nom": "Le bureau du client"
+      },
+      {
+        "id": "bureau-controle",
+        "element": "control-office",
+        "nom": "Le bureau de contrôle"
+      },
+      {
+        "id": "baraque",
+        "element": "site-office",
+        "nom": "La baraque du conducteur de travaux"
+      },
+      {
+        "id": "chantier",
+        "element": "site-fence",
+        "nom": "Le chantier, une parcelle par application"
+      },
+      {
+        "id": "parking",
+        "element": "parking",
+        "nom": "Le parking, le carnet des demandes"
+      },
+      {
+        "id": "aire-reception",
+        "element": "reception-area",
+        "nom": "L'aire de réception"
+      }
+    ],
+    "parcelles": [
+      {
+        "batiment": "bureau",
+        "nom": "Application de bureau",
+        "type": "immeuble",
+        "pieces": []
+      }
+    ]
+  },
+  "indicateurs": [
+    {
+      "id": "dossier",
+      "nom": "Le dossier du projet",
+      "valeur": 4,
+      "total": 15,
+      "regle": "4 pièces complètes sur 15"
+    }
+  ],
+  "elements": [
+    {
+      "element": "ground",
+      "id": "terrain",
+      "nom": "Le terrain",
+      "etat": "default",
+      "source": "toujours"
+    },
+    {
+      "element": "building",
+      "id": "bureau",
+      "nom": "Application de bureau",
+      "type": "immeuble",
+      "etat": "plot",
+      "raison": "aucune fiche commencée",
+      "source": "dossier/profil.json"
+    },
+    {
+      "element": "architect-office",
+      "id": "bureau-architecte",
+      "nom": "Le bureau d'architecte",
+      "etat": "idle",
+      "source": "personne n'y travaille"
+    },
+    {
+      "element": "design-office",
+      "id": "bureau-etudes",
+      "nom": "Le bureau d'études",
+      "etat": "idle",
+      "source": "personne n'y travaille"
+    },
+    {
+      "element": "client-office",
+      "id": "bureau-client",
+      "nom": "Le bureau du client",
+      "etat": "idle",
+      "source": "aucune décision attendue"
+    },
+    {
+      "element": "control-office",
+      "id": "bureau-controle",
+      "nom": "Le bureau de contrôle (Hélène)",
+      "etat": "idle",
+      "source": "aucun contrôle"
+    },
+    {
+      "element": "site-office",
+      "id": "baraque",
+      "nom": "La baraque du conducteur de travaux",
+      "etat": "idle",
+      "source": "personne n'y travaille"
+    },
+    {
+      "element": "reception-area",
+      "id": "aire-reception",
+      "nom": "L'aire de réception",
+      "etat": "idle",
+      "source": "personne n'y travaille"
+    },
+    {
+      "element": "parking",
+      "id": "parking",
+      "nom": "Le carnet des demandes",
+      "etat": "default",
+      "quantite": 0,
+      "regle": "0 demande à trier",
+      "source": "dossier/plans/carnet-des-demandes.md"
+    },
+    {
+      "element": "character",
+      "id": "architecte",
+      "role": "architecte",
+      "nom": "Claire, l'architecte",
+      "etat": "waiting",
+      "lieu": "bureau-architecte",
+      "source": "activité du projet, 2026-10-19T09:07:15.392Z"
+    },
+    {
+      "element": "character",
+      "id": "helene",
+      "role": "gdc",
+      "nom": "Hélène, le bureau de contrôle",
+      "etat": "idle",
+      "lieu": "bureau-controle",
+      "programme": true,
+      "source": "aucune mesure récente"
+    }
+  ],
+  "actions": [
+    {
+      "action": "change",
+      "element": "client-office",
+      "id": "bureau-client",
+      "nom": "Le bureau du client",
+      "de": "waiting",
+      "vers": "idle",
+      "phrase": "Le bureau du client : waiting → idle"
+    },
+    {
+      "action": "disparait",
+      "element": "decision-sign",
+      "id": "decision-on-continue",
+      "nom": "Ta décision « On continue »",
+      "phrase": "Ta décision « On continue » disparaît"
+    }
+  ]
+}

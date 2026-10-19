@@ -1,0 +1,124 @@
+{
+  "etape": "projet non ouvert",
+  "titre": "Le terrain, avant l'ouverture du projet",
+  "explication": "Rien n'est encore décidé : le terrain et les bureaux, vides.",
+  "schema": 2,
+  "projet": null,
+  "plan": {
+    "rue": [
+      {
+        "id": "bureau-architecte",
+        "element": "architect-office",
+        "nom": "Le bureau d'architecte"
+      },
+      {
+        "id": "bureau-etudes",
+        "element": "design-office",
+        "nom": "Le bureau d'études"
+      },
+      {
+        "id": "bureau-client",
+        "element": "client-office",
+        "nom": "Le bureau du client"
+      },
+      {
+        "id": "bureau-controle",
+        "element": "control-office",
+        "nom": "Le bureau de contrôle"
+      },
+      {
+        "id": "baraque",
+        "element": "site-office",
+        "nom": "La baraque du conducteur de travaux"
+      },
+      {
+        "id": "chantier",
+        "element": "site-fence",
+        "nom": "Le chantier, une parcelle par application"
+      },
+      {
+        "id": "parking",
+        "element": "parking",
+        "nom": "Le parking, le carnet des demandes"
+      },
+      {
+        "id": "aire-reception",
+        "element": "reception-area",
+        "nom": "L'aire de réception"
+      }
+    ],
+    "parcelles": []
+  },
+  "indicateurs": [],
+  "elements": [
+    {
+      "element": "ground",
+      "id": "terrain",
+      "nom": "Le terrain",
+      "etat": "default",
+      "source": "toujours"
+    },
+    {
+      "element": "architect-office",
+      "id": "bureau-architecte",
+      "nom": "Le bureau d'architecte",
+      "etat": "idle",
+      "source": "personne n'y travaille"
+    },
+    {
+      "element": "design-office",
+      "id": "bureau-etudes",
+      "nom": "Le bureau d'études",
+      "etat": "idle",
+      "source": "personne n'y travaille"
+    },
+    {
+      "element": "client-office",
+      "id": "bureau-client",
+      "nom": "Le bureau du client",
+      "etat": "idle",
+      "source": "aucune décision attendue"
+    },
+    {
+      "element": "control-office",
+      "id": "bureau-controle",
+      "nom": "Le bureau de contrôle (Hélène)",
+      "etat": "idle",
+      "source": "aucun contrôle"
+    },
+    {
+      "element": "site-office",
+      "id": "baraque",
+      "nom": "La baraque du conducteur de travaux",
+      "etat": "idle",
+      "source": "personne n'y travaille"
+    },
+    {
+      "element": "reception-area",
+      "id": "aire-reception",
+      "nom": "L'aire de réception",
+      "etat": "idle",
+      "source": "personne n'y travaille"
+    },
+    {
+      "element": "parking",
+      "id": "parking",
+      "nom": "Le carnet des demandes",
+      "etat": "default",
+      "quantite": 0,
+      "regle": "0 demande à trier",
+      "source": "carnet absent"
+    },
+    {
+      "element": "character",
+      "id": "helene",
+      "role": "gdc",
+      "nom": "Hélène, le bureau de contrôle",
+      "etat": "idle",
+      "lieu": "bureau-controle",
+      "programme": true,
+      "source": "aucune mesure récente"
+    }
+  ],
+  "actions": []
+}

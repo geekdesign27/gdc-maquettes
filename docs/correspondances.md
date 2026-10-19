@@ -29,9 +29,9 @@ GDC calcule désormais la scène lui-même (`gdc scene`, depuis la version 0.16.
 | « On continue » ou le permis de construire prêt pour ta décision | `decision-sign` au `client-office` | default ; le bureau en waiting |
 | Une décision du projet périmée (une pièce a changé) | `decision-sign` au `client-office` | default ; le bureau en waiting |
 | Le dossier du projet | barre de progression de l'inspecteur, avec sa règle | « 5 pièces complètes sur 15 » |
-| Le permis de construire accordé, puis périmé | `permit-board`, **proposé** : le panneau du permis à l'entrée du chantier | absent, granted, expired |
+| Le permis de construire accordé, puis périmé | `permit-board`, le panneau du permis à l'entrée du chantier (absent tant que le permis n'est pas accordé) | granted, expired |
 
-**Composant proposé, à décider par Pierre-Alain** : `permit-board`, le panneau du permis de construire, posé à l'entrée du chantier quand le permis est accordé, changé d'aspect (par sa forme, jamais par une couleur d'état dans la scène) quand il est périmé. Il n'entre au catalogue qu'avec son accord.
+**`permit-board`** entre au catalogue (lot G5) sur décision de Pierre-Alain du 19 octobre 2026.
 
 ## Les lieux et les familles de la bible
 
