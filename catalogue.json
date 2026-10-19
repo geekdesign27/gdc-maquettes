@@ -297,7 +297,7 @@
       "category": "site",
       "name": "Le bureau de contrôle",
       "purpose": "Le poste qui mesure et tamponne les preuves ; c'est un programme, pas un personnage.",
-      "description": "Un conteneur du kit container-kit équipé en machine : armoires de mesure, trépied, tampon ; aucun poste occupé (décision de Pierre-Alain du 19 octobre 2026). Une impulsion à chaque preuve enregistrée.",
+      "description": "Un conteneur du kit container-kit équipé en machine : armoires de mesure, trépied, tampon, et un poste, celui d'Hélène (ancre desk:1), qui y joue inspect (docs/ville.md). Une impulsion à chaque preuve enregistrée. Décisions de Pierre-Alain du 19 octobre 2026.",
       "params": {},
       "states": [
         "idle",
@@ -306,14 +306,15 @@
       ],
       "anchors": [
         "label",
-        "badge"
+        "badge",
+        "desk:*"
       ],
       "budget": {
         "triangles": 20000,
         "materials": 10
       },
       "acceptance": [
-        "Ne ressemble pas à un bureau habité : c'est une machine",
+        "Le poste d'Hélène (desk:1) au milieu des appareils de mesure : se distingue des autres bureaux au premier regard",
         "État error lisible sans animation"
       ],
       "status": "à faire",

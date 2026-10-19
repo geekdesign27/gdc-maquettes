@@ -165,16 +165,16 @@ Un conteneur du kit container-kit aménagé en salle de décision : table de ré
 
 ### Le bureau de contrôle (`control-office`)
 
-Un conteneur du kit container-kit équipé en machine : armoires de mesure, trépied, tampon ; aucun poste occupé (décision de Pierre-Alain du 19 octobre 2026). Une impulsion à chaque preuve enregistrée.
+Un conteneur du kit container-kit équipé en machine : armoires de mesure, trépied, tampon, et un poste, celui d'Hélène (ancre desk:1), qui y joue inspect (docs/ville.md). Une impulsion à chaque preuve enregistrée. Décisions de Pierre-Alain du 19 octobre 2026.
 
 - Fichier : `components/site/control-office/index.js`
 - Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `container-kit` ; famille `BLD_QA`
 - États : `idle`, `active`, `error`
-- Ancres : `label`, `badge`
+- Ancres : `label`, `badge`, `desk:*`
 - Données reçues par setState : aucune
 - Budget : 20000 triangles, 10 matériaux
 - Critères d'acceptation :
-  - Ne ressemble pas à un bureau habité : c'est une machine
+  - Le poste d'Hélène (desk:1) au milieu des appareils de mesure : se distingue des autres bureaux au premier regard
   - État error lisible sans animation
 
 ### La baraque du conducteur de travaux (`site-office`)
