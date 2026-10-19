@@ -169,6 +169,7 @@ Un conteneur du kit container-kit équipé en machine : armoires de mesure, tré
 
 - Fichier : `components/site/control-office/index.js`
 - Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `container-kit` ; famille `BLD_QA`
+- Modèles : `kit:container-kit/ENV_CONTAINER_KIT_A_v002.glb`, `kit:building-kit/BLD_KIT_A_v001.glb`
 - États : `idle`, `active`, `error`
 - Ancres : `label`, `badge`, `desk:*`
 - Données reçues par setState : aucune

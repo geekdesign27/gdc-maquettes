@@ -321,7 +321,11 @@
       "data": {},
       "production": "mixte",
       "famille_bible": "BLD_QA",
-      "kit": "container-kit"
+      "kit": "container-kit",
+      "assets": [
+        "kit:container-kit/ENV_CONTAINER_KIT_A_v002.glb",
+        "kit:building-kit/BLD_KIT_A_v001.glb"
+      ]
     },
     {
       "id": "site-office",

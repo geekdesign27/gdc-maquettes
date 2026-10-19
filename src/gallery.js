@@ -184,7 +184,7 @@ async function occupants(x) {
     const m = personnage.metaPersonne(params);
     await charge.prepare(m);
     const inst = byId.character.create(THREE, params, makeContext(options, await charge.assetsPour(m)));
-    inst.setState('work', { facing: Math.PI });
+    inst.setState(personnage.ETAT_OCCUPANTS[x.entry.id] || 'work', { facing: Math.PI });
     x.inst.root.updateMatrixWorld(true);
     inst.root.position.copy(x.inst.root.localToWorld(poste));
     scene.add(inst.root);

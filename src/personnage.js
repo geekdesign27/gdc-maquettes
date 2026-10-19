@@ -13,8 +13,11 @@ export const PERSONNES = equipe.personnes;
 export const OCCUPANTS = {
   "architect-office": ["claire"],
   "client-office": ["client", "fanny"],
+  "control-office": ["helene"],
   "design-office": ["marc", "lina", "paul", "iris", "noah", "tom", "sarah", "david"],
 };
+// L'etat que jouent les occupants dans la galerie : work par defaut ; Helene controle (docs/ville.md : inspect).
+export const ETAT_OCCUPANTS = { "control-office": "inspect" };
 const KIT_BATIMENT = "kit:building-kit/BLD_KIT_A_v001.glb";
 const RANG = 10; // personnes par rang sur le socle
 const PAS = 0.9;
