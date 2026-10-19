@@ -335,7 +335,7 @@
       "category": "site",
       "name": "La baraque du conducteur de travaux",
       "purpose": "Le lieu de la coordination : planning des lots, chef de chantier, répartition des agents.",
-      "description": "Deux conteneurs du kit container-kit empilés, avec escalier extérieur et coursive (MB_10), planning affiché sans texte, écrans ; famille BLD_COORDINATION de la bible. Yves, le conducteur de travaux, s'y tient ; le chef de chantier (programme) n'a pas de corps.",
+      "description": "Deux conteneurs du kit container-kit empilés, avec escalier extérieur et coursive (MB_10). L'étage est ouvert en coupe (sans toit, long pan avant coupé, une porte dans la coupe pour l'arrivée de la coursive) : planning affiché sans texte, écrans ; le rez est fermé (vestiaire). Famille BLD_COORDINATION de la bible. Yves, le conducteur de travaux, est à desk:1 aux écrans de l'étage ; Victor, le chef de chantier, à desk:2 sur la coursive, près de l'escalier, talkie-walkie en main. Les agents de passage se rassemblent devant le planning, aux places crew:1 à crew:6. Décisions de Pierre-Alain du 19 octobre 2026.",
       "params": {},
       "states": [
         "idle",
@@ -344,7 +344,9 @@
       "anchors": [
         "label",
         "badge",
-        "entry"
+        "entry",
+        "desk:*",
+        "crew:*"
       ],
       "budget": {
         "triangles": 20000,

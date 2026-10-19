@@ -180,12 +180,12 @@ Un conteneur du kit container-kit équipé en machine : armoires de mesure, tré
 
 ### La baraque du conducteur de travaux (`site-office`)
 
-Deux conteneurs du kit container-kit empilés, avec escalier extérieur et coursive (MB_10), planning affiché sans texte, écrans ; famille BLD_COORDINATION de la bible. Yves, le conducteur de travaux, s'y tient ; le chef de chantier (programme) n'a pas de corps.
+Deux conteneurs du kit container-kit empilés, avec escalier extérieur et coursive (MB_10). L'étage est ouvert en coupe (sans toit, long pan avant coupé, une porte dans la coupe pour l'arrivée de la coursive) : planning affiché sans texte, écrans ; le rez est fermé (vestiaire). Famille BLD_COORDINATION de la bible. Yves, le conducteur de travaux, est à desk:1 aux écrans de l'étage ; Victor, le chef de chantier, à desk:2 sur la coursive, près de l'escalier, talkie-walkie en main. Les agents de passage se rassemblent devant le planning, aux places crew:1 à crew:6. Décisions de Pierre-Alain du 19 octobre 2026.
 
 - Fichier : `components/site/site-office/index.js`
 - Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `container-kit` ; famille `BLD_COORDINATION`
 - États : `idle`, `active`
-- Ancres : `label`, `badge`, `entry`
+- Ancres : `label`, `badge`, `entry`, `desk:*`, `crew:*`
 - Budget : 20000 triangles, 10 matériaux
 - Critères d'acceptation :
   - Reconnaissable comme baraque de chantier sans légende
