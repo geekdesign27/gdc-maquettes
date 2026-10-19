@@ -202,7 +202,11 @@
       "data": {},
       "production": "mixte",
       "famille_bible": "BLD_ARCHITECT",
-      "kit": "container-kit"
+      "kit": "container-kit",
+      "assets": [
+        "kit:container-kit/ENV_CONTAINER_KIT_A_v001.glb",
+        "kit:building-kit/BLD_KIT_A_v001.glb"
+      ]
     },
     {
       "id": "design-office",
