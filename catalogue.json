@@ -216,7 +216,7 @@
       "category": "site",
       "name": "Le bureau d'études",
       "purpose": "Le lieu des plans d'exécution, où travaillent les spécialistes.",
-      "description": "Des conteneurs du kit container-kit accolés en un plateau, deux postes par conteneur (desks / 2, arrondi au-dessus) : bureau bois, caisson graphite, écran, chaise, cloisons basses. Plus technique que le bureau d'architecte. Marc et les sept du bureau d'études.",
+      "description": "Une grappe de 1 à 4 conteneurs du kit container-kit accolés par le long pan (jamais en longue ligne, remarque de Pierre-Alain du 19 octobre 2026), deux postes par conteneur (desks / 2, arrondi au-dessus) : bureau bois, caisson graphite, écran, chaise, cloisons basses. Aucun longeron haut entre deux conteneurs (FRAME_OPEN, kit v002). Plus technique que le bureau d'architecte. Marc et les sept du bureau d'études.",
       "params": {
         "desks": "nombre, 1 à 8, défaut 8"
       },
@@ -239,7 +239,7 @@
         "Même famille de formes et de matières",
         "Un poste par personne, désignable (ancre desk:n)"
       ],
-      "status": "livré",
+      "status": "à faire",
       "data": {},
       "production": "mixte",
       "famille_bible": "BLD_ENGINEERING",

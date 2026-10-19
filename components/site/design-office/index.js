@@ -1,7 +1,9 @@
 // Le bureau d'etudes : le lieu des plans d'execution, ou travaillent les specialistes (catalogue : design-office).
-// Production mixte : des conteneurs du kit livre container-kit, bout a bout le long de X, en coupe (MB_13, variante A),
-// deux postes par conteneur ; entree par le bout droit ; totem d'enseigne de building-kit. En ligne plutot qu'en 2 x 2 :
-// au milieu d'un 2 x 2, les longerons hauts barreraient la vue sur le rang du fond.
+// v2 : une grappe de 1 a 4 conteneurs du kit livre container-kit (v002), accoles par le long pan, comme on les installe
+// sur les chantiers (remarque de Pierre-Alain du 19 octobre 2026 : jamais en longue ligne). Coupe MB_13, variante A :
+// sans toit, le long pan de devant coupe a l'allege ; aucun longeron haut entre deux conteneurs (FRAME_OPEN), seul
+// celui du fond reste. Deux postes par conteneur ; entree par le bout droit du conteneur de devant ; totem de
+// building-kit ; socle maquette.
 // Les modeles sont partages entre instances : on ne libere jamais leurs geometries ni leurs materiaux ici ; seuls le
 // socle et son materiau, crees par ce composant, sont liberes. Etat actif : les ecrans s'allument (face en MAT_TECH du
 // kit ; eteints, face en graphite du kit), une image fixe, sans animation.
@@ -11,18 +13,24 @@
 const KIT = "kit:container-kit/ENV_CONTAINER_KIT_A_v002.glb";
 const KIT_BATIMENT = "kit:building-kit/BLD_KIT_A_v001.glb";
 const P = "ENV_CONTAINER_KIT_A_";
-const LONG = 7.2; // pas des conteneurs bout a bout : leurs poteaux se touchent
+const LARGE = 3.0; // pas des conteneurs accoles par le long pan : leurs poteaux se touchent
 const PLANCHER = 0.2;
-const NU_BOUT = 3.55; // face exterieure de la paroi de bout, depuis le centre d'un conteneur
-const POSTES = [-1.7, 1.7]; // x des deux postes dans un conteneur, contre le mur du fond
-const Y_BUREAU = 0.85;
+const NU_BOUT = 3.55; // face exterieure d'une paroi de bout, depuis le centre d'un conteneur
+const POSTES = [-1.7, 1.7]; // x des deux postes dans un conteneur
+const Y_BUREAU = 0.85; // depuis le centre du conteneur : contre son long pan du fond
 const Y_PERSONNE = 0.2; // debout devant le bureau
-const MARGE = { gauche: 0.9, droite: 1.5, profondeur: 6.4, centreY: -0.4 }; // socle autour des conteneurs
-const SOCLE = { epaisseur: 0.6, chanfrein: 0.1 }; // bible 18.5
+const SOCLE = {
+  gauche: -4.5,
+  droite: 5.7,
+  devant: -3.6,
+  derriere: 1.3,
+  epaisseur: 0.6,
+  chanfrein: 0.1,
+}; // bible 18.5
 
 export const meta = {
   id: "design-office",
-  version: "1.0.0",
+  version: "2.0.0",
   category: "site",
   states: ["idle", "active"],
   params: { desks: { type: "number", default: 8, min: 1, max: 8 } },
@@ -33,7 +41,7 @@ export const meta = {
 };
 
 // qualite basse (bible 18.3) : ce qui mesure moins de 0,30 m disparait
-const DETAILS = ["RIBS_LONG_CUT", "RIBS_END_DOOR"];
+const DETAILS = ["RIBS_LONG_CUT", "RIBS_END_DOOR", "RIBS_END_WINDOW"];
 
 const versThree = (x, y, z) => [x, z, -y];
 
@@ -53,9 +61,8 @@ export function create(THREE, params, ctx) {
       meta.params.desks.max,
     ),
   );
-  const n = Math.ceil(postes / 2); // conteneurs
-  const x0 = (-(n - 1) * LONG) / 2; // centre du premier conteneur
-  const xDroite = x0 + (n - 1) * LONG; // centre du dernier, celui de l'entree
+  const n = Math.ceil(postes / 2); // conteneurs, du devant (k = 0, y = 0) vers le fond (+Y)
+  const yFond = (n - 1) * LARGE; // centre du conteneur du fond
 
   const pose = (source, nom, x, y, z, rotation = 0) => {
     if (!source) throw new Error(`pièce absente du kit : ${nom}`);
@@ -70,34 +77,46 @@ export function create(THREE, params, ctx) {
       ? null
       : pose(kit.getObjectByName(P + nom), nom, x, y, z, rotation);
 
-  // les conteneurs : coque coupee, sans paroi de bout entre deux voisins (le plateau est ouvert)
   const ecrans = [];
   const ancres = {};
   for (let k = 0; k < n; k++) {
-    const x = x0 + k * LONG;
-    piece("FRAME_CUT", x, 0);
-    piece("FLOOR", x, 0);
-    piece("WALL_LONG_CUT", x, 0);
-    piece("RIBS_LONG_CUT", x, 0);
-    piece("WALL_LONG", x, 0, 0, 180);
-    for (const [j, dx] of POSTES.entries()) {
+    const y = k * LARGE;
+    const devant = k === 0;
+    const fond = k === n - 1;
+    // le cadre : aucun longeron haut au raccord de deux conteneurs ; seul celui du fond de la grappe reste
+    if (fond) piece("FRAME_CUT", 0, y); // FRAME_CUT garde son longeron du fond et n'a pas celui de devant
+    else piece("FRAME_OPEN", 0, y);
+    piece("FLOOR", 0, y);
+    if (devant) {
+      piece("WALL_LONG_CUT", 0, y);
+      piece("RIBS_LONG_CUT", 0, y);
+    }
+    if (fond) piece("WALL_LONG", 0, y, 0, 180);
+    // les bouts : l'entree au conteneur de devant, des fenetres ailleurs
+    piece("WALL_END_WINDOW", 0, y, 0, 180);
+    if (devant) {
+      piece("WALL_END_DOOR", 0, y);
+      piece("RIBS_END_DOOR", 0, y);
+    } else {
+      piece("WALL_END_WINDOW", 0, y);
+      piece("RIBS_END_WINDOW", 0, y);
+    }
+    // deux postes contre le fond de chaque conteneur, tournes vers le fond de la grappe
+    for (const [j, x] of POSTES.entries()) {
       const numero = 2 * k + j + 1;
       if (numero > postes) {
-        piece("SHELF", x + dx, 1.1, PLANCHER); // un seul poste dans ce conteneur : une etagere a la place du second
+        piece("SHELF", x, y + 1.1, PLANCHER); // un seul poste dans le conteneur du fond : une etagere a la place
         continue;
       }
-      piece("DESK", x + dx, Y_BUREAU, PLANCHER);
-      ecrans.push(piece("SCREEN", x + dx, Y_BUREAU + 0.15, PLANCHER + 0.77));
-      piece("CHAIR", x + dx + 0.55, Y_PERSONNE - 0.15, PLANCHER, 30); // repoussee : la personne travaille debout
-      ancres[`desk:${numero}`] = versThree(x + dx - 0.15, Y_PERSONNE, PLANCHER);
+      piece("DESK", x, y + Y_BUREAU, PLANCHER);
+      ecrans.push(piece("SCREEN", x, y + Y_BUREAU + 0.15, PLANCHER + 0.77));
+      piece("CHAIR", x + 0.55, y + Y_PERSONNE - 0.15, PLANCHER, 30); // repoussee : la personne travaille debout
+      ancres[`desk:${numero}`] = versThree(x - 0.15, y + Y_PERSONNE, PLANCHER);
     }
-    if (postes > 2 * k + 1) piece("PARTITION", x, 0.75, PLANCHER, 90); // cloison basse entre les deux postes
+    if (postes > 2 * k + 1) piece("PARTITION", 0, y + 0.75, PLANCHER, 90); // cloison basse entre les deux postes
   }
-  piece("WALL_END_WINDOW", x0, 0, 0, 180);
-  piece("WALL_END_DOOR", xDroite, 0);
-  piece("RIBS_END_DOOR", xDroite, 0);
-  piece("STEPS", xDroite + NU_BOUT, 0, 0, 90);
-  piece("PLANTER", xDroite + 1.6, -2.25);
+  piece("STEPS", NU_BOUT, 0, 0, 90);
+  piece("PLANTER", 1.6, -2.25);
 
   // le totem d'enseigne, pres de l'entree ; ses MAT_ sont ceux du kit de conteneur (un seul materiau par MAT_)
   const materiauxKit = new Map();
@@ -108,7 +127,7 @@ export function create(THREE, params, ctx) {
   const totem = pose(
     kitBatiment.getObjectByName("BLD_KIT_A_SIGN_TOTEM"),
     "SIGN_TOTEM",
-    xDroite + 4.4,
+    4.4,
     -2.6,
     0,
     90,
@@ -120,11 +139,13 @@ export function create(THREE, params, ctx) {
       : materiauxKit.get(o.material.name) || o.material;
   });
 
-  // le socle maquette : dalle de terre de 0,60 m, dessus a y = 0, aretes arrondies (classe C3)
-  const gauche = x0 - LONG / 2 - MARGE.gauche;
-  const droite = xDroite + LONG / 2 + MARGE.droite + 0.6; // marches et totem
+  // le socle maquette : dalle de terre de 0,60 m, dessus a y = 0, aretes arrondies (classe C3) ; il suit la grappe
+  const x0 = SOCLE.gauche;
+  const x1 = SOCLE.droite;
+  const y0 = SOCLE.devant;
+  const y1 = yFond + LARGE / 2 + SOCLE.derriere;
   const b = SOCLE.chanfrein;
-  const demi = [(droite - gauche - 2 * b) / 2, (MARGE.profondeur - 2 * b) / 2];
+  const demi = [(x1 - x0 - 2 * b) / 2, (y1 - y0 - 2 * b) / 2];
   const forme = new THREE.Shape();
   forme.moveTo(-demi[0], -demi[1]);
   forme.lineTo(demi[0], -demi[1]);
@@ -140,9 +161,9 @@ export function create(THREE, params, ctx) {
   });
   geometrieSocle.rotateX(-Math.PI / 2);
   geometrieSocle.translate(
-    (gauche + droite) / 2,
+    (x0 + x1) / 2,
     -(SOCLE.epaisseur - b),
-    -MARGE.centreY,
+    -(y0 + y1) / 2,
   );
   const terre = ctx.tokens.materiaux.MAT_EARTH;
   const materiauSocle = new THREE.MeshStandardMaterial({
@@ -167,9 +188,10 @@ export function create(THREE, params, ctx) {
     });
 
   Object.assign(ancres, {
-    label: versThree(0, 1.4, 3.4), // au-dessus du mur du fond : il ne cache ni l'interieur ni les personnes
-    badge: versThree(xDroite + 3.5, 1.4, 3.4),
-    door: versThree(xDroite + NU_BOUT + 0.9, 0, 0), // au pied des marches de l'entree
+    // label et badge au-dessus du mur du fond de la grappe : ils ne cachent ni l'interieur ni les personnes
+    label: versThree(-1.2, yFond + 1.4, 3.4),
+    badge: versThree(3.5, yFond + 1.4, 3.4),
+    door: versThree(NU_BOUT + 0.9, 0, 0), // au pied des marches de l'entree
   });
 
   let state = "idle";
