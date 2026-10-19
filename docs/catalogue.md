@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-42 éléments : 34 à faire, 6 livré, 2 exemple.
+43 éléments : 35 à faire, 6 livré, 2 exemple.
 
 ## G0 : La ligne graphique
 
@@ -57,16 +57,17 @@ Poser le plan du chantier dans l'ordre du parcours : bureau d'architecte, bureau
 
 | Ordre | Identifiant | Nom | Nature | But | Statut |
 |---|---|---|---|---|---|
-| 1 | `ground` | Le terrain | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le sol du projet, sur lequel tout se pose. | exemple |
-| 2 | `architect-office` | Le bureau d'architecte | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu de l'idée, des plans et du permis de construire ; le premier lieu du parcours. | à faire |
-| 3 | `design-office` | Le bureau d'études | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu des plans d'exécution, où travaillent les spécialistes. | à faire |
-| 4 | `client-office` | Le bureau du client | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu des décisions qui t'attendent. | à faire |
-| 5 | `control-office` | Le bureau de contrôle | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le poste qui mesure et tamponne les preuves ; c'est un programme, pas un personnage. | à faire |
-| 6 | `site-office` | La baraque du conducteur de travaux | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu de la coordination : planning des lots, chef de chantier, répartition des agents. | à faire |
-| 7 | `parking` | Le parking : le carnet des demandes | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer les demandes en attente de tri, sous forme de caisses de matériel. | à faire |
-| 8 | `reception-area` | La zone de réception | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu des essais et de la visite, avant la remise des clés. | à faire |
-| 9 | `site-fence` | La clôture de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Cloisonner le chantier, comme tout chantier romand. | à faire |
-| 10 | `site-container` | Le conteneur de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le baraquement modulaire des chantiers romands : vestiaire, réfectoire, bureau. | à faire |
+| 0 | `ground` | Le terrain | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le sol du projet, sur lequel tout se pose. | exemple |
+| 1 | `container-kit` | Le kit de conteneur | Bibliothèque de modèles 3D produite par un script Blender (blender/assets/<id>.py) et réutilisée par plusieurs composants : components/kit/<id>/ | Le conteneur de chantier aménagé : le module commun des bureaux et des baraques. | à faire |
+| 2 | `site-container` | Le conteneur de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le baraquement modulaire des chantiers romands : vestiaire, réfectoire, bureau. | à faire |
+| 3 | `architect-office` | Le bureau d'architecte | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu de l'idée, des plans et du permis de construire ; le premier lieu du parcours. | à faire |
+| 4 | `design-office` | Le bureau d'études | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu des plans d'exécution, où travaillent les spécialistes. | à faire |
+| 5 | `client-office` | Le bureau du client | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu des décisions qui t'attendent. | à faire |
+| 6 | `control-office` | Le bureau de contrôle | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le poste qui mesure et tamponne les preuves ; c'est un programme, pas un personnage. | à faire |
+| 7 | `site-office` | La baraque du conducteur de travaux | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu de la coordination : planning des lots, chef de chantier, répartition des agents. | à faire |
+| 8 | `parking` | Le parking : le carnet des demandes | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer les demandes en attente de tri, sous forme de caisses de matériel. | à faire |
+| 9 | `reception-area` | La zone de réception | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu des essais et de la visite, avant la remise des clés. | à faire |
+| 10 | `site-fence` | La clôture de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Cloisonner le chantier, comme tout chantier romand. | à faire |
 | 11 | `waste-skip` | La benne de tri | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le tri des déchets de chantier, obligatoire (OLED, art. 17). | à faire |
 
 ### Le terrain (`ground`)
@@ -83,15 +84,44 @@ Une dalle de terrain avec sa bordure ; la zone du chantier en gravier est un sec
 - Critères d'acceptation :
   - Exemple fourni : sert de modèle de composant statique
 
+### Le kit de conteneur (`container-kit`)
+
+Un conteneur de chantier de 20 pieds, agrandi × 1,2 comme toute la famille (7,20 × 3,00 m au sol, 3,00 m de haut ; la porte de 2,40 m y entre) : coque fermée, coque en coupe (coupe choisie sur MB_13), raccord de conteneurs accolés, porte, fenêtre, marches, escalier et coursive ; et le mobilier des bureaux (table à dessin et lampe, panneau de plans, poste de travail, table ronde et maquette, étagère, tableau de planning, armoire de mesure, trépied, tampon). Utilisé par site-container et les cinq bureaux. Décision de Pierre-Alain du 19 octobre 2026 : un bureau est un conteneur aménagé, deux postes par conteneur.
+
+- Dossier : `components/kit/container-kit/`, script `blender/assets/container-kit.py`
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres)
+- Modèles : `ENV_CONTAINER_KIT_A_v001.glb`
+- Budget : 20000 triangles, 10 matériaux
+- Critères d'acceptation :
+  - Couleurs proposées et validées par Pierre-Alain avant la fabrication
+  - Toutes les pièces partagent les cotes du conteneur et s'accolent ou s'empilent sans jour
+  - Chaque pièce est un nœud nommé ENV_CONTAINER_KIT_A_<PIECE>
+  - Une démonstration (un conteneur fermé, deux empilés, un bureau en coupe) s'assemble sans retouche
+
+### Le conteneur de chantier (`site-container`)
+
+Un conteneur fermé du kit container-kit, porte et fenêtre aux cotes communes (bible, 18.2) ; deux modules peuvent s'empiler, avec un escalier extérieur.
+
+- Fichier : `components/site/site-container/index.js`
+- Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `container-kit`
+- Paramètres : `stack` (nombre, 1 à 2, défaut 1)
+- États : `default`
+- Ancres : `label`, `entry`
+- Données reçues par setState : aucune
+- Budget : 6000 triangles, 6 matériaux
+- Critères d'acceptation :
+  - Reconnaissable comme conteneur de chantier sans légende
+  - Couleurs proposées et validées par Pierre-Alain avant la fabrication
+  - Empilé sur deux niveaux, l'escalier mène à la porte du haut
+
 ### Le bureau d'architecte (`architect-office`)
 
-Un petit bâtiment de bureau ouvert ou vitré : table à dessin, plans au mur. Les personnages s'y placent ; l'intérieur détaillé est le composant office-interior.
+Un conteneur du kit container-kit aménagé en bureau d'architecte, montré en coupe : table à dessin et sa lampe, plans au mur, maquette blanche sur une table ronde, rouleaux de plans. Un poste, celui de Claire. Les personnages s'y placent (ancre desk:n) ; ils entrent par la porte.
 
 - Fichier : `components/site/architect-office/index.js`
-- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `BLD_ARCHITECT_OFFICE_A_v001` ; famille `BLD_ARCHITECT`
-- Paramètres : `size` (small | medium, défaut small)
+- Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `container-kit` ; famille `BLD_ARCHITECT`
 - États : `idle`, `active`
-- Ancres : `label`, `badge`, `door`
+- Ancres : `label`, `badge`, `door`, `desk:*`
 - Données reçues par setState : aucune
 - Budget : 20000 triangles, 10 matériaux
 - Critères d'acceptation :
@@ -101,25 +131,26 @@ Un petit bâtiment de bureau ouvert ou vitré : table à dessin, plans au mur. L
 
 ### Le bureau d'études (`design-office`)
 
-Un bureau plus technique que celui de l'architecte : écrans, tablettes, maquettes en cours.
+Des conteneurs du kit container-kit accolés en un plateau, deux postes par conteneur (desks / 2, arrondi au-dessus) : bureau bois, caisson graphite, écran, chaise, cloisons basses. Plus technique que le bureau d'architecte. Marc et les sept du bureau d'études.
 
 - Fichier : `components/site/design-office/index.js`
-- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `BLD_ENGINEERING_OFFICE_A_v001` ; famille `BLD_ENGINEERING`
-- Paramètres : `size` (small | medium, défaut small)
+- Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `container-kit` ; famille `BLD_ENGINEERING`
+- Paramètres : `desks` (nombre, 1 à 8, défaut 8)
 - États : `idle`, `active`
-- Ancres : `label`, `badge`, `door`
+- Ancres : `label`, `badge`, `door`, `desk:*`
 - Données reçues par setState : aucune
 - Budget : 20000 triangles, 10 matériaux
 - Critères d'acceptation :
   - Distinct du bureau d'architecte au premier regard
   - Même famille de formes et de matières
+  - Un poste par personne, désignable (ancre desk:n)
 
 ### Le bureau du client (`client-office`)
 
-Un petit pavillon avec un tableau d'affichage extérieur ; en état waiting, le tableau porte le panneau rouge et l'ancre badge reçoit le nombre de décisions.
+Un conteneur du kit container-kit aménagé en salle de décision : table de réunion, deux fauteuils, une plante ; un tableau d'affichage extérieur. En état waiting, le tableau porte le panneau rouge et l'ancre badge reçoit le nombre de décisions.
 
 - Fichier : `components/site/client-office/index.js`
-- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `BLD_CLIENT_OFFICE_A_v001`
+- Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `container-kit`
 - États : `idle`, `waiting`
 - Ancres : `label`, `badge`, `board`
 - Données reçues par setState : `count` (nombre de décisions attendues (affiché par GDC sur l'ancre badge))
@@ -130,10 +161,10 @@ Un petit pavillon avec un tableau d'affichage extérieur ; en état waiting, le 
 
 ### Le bureau de contrôle (`control-office`)
 
-Une guérite technique avec un tampon ou un appareil de mesure ; une impulsion à chaque preuve enregistrée.
+Un conteneur du kit container-kit équipé en machine : armoires de mesure, trépied, tampon ; aucun poste occupé (décision de Pierre-Alain du 19 octobre 2026). Une impulsion à chaque preuve enregistrée.
 
 - Fichier : `components/site/control-office/index.js`
-- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `BLD_QA_OFFICE_A_v001` ; famille `BLD_QA`
+- Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `container-kit` ; famille `BLD_QA`
 - États : `idle`, `active`, `error`
 - Ancres : `label`, `badge`
 - Données reçues par setState : aucune
@@ -144,10 +175,10 @@ Une guérite technique avec un tampon ou un appareil de mesure ; une impulsion �
 
 ### La baraque du conducteur de travaux (`site-office`)
 
-Une baraque de chantier à deux niveaux, planning affiché, écrans ; famille BLD_COORDINATION de la bible. Yves, le conducteur de travaux, s'y tient ; le chef de chantier (programme) n'a pas de corps.
+Deux conteneurs du kit container-kit empilés, avec escalier extérieur et coursive (MB_10), planning affiché sans texte, écrans ; famille BLD_COORDINATION de la bible. Yves, le conducteur de travaux, s'y tient ; le chef de chantier (programme) n'a pas de corps.
 
 - Fichier : `components/site/site-office/index.js`
-- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `BLD_COORDINATION_CABIN_A_v001` ; famille `BLD_COORDINATION`
+- Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `container-kit` ; famille `BLD_COORDINATION`
 - États : `idle`, `active`
 - Ancres : `label`, `badge`, `entry`
 - Budget : 20000 triangles, 10 matériaux
@@ -198,22 +229,6 @@ Une clôture mobile : panneaux en treillis gris sur plots en béton, sans orange
   - Reconnaissable comme clôture de chantier mobile, sans orange
   - Impossible à confondre avec la barrière de blocage sur une planche côte à côte
   - Les panneaux et les plots se répètent par instance
-
-### Le conteneur de chantier (`site-container`)
-
-Un module conteneur, porte et fenêtre aux cotes communes (bible, 18.2) ; deux modules peuvent s'empiler, avec un escalier extérieur.
-
-- Fichier : `components/site/site-container/index.js`
-- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `ENV_SITE_CONTAINER_A_v001`
-- Paramètres : `stack` (nombre, 1 à 2, défaut 1)
-- États : `default`
-- Ancres : `label`, `entry`
-- Données reçues par setState : aucune
-- Budget : 6000 triangles, 6 matériaux
-- Critères d'acceptation :
-  - Reconnaissable comme conteneur de chantier sans légende
-  - Couleurs proposées et validées par Pierre-Alain avant la fabrication
-  - Empilé sur deux niveaux, l'escalier mène à la porte du haut
 
 ### La benne de tri (`waste-skip`)
 

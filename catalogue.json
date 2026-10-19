@@ -117,7 +117,7 @@
     {
       "id": "ground",
       "lot": "G1",
-      "order": 1,
+      "order": 0,
       "kind": "component",
       "category": "site",
       "name": "Le terrain",
@@ -145,17 +145,40 @@
       "production": "code"
     },
     {
+      "id": "container-kit",
+      "lot": "G1",
+      "order": 1,
+      "kind": "kit",
+      "category": "kit",
+      "name": "Le kit de conteneur",
+      "purpose": "Le conteneur de chantier aménagé : le module commun des bureaux et des baraques.",
+      "description": "Un conteneur de chantier de 20 pieds, agrandi × 1,2 comme toute la famille (7,20 × 3,00 m au sol, 3,00 m de haut ; la porte de 2,40 m y entre) : coque fermée, coque en coupe (coupe choisie sur MB_13), raccord de conteneurs accolés, porte, fenêtre, marches, escalier et coursive ; et le mobilier des bureaux (table à dessin et lampe, panneau de plans, poste de travail, table ronde et maquette, étagère, tableau de planning, armoire de mesure, trépied, tampon). Utilisé par site-container et les cinq bureaux. Décision de Pierre-Alain du 19 octobre 2026 : un bureau est un conteneur aménagé, deux postes par conteneur.",
+      "assets": [
+        "ENV_CONTAINER_KIT_A_v001.glb"
+      ],
+      "budget": {
+        "triangles": 20000,
+        "materials": 10
+      },
+      "production": "blender",
+      "acceptance": [
+        "Couleurs proposées et validées par Pierre-Alain avant la fabrication",
+        "Toutes les pièces partagent les cotes du conteneur et s'accolent ou s'empilent sans jour",
+        "Chaque pièce est un nœud nommé ENV_CONTAINER_KIT_A_<PIECE>",
+        "Une démonstration (un conteneur fermé, deux empilés, un bureau en coupe) s'assemble sans retouche"
+      ],
+      "status": "à faire"
+    },
+    {
       "id": "architect-office",
       "lot": "G1",
-      "order": 2,
+      "order": 3,
       "kind": "component",
       "category": "site",
       "name": "Le bureau d'architecte",
       "purpose": "Le lieu de l'idée, des plans et du permis de construire ; le premier lieu du parcours.",
-      "description": "Un petit bâtiment de bureau ouvert ou vitré : table à dessin, plans au mur. Les personnages s'y placent ; l'intérieur détaillé est le composant office-interior.",
-      "params": {
-        "size": "small | medium, défaut small"
-      },
+      "description": "Un conteneur du kit container-kit aménagé en bureau d'architecte, montré en coupe : table à dessin et sa lampe, plans au mur, maquette blanche sur une table ronde, rouleaux de plans. Un poste, celui de Claire. Les personnages s'y placent (ancre desk:n) ; ils entrent par la porte.",
+      "params": {},
       "states": [
         "idle",
         "active"
@@ -163,7 +186,8 @@
       "anchors": [
         "label",
         "badge",
-        "door"
+        "door",
+        "desk:*"
       ],
       "budget": {
         "triangles": 20000,
@@ -176,21 +200,21 @@
       ],
       "status": "à faire",
       "data": {},
-      "production": "blender",
-      "blender": "BLD_ARCHITECT_OFFICE_A_v001",
-      "famille_bible": "BLD_ARCHITECT"
+      "production": "mixte",
+      "famille_bible": "BLD_ARCHITECT",
+      "kit": "container-kit"
     },
     {
       "id": "design-office",
       "lot": "G1",
-      "order": 3,
+      "order": 4,
       "kind": "component",
       "category": "site",
       "name": "Le bureau d'études",
       "purpose": "Le lieu des plans d'exécution, où travaillent les spécialistes.",
-      "description": "Un bureau plus technique que celui de l'architecte : écrans, tablettes, maquettes en cours.",
+      "description": "Des conteneurs du kit container-kit accolés en un plateau, deux postes par conteneur (desks / 2, arrondi au-dessus) : bureau bois, caisson graphite, écran, chaise, cloisons basses. Plus technique que le bureau d'architecte. Marc et les sept du bureau d'études.",
       "params": {
-        "size": "small | medium, défaut small"
+        "desks": "nombre, 1 à 8, défaut 8"
       },
       "states": [
         "idle",
@@ -199,7 +223,8 @@
       "anchors": [
         "label",
         "badge",
-        "door"
+        "door",
+        "desk:*"
       ],
       "budget": {
         "triangles": 20000,
@@ -207,23 +232,24 @@
       },
       "acceptance": [
         "Distinct du bureau d'architecte au premier regard",
-        "Même famille de formes et de matières"
+        "Même famille de formes et de matières",
+        "Un poste par personne, désignable (ancre desk:n)"
       ],
       "status": "à faire",
       "data": {},
-      "production": "blender",
-      "blender": "BLD_ENGINEERING_OFFICE_A_v001",
-      "famille_bible": "BLD_ENGINEERING"
+      "production": "mixte",
+      "famille_bible": "BLD_ENGINEERING",
+      "kit": "container-kit"
     },
     {
       "id": "client-office",
       "lot": "G1",
-      "order": 4,
+      "order": 5,
       "kind": "component",
       "category": "site",
       "name": "Le bureau du client",
       "purpose": "Le lieu des décisions qui t'attendent.",
-      "description": "Un petit pavillon avec un tableau d'affichage extérieur ; en état waiting, le tableau porte le panneau rouge et l'ancre badge reçoit le nombre de décisions.",
+      "description": "Un conteneur du kit container-kit aménagé en salle de décision : table de réunion, deux fauteuils, une plante ; un tableau d'affichage extérieur. En état waiting, le tableau porte le panneau rouge et l'ancre badge reçoit le nombre de décisions.",
       "params": {},
       "states": [
         "idle",
@@ -246,19 +272,19 @@
       "data": {
         "count": "nombre de décisions attendues (affiché par GDC sur l'ancre badge)"
       },
-      "production": "blender",
-      "blender": "BLD_CLIENT_OFFICE_A_v001",
-      "famille_bible": null
+      "production": "mixte",
+      "famille_bible": null,
+      "kit": "container-kit"
     },
     {
       "id": "control-office",
       "lot": "G1",
-      "order": 5,
+      "order": 6,
       "kind": "component",
       "category": "site",
       "name": "Le bureau de contrôle",
       "purpose": "Le poste qui mesure et tamponne les preuves ; c'est un programme, pas un personnage.",
-      "description": "Une guérite technique avec un tampon ou un appareil de mesure ; une impulsion à chaque preuve enregistrée.",
+      "description": "Un conteneur du kit container-kit équipé en machine : armoires de mesure, trépied, tampon ; aucun poste occupé (décision de Pierre-Alain du 19 octobre 2026). Une impulsion à chaque preuve enregistrée.",
       "params": {},
       "states": [
         "idle",
@@ -279,19 +305,19 @@
       ],
       "status": "à faire",
       "data": {},
-      "production": "blender",
-      "blender": "BLD_QA_OFFICE_A_v001",
-      "famille_bible": "BLD_QA"
+      "production": "mixte",
+      "famille_bible": "BLD_QA",
+      "kit": "container-kit"
     },
     {
       "id": "site-office",
       "lot": "G1",
-      "order": 6,
+      "order": 7,
       "kind": "component",
       "category": "site",
       "name": "La baraque du conducteur de travaux",
       "purpose": "Le lieu de la coordination : planning des lots, chef de chantier, répartition des agents.",
-      "description": "Une baraque de chantier à deux niveaux, planning affiché, écrans ; famille BLD_COORDINATION de la bible. Yves, le conducteur de travaux, s'y tient ; le chef de chantier (programme) n'a pas de corps.",
+      "description": "Deux conteneurs du kit container-kit empilés, avec escalier extérieur et coursive (MB_10), planning affiché sans texte, écrans ; famille BLD_COORDINATION de la bible. Yves, le conducteur de travaux, s'y tient ; le chef de chantier (programme) n'a pas de corps.",
       "params": {},
       "states": [
         "idle",
@@ -306,19 +332,19 @@
         "triangles": 20000,
         "materials": 10
       },
-      "production": "blender",
-      "blender": "BLD_COORDINATION_CABIN_A_v001",
+      "production": "mixte",
       "famille_bible": "BLD_COORDINATION",
       "acceptance": [
         "Reconnaissable comme baraque de chantier sans légende",
         "État active : un détail animé discret, figé si reducedMotion"
       ],
-      "status": "à faire"
+      "status": "à faire",
+      "kit": "container-kit"
     },
     {
       "id": "parking",
       "lot": "G1",
-      "order": 7,
+      "order": 8,
       "kind": "component",
       "category": "site",
       "name": "Le parking : le carnet des demandes",
@@ -352,7 +378,7 @@
     {
       "id": "reception-area",
       "lot": "G1",
-      "order": 8,
+      "order": 9,
       "kind": "component",
       "category": "site",
       "name": "La zone de réception",
@@ -384,7 +410,7 @@
     {
       "id": "site-fence",
       "lot": "G1",
-      "order": 9,
+      "order": 10,
       "kind": "component",
       "category": "site",
       "name": "La clôture de chantier",
@@ -417,12 +443,12 @@
     {
       "id": "site-container",
       "lot": "G1",
-      "order": 10,
+      "order": 2,
       "kind": "component",
       "category": "site",
       "name": "Le conteneur de chantier",
       "purpose": "Le baraquement modulaire des chantiers romands : vestiaire, réfectoire, bureau.",
-      "description": "Un module conteneur, porte et fenêtre aux cotes communes (bible, 18.2) ; deux modules peuvent s'empiler, avec un escalier extérieur.",
+      "description": "Un conteneur fermé du kit container-kit, porte et fenêtre aux cotes communes (bible, 18.2) ; deux modules peuvent s'empiler, avec un escalier extérieur.",
       "params": {
         "stack": "nombre, 1 à 2, défaut 1"
       },
@@ -444,8 +470,8 @@
       ],
       "status": "à faire",
       "data": {},
-      "production": "blender",
-      "blender": "ENV_SITE_CONTAINER_A_v001"
+      "production": "mixte",
+      "kit": "container-kit"
     },
     {
       "id": "waste-skip",
