@@ -1,7 +1,10 @@
 """Le personnage maitre (catalogue : character-kit), deuxieme etalon de l'atelier. Bible WORKSITE, sections 2.5, 5,
 17.4 et 18.3 ; decision de PA du 19 octobre 2026 : 1,70 m et 5 tetes (une tete = 0,34 m).
 
-Version grise : un corps neutre, sans tenue de metier ni couleur d'equipe, pour la planche comparative des morphologies.
+La base : un corps neutre (proportions validees par PA le 19 octobre 2026), peau, coupe courte brune, habits civils
+graphite (sous-pull et pantalon, comme sous le gilet de MB_04), casque blanc. Pas encore de tenue de metier ni de
+couleur d'equipe : elles viendront par variantes. Le visage suit REF_CHR_001 et MB_04 : yeux sombres a reflet,
+sourcils, petit nez, sourire modere (bible 2.5).
 Un seul squelette pour tous les personnages, RIG_CHR_BASE ; les variantes viendront par la tenue, la coiffure, les
 accessoires et la couleur d'equipe.
 
@@ -47,10 +50,11 @@ CHEVILLE = 0.10
 PIED_X = 0.09  # axe des chaussures, un peu plus ecarte que les jambes
 EXAGERATION = 1.2  # chaussures et casque agrandis, comme les portes de la famille (bible 18.2)
 
-MAT_CORPS = "MAT_CONCRETE"  # version grise : peau et vetements d'un meme gris
-MAT_CASQUE = "MAT_SURFACE"  # comme le casque blanc (decision du 19 octobre 2026)
-MAT_CHEVEUX = "MAT_FABRIC_GRAPHITE"
-MAT_SOMBRE = "MAT_RUBBER"  # chaussures et yeux
+MAT_PEAU = "MAT_SKIN_B"
+MAT_HABITS = "MAT_FABRIC_GRAPHITE"  # sous-pull et pantalon : la tenue civile, base de toutes les tenues
+MAT_CHEVEUX = "MAT_HAIR_BROWN"  # cheveux et sourcils
+MAT_SOMBRE = "MAT_RUBBER"  # chaussures, yeux et bouche
+MAT_CLAIR = "MAT_SURFACE"  # casque blanc (decision du 19 octobre 2026) et reflet des yeux
 
 
 # --- Geometrie ---------------------------------------------------------------------------------------------------
@@ -237,7 +241,8 @@ def rattache_a_l_os(o, rig, court):
 
 # --- Le corps ------------------------------------------------------------------------------------------------------
 
-def corps(rig, mat_corps, mat_sombre):
+def corps(rig, mats):
+    mat_peau, mat_habits, mat_sombre = mats["peau"], mats["habits"], mats["sombre"]
     ex, ez = EPAULE
     hx, hz = HANCHE
     s = math.sin(math.radians(ECART_BRAS))
@@ -259,11 +264,11 @@ def corps(rig, mat_corps, mat_sombre):
         (1.295, 0.152, 0.092, 0, 0.0),
         (1.325, 0.090, 0.065, 0, 0.0),
         (1.336, 0, 0, 0, 0.0),
-    ], cotes=16, mat=mat_corps)
+    ], cotes=16, mat=mat_habits)
     poids_le_long(tronc, (0, 0, 0), (0, 0, 1), [(0.84, "HIPS"), (0.92, "SPINE"), (1.00, "SPINE"), (1.10, "CHEST")])
     parties.append(tronc)
 
-    cou = membre(P + "NECK", (0, 0, 1.27), (0, 0, 1.42), [(0, 0.070), (0.5, 0.064), (1, 0.066)], cotes=12, mat=mat_corps)
+    cou = membre(P + "NECK", (0, 0, 1.27), (0, 0, 1.42), [(0, 0.070), (0.5, 0.064), (1, 0.066)], cotes=12, mat=mat_peau)
     poids_le_long(cou, (0, 0, 1.27), (0, 0, 1), [(0.02, "CHEST"), (0.05, "NECK"), (0.10, "NECK"), (0.13, "HEAD")])
     parties.append(cou)
 
@@ -279,21 +284,37 @@ def corps(rig, mat_corps, mat_sombre):
         (MENTON + 0.288, 0.125, 0.126, 0, 0.010),
         (MENTON + 0.308, 0.080, 0.083, 0, 0.010),
         (MENTON + 0.316, 0, 0, 0, 0.010),
-    ], cotes=16, mat=mat_corps)
+    ], cotes=16, mat=mat_peau)
     rigide(tete, "HEAD")
     parties.append(tete)
     for sg in (1, -1):
         oreille = ellipsoide(P + "EAR_" + ("L" if sg > 0 else "R"), (sg * 0.157, 0.012, MENTON + 0.135), (0.022, 0.035, 0.048),
-                             cotes=8, anneaux=6, mat=mat_corps)
+                             cotes=8, anneaux=6, mat=mat_peau)
         rigide(oreille, "HEAD")
         parties.append(oreille)
+    # le nez : une petite bosse ronde (REF_CHR_001), dans la peau du visage
+    nez = ellipsoide(P + "NOSE", (0, -0.147, MENTON + 0.105), (0.019, 0.015, 0.017), cotes=8, anneaux=6, mat=mat_peau)
+    rigide(nez, "HEAD")
+    parties.append(nez)
 
     for cote, sg in (("L", 1), ("R", -1)):
         epaule = Vector((sg * ex, 0, ez))
         d = Vector((sg * s, 0, -co))
         poignet = epaule + d * (BRAS + AVANT_BRAS)
-        bras = membre(P + "ARM_" + cote, epaule, poignet, [(0, 0.062), (0.25, 0.058), (0.52, 0.049), (0.75, 0.047), (1, 0.038)],
-                      debord=(0.03, 0.01), mat=mat_corps)
+        # la manche retroussee sous le coude (MB_04), puis l'avant-bras nu : la peau casse la masse sombre du vetement
+        manche = BRAS + 0.07
+        bras = membre(P + "SLEEVE_" + cote, epaule, epaule + d * manche, [(0, 0.062), (0.35, 0.058), (0.75, 0.051), (0.92, 0.055),
+                                                                         (1, 0.054)], debord=(0.03, 0.006), mat=mat_habits)
+        nu = membre(P + "FOREARM_" + cote, epaule + d * (BRAS - 0.03), poignet, [(0, 0.043), (0.45, 0.041), (1, 0.032)],
+                    debord=(0.0, 0.01), mat=mat_peau)
+        poids_le_long(nu, epaule, d, [(BRAS - 0.04, "ARM_" + cote), (BRAS + 0.04, "FOREARM_" + cote)])
+        parties.append(nu)
+        # l'epaule arrondie : relie le haut du bras a la ligne des epaules (sans elle, le bras se pose comme un tube)
+        rond = ellipsoide(P + "SHOULDER_" + cote, (sg * 0.172, 0, ez - 0.022), (0.074, 0.068, 0.056), cotes=12, anneaux=8,
+                          mat=mat_habits)
+        poids_le_long(rond, (sg * 0.10, 0, ez), (sg, 0, 0), [(0.03, "SHOULDER_" + cote), (0.10, "SHOULDER_" + cote),
+                                                            (0.16, "ARM_" + cote)])
+        parties.append(rond)
         poids_le_long(bras, epaule, d, [(-0.02, "SHOULDER_" + cote), (0.04, "ARM_" + cote), (BRAS - 0.04, "ARM_" + cote),
                                          (BRAS + 0.04, "FOREARM_" + cote)])
         parties.append(bras)
@@ -307,17 +328,17 @@ def corps(rig, mat_corps, mat_sombre):
             (0.100, 0.027, 0.047, 0, 0.004),
             (0.122, 0.018, 0.033, 0, 0.004),
             (0.130, 0, 0, 0, 0.004),
-        ], cotes=12, origine=poignet, direction=d, mat=mat_corps)
+        ], cotes=12, origine=poignet, direction=d, mat=mat_peau)
         rigide(main, "HAND_" + cote)
         pouce_base = poignet + d * 0.030 + Vector((0, -0.030, 0))
         pouce = membre(P + "THUMB_" + cote, pouce_base, pouce_base + (d * 0.6 + Vector((0, -0.8, 0))).normalized() * 0.05,
-                       [(0, 0.019), (1, 0.016)], cotes=8, debord=(0.01, 0.012), mat=mat_corps)
+                       [(0, 0.019), (1, 0.016)], cotes=8, debord=(0.01, 0.012), mat=mat_peau)
         rigide(pouce, "HAND_" + cote)
         parties += [main, pouce]
 
         hanche = Vector((sg * hx, 0, hz))
         jambe = membre(P + "LEG_" + cote, hanche, (sg * hx, 0, CHEVILLE), [(0, 0.092), (0.25, 0.084), (0.5, 0.068), (0.62, 0.068),
-                                                                         (0.85, 0.058), (1, 0.052)], debord=(0.04, 0.02), mat=mat_corps)
+                                                                         (0.85, 0.058), (1, 0.052)], debord=(0.04, 0.02), mat=mat_habits)
         poids_le_long(jambe, hanche, (0, 0, -1), [(-0.03, "HIPS"), (0.02, "THIGH_" + cote), (hz - GENOU - 0.04, "THIGH_" + cote),
                                                     (hz - GENOU + 0.04, "SHIN_" + cote)])
         parties.append(jambe)
@@ -338,20 +359,21 @@ def corps(rig, mat_corps, mat_sombre):
         rigide(chaussure, "FOOT_" + cote)
         parties.append(chaussure)
 
-    o = fusionne_corps(parties)
+    o = reunit(P + "BODY", parties)
     deforme(o, rig)
     return o
 
 
-def fusionne_corps(parties):
-    """Un seul maillage pour le corps : les groupes de sommets de meme nom (les os) se rejoignent."""
+def reunit(nom, parties):
+    """Un seul maillage (un seul noeud glTF, une primitive par materiau) ; les groupes de sommets de meme nom (les os)
+    se rejoignent."""
     bpy.ops.object.select_all(action="DESELECT")
     for x in parties:
         x.select_set(True)
     bpy.context.view_layer.objects.active = parties[0]
     bpy.ops.object.join()
     o = parties[0]
-    o.name = o.data.name = P + "BODY"
+    o.name = o.data.name = nom
     return o
 
 
@@ -362,40 +384,61 @@ def deforme(o, rig):
 
 
 def cheveux(rig, mat):
-    """Coupe courte neutre : une masse posee sur le crane, qui sort de la tete au-dessus du front et descend a la nuque."""
-    o = fuseau(P + "HAIR", [
-        (MENTON + 0.085, 0, 0, 0, 0.050),
-        (MENTON + 0.100, 0.100, 0.100, 0, 0.045),
-        (MENTON + 0.150, 0.155, 0.158, 0, 0.030),
-        (MENTON + 0.205, 0.169, 0.165, 0, 0.016),
-        (MENTON + 0.262, 0.162, 0.160, 0, 0.012),
-        (MENTON + 0.305, 0.132, 0.132, 0, 0.012),
-        (MENTON + 0.330, 0.078, 0.080, 0, 0.012),
-        (HAUTEUR, 0, 0, 0, 0.012),
-    ], cotes=16, mat=mat)
+    """Coupe courte, en masses sculptees (bible 4) : la calotte posee sur le crane, qui sort de la tete au-dessus du front
+    et descend aux tempes et a la nuque, et deux meches de devant qui donnent le volume du dessus (MB_04)."""
+    parties = [fuseau(P + "HAIR", [
+        (MENTON + 0.075, 0, 0, 0, 0.055),
+        (MENTON + 0.090, 0.110, 0.105, 0, 0.050),
+        (MENTON + 0.125, 0.157, 0.155, 0, 0.040),
+        (MENTON + 0.170, 0.166, 0.163, 0, 0.034),
+        (MENTON + 0.220, 0.168, 0.163, 0, 0.022),
+        (MENTON + 0.268, 0.160, 0.160, 0, 0.012),
+        (MENTON + 0.308, 0.130, 0.132, 0, 0.008),
+        (MENTON + 0.334, 0.072, 0.076, 0, 0.008),
+        (MENTON + 0.342, 0, 0, 0, 0.008),
+    ], cotes=16, mat=mat)]
+    for nom, centre, rayons in (("HAIR_FRONT_L", (0.040, -0.098, MENTON + 0.290), (0.085, 0.060, 0.042)),
+                                ("HAIR_FRONT_R", (-0.052, -0.088, MENTON + 0.282), (0.070, 0.058, 0.040))):
+        parties.append(ellipsoide(P + nom, centre, rayons, cotes=12, anneaux=6, mat=mat))
+    o = reunit(P + "HAIR", parties)
     rattache_a_l_os(o, rig, "HEAD")
     return o
 
 
-def yeux(rig, mat):
-    """Deux ovales sombres, simples (bible 4 : formes simples, contrastes lisibles). Proposition a valider par PA."""
+def visage(rig, mats):
+    """Les traits du visage, un seul noeud rattache a la tete : yeux sombres avec un reflet clair (bible 4 : formes
+    simples, contrastes lisibles, reflets discrets), sourcils dans la couleur des cheveux, sourire modere (bible 2.5).
+    Sous le detail minimal de la vue generale (0,15 m) : le composant les cache en qualite basse (bible 18.3)."""
+    oeil_z = MENTON + 0.140
     parties = []
     for sg in (1, -1):
-        parties.append(ellipsoide(P + "EYE_" + ("L" if sg > 0 else "R"), (sg * 0.056, -0.136, MENTON + 0.140), (0.019, 0.012, 0.028),
-                                  cotes=8, anneaux=6, mat=mat))
-    bpy.ops.object.select_all(action="DESELECT")
-    for x in parties:
-        x.select_set(True)
-    bpy.context.view_layer.objects.active = parties[0]
-    bpy.ops.object.join()
-    o = parties[0]
-    o.name = o.data.name = P + "EYES"
+        cote = "L" if sg > 0 else "R"
+        parties.append(ellipsoide(P + "EYE_" + cote, (sg * 0.056, -0.134, oeil_z), (0.021, 0.012, 0.031), cotes=8, anneaux=6,
+                                  mat=mats["sombre"]))
+        # le reflet, en haut a droite de chaque oeil, du meme cote pour les deux (une seule lumiere)
+        parties.append(ellipsoide(P + "EYE_GLINT_" + cote, (sg * 0.056 - 0.007, -0.144, oeil_z + 0.011), (0.007, 0.004, 0.008),
+                                  cotes=8, anneaux=4, mat=mats["clair"]))
+        # le sourcil : un trait arrondi, qui redescend vers l'exterieur (regard ouvert ; l'inverse fronce)
+        parties.append(membre(P + "BROW_" + cote, (sg * 0.030, -0.144, oeil_z + 0.050), (sg * 0.082, -0.134, oeil_z + 0.045),
+                              [(0, 0.009), (0.5, 0.010), (1, 0.007)], cotes=8, debord=(0.006, 0.006), mat=mats["cheveux"]))
+    # la bouche : un trait courbe, les coins releves (sourire), qui suit l'arrondi du visage
+    largeur, releve = 0.064, 0.009
+    sections = [(0, 0, 0, 0, 0)]
+    for k in range(1, 8):
+        t = k / 8
+        u = 2 * t - 1
+        sections.append((t * largeur, 0.0055, 0.006, -releve * u * u, 0.006 * u * u))
+    sections.append((largeur, 0, 0, -releve, 0.006))
+    parties.append(fuseau(P + "MOUTH", sections, cotes=8, origine=(-largeur / 2, -0.131, MENTON + 0.062), direction=(1, 0, 0),
+                          mat=mats["sombre"]))
+    o = reunit(P + "FACE", parties)
     rattache_a_l_os(o, rig, "HEAD")
     return o
 
 
 def casque(rig, mat):
-    """Casque de chantier agrandi (x 1,2) : coque bombee, rebord tout autour et visiere vers l'avant."""
+    """Casque de chantier agrandi (x 1,2) : coque bombee, rebord tout autour, visiere vers l'avant et nervure sur le
+    dessus, d'avant en arriere (MB_04)."""
     base = MENTON + 0.230
     o = fuseau(P + "HELMET", [
         (base, 0, 0, 0, -0.032),
@@ -408,6 +451,17 @@ def casque(rig, mat):
         (base + 0.178, 0.065, 0.070, 0, 0.006),
         (base + 0.183, 0, 0, 0, 0.006),
     ], cotes=20, exposant=2.2, mat=mat)
+    # la nervure : une bande etroite qui suit le profil de la coque, un peu en relief, de la visiere a la nuque
+    nervure = fuseau(P + "HELMET_RIDGE", [
+        (base + 0.030, 0, 0, 0, 0.000),
+        (base + 0.034, 0.030, 0.198, 0, 0.000),
+        (base + 0.075, 0.034, 0.198, 0, 0.000),
+        (base + 0.125, 0.034, 0.182, 0, 0.004),
+        (base + 0.160, 0.034, 0.142, 0, 0.006),
+        (base + 0.180, 0.030, 0.080, 0, 0.006),
+        (base + 0.190, 0, 0, 0, 0.006),
+    ], cotes=12, exposant=2.2, mat=mat)
+    o = reunit(P + "HELMET", [o, nervure])
     rattache_a_l_os(o, rig, "HEAD")
     return o
 
@@ -564,12 +618,13 @@ def CLIPS(rig):
 # --- Construction --------------------------------------------------------------------------------------------------
 
 def construit(c):
-    mat_corps, mat_sombre = c.materiau(MAT_CORPS), c.materiau(MAT_SOMBRE)
+    mats = {"peau": c.materiau(MAT_PEAU), "habits": c.materiau(MAT_HABITS), "cheveux": c.materiau(MAT_CHEVEUX),
+            "sombre": c.materiau(MAT_SOMBRE), "clair": c.materiau(MAT_CLAIR)}
     rig = squelette()
-    corps(rig, mat_corps, mat_sombre)
-    cheveux(rig, c.materiau(MAT_CHEVEUX))
-    yeux(rig, mat_sombre)
-    helmet = casque(rig, c.materiau(MAT_CASQUE))
+    corps(rig, mats)
+    cheveux(rig, mats["cheveux"])
+    visage(rig, mats)
+    helmet = casque(rig, mats["clair"])
     animations = anime(rig)
 
     # Atelier seulement : le clip montre et le casque. L'export garde tout, sans action active (pose de repos).

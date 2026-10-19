@@ -10,7 +10,7 @@ export const PERSONNAGE_ID = "personnage";
 const MODELE = "CHR_BASE_MASTER_v001.glb";
 const KIT_BATIMENT = "kit:building-kit/BLD_KIT_A_v001.glb";
 const CASQUE = "CHR_BASE_MASTER_HELMET";
-const YEUX = "CHR_BASE_MASTER_EYES";
+const VISAGE = "CHR_BASE_MASTER_FACE";
 const SOCLE = { taille: [6, 0.6, 3.4], chanfrein: 0.1 }; // bible 18.5 : 0,60 m de terre, aretes du dessus en C3
 
 // repos : la pose de reference du squelette (en A), sans animation ; les autres : un clip ANM_CHR_<ETAT>.
@@ -63,8 +63,8 @@ export function create(THREE, copies, ctx) {
     const { scene, animations } = assets[MODELE];
     scene.position.set(i === 0 ? -1.4 : 0, 0, 0);
     scene.getObjectByName(CASQUE).visible = i === 1;
-    // qualite basse : ce qui mesure moins de 0,30 m disparait (bible 18.3) ; les yeux font 0,05 m
-    scene.getObjectByName(YEUX).visible = ctx.quality === "high";
+    // qualite basse : ce qui mesure moins de 0,30 m disparait (bible 18.3) ; les traits du visage font moins de 0,07 m
+    scene.getObjectByName(VISAGE).visible = ctx.quality === "high";
     root.add(scene);
     return {
       scene,
