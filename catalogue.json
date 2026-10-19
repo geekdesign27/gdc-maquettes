@@ -626,7 +626,20 @@
       "purpose": "Un squelette, une morphologie et des animations communes pour tous les agents.",
       "description": "CHR_BASE_MASTER (1,70 m, 5 têtes, décision du 19 octobre 2026), son armature RIG_CHR_BASE, les douze animations communes, les tenues par métier (client, architect, engineer, foreman, mason, electrician, plumber, painter, inspector, concierge, representative ; gilet orange pour l'équipe site), le casque de la couleur d'équipe (blanc pour l'équipe client ; le client n'en porte pas) et les accessoires (tablette, rouleau de plans, trépied de géomètre, talkie-walkie, rouleau à peinture, truelle, câble, planchette, tampon, trousseau de clés, classeur). Qui porte quoi : docs/correspondances.md. Bible, section 5.",
       "assets": [
-        "CHR_BASE_MASTER_v001.glb"
+        "CHR_BASE_MASTER_v001.glb",
+        "CHR_HAIR_KIT_v001.glb",
+        "PRP_CHR_TOOLS_v001.glb",
+        "CHR_OUTFIT_CLIENT_v001.glb",
+        "CHR_OUTFIT_ARCHITECT_v001.glb",
+        "CHR_OUTFIT_ENGINEER_v001.glb",
+        "CHR_OUTFIT_FOREMAN_v001.glb",
+        "CHR_OUTFIT_MASON_v001.glb",
+        "CHR_OUTFIT_ELECTRICIAN_v001.glb",
+        "CHR_OUTFIT_PLUMBER_v001.glb",
+        "CHR_OUTFIT_PAINTER_v001.glb",
+        "CHR_OUTFIT_INSPECTOR_v001.glb",
+        "CHR_OUTFIT_CONCIERGE_v001.glb",
+        "CHR_OUTFIT_REPRESENTATIVE_v001.glb"
       ],
       "animations": [
         "ANM_CHR_IDLE",

@@ -4,10 +4,10 @@
   "bible": "WORKSITE 1.2",
   "blender": "5.3.0 Beta",
   "script": "blender/assets/character-kit.py",
-  "script_sha256": "8f10611a87d9f8d8e50ee5386a88b6c197966ccdb4cde3264177c4d946a6a537",
+  "script_sha256": "d77ee9ceb7275293a4197ac437bb09383e83e225b120f893f6ecd00c0315edfa",
   "commun_sha256": "ebb740c936d677a6da372d7de22a2fbd24c006eb86be05692f13983e069fb4c8",
   "palette_sha256": "4d7c5c91813ad7950d154c5d52b5e7164c27aeda6a4bd02c10bce89f0ab20b4f",
-  "glb_sha256": "af2ea8628a719cb095a9fa2064048e70e84a9dcc35ab39121d5c3928344ca2b4",
+  "glb_sha256": "4cfb62056a79d7b2d74cc9828be94737bd7281ddd50b12e9445672a05f49daa9",
   "animations": [
     "ANM_CHR_IDLE",
     "ANM_CHR_WALK",
@@ -21,5 +21,20 @@
     "ANM_CHR_CELEBRATE",
     "ANM_CHR_BLOCKED"
   ],
-  "statut": "a valider"
+  "statut": "a valider",
+  "fichiers": {
+    "CHR_HAIR_KIT_v001": "8847cd1f90776f14ebae97fd8c98ff7cb24932c7d21fd0bb6596a5bfb4582ab8",
+    "PRP_CHR_TOOLS_v001": "d9978e7db1405494498ebaef2eb1b7ff6683494548fc58bd82b76104347b3dae",
+    "CHR_OUTFIT_CLIENT_v001": "c67ed6d921aac7cdd4b36db2dbc677e1bed0dc681dc8d75cc46ce93102a6e9b1",
+    "CHR_OUTFIT_ARCHITECT_v001": "6d8aeacfffb2113ff6fede029628da1857dada30936efd02f7ec06c407d3d2f1",
+    "CHR_OUTFIT_ENGINEER_v001": "e5ad0e45a47d6b37a3ad06cc21141de810163d92f0abe7da73f9dada92a4ec46",
+    "CHR_OUTFIT_FOREMAN_v001": "985d44fc853e5ae24e2b29181345c1204a10b9654dd243ce1ffda5d9afc9f2b8",
+    "CHR_OUTFIT_MASON_v001": "85c67cdfe4306875e6d18ea95561483b1909766315a7089e822caf2e89cb5551",
+    "CHR_OUTFIT_ELECTRICIAN_v001": "319464bbc311a1f4a4ce8e4dd6c9eecd4195de8f80c6c8f16d44541d111d2bb0",
+    "CHR_OUTFIT_PLUMBER_v001": "55f75d6910910a2a6cfbbbee06841e3e44340e30be1ee3f3c00f0bbee4317409",
+    "CHR_OUTFIT_PAINTER_v001": "5c27b2f7719da806cee3d5077fc7c9396ca8bc4f5f2503cd91b9d1d64fe8e829",
+    "CHR_OUTFIT_INSPECTOR_v001": "afd9c7989a02f404e14ff365adc5d2a3483d60c6b63f89e41741bf1bcd772798",
+    "CHR_OUTFIT_CONCIERGE_v001": "4771d3005068e9df37ef4d774cfcbb2c3ea5c96ef025106294ee194521bfdbf7",
+    "CHR_OUTFIT_REPRESENTATIVE_v001": "23d701409dcaf8d8f9dc7977f886060baca5af3f01a1c1a7f795ef42a2dd39fa"
+  }
 }
