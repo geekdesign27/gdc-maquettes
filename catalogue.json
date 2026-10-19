@@ -664,7 +664,7 @@
         "Un seul squelette pour tous",
         "Le portrait (G7) et le corps se correspondent"
       ],
-      "status": "à faire"
+      "status": "livré"
     },
     {
       "id": "character",
@@ -715,7 +715,7 @@
         "reducedMotion : posture fixe et lisible pour chaque état",
         "Animations sur place, sans déplacement non maîtrisé"
       ],
-      "status": "à faire",
+      "status": "livré",
       "data": {
         "facing": "angle en radians, sens du regard ou de la marche"
       },

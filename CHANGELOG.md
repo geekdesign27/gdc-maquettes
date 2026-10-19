@@ -17,6 +17,11 @@
 - Le kit de bâtiment (`building-kit`) est livré : validé sur planche par Pierre-Alain le 18 octobre 2026.
 - Outils Blender : `chanfreine` (faces de contact vives) et `perce` (baies) ; l'atelier et `construit.py` montent et écrivent la démonstration d'un kit. La grue est reconstruite (GLB identique, empreinte des outils changée).
 - Galerie : entrée « Le kit de bâtiment : démonstration », assemblée depuis le GLB du kit ; ombre du soleil avec `normalBias` 0,02 (`src/lumiere.json`) contre l'acné d'ombre. Le cube étalon reste conforme (218, 186, 142).
+- Personnage maître et équipe (`character-kit`), deuxième étalon : `CHR_BASE_MASTER` (1,70 m, 5 têtes, variante féminine par clé de forme, visage, casque, squelette `RIG_CHR_BASE`, onze animations, ancres `label` et `badge`), `CHR_HAIR_KIT` (sept coiffures, barbe, lunettes), une tenue `CHR_OUTFIT_<MÉTIER>` par métier (onze), `PRP_CHR_TOOLS` (douze outils) ; `equipe.json` décrit les 20 personnes du tableau. Chaque personne tient dans 8 000 triangles et 6 matériaux.
+- Composant `character` : un agent dans son état (onze clips sur place, `unknown` grisé et immobile, `reducedMotion`, `facing`, ancres). Il prend les paramètres d'apparence (`body`, `skin`, `hair`, `hairColor`, `beard`, `glasses`, `tool`) en plus de `trade` et `team`.
+- Chaîne Blender : un kit peut produire plusieurs GLB (`VARIANTES`), avec leurs empreintes dans `asset.json` ; le contrôle n'exige les animations que dans le fichier principal. Jetons : `ctx.tokens.personnages`.
+- Galerie : planche « L'équipe », les 20 personnes jouées par le composant `character`.
+- Le personnage maître (`character-kit`) et le personnage (`character`) sont livrés : validés par Pierre-Alain le 19 octobre 2026.
 
 ## 0.2.0, 18 octobre 2026
 

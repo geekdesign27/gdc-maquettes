@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-42 éléments : 36 à faire, 3 livré, 3 exemple.
+42 éléments : 34 à faire, 5 livré, 3 exemple.
 
 ## G0 : La ligne graphique
 
@@ -305,8 +305,8 @@ Montrer qui travaille, où, et dans quel état.
 
 | Ordre | Identifiant | Nom | Nature | But | Statut |
 |---|---|---|---|---|---|
-| 1 | `character-kit` | Le personnage maître et son équipe | Bibliothèque de modèles 3D produite par un script Blender (blender/assets/<id>.py) et réutilisée par plusieurs composants : components/kit/<id>/ | Un squelette, une morphologie et des animations communes pour tous les agents. | à faire |
-| 2 | `character` | Le personnage (un agent) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer qui travaille, où, et dans quel état. | à faire |
+| 1 | `character-kit` | Le personnage maître et son équipe | Bibliothèque de modèles 3D produite par un script Blender (blender/assets/<id>.py) et réutilisée par plusieurs composants : components/kit/<id>/ | Un squelette, une morphologie et des animations communes pour tous les agents. | livré |
+| 2 | `character` | Le personnage (un agent) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer qui travaille, où, et dans quel état. | livré |
 | 3 | `excavator` | La pelleteuse | Composant 3D Three.js, conforme à docs/contrat-composant.md | L'état fouille d'un bâtiment : le terrassement d'une nouvelle application. | à faire |
 | 4 | `crane` | La grue | Composant 3D Three.js, conforme à docs/contrat-composant.md | La fusion vers dev, à la réception : on pose la pièce finie. | exemple |
 | 5 | `delivery-truck` | Le camion de livraison | Composant 3D Three.js, conforme à docs/contrat-composant.md | L'arrivée d'une nouvelle dépendance : un événement à surveiller pour la sécurité. | à faire |
@@ -317,7 +317,7 @@ CHR_BASE_MASTER (1,70 m, 5 têtes, décision du 19 octobre 2026), son armature R
 
 - Dossier : `components/kit/character-kit/`, script `blender/assets/character-kit.py`
 - Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres)
-- Modèles : `CHR_BASE_MASTER_v001.glb`
+- Modèles : `CHR_BASE_MASTER_v001.glb`, `CHR_HAIR_KIT_v001.glb`, `PRP_CHR_TOOLS_v001.glb`, `CHR_OUTFIT_CLIENT_v001.glb`, `CHR_OUTFIT_ARCHITECT_v001.glb`, `CHR_OUTFIT_ENGINEER_v001.glb`, `CHR_OUTFIT_FOREMAN_v001.glb`, `CHR_OUTFIT_MASON_v001.glb`, `CHR_OUTFIT_ELECTRICIAN_v001.glb`, `CHR_OUTFIT_PLUMBER_v001.glb`, `CHR_OUTFIT_PAINTER_v001.glb`, `CHR_OUTFIT_INSPECTOR_v001.glb`, `CHR_OUTFIT_CONCIERGE_v001.glb`, `CHR_OUTFIT_REPRESENTATIVE_v001.glb`
 - Animations : `ANM_CHR_IDLE`, `ANM_CHR_WALK`, `ANM_CHR_WORK`, `ANM_CHR_TYPING`, `ANM_CHR_INSPECT`, `ANM_CHR_READ`, `ANM_CHR_THINKING`, `ANM_CHR_WAITING`, `ANM_CHR_TALK`, `ANM_CHR_CELEBRATE`, `ANM_CHR_BLOCKED`
 - Budget : 8000 triangles, 6 matériaux
 - Critères d'acceptation :
@@ -327,12 +327,13 @@ CHR_BASE_MASTER (1,70 m, 5 têtes, décision du 19 octobre 2026), son armature R
 
 ### Le personnage (un agent) (`character`)
 
-Un personnage par agent, à partir du personnage maître : tenue et outil de son métier, couleur de son équipe. GDC le déplace ; le composant joue l'animation de l'état, sur place. blocked : posture d'arrêt devant la barrière ; unknown : immobile, matériaux grisés, lisible sans animation.
+Un personnage par agent, à partir du personnage maître : tenue et outil de son métier, couleur de son équipe. GDC le déplace ; le composant joue l'animation de l'état, sur place. L'apparence de chaque personne (morphologie, peau, coiffure, barbe, lunettes, outil) est dans components/kit/character-kit/equipe.json ; GDC la passe en paramètres (décision de PA du 19 octobre 2026 : chaque personne a son personnage). blocked : posture d'arrêt devant la barrière ; unknown : immobile, matériaux grisés, lisible sans animation.
 
 - Fichier : `components/character/character/index.js`
 - Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; kit `character-kit`
+- Modèles : `kit:character-kit/CHR_BASE_MASTER_v001.glb`, `kit:character-kit/CHR_HAIR_KIT_v001.glb`, `kit:character-kit/PRP_CHR_TOOLS_v001.glb`, `kit:character-kit/CHR_OUTFIT_CLIENT_v001.glb`, `kit:character-kit/CHR_OUTFIT_ARCHITECT_v001.glb`, `kit:character-kit/CHR_OUTFIT_ENGINEER_v001.glb`, `kit:character-kit/CHR_OUTFIT_FOREMAN_v001.glb`, `kit:character-kit/CHR_OUTFIT_MASON_v001.glb`, `kit:character-kit/CHR_OUTFIT_ELECTRICIAN_v001.glb`, `kit:character-kit/CHR_OUTFIT_PLUMBER_v001.glb`, `kit:character-kit/CHR_OUTFIT_PAINTER_v001.glb`, `kit:character-kit/CHR_OUTFIT_INSPECTOR_v001.glb`, `kit:character-kit/CHR_OUTFIT_CONCIERGE_v001.glb`, `kit:character-kit/CHR_OUTFIT_REPRESENTATIVE_v001.glb`
 - Animations : `ANM_CHR_IDLE`, `ANM_CHR_WALK`, `ANM_CHR_WORK`, `ANM_CHR_TYPING`, `ANM_CHR_INSPECT`, `ANM_CHR_READ`, `ANM_CHR_THINKING`, `ANM_CHR_WAITING`, `ANM_CHR_TALK`, `ANM_CHR_CELEBRATE`, `ANM_CHR_BLOCKED`
-- Paramètres : `trade` (client | architect | engineer | foreman | mason | electrician | plumber | painter | inspector | concierge | representative) ; `team` (none | client | architecture | studies | site | reception | operations)
+- Paramètres : `trade` (client | architect | engineer | foreman | mason | electrician | plumber | painter | inspector | concierge | representative) ; `team` (none | client | architecture | studies | site | reception | operations) ; `body` (M | F) ; `skin` (A | B | C | D | E) ; `hair` (short | side | crop | bob | long | ponytail | bun) ; `hairColor` (black | brown | blond | red | grey) ; `beard` (true | false) ; `glasses` (true | false) ; `tool` (auto (l'outil du métier) | none | plans | tablet | tripod | radio | roller | trowel | cable | clipboard | stamp | keys | binder | wrench)
 - États : `idle`, `walk`, `work`, `typing`, `inspect`, `read`, `thinking`, `waiting`, `talk`, `celebrate`, `blocked`, `unknown`
 - Ancres : `label`, `badge`
 - Données reçues par setState : `facing` (angle en radians, sens du regard ou de la marche)
