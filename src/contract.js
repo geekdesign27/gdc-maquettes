@@ -97,7 +97,7 @@ export function checkInstance(THREE, mod, entry, ctx, partagees = new Set()) {
   }
   try { inst.setState('__inconnu__', {}); problems.push(`${label} setState accepte un état absent du catalogue`); } catch { /* attendu */ }
   for (const a of mod.meta.anchors) {
-    const name = a.replace('*', '0');
+    const name = a.replace('*', '1'); // les ancres numerotees comptent depuis 1 (desk:1, le premier poste)
     try { const v = inst.anchor(name); if (!v || !v.isVector3) problems.push(`${label} anchor(« ${name} ») ne renvoie pas un point`); } catch (e) { problems.push(`${label} anchor(« ${name} ») a échoué : ${e.message}`); }
   }
   const disposed = new Set();
