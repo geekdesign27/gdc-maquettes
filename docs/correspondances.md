@@ -55,18 +55,25 @@ GDC lit l'activité des agents (`gdc activite`, ou `activites` dans `gdc etat --
 
 ## Travail et tenue
 
-Le nom affiché reste celui du métier du numérique (atelier 2) ; la tenue montre la nature du travail, comme sur un chantier. À valider avec Pierre-Alain.
+Le nom affiché reste celui du métier du numérique (atelier 2) ; la tenue montre la nature du travail, comme sur un chantier. Validé par Pierre-Alain le 19 octobre 2026.
 
-| Agent | Travail | Tenue (`trade`) |
-|---|---|---|
-| Claire, l'architecte | Idée, plans, permis | architect |
-| Marc, le géomètre | Relevé de l'existant | engineer |
-| Lina, Paul, Iris, Noah, Tom, Sarah, David | Études (bureau d'études) | engineer, avec tablette |
-| Yves, le conducteur de travaux | Planning des lots | engineer |
-| Emma, développeuse interface | Écrans, interface | painter |
-| Julie, développeuse base de données | Structure des données | mason |
-| Robin, développeur serveur | Logique et connexions | electrician (ou plumber pour les flux de données) |
-| Olivier, le surveillant de chantier | Relecture des lots | inspector |
-| Anne, la commission de réception | Essais et réception | inspector |
-| Bernard, le concierge | Production | concierge |
-| Fanny, la représentante du client | Coût et contexte | representative |
+| Personne | Travail | Tenue (`trade`) | Équipe (`team`, couleur du casque) | Casque | Accessoire |
+|---|---|---|---|---|---|
+| Le client (Pierre-Alain) | Décide : permis, feu vert, réception, remise des clés | client : tenue civile graphite | aucune | **non, le seul** | aucun |
+| Claire, l'architecte | Idée, plans, permis | architect | architecture | oui | rouleau de plans |
+| Marc, le géomètre | Relevé de l'existant | engineer | studies | oui | trépied de géomètre |
+| Lina, Paul, Iris, Noah, Tom, Sarah, David | Études (bureau d'études) | engineer | studies | oui | tablette |
+| Yves, le conducteur de travaux | Planning des lots | engineer, gilet orange | site | oui | tablette |
+| Emma, développeuse interface | Écrans, interface | painter, gilet orange | site | oui | rouleau à peinture |
+| Julie, développeuse base de données | Structure des données | mason, gilet orange | site | oui | truelle |
+| Robin, développeur serveur | Logique et connexions | electrician, gilet orange | site | oui | câble |
+| Olivier, le surveillant de chantier | Relecture des lots | inspector | reception | oui | planchette |
+| Anne, la commission de réception | Essais et réception | inspector | reception | oui | planchette |
+| Bernard, le concierge | Production | concierge | operations | oui | trousseau de clés |
+| Fanny, la représentante du client | Coût et contexte | representative | client : casque blanc | oui | classeur |
+| Le chef de chantier (programme) | Lance les équipes, tient les budgets | à préciser | à préciser | à préciser | à préciser |
+| Le bureau de contrôle (programme `gdc`) | Mesure, journal, « prouvé » | à préciser | à préciser | à préciser | à préciser |
+
+- **Le casque** : tout le monde le porte, sauf le client. Il a donc la seule silhouette sans casque, celle de qui décide. L'OTConst (art. 6) impose le casque jusqu'à la fin du gros œuvre et près des grues et des engins : le client reste dans son bureau ou vient à la réception, et ne traverse jamais le chantier en cours.
+- **Le gilet orange** : seulement l'équipe site, qui travaille près des engins (OTConst, art. 7).
+- **Le casque blanc** de Fanny dit « côté client ». C'est un amendement à la bible, 18.8 (« casques de la couleur d'équipe »), validé par Pierre-Alain le 19 octobre 2026.

@@ -22,4 +22,4 @@ Une ligne par image déposée dans ce dossier.
 - **On garde** : les silhouettes, la composition par socles, la palette (béton, corail, orange, graphite, terre), le rendu 3D douce, et le langage des personnages (casque d'équipe, outil de métier).
 - **On écarte** : la densité de détail. L'IA ajoute des palettes, des cailloux, des câbles et du grain qu'un panneau vu à 25 px par mètre ne peut pas montrer ; la bible 1.2 (détail minimal 0,15 m) tranche contre elles.
 - **Langage des signaux** : les images posent spontanément des barrières rouge-blanc, des bandes rouge-blanc et une benne orange. Dans notre monde, l'orange à triangle est réservé à la barrière de blocage (`blocked-sign`) : aucun objet de décor ne doit lui ressembler.
-- **À trancher avec Pierre-Alain** : la morphologie du personnage (les images tirent vers 6,5 têtes, la bible veut 4,5 à 5) et les couleurs des bennes de tri.
+- **Tranché par Pierre-Alain le 19 octobre 2026** : le mood board est validé ; le personnage fait 5 têtes, malgré les 6,5 des images ; chaque benne de tri a une couleur de caisse par matière, à fixer par un amendement de palette (`docs/direction-artistique.md`).

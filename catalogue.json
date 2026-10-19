@@ -624,7 +624,7 @@
       "category": "kit",
       "name": "Le personnage maître et son équipe",
       "purpose": "Un squelette, une morphologie et des animations communes pour tous les agents.",
-      "description": "CHR_BASE_MASTER (1,70 m, 4,5 à 5 têtes), son armature RIG_CHR_BASE, les douze animations communes, les tenues par métier (architect, engineer, mason, electrician, plumber, painter, inspector, concierge, representative) et les accessoires (tablette, casque, outils). Bible, section 5.",
+      "description": "CHR_BASE_MASTER (1,70 m, 5 têtes, décision du 19 octobre 2026), son armature RIG_CHR_BASE, les douze animations communes, les tenues par métier (client, architect, engineer, mason, electrician, plumber, painter, inspector, concierge, representative ; gilet orange pour l'équipe site), le casque de la couleur d'équipe (blanc pour l'équipe client ; le client n'en porte pas) et les accessoires (tablette, rouleau de plans, trépied de géomètre, rouleau à peinture, truelle, câble, planchette, trousseau de clés, classeur). Qui porte quoi : docs/correspondances.md. Bible, section 5.",
       "assets": [
         "CHR_BASE_MASTER_v001.glb"
       ],
@@ -663,8 +663,8 @@
       "purpose": "Montrer qui travaille, où, et dans quel état.",
       "description": "Un personnage par agent, à partir du personnage maître : tenue et outil de son métier, couleur de son équipe. GDC le déplace ; le composant joue l'animation de l'état, sur place. blocked : posture d'arrêt devant la barrière ; unknown : immobile, matériaux grisés, lisible sans animation.",
       "params": {
-        "trade": "architect | engineer | mason | electrician | plumber | painter | inspector | concierge | representative",
-        "team": "architecture | studies | site | reception | operations"
+        "trade": "client | architect | engineer | mason | electrician | plumber | painter | inspector | concierge | representative",
+        "team": "none | client | architecture | studies | site | reception | operations"
       },
       "states": [
         "idle",
