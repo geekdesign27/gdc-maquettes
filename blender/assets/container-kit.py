@@ -9,6 +9,7 @@ dont l'origine est au centre de l'emprise, au sol : on pose toutes les pieces d'
 - bout : modele sur la face droite (+X) ; une rotation de 180 le pose a gauche ;
 - accoler deux conteneurs le long de Y (pas de 3,00 m) : ne pas poser les deux parois communes ;
 - conteneur habite (bureau) : FRAME_CUT, FLOOR, WALL_LONG_CUT a l'avant, sans ROOF ; on entre par WALL_END_DOOR ;
+- etage habite (v003) : WALL_LONG_CUT_DOOR, la coupe avec un passage, au droit de la porte du rez, sur la coursive ;
 - grappe de bureaux accoles par le long pan (v002) : FRAME_OPEN devant et au milieu, FRAME_CUT tourne de 180 au fond ;
 - empiler : le conteneur du haut est pose a z = 3,00 ; STAIR et WALKWAY sont modeles par rapport au conteneur du bas.
 Le mobilier est pose a son origine (centre au sol, avant vers -Y) ; dans un conteneur, son sol est a z = PLANCHER.
@@ -22,7 +23,7 @@ import math
 
 import bpy
 
-ASSET = {"id": "container-kit", "categorie": "kit", "nom": "ENV_CONTAINER_KIT_A_v002"}
+ASSET = {"id": "container-kit", "categorie": "kit", "nom": "ENV_CONTAINER_KIT_A_v003"}
 
 P = "ENV_CONTAINER_KIT_A_"
 LONG = 7.20  # longueur hors tout (20 pieds x 1,2)
@@ -125,11 +126,20 @@ def _menuiserie_fenetre(c, nom, x, y_nu, z_bas, rotation=0):
 
 def _paroi_long(c, nom, porte=False, fenetres=(), coupe=False):
     """Paroi de long pan, face avant (-Y) : panneau, liseret, baies. Le liseret saute la porte et les fenetres.
-    coupe : la paroi des conteneurs habites, coupee a l'allege, sans baie ni liseret (MB_13, variante A)."""
+    coupe : la paroi des conteneurs habites, coupee a l'allege, sans baie ni liseret (MB_13, variante A) ; avec porte
+    (v003), un passage et son cadre aluminium debout, ouvert : l'entree d'un etage par la coursive."""
     y_centre = -NU + PANNEAU / 2
     if coupe:
         panneau = c.boite(P + nom, (INT_LONG, PANNEAU, ALLEGE), (0, y_centre, PLANCHER), mat="MAT_SURFACE")
-        return _piece(c, nom, [panneau], lisser=False)
+        morceaux = [panneau]
+        if porte:
+            c.perce(panneau, (PORTE[0], 1.0, ALLEGE + 0.2), (X_PORTE, y_centre, PLANCHER - 0.1))
+            l, h = PORTE
+            cadre = c.boite(P + nom + "_DOOR_FRAME", (l, 0.12, h), (X_PORTE, -NU + 0.06, PLANCHER), mat="MAT_ALUMINIUM")
+            c.perce(cadre, (l - 0.16, 0.40, h + 0.1 - 0.08), (X_PORTE, -NU + 0.06, PLANCHER - 0.1))
+            c.chanfreine(cadre, C1, 2)
+            morceaux.append(cadre)
+        return _piece(c, nom, morceaux, lisser=False)
     panneau = c.boite(P + nom, (INT_LONG, PANNEAU, H_PAROI), (0, y_centre, PLANCHER), mat="MAT_SURFACE")
     trous = []
     if porte:
@@ -239,6 +249,7 @@ def _coque(c):
     _paroi_bout(c, "WALL_END_WINDOW", fenetre=True)
     _paroi_bout(c, "WALL_END_DOOR", porte=True)
     _paroi_long(c, "WALL_LONG_CUT", coupe=True)
+    _paroi_long(c, "WALL_LONG_CUT_DOOR", porte=True, coupe=True)
     _nervures(c, "RIBS_LONG", INT_LONG, [], True)
     _nervures(c, "RIBS_LONG_DOOR", INT_LONG, [(X_PORTE, PORTE[0]), (X_FENETRE, FENETRE[0])], True)
     _nervures(c, "RIBS_LONG_WINDOW", INT_LONG, [(x, FENETRE[0]) for x in X_FENETRES_ARRIERE], True)
@@ -246,6 +257,7 @@ def _coque(c):
     _nervures(c, "RIBS_END_WINDOW", INT_LARGE, [(0.0, FENETRE[0])], False)
     _nervures(c, "RIBS_END_DOOR", INT_LARGE, [(0.0, PORTE[0])], False)
     _nervures(c, "RIBS_LONG_CUT", INT_LONG, [], True, coupe=True)
+    _nervures(c, "RIBS_LONG_CUT_DOOR", INT_LONG, [(X_PORTE, PORTE[0])], True, coupe=True)
 
     # deux marches devant la porte (plancher a 0,20 m) : origine au pied de la paroi, au droit de la porte
     marches = c.prisme(P + "STEPS", [(0, 0), (0, PLANCHER), (0.30, PLANCHER), (0.30, PLANCHER / 2), (0.60, PLANCHER / 2),
@@ -492,6 +504,10 @@ def _mobilier_coordination(c):
     for k, (x, l, mat) in enumerate(barres):
         morceaux.append(c.boite(P + "PLANNING_BOARD_BAR_%d" % k, (l, 0.03, 0.15), (x, -0.05, 2.02 - k * 0.24), mat=mat))
     _piece(c, "PLANNING_BOARD", morceaux)
+    # le repere « aujourd'hui » du planning (v003) : une piece a part, posee comme le tableau, que le composant fait
+    # glisser le long du tableau (x local)
+    _piece(c, "PLANNING_MARKER", [c.boite(P + "PLANNING_MARKER", (0.06, 0.03, 1.25), (0, -0.09, 1.00), mat="MAT_SURFACE")],
+           lisser=False)
     # bac de verdure exterieur
     _piece(c, "PLANTER", [c.boite(P + "PLANTER", (1.20, 0.50, 0.50), mat="MAT_CONCRETE", chanfrein=C2, segments=2),
                           _boule(c, P + "PLANTER_LEAVES_0", 0.34, (-0.28, 0, 0.62), "MAT_LANDSCAPE", 0.8),

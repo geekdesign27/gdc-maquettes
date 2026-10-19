@@ -1,13 +1,13 @@
 {
-  "nom": "ENV_CONTAINER_KIT_A_v002",
+  "nom": "ENV_CONTAINER_KIT_A_v003",
   "id": "container-kit",
   "bible": "WORKSITE 1.2",
   "blender": "5.3.0 Beta",
   "script": "blender/assets/container-kit.py",
-  "script_sha256": "4a3e67226240323563cc280dbe6cd7e724363bcaede3f59c9da971179f61ac90",
+  "script_sha256": "4ee1b2d941ee2ba30531f707c34b620f32dea6c4fe20061ede92e29a2c9876df",
   "commun_sha256": "d31db270f510bb4a40a645bc9a47a1af015eb52183477fb9e579cd8caf72edd7",
   "palette_sha256": "4d7c5c91813ad7950d154c5d52b5e7164c27aeda6a4bd02c10bce89f0ab20b4f",
-  "glb_sha256": "70e312fcda4524e5351c8ab966fd1e3add16745e0b1ebf37c75ff3a01761b282",
+  "glb_sha256": "08dc545da01ab88d3e79fc279b2008913b64abb7c6b35347a1dfe7e254a6bf18",
   "animations": [],
   "statut": "a valider"
 }

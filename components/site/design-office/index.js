@@ -10,7 +10,7 @@
 // Le socle et le partage des materiaux du totem reprennent ceux d'architect-office : le contrat interdit d'importer
 // d'un autre dossier de composant.
 
-const KIT = "kit:container-kit/ENV_CONTAINER_KIT_A_v002.glb";
+const KIT = "kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb";
 const KIT_BATIMENT = "kit:building-kit/BLD_KIT_A_v001.glb";
 const P = "ENV_CONTAINER_KIT_A_";
 const LARGE = 3.0; // pas des conteneurs accoles par le long pan : leurs poteaux se touchent
@@ -30,7 +30,7 @@ const SOCLE = {
 
 export const meta = {
   id: "design-office",
-  version: "2.0.0",
+  version: "2.1.0",
   category: "site",
   states: ["idle", "active"],
   params: { desks: { type: "number", default: 8, min: 1, max: 8 } },
