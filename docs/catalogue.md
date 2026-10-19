@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-44 éléments : 35 à faire, 7 livré, 2 exemple.
+44 éléments : 34 à faire, 8 livré, 2 exemple.
 
 ## G0 : La ligne graphique
 
@@ -59,7 +59,7 @@ Poser le plan du chantier dans l'ordre du parcours : bureau d'architecte, bureau
 |---|---|---|---|---|---|
 | 0 | `ground` | Le terrain | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le sol du projet, sur lequel tout se pose. | exemple |
 | 1 | `container-kit` | Le kit de conteneur | Bibliothèque de modèles 3D produite par un script Blender (blender/assets/<id>.py) et réutilisée par plusieurs composants : components/kit/<id>/ | Le conteneur de chantier aménagé : le module commun des bureaux et des baraques. | livré |
-| 2 | `site-container` | Le conteneur de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le baraquement modulaire des chantiers romands : vestiaire, réfectoire, bureau. | à faire |
+| 2 | `site-container` | Le conteneur de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le baraquement modulaire des chantiers romands : vestiaire, réfectoire, bureau. | livré |
 | 3 | `architect-office` | Le bureau d'architecte | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu de l'idée, des plans et du permis de construire ; le premier lieu du parcours. | à faire |
 | 4 | `design-office` | Le bureau d'études | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu des plans d'exécution, où travaillent les spécialistes. | à faire |
 | 5 | `client-office` | Le bureau du client | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu des décisions qui t'attendent. | à faire |
@@ -104,6 +104,7 @@ Un conteneur fermé du kit container-kit, porte et fenêtre aux cotes communes (
 
 - Fichier : `components/site/site-container/index.js`
 - Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `container-kit`
+- Modèles : `kit:container-kit/ENV_CONTAINER_KIT_A_v001.glb`
 - Paramètres : `stack` (nombre, 1 à 2, défaut 1)
 - États : `default`
 - Ancres : `label`, `entry`
