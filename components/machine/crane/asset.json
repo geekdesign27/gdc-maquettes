@@ -6,7 +6,7 @@
   "script": "blender/assets/crane.py",
   "script_sha256": "d7b304a4e8947155e1834df7d6046c5664c92b94e1c4689831135c29b632a15b",
   "commun_sha256": "ebb740c936d677a6da372d7de22a2fbd24c006eb86be05692f13983e069fb4c8",
-  "palette_sha256": "4619544e028128ad0bd6ad6ffeb61ebdd1e746c7f537f5325be908690503b79d",
+  "palette_sha256": "4d7c5c91813ad7950d154c5d52b5e7164c27aeda6a4bd02c10bce89f0ab20b4f",
   "glb_sha256": "3b28eef3406395e512cfee4fa1fbab8bb97cff05f8b76735c89bc86c56f1ee0e",
   "animations": [
     "ANM_TOWER_CRANE_A_LIFTING"

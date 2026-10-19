@@ -217,7 +217,7 @@ Un module conteneur, porte et fenêtre aux cotes communes (bible, 18.2) ; deux m
 
 ### La benne de tri (`waste-skip`)
 
-Une benne ouverte ; son contenu dit la matière par sa forme (planches, ferraille, gravats), sans texte. Plusieurs bennes s'alignent, une par matière.
+Une benne ouverte ; son contenu dit la matière par sa forme (planches, ferraille, gravats), sans texte. Plusieurs bennes s'alignent, une par matière. Couleur de caisse par matière (décision du 19 octobre 2026) : wood MAT_PAINTED_METAL_OLIVE, metal MAT_PAINTED_METAL_MOSS, inert MAT_PAINTED_METAL_PLUM, mixed MAT_PAINTED_METAL_GRAPHITE.
 
 - Fichier : `components/site/waste-skip/index.js`
 - Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `ENV_WASTE_SKIP_A_v001`

@@ -15,7 +15,10 @@
     "rubber": "#232426",
     "glass": "#9CC3D5",
     "steel": "#A7AFB7",
-    "aluminium": "#C9CED3"
+    "aluminium": "#C9CED3",
+    "skip_olive": "#8B8B4B",
+    "skip_moss": "#5B6241",
+    "skip_plum": "#8B4B72"
   },
   "personnages": {
     "skin_a": "#F2C8B6",
@@ -48,6 +51,21 @@
     },
     "MAT_PAINTED_METAL_GRAPHITE": {
       "couleur": "graphite",
+      "rugosite": 0.55,
+      "metal": 0.0
+    },
+    "MAT_PAINTED_METAL_OLIVE": {
+      "couleur": "skip_olive",
+      "rugosite": 0.55,
+      "metal": 0.0
+    },
+    "MAT_PAINTED_METAL_MOSS": {
+      "couleur": "skip_moss",
+      "rugosite": 0.55,
+      "metal": 0.0
+    },
+    "MAT_PAINTED_METAL_PLUM": {
+      "couleur": "skip_plum",
       "rugosite": 0.55,
       "metal": 0.0
     },

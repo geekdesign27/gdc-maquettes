@@ -6,7 +6,7 @@
   "script": "blender/assets/building-kit.py",
   "script_sha256": "7d13e5b778ca177daccbfc9de43ed7b1afe77c71b37d96daf203fe7a55545633",
   "commun_sha256": "ebb740c936d677a6da372d7de22a2fbd24c006eb86be05692f13983e069fb4c8",
-  "palette_sha256": "4619544e028128ad0bd6ad6ffeb61ebdd1e746c7f537f5325be908690503b79d",
+  "palette_sha256": "4d7c5c91813ad7950d154c5d52b5e7164c27aeda6a4bd02c10bce89f0ab20b4f",
   "glb_sha256": "403c940d69967c0567d8ffa03b5d8932e6eb4cd41313944dedaff73fdc78755e",
   "animations": [],
   "statut": "a valider"
