@@ -8,6 +8,12 @@ import { fichiersDe } from "../components/character/character/habillage.js";
 
 export const PERSONNAGE_ID = "personnage";
 export const PERSONNES = equipe.personnes;
+// Qui occupe les postes (ancres desk:n) de chaque lieu, d'apres docs/correspondances.md : la galerie les y pose pour la
+// planche ; GDC, lui, place ses propres personnages.
+export const OCCUPANTS = {
+  "architect-office": ["claire"],
+  "design-office": ["marc", "lina", "paul", "iris", "noah", "tom", "sarah", "david"],
+};
 const KIT_BATIMENT = "kit:building-kit/BLD_KIT_A_v001.glb";
 const RANG = 10; // personnes par rang sur le socle
 const PAS = 0.9;

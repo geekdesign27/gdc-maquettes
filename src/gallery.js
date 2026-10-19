@@ -172,12 +172,33 @@ function references(id) {
   return entries.filter((e) => e.id !== id && byId[e.id] && rang(e) < 9 && e.id !== 'selection-ring').sort((a, b) => rang(a) - rang(b)).slice(0, 2).map((e) => e.id);
 }
 
+// Les occupants d'un lieu : un personnage d'exemple a chaque ancre desk:n (personnage.OCCUPANTS), au travail, tourne
+// vers le fond du lieu. Ils sont retires et animes avec les voisins de la planche ; ils ne comptent pas au budget du lieu.
+async function occupants(x) {
+  const ids = (x.mod.meta.anchors || []).includes('desk:*') ? personnage.OCCUPANTS[x.entry.id] || [] : [];
+  const out = [];
+  for (const [i, pid] of ids.entries()) {
+    let poste;
+    try { poste = x.inst.anchor(`desk:${i + 1}`); } catch { break; }
+    const params = personnage.parametresDe(personnage.PERSONNES.find((p) => p.id === pid));
+    const m = personnage.metaPersonne(params);
+    await charge.prepare(m);
+    const inst = byId.character.create(THREE, params, makeContext(options, await charge.assetsPour(m)));
+    inst.setState('work', { facing: Math.PI });
+    x.inst.root.updateMatrixWorld(true);
+    inst.root.position.copy(x.inst.root.localToWorld(poste));
+    scene.add(inst.root);
+    out.push({ inst });
+  }
+  return out;
+}
+
 async function select(id, state) {
   retire(current);
   for (const v of current.voisins) retire(v);
   const x = await instance(id, state);
   scene.add(x.inst.root);
-  const voisins = [];
+  const voisins = await occupants(x);
   if (options.planche && id !== etalon.ETALON_ID) {
     let pos = -1;
     for (const rid of references(id)) {
