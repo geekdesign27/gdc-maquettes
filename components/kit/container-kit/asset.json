@@ -4,10 +4,10 @@
   "bible": "WORKSITE 1.2",
   "blender": "5.3.0 Beta",
   "script": "blender/assets/container-kit.py",
-  "script_sha256": "25471b7b581b411e3bbc8b5c47f4b2d8968e1a5c90261a3cad6bb64b048e9051",
+  "script_sha256": "80c04657cc9b6caf81d3d236a0b5b152a911c2a6612db7c1d5456dedfc972777",
   "commun_sha256": "d31db270f510bb4a40a645bc9a47a1af015eb52183477fb9e579cd8caf72edd7",
   "palette_sha256": "4d7c5c91813ad7950d154c5d52b5e7164c27aeda6a4bd02c10bce89f0ab20b4f",
-  "glb_sha256": "c7829f0d00c469c929ae3a17dd0ea642ed7e0b0a240d881d3f9d14ab4a0ca832",
+  "glb_sha256": "468f780bcab9d1e2b1d884a20aa65a28374980047225622f8436bdcc80679d43",
   "animations": [],
   "statut": "a valider"
 }

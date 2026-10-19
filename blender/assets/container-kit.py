@@ -8,6 +8,7 @@ dont l'origine est au centre de l'emprise, au sol : on pose toutes les pieces d'
 - long pan : modele sur la face avant (-Y) ; une rotation de 180 le pose a l'arriere ;
 - bout : modele sur la face droite (+X) ; une rotation de 180 le pose a gauche ;
 - accoler deux conteneurs le long de Y (pas de 3,00 m) : ne pas poser les deux parois communes ;
+- conteneur habite (bureau) : FRAME_CUT, FLOOR, WALL_LONG_CUT a l'avant, sans ROOF ; on entre par WALL_END_DOOR ;
 - empiler : le conteneur du haut est pose a z = 3,00 ; STAIR et WALKWAY sont modeles par rapport au conteneur du bas.
 Le mobilier est pose a son origine (centre au sol, avant vers -Y) ; dans un conteneur, son sol est a z = PLANCHER.
 
@@ -92,18 +93,21 @@ def _boule(c, nom, rayon, centre, mat, aplati=1.0):
 
 # --- la coque -------------------------------------------------------------------------------------------------------
 
-def _cadre(c):
+def _cadre(c, nom="FRAME", coupe=False):
+    """Le cadre graphite. coupe : sans le longeron haut avant, qui barrerait la vue au-dessus des tetes (MB_13, A)."""
     l, w = LONG / 2 - CADRE / 2, LARGE / 2 - CADRE / 2
-    morceaux = [c.boite(P + "FRAME_POST_%d" % i, (CADRE, CADRE, HAUT), (x, y, 0), mat="MAT_PAINTED_METAL_GRAPHITE",
+    morceaux = [c.boite(P + nom + "_POST_%d" % i, (CADRE, CADRE, HAUT), (x, y, 0), mat="MAT_PAINTED_METAL_GRAPHITE",
                         chanfrein=C2, segments=2) for i, (x, y) in enumerate(((-l, -w), (l, -w), (l, w), (-l, w)))]
     for k, z in enumerate((0, HAUT - CADRE)):
         for s, y in enumerate((-w, w)):
-            morceaux.append(c.boite(P + "FRAME_RAIL_%d%d" % (k, s), (INT_LONG, CADRE, CADRE), (0, y, z),
+            if coupe and k == 1 and s == 0:
+                continue
+            morceaux.append(c.boite(P + nom + "_RAIL_%d%d" % (k, s), (INT_LONG, CADRE, CADRE), (0, y, z),
                                     mat="MAT_PAINTED_METAL_GRAPHITE", chanfrein=C2, segments=2, droites=("x-", "x+")))
         for s, x in enumerate((-l, l)):
-            morceaux.append(c.boite(P + "FRAME_END_%d%d" % (k, s), (CADRE, INT_LARGE, CADRE), (x, 0, z),
+            morceaux.append(c.boite(P + nom + "_END_%d%d" % (k, s), (CADRE, INT_LARGE, CADRE), (x, 0, z),
                                     mat="MAT_PAINTED_METAL_GRAPHITE", chanfrein=C2, segments=2, droites=("y-", "y+")))
-    _piece(c, "FRAME", morceaux)
+    _piece(c, nom, morceaux)
 
 
 def _menuiserie_fenetre(c, nom, x, y_nu, z_bas, rotation=0):
@@ -117,9 +121,13 @@ def _menuiserie_fenetre(c, nom, x, y_nu, z_bas, rotation=0):
     return [cadre, verre]
 
 
-def _paroi_long(c, nom, porte=False, fenetres=()):
-    """Paroi de long pan, face avant (-Y) : panneau, liseret, baies. Le liseret saute la porte et les fenetres."""
+def _paroi_long(c, nom, porte=False, fenetres=(), coupe=False):
+    """Paroi de long pan, face avant (-Y) : panneau, liseret, baies. Le liseret saute la porte et les fenetres.
+    coupe : la paroi des conteneurs habites, coupee a l'allege, sans baie ni liseret (MB_13, variante A)."""
     y_centre = -NU + PANNEAU / 2
+    if coupe:
+        panneau = c.boite(P + nom, (INT_LONG, PANNEAU, ALLEGE), (0, y_centre, PLANCHER), mat="MAT_SURFACE")
+        return _piece(c, nom, [panneau], lisser=False)
     panneau = c.boite(P + nom, (INT_LONG, PANNEAU, H_PAROI), (0, y_centre, PLANCHER), mat="MAT_SURFACE")
     trous = []
     if porte:
@@ -132,16 +140,30 @@ def _paroi_long(c, nom, porte=False, fenetres=()):
     # le liseret bleu, en troncons entre les baies (elles montent a 2,60 m, juste sous lui)
     morceaux += _lisere(c, nom, -INT_LONG / 2, INT_LONG / 2, -NU - 0.02, trous, long_pan=True)
     if porte:
-        l, h = PORTE
-        cadre = c.boite(P + nom + "_DOOR_FRAME", (l, 0.12, h), (X_PORTE, -NU + 0.06, PLANCHER), mat="MAT_ALUMINIUM")
-        c.perce(cadre, (l - 0.16, 0.40, h + 0.1 - 0.08), (X_PORTE, -NU + 0.06, PLANCHER - 0.1))
-        c.chanfreine(cadre, C1, 2)
-        vantail = c.boite(P + nom + "_DOOR_LEAF", (l - 0.16, 0.05, h - 0.08), (X_PORTE, -NU + 0.07, PLANCHER),
-                          mat="MAT_PAINTED_METAL_GRAPHITE")
-        morceaux += [cadre, vantail]
+        morceaux += _menuiserie_porte(c, P + nom, X_PORTE, -NU)
     for k, x in enumerate(fenetres):
         morceaux += _menuiserie_fenetre(c, P + nom + "_W%d" % k, x, -NU, PLANCHER + ALLEGE)
     return _piece(c, nom, morceaux, lisser=False)
+
+
+def _menuiserie_porte(c, nom, x, y_nu):
+    """Cadre aluminium et vantail graphite d'une porte de 1,10 x 2,40, sur la face -Y d'une paroi, centree en x."""
+    l, h = PORTE
+    cadre = c.boite(nom + "_DOOR_FRAME", (l, 0.12, h), (x, y_nu + 0.06, PLANCHER), mat="MAT_ALUMINIUM")
+    c.perce(cadre, (l - 0.16, 0.40, h + 0.1 - 0.08), (x, y_nu + 0.06, PLANCHER - 0.1))
+    c.chanfreine(cadre, C1, 2)
+    vantail = c.boite(nom + "_DOOR_LEAF", (l - 0.16, 0.05, h - 0.08), (x, y_nu + 0.07, PLANCHER), mat="MAT_PAINTED_METAL_GRAPHITE")
+    return [cadre, vantail]
+
+
+def _vers_bout(c, objets):
+    """Menuiseries modelees face -Y, tournees d'un quart de tour autour de l'origine du conteneur vers +X."""
+    for o in objets:
+        x, y, z = o.location
+        o.location = (-y, x, z)
+        o.rotation_euler[2] = math.radians(90)
+        c.applique(o)
+    return objets
 
 
 def _lisere(c, nom, x0, x1, y, trous, long_pan):
@@ -164,8 +186,9 @@ def _lisere(c, nom, x0, x1, y, trous, long_pan):
     return morceaux
 
 
-def _paroi_bout(c, nom, fenetre=False):
-    """Paroi de bout, face droite (+X) : panneau, liseret, une fenetre centree si demande."""
+def _paroi_bout(c, nom, fenetre=False, porte=False):
+    """Paroi de bout, face droite (+X) : panneau, liseret, une fenetre ou une porte centree si demande.
+    La porte de bout est l'entree des conteneurs habites, dont le long pan avant est coupe."""
     x_centre = NU_BOUT - PANNEAU / 2
     panneau = c.boite(P + nom, (PANNEAU, INT_LARGE, H_PAROI), (x_centre, 0, PLANCHER), mat="MAT_SURFACE")
     morceaux = [panneau]
@@ -173,22 +196,20 @@ def _paroi_bout(c, nom, fenetre=False):
     if fenetre:
         trous.append((0.0, FENETRE[0]))
         c.perce(panneau, (1.0, FENETRE[0], FENETRE[1]), (x_centre, 0, PLANCHER + ALLEGE))
-        menuiserie = _menuiserie_fenetre(c, P + nom + "_W0", 0, -NU_BOUT, PLANCHER + ALLEGE)
-        for o in menuiserie:  # modelee face -Y, tournee d'un quart de tour autour de l'origine du conteneur vers +X
-            x, y, z = o.location
-            o.location = (-y, x, z)
-            o.rotation_euler[2] = math.radians(90)
-            c.applique(o)
-        morceaux += menuiserie
+        morceaux += _vers_bout(c, _menuiserie_fenetre(c, P + nom + "_W0", 0, -NU_BOUT, PLANCHER + ALLEGE))
+    if porte:
+        trous.append((0.0, PORTE[0]))
+        c.perce(panneau, (1.0, PORTE[0], PORTE[1] + 0.1), (x_centre, 0, PLANCHER - 0.1))
+        morceaux += _vers_bout(c, _menuiserie_porte(c, P + nom, 0, -NU_BOUT))
     morceaux += _lisere(c, nom, -INT_LARGE / 2, INT_LARGE / 2, NU_BOUT + 0.02, trous, long_pan=False)
     return _piece(c, nom, morceaux, lisser=False)
 
 
-def _nervures(c, nom, longueur, trous, long_pan):
-    """Nervures verticales tous les PAS_NERVURE, sauf au droit des baies ; du plancher au liseret."""
+def _nervures(c, nom, longueur, trous, long_pan, coupe=False):
+    """Nervures verticales tous les PAS_NERVURE, sauf au droit des baies ; du plancher au liseret (a l'allege si coupe)."""
     n = int((longueur - 0.30) / PAS_NERVURE) + 1
     depart = -(n - 1) * PAS_NERVURE / 2
-    h = LISERE[0] - PLANCHER - 0.10
+    h = ALLEGE - 0.10 if coupe else LISERE[0] - PLANCHER - 0.10
     morceaux = []
     for k in range(n):
         x = depart + k * PAS_NERVURE
@@ -204,6 +225,7 @@ def _nervures(c, nom, longueur, trous, long_pan):
 
 def _coque(c):
     _cadre(c)
+    _cadre(c, "FRAME_CUT", coupe=True)
     _piece(c, "FLOOR", [c.boite(P + "FLOOR", (INT_LONG, INT_LARGE, PLANCHER), mat="MAT_CONCRETE")], lisser=False)
     _piece(c, "ROOF", [c.boite(P + "ROOF", (INT_LONG, INT_LARGE, 0.15), (0, 0, HAUT - 0.20), mat="MAT_SURFACE")],
            lisser=False)
@@ -212,11 +234,15 @@ def _coque(c):
     _paroi_long(c, "WALL_LONG_WINDOW", fenetres=X_FENETRES_ARRIERE)
     _paroi_bout(c, "WALL_END")
     _paroi_bout(c, "WALL_END_WINDOW", fenetre=True)
+    _paroi_bout(c, "WALL_END_DOOR", porte=True)
+    _paroi_long(c, "WALL_LONG_CUT", coupe=True)
     _nervures(c, "RIBS_LONG", INT_LONG, [], True)
     _nervures(c, "RIBS_LONG_DOOR", INT_LONG, [(X_PORTE, PORTE[0]), (X_FENETRE, FENETRE[0])], True)
     _nervures(c, "RIBS_LONG_WINDOW", INT_LONG, [(x, FENETRE[0]) for x in X_FENETRES_ARRIERE], True)
     _nervures(c, "RIBS_END", INT_LARGE, [], False)
     _nervures(c, "RIBS_END_WINDOW", INT_LARGE, [(0.0, FENETRE[0])], False)
+    _nervures(c, "RIBS_END_DOOR", INT_LARGE, [(0.0, PORTE[0])], False)
+    _nervures(c, "RIBS_LONG_CUT", INT_LONG, [], True, coupe=True)
 
     # deux marches devant la porte (plancher a 0,20 m) : origine au pied de la paroi, au droit de la porte
     marches = c.prisme(P + "STEPS", [(0, 0), (0, PLANCHER), (0.30, PLANCHER), (0.30, PLANCHER / 2), (0.60, PLANCHER / 2),
@@ -481,10 +507,12 @@ def construit(c):
 
 
 def demonstration():
-    """La demonstration du kit, trois stands sur leurs socles (Blender : Z vertical, avant vers -Y) :
+    """La demonstration du kit, quatre stands sur leurs socles (Blender : Z vertical, avant vers -Y) :
     - un conteneur ferme (porte, fenetres, marches, bac de verdure) ;
     - deux conteneurs empiles, avec escalier et coursive, et le tableau de planning ;
-    - le mobilier des bureaux, aligne (en attendant la coque coupee, decidee sur MB_13)."""
+    - le mobilier des bureaux, aligne ;
+    - un bureau d'architecte en coupe (MB_13, variante A) : sans toit, long pan avant coupe a l'allege, cadre sans
+      longeron haut avant, entree par le bout droit."""
     pieces = []
 
     def pose(piece, x, y, z=0.0, rotation=0):
@@ -522,13 +550,30 @@ def demonstration():
         pose(piece, x, oy + (0.6 if piece == "PARTITION" else 0))
     pose("MODEL", -0.4, oy, 0.77)
     pose("SCREEN", 5.0, oy + 0.15, 0.77)
-    pose("CHAIR", 5.0, oy - 0.75, 0, 180)
+    pose("CHAIR", 5.0, oy - 0.75, 0)
     rang2 = [("MEETING_TABLE", -4.6), ("ARMCHAIR", -2.6), ("PLANT", -1.4), ("MEASURE_CABINET", 0.2), ("TRIPOD", 1.8),
              ("DESK", 3.8)]
     for piece, x in rang2:
         pose(piece, x, oy - 2.6)
     pose("STAMP", 3.4, oy - 2.6, 0.77)
     socles.append({"taille": [13.0, 6.0, 0.60], "centre": [0.0, oy - 1.2]})
+
+    # 4. le bureau d'architecte en coupe
+    ox, oy = 12.5, -10.0
+    for piece in ("FRAME_CUT", "FLOOR"):
+        pose(piece, ox, oy)
+    for paroi, rot in (("WALL_LONG_CUT", 0), ("WALL_LONG", 180), ("WALL_END_DOOR", 0), ("WALL_END", 180)):
+        pose(paroi, ox, oy, 0, rot)
+        pose(paroi.replace("WALL", "RIBS"), ox, oy, 0, rot)
+    pose("STEPS", ox + NU_BOUT, oy, 0, 90)
+    z = PLANCHER
+    for piece, x, y, zz, rot in (("PLAN_BOARD", 0.9, 1.37, z, 0), ("DRAFTING_TABLE", 0.9, 0.60, z, 0),
+                                 ("PLAN_ROLLS", 2.8, 1.05, z, 0), ("SHELF", -3.2, -0.55, z, 90), ("DESK", -2.0, 0.85, z, 0),
+                                 ("SCREEN", -2.0, 1.00, z + 0.77, 0), ("CHAIR", -2.0, 0.15, z, 0),
+                                 ("ROUND_TABLE", -0.4, -0.15, z, 0), ("MODEL", -0.4, -0.15, z + 0.77, 0)):
+        pose(piece, ox + x, oy + y, zz, rot)
+    pose("PLANTER", ox + 1.6, oy - 2.25)
+    socles.append({"taille": [9.6, 6.4, 0.60], "centre": [ox + 0.3, oy - 0.4]})
 
     for s in socles:
         s.update({"materiau": "MAT_EARTH", "chanfrein": 0.10})

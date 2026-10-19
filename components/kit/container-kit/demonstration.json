@@ -39,6 +39,19 @@
    ],
    "materiau": "MAT_EARTH",
    "chanfrein": 0.1
+  },
+  {
+   "taille": [
+    9.6,
+    6.4,
+    0.6
+   ],
+   "centre": [
+    12.8,
+    -10.4
+   ],
+   "materiau": "MAT_EARTH",
+   "chanfrein": 0.1
   }
  ],
  "pieces": [
@@ -481,7 +494,7 @@
     -9.75,
     0
    ],
-   "rotation": 180
+   "rotation": 0
   },
   {
    "piece": "ENV_CONTAINER_KIT_A_MEETING_TABLE",
@@ -543,6 +556,195 @@
     3.4,
     -11.6,
     0.77
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_CONTAINER_KIT_A_FRAME_CUT",
+   "position": [
+    12.5,
+    -10.0,
+    0.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_CONTAINER_KIT_A_FLOOR",
+   "position": [
+    12.5,
+    -10.0,
+    0.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_CONTAINER_KIT_A_WALL_LONG_CUT",
+   "position": [
+    12.5,
+    -10.0,
+    0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_CONTAINER_KIT_A_RIBS_LONG_CUT",
+   "position": [
+    12.5,
+    -10.0,
+    0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_CONTAINER_KIT_A_WALL_LONG",
+   "position": [
+    12.5,
+    -10.0,
+    0
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "ENV_CONTAINER_KIT_A_RIBS_LONG",
+   "position": [
+    12.5,
+    -10.0,
+    0
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "ENV_CONTAINER_KIT_A_WALL_END_DOOR",
+   "position": [
+    12.5,
+    -10.0,
+    0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_CONTAINER_KIT_A_RIBS_END_DOOR",
+   "position": [
+    12.5,
+    -10.0,
+    0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_CONTAINER_KIT_A_WALL_END",
+   "position": [
+    12.5,
+    -10.0,
+    0
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "ENV_CONTAINER_KIT_A_RIBS_END",
+   "position": [
+    12.5,
+    -10.0,
+    0
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "ENV_CONTAINER_KIT_A_STEPS",
+   "position": [
+    16.05,
+    -10.0,
+    0
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "ENV_CONTAINER_KIT_A_PLAN_BOARD",
+   "position": [
+    13.4,
+    -8.63,
+    0.2
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_CONTAINER_KIT_A_DRAFTING_TABLE",
+   "position": [
+    13.4,
+    -9.4,
+    0.2
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_CONTAINER_KIT_A_PLAN_ROLLS",
+   "position": [
+    15.3,
+    -8.95,
+    0.2
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_CONTAINER_KIT_A_SHELF",
+   "position": [
+    9.3,
+    -10.55,
+    0.2
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "ENV_CONTAINER_KIT_A_DESK",
+   "position": [
+    10.5,
+    -9.15,
+    0.2
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_CONTAINER_KIT_A_SCREEN",
+   "position": [
+    10.5,
+    -9.0,
+    0.97
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_CONTAINER_KIT_A_CHAIR",
+   "position": [
+    10.5,
+    -9.85,
+    0.2
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_CONTAINER_KIT_A_ROUND_TABLE",
+   "position": [
+    12.1,
+    -10.15,
+    0.2
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_CONTAINER_KIT_A_MODEL",
+   "position": [
+    12.1,
+    -10.15,
+    0.97
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_CONTAINER_KIT_A_PLANTER",
+   "position": [
+    14.1,
+    -12.25,
+    0.0
    ],
    "rotation": 0
   }
