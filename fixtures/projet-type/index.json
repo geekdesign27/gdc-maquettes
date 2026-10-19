@@ -1,0 +1,192 @@
+{
+  "sequence": "projet-type",
+  "description": "Un projet type, de l'ouverture à la mise en production, déroulé avec le vrai binaire GDC ; chaque fichier est une scène et les actions qui y mènent depuis la précédente (ADR 0012).",
+  "gdc": "0.17.0",
+  "etapes": [
+    {
+      "numero": 1,
+      "fichier": "01-terrain.json",
+      "titre": "Le terrain, avant l'ouverture du projet",
+      "actions": []
+    },
+    {
+      "numero": 2,
+      "fichier": "02-projet-ouvert.json",
+      "titre": "Le projet est ouvert",
+      "actions": [
+        "Application de bureau apparaît"
+      ]
+    },
+    {
+      "numero": 3,
+      "fichier": "03-claire-ecrit.json",
+      "titre": "Claire écrit le cahier des besoins",
+      "actions": [
+        "Le bureau d'architecte : idle → active",
+        "Claire, l'architecte apparaît (Le bureau d'architecte)"
+      ]
+    },
+    {
+      "numero": 4,
+      "fichier": "04-on-continue-attendu.json",
+      "titre": "L'idée est complète : ta décision « On continue » est attendue",
+      "actions": [
+        "Le bureau d'architecte : active → idle",
+        "Le bureau du client : idle → waiting",
+        "Ta décision « On continue » apparaît (Le bureau du client)",
+        "Claire, l'architecte : typing → waiting"
+      ]
+    },
+    {
+      "numero": 5,
+      "fichier": "05-on-continue.json",
+      "titre": "Tu as dit « On continue »",
+      "actions": [
+        "Le bureau du client : waiting → idle",
+        "Ta décision « On continue » disparaît"
+      ]
+    },
+    {
+      "numero": 6,
+      "fichier": "06-lina-etudie.json",
+      "titre": "Lina dessine les parcours au bureau d'études",
+      "actions": [
+        "Le bureau d'études : idle → active",
+        "Lina, le designer UX/UI apparaît (Le bureau d'études)"
+      ]
+    },
+    {
+      "numero": 7,
+      "fichier": "07-permis-attendu.json",
+      "titre": "Le dossier est complet : ton permis de construire est attendu",
+      "actions": [
+        "Le bureau d'études : active → idle",
+        "Le bureau du client : idle → waiting",
+        "Ta décision « Le permis de construire » apparaît (Le bureau du client)",
+        "Lina, le designer UX/UI : typing → celebrate"
+      ]
+    },
+    {
+      "numero": 8,
+      "fichier": "08-permis.json",
+      "titre": "Le permis de construire est accordé",
+      "actions": [
+        "Le bureau du client : waiting → idle",
+        "Le permis de construire apparaît (Le chantier, une parcelle par application)",
+        "Ta décision « Le permis de construire » disparaît"
+      ]
+    },
+    {
+      "numero": 9,
+      "fichier": "09-demande.json",
+      "titre": "Une demande arrive au carnet",
+      "actions": [
+        "Le carnet des demandes : 1 demande à trier"
+      ]
+    },
+    {
+      "numero": 10,
+      "fichier": "10-fiche.json",
+      "titre": "La fiche « Clôturer un audit » est ouverte",
+      "actions": [
+        "Application de bureau : plot → excavation",
+        "Les gabarits de la fiche « Clôturer un audit » apparaissent (le bâtiment « Application de bureau »)"
+      ]
+    },
+    {
+      "numero": 11,
+      "fichier": "11-feu-vert-attendu.json",
+      "titre": "Ton feu vert est attendu",
+      "actions": [
+        "Le bureau du client : idle → waiting",
+        "Ta décision « le feu vert » pour « Clôturer un audit » apparaît (Le bureau du client)"
+      ]
+    },
+    {
+      "numero": 12,
+      "fichier": "12-feu-vert.json",
+      "titre": "Feu vert : les fondations",
+      "actions": [
+        "Application de bureau : excavation → foundations",
+        "Le bureau du client : waiting → idle",
+        "Les gabarits de la fiche « Clôturer un audit » disparaissent",
+        "Ta décision « le feu vert » pour « Clôturer un audit » disparaît"
+      ]
+    },
+    {
+      "numero": 13,
+      "fichier": "13-construction.json",
+      "titre": "Emma construit l'écran de clôture",
+      "actions": [
+        "Application de bureau : foundations → structure",
+        "Emma, la développeuse interface apparaît (le bâtiment « Application de bureau »)"
+      ]
+    },
+    {
+      "numero": 14,
+      "fichier": "14-essai-rouge.json",
+      "titre": "Emma écrit d'abord l'essai qui échoue",
+      "actions": [
+        "Le bureau de contrôle (Hélène) : idle → active",
+        "Hélène, le bureau de contrôle : idle → inspect"
+      ]
+    },
+    {
+      "numero": 15,
+      "fichier": "15-controle.json",
+      "titre": "Hélène contrôle et prend la preuve",
+      "actions": []
+    },
+    {
+      "numero": 16,
+      "fichier": "16-lot-fini.json",
+      "titre": "Emma a fini son lot",
+      "actions": [
+        "Application de bureau : structure → envelope",
+        "Emma, la développeuse interface va du bâtiment « Application de bureau » à la baraque du conducteur de travaux",
+        "Emma, la développeuse interface : typing → celebrate"
+      ]
+    },
+    {
+      "numero": 17,
+      "fichier": "17-reception-attendue.json",
+      "titre": "Ta réception est attendue",
+      "actions": [
+        "Application de bureau : envelope → inspection",
+        "Le bureau du client : idle → waiting",
+        "Ta décision « la réception » pour « Clôturer un audit » apparaît (Le bureau du client)",
+        "L'aire de réception : idle → waiting"
+      ]
+    },
+    {
+      "numero": 18,
+      "fichier": "18-dev.json",
+      "titre": "Réception accordée : la fiche entre dans dev",
+      "actions": [
+        "La grue de la fiche « Clôturer un audit » (entrée dans dev) apparaît (le bâtiment « Application de bureau »)",
+        "Le bureau du client : waiting → idle",
+        "L'aire de réception : waiting → idle",
+        "Ta décision « la réception » pour « Clôturer un audit » disparaît"
+      ]
+    },
+    {
+      "numero": 19,
+      "fichier": "19-production.json",
+      "titre": "Remise des clés : la fiche est en production",
+      "actions": [
+        "Application de bureau : inspection → finishing",
+        "Le camion de livraison de la fiche « Clôturer un audit » (mise en production) apparaît (le bâtiment « Application de bureau »)"
+      ]
+    },
+    {
+      "numero": 20,
+      "fichier": "20-permis-perime.json",
+      "titre": "Le cahier des besoins a changé : le permis est périmé",
+      "actions": [
+        "Le bureau du client : idle → waiting",
+        "Ta décision « On continue » apparaît (Le bureau du client)",
+        "Le permis de construire (périmé : Le cahier des besoins (PRD) a changé) : granted → expired"
+      ]
+    }
+  ]
+}
