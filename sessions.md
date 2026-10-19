@@ -1,5 +1,41 @@
 # Journal des sessions
 
+## 2026-10-19 09:58 — MacBook-Pro-de-Pierre-Alain-2 — main
+
+**Où on en est**
+Les trois étalons sont livrés (kit de bâtiment, personnage `character-kit` et composant `character`, grue v002). Le lot G1 est lancé dans la session « Lot G1 : les lieux du parcours, dans l'ordre », qui attend l'accord de PA sur le brief d'architect-office.
+
+**Fait et vérifié**
+- `npm run check` : 6 conformes, 0 en erreur, 20 à faire. `npm run build` passe (`dist/maquettes.js` fait 2,4 Mo, à cause des 14 GLB du personnage).
+- Personnage : 20 personnes (`components/kit/character-kit/equipe.json`), toutes conformes au contrat en 4 contextes, de 4 876 à 7 584 triangles et 6 matériaux au plus.
+- Grue v002 : 8 488 triangles à 14 m, 14 824 à 30 m, 2 212 en qualité basse ; ancres vérifiées dans Node à 6, 14 et 30 m.
+- Galerie : planche « L'équipe », composant seul, grue en planche, tous regardés.
+
+**Reste à faire**
+- Répondre au brief d'architect-office (notes partagées, `brief-architect-office.md`), puis laisser la session G1 enchaîner les onze lieux.
+- Corriger `commun.pivot` avec parent (bogue ci-dessous), avec l'accord de PA : cela oblige à reconstruire tous les GLB.
+- Dette : qualité basse du kit de bâtiment (v002).
+
+**Décisions prises**
+- Une personne = un personnage : l'équipe se lit au casque et au gilet, le métier à la tenue et à l'outil (MB_05). Femmes et hommes (clé de forme FEMININE), teints et coiffures variés.
+- Un GLB par métier, plus la base, les coiffures et les outils. Les couleurs de peau, de cheveux et d'équipe sont échangées à l'assemblage, pour rester sous 6 matériaux.
+- Le composant `character` prend l'apparence en paramètres (`body`, `skin`, `hair`, `hairColor`, `beard`, `glasses`, `tool`) ; GDC les lit dans `equipe.json`.
+- Ceinture à outils et gilet du contrôleur ajoutés en version simplifiée (amendement au mood board).
+
+**Fichiers touchés**
+- `blender/assets/character-kit.py`, `blender/assets/crane.py`, `blender/construit.py` (VARIANTES), `scripts/check-components.mjs`.
+- `components/character/character/` (index.js, habillage.js), `components/kit/character-kit/*`, `components/machine/crane/*`.
+- `src/personnage.js`, `src/gallery.js`, `src/tokens.js`, `catalogue.json`, `CHANGELOG.md`, `docs/correspondances.md`.
+
+**Pièges rencontrés**
+- `commun.pivot(..., parent=)` rattache avant que Blender ait calculé la position. Contournement dans `crane.py` : poser l'objet, appeler `view_layer.update()`, puis rattacher.
+- Quand le panneau du navigateur est masqué, `requestAnimationFrame` est suspendu et la galerie ne se redessine plus.
+- Dans un fuseau, une découpe doit être topologique (anneau et colonne), sinon les deux morphologies divergent.
+- `main` a 14 commits d'avance et 1 de retard sur `origin` : regarder ce commit avant tout push.
+
+**Prochaine action**
+Ouvre la session « Lot G1 : les lieux du parcours, dans l'ordre » et réponds au brief d'architect-office.
+
 ## 2026-10-18 20:07 — MBPdePireAlain2 — main
 
 **Où on en est**
