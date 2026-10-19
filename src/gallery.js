@@ -150,10 +150,18 @@ async function instance(id, state) {
   const mod = byId[id];
   const entry = entries.find((e) => e.id === id);
   await charge.prepare(mod.meta);
-  const inst = mod.create(THREE, defaultParams(mod.meta), makeContext(options, await charge.assetsPour(mod.meta)));
+  const inst = mod.create(THREE, { ...defaultParams(mod.meta), ...parametresAdresse(mod.meta) }, makeContext(options, await charge.assetsPour(mod.meta)));
   const premier = state && mod.meta.states.includes(state) ? state : mod.meta.states.find((s) => s !== 'hidden') || mod.meta.states[0];
   inst.setState(premier, sampleData(entry));
   return { inst, state: premier, entry, mod };
+}
+
+// Les parametres pris dans l'adresse (?stack=2, ?height=30) : revoir un composant ailleurs qu'a ses valeurs par defaut.
+// Seuls les parametres declares dans meta sont lus ; un nombre reste un nombre.
+function parametresAdresse(meta) {
+  const q = new URLSearchParams(location.search);
+  return Object.fromEntries(Object.entries(meta.params || {}).filter(([nom]) => q.has(nom))
+    .map(([nom, p]) => [nom, p.type === 'number' ? Number(q.get(nom)) : q.get(nom)]));
 }
 
 function retire(x) { if (x && x.inst) { scene.remove(x.inst.root); x.inst.dispose(); } }
