@@ -313,7 +313,7 @@ Montrer qui travaille, où, et dans quel état.
 
 ### Le personnage maître et son équipe (`character-kit`)
 
-CHR_BASE_MASTER (1,70 m, 5 têtes, décision du 19 octobre 2026), son armature RIG_CHR_BASE, les douze animations communes, les tenues par métier (client, architect, engineer, mason, electrician, plumber, painter, inspector, concierge, representative ; gilet orange pour l'équipe site), le casque de la couleur d'équipe (blanc pour l'équipe client ; le client n'en porte pas) et les accessoires (tablette, rouleau de plans, trépied de géomètre, rouleau à peinture, truelle, câble, planchette, trousseau de clés, classeur). Qui porte quoi : docs/correspondances.md. Bible, section 5.
+CHR_BASE_MASTER (1,70 m, 5 têtes, décision du 19 octobre 2026), son armature RIG_CHR_BASE, les douze animations communes, les tenues par métier (client, architect, engineer, foreman, mason, electrician, plumber, painter, inspector, concierge, representative ; gilet orange pour l'équipe site), le casque de la couleur d'équipe (blanc pour l'équipe client ; le client n'en porte pas) et les accessoires (tablette, rouleau de plans, trépied de géomètre, talkie-walkie, rouleau à peinture, truelle, câble, planchette, tampon, trousseau de clés, classeur). Qui porte quoi : docs/correspondances.md. Bible, section 5.
 
 - Dossier : `components/kit/character-kit/`, script `blender/assets/character-kit.py`
 - Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres)
@@ -332,7 +332,7 @@ Un personnage par agent, à partir du personnage maître : tenue et outil de son
 - Fichier : `components/character/character/index.js`
 - Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; kit `character-kit`
 - Animations : `ANM_CHR_IDLE`, `ANM_CHR_WALK`, `ANM_CHR_WORK`, `ANM_CHR_TYPING`, `ANM_CHR_INSPECT`, `ANM_CHR_READ`, `ANM_CHR_THINKING`, `ANM_CHR_WAITING`, `ANM_CHR_TALK`, `ANM_CHR_CELEBRATE`, `ANM_CHR_BLOCKED`
-- Paramètres : `trade` (client | architect | engineer | mason | electrician | plumber | painter | inspector | concierge | representative) ; `team` (none | client | architecture | studies | site | reception | operations)
+- Paramètres : `trade` (client | architect | engineer | foreman | mason | electrician | plumber | painter | inspector | concierge | representative) ; `team` (none | client | architecture | studies | site | reception | operations)
 - États : `idle`, `walk`, `work`, `typing`, `inspect`, `read`, `thinking`, `waiting`, `talk`, `celebrate`, `blocked`, `unknown`
 - Ancres : `label`, `badge`
 - Données reçues par setState : `facing` (angle en radians, sens du regard ou de la marche)
@@ -620,7 +620,7 @@ Donner un visage aux agents et une icône à chaque étape et chaque lieu.
 
 ### Les portraits des agents (`agent-portraits`)
 
-Un portrait par prénom (Claire, Marc, Lina, David, Sarah, Noah, Tom, Paul, Iris, Yves, Emma, Robin, Julie, Olivier, Anne, Bernard, Fanny), rendu depuis le personnage du kit dans un cadrage commun (bible, section 5 : Agent Portrait) ; états idle, talking, working.
+Un portrait pour le client (Pierre-Alain, sans casque) et un par prénom (Claire, Marc, Lina, David, Sarah, Noah, Tom, Paul, Iris, Yves, Victor, Emma, Robin, Julie, Olivier, Anne, Bernard, Fanny, Hélène), rendu depuis le personnage du kit dans un cadrage commun (bible, section 5 : Agent Portrait) ; états idle, talking, working.
 
 - Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres)
 - Entrées (propriété data) : `name` (prénom (nom du fichier SVG)) ; `state` (idle \| talking \| working (classe CSS))

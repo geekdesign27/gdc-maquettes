@@ -71,8 +71,8 @@ Le nom affiché reste celui du métier du numérique (atelier 2) ; la tenue mont
 | Anne, la commission de réception | Essais et réception | inspector | reception | oui | planchette |
 | Bernard, le concierge | Production | concierge | operations | oui | trousseau de clés |
 | Fanny, la représentante du client | Coût et contexte | representative | client : casque blanc | oui | classeur |
-| Le chef de chantier (programme) | Lance les équipes, tient les budgets | à préciser | à préciser | à préciser | à préciser |
-| Le bureau de contrôle (programme `gdc`) | Mesure, journal, « prouvé » | à préciser | à préciser | à préciser | à préciser |
+| Victor, le chef de chantier (un programme) | Lance les équipes, tient les budgets, met de côté ce qui coince | foreman : bleu de travail, gilet orange | site | oui | talkie-walkie |
+| Hélène, le bureau de contrôle (le binaire `gdc`) | Mesure, journal, elle seule dit « prouvé » | inspector | reception | oui | tampon (une forme, sans texte) |
 
 - **Le casque** : tout le monde le porte, sauf le client. Il a donc la seule silhouette sans casque, celle de qui décide. L'OTConst (art. 6) impose le casque jusqu'à la fin du gros œuvre et près des grues et des engins : le client reste dans son bureau ou vient à la réception, et ne traverse jamais le chantier en cours.
 - **Le gilet orange** : seulement l'équipe site, qui travaille près des engins (OTConst, art. 7).
