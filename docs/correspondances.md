@@ -76,4 +76,5 @@ Le nom affiché reste celui du métier du numérique (atelier 2) ; la tenue mont
 
 - **Le casque** : tout le monde le porte, sauf le client. Il a donc la seule silhouette sans casque, celle de qui décide. L'OTConst (art. 6) impose le casque jusqu'à la fin du gros œuvre et près des grues et des engins : le client reste dans son bureau ou vient à la réception, et ne traverse jamais le chantier en cours.
 - **Le gilet orange** : seulement l'équipe site, qui travaille près des engins (OTConst, art. 7).
+- **L'apparence** de chaque personne (morphologie, peau, coiffure et couleur des cheveux, barbe, lunettes, outil) est dans `components/kit/character-kit/equipe.json`. GDC la passe au composant `character` en paramètres (`trade`, `team`, `body`, `skin`, `hair`, `hairColor`, `beard`, `glasses`, `tool`) ; le composant ne sait pas qui il représente.
 - **Le casque blanc** de Fanny dit « côté client ». C'est un amendement à la bible, 18.8 (« casques de la couleur d'équipe »), validé par Pierre-Alain le 19 octobre 2026.

@@ -674,10 +674,17 @@
       "category": "character",
       "name": "Le personnage (un agent)",
       "purpose": "Montrer qui travaille, où, et dans quel état.",
-      "description": "Un personnage par agent, à partir du personnage maître : tenue et outil de son métier, couleur de son équipe. GDC le déplace ; le composant joue l'animation de l'état, sur place. blocked : posture d'arrêt devant la barrière ; unknown : immobile, matériaux grisés, lisible sans animation.",
+      "description": "Un personnage par agent, à partir du personnage maître : tenue et outil de son métier, couleur de son équipe. GDC le déplace ; le composant joue l'animation de l'état, sur place. L'apparence de chaque personne (morphologie, peau, coiffure, barbe, lunettes, outil) est dans components/kit/character-kit/equipe.json ; GDC la passe en paramètres (décision de PA du 19 octobre 2026 : chaque personne a son personnage). blocked : posture d'arrêt devant la barrière ; unknown : immobile, matériaux grisés, lisible sans animation.",
       "params": {
         "trade": "client | architect | engineer | foreman | mason | electrician | plumber | painter | inspector | concierge | representative",
-        "team": "none | client | architecture | studies | site | reception | operations"
+        "team": "none | client | architecture | studies | site | reception | operations",
+        "body": "M | F",
+        "skin": "A | B | C | D | E",
+        "hair": "short | side | crop | bob | long | ponytail | bun",
+        "hairColor": "black | brown | blond | red | grey",
+        "beard": "true | false",
+        "glasses": "true | false",
+        "tool": "auto (l'outil du métier) | none | plans | tablet | tripod | radio | roller | trowel | cable | clipboard | stamp | keys | binder | wrench"
       },
       "states": [
         "idle",
@@ -714,6 +721,22 @@
       },
       "production": "blender",
       "kit": "character-kit",
+      "assets": [
+        "kit:character-kit/CHR_BASE_MASTER_v001.glb",
+        "kit:character-kit/CHR_HAIR_KIT_v001.glb",
+        "kit:character-kit/PRP_CHR_TOOLS_v001.glb",
+        "kit:character-kit/CHR_OUTFIT_CLIENT_v001.glb",
+        "kit:character-kit/CHR_OUTFIT_ARCHITECT_v001.glb",
+        "kit:character-kit/CHR_OUTFIT_ENGINEER_v001.glb",
+        "kit:character-kit/CHR_OUTFIT_FOREMAN_v001.glb",
+        "kit:character-kit/CHR_OUTFIT_MASON_v001.glb",
+        "kit:character-kit/CHR_OUTFIT_ELECTRICIAN_v001.glb",
+        "kit:character-kit/CHR_OUTFIT_PLUMBER_v001.glb",
+        "kit:character-kit/CHR_OUTFIT_PAINTER_v001.glb",
+        "kit:character-kit/CHR_OUTFIT_INSPECTOR_v001.glb",
+        "kit:character-kit/CHR_OUTFIT_CONCIERGE_v001.glb",
+        "kit:character-kit/CHR_OUTFIT_REPRESENTATIVE_v001.glb"
+      ],
       "animations": [
         "ANM_CHR_IDLE",
         "ANM_CHR_WALK",
