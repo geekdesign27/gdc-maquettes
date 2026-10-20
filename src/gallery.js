@@ -200,6 +200,31 @@ async function occupants(x) {
     out.push(...await poseOccupants(x, groupe, ids));
   }
   if (ancres.includes('room:*')) out.push(...await ouvriers(x));
+  if (x.entry.id in SEANCES) out.push(...await seance(x));
+  return out;
+}
+
+// Une seance de brainstorming (office-interior) : en active, data.activeDesks personnes aux places desk:n, tournees
+// vers la table (celles du fond regardent vers l'avant), qui parlent ou reflechissent a tour de role. La galerie les
+// repose quand on change d'etat.
+const SEANCES = { 'office-interior': ['claire', 'marc', 'client', 'fanny', 'lina', 'paul', 'iris', 'noah'] };
+async function seance(x) {
+  if (x.state !== 'active') return [];
+  const out = [];
+  const n = Number(donnees(x.entry).activeDesks) || 0;
+  for (const [i, pid] of SEANCES[x.entry.id].slice(0, n).entries()) {
+    let poste;
+    try { poste = x.inst.anchor(`desk:${i + 1}`); } catch { break; }
+    const params = personnage.parametresDe(personnage.PERSONNES.find((p) => p.id === pid));
+    const m = personnage.metaPersonne(params);
+    await charge.prepare(m);
+    const inst = byId.character.create(THREE, params, makeContext(options, await charge.assetsPour(m)));
+    inst.setState(i % 2 ? 'thinking' : 'talk', { facing: poste.z < 0 ? 0 : Math.PI });
+    x.inst.root.updateMatrixWorld(true);
+    inst.root.position.copy(x.inst.root.localToWorld(poste));
+    scene.add(inst.root);
+    out.push({ inst });
+  }
   return out;
 }
 
@@ -287,6 +312,7 @@ function buildStates() {
     b.textContent = s;
     b.setAttribute('aria-pressed', String(s === current.state));
     b.addEventListener('click', async () => {
+      if (current.entry.id in SEANCES) return select(current.entry.id, s); // les participants dependent de l'etat
       current.inst.setState(s, donnees(current.entry));
       current.state = s;
       for (const x of box.children) x.setAttribute('aria-pressed', String(x === b));
