@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-44 éléments : 27 à faire, 15 livré, 2 exemple.
+44 éléments : 26 à faire, 16 livré, 2 exemple.
 
 ## G0 : La ligne graphique
 
@@ -67,7 +67,7 @@ Poser le plan du chantier dans l'ordre du parcours : bureau d'architecte, bureau
 | 7 | `site-office` | La baraque du conducteur de travaux | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu de la coordination : planning des lots, chef de chantier, répartition des agents. | livré |
 | 8 | `parking` | Le parking : le carnet des demandes | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer les demandes en attente de tri, sous forme de caisses de matériel. | livré |
 | 9 | `reception-area` | La zone de réception | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu des essais et de la visite, avant la remise des clés. | livré |
-| 10 | `site-fence` | La clôture de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Cloisonner le chantier, comme tout chantier romand. | à faire |
+| 10 | `site-fence` | La clôture de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Cloisonner le chantier, comme tout chantier romand. | livré |
 | 11 | `waste-skip` | La benne de tri | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le tri des déchets de chantier, obligatoire (OLED, art. 17). | à faire |
 
 ### Le terrain (`ground`)
@@ -224,10 +224,11 @@ Une aire en plein air sur son socle : un auvent sur quatre poteaux, dessous le p
 
 ### La clôture de chantier (`site-fence`)
 
-Une clôture mobile : panneaux en treillis gris sur plots en béton, sans orange, pour ne jamais ressembler à la barrière de blocage (bible, 18.8). Posée le long d'une longueur donnée, avec un portail si demandé.
+Une clôture mobile : panneaux en treillis gris (maille de 0,45 m) sur plots en béton, un poteau rond à chaque jonction, sans orange, pour ne jamais ressembler à la barrière de blocage (bible, 18.8). Posée en ligne droite le long d'une longueur donnée, en panneaux de largeur égale (3,50 m au plus) ; avec gate, un portail ouvert de 4 m au milieu, ses deux vantaux tournés vers l'intérieur (décisions de Pierre-Alain du 20 octobre 2026).
 
 - Fichier : `components/site/site-fence/index.js`
 - Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `ENV_SITE_FENCE_A_v001`
+- Modèles : `ENV_SITE_FENCE_A_v001.glb`
 - Paramètres : `length` (nombre, 2 à 60, défaut 12) ; `gate` (booléen, défaut false)
 - États : `default`
 - Ancres : `label`
