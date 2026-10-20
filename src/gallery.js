@@ -40,7 +40,7 @@ sun.shadow.normalBias = lumiere.ombre.normalBias;
 Object.assign(sun.shadow.camera, { left: -30, right: 30, top: 30, bottom: -30 });
 scene.add(sun);
 const grid = new THREE.GridHelper(60, 60, 0x999999, 0xcccccc);
-grid.position.y = -0.31;
+grid.position.y = -0.61; // sous les socles de 0,60 m (bible 18.5) : elle ne traverse plus la fouille du batiment
 scene.add(grid);
 
 function resize() {
