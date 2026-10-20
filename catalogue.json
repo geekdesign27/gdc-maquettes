@@ -1078,7 +1078,10 @@
       "status": "à faire",
       "data": {},
       "production": "blender",
-      "blender": "PRP_DECISION_SIGN_A_v001"
+      "blender": "PRP_DECISION_SIGN_A_v001",
+      "assets": [
+        "PRP_DECISION_SIGN_A_v001.glb"
+      ]
     },
     {
       "id": "blocked-sign",
