@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-44 éléments : 23 livré, 19 à faire, 2 exemple.
+44 éléments : 24 livré, 18 à faire, 2 exemple.
 
 ## G0 : La ligne graphique
 
@@ -426,7 +426,7 @@ Au clic, entrer dans un bâtiment ou un bureau : une pièce par fiche, les ouvri
 
 | Ordre | Identifiant | Nom | Nature | But | Statut |
 |---|---|---|---|---|---|
-| 1 | `building-interior` | L'intérieur d'un bâtiment | Composant 3D Three.js, conforme à docs/contrat-composant.md | La vue micro : une pièce par fiche, et les ouvriers au travail dans chacune. | à faire |
+| 1 | `building-interior` | L'intérieur d'un bâtiment | Composant 3D Three.js, conforme à docs/contrat-composant.md | La vue micro : une pièce par fiche, et les ouvriers au travail dans chacune. | livré |
 | 2 | `office-interior` | L'intérieur d'un bureau | Composant 3D Three.js, conforme à docs/contrat-composant.md | La vue micro d'un bureau : l'architecte devant ses plans, les ingénieurs avec leur tablette. | à faire |
 
 ### L'intérieur d'un bâtiment (`building-interior`)
@@ -435,6 +435,7 @@ Une coupe du bâtiment en pièces, de plain-pied, en maison de poupée comme les
 
 - Fichier : `components/interior/building-interior/index.js`
 - Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `building-kit`
+- Modèles : `BLD_INTERIOR_A_v001.glb`, `kit:building-kit/BLD_KIT_A_v003.glb`
 - Paramètres : `rooms` (nombre, 1 à 12, défaut 4)
 - États : `default`, `hidden`
 - Ancres : `label`, `room:*`

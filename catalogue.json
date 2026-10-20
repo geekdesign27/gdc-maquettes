@@ -969,7 +969,7 @@
         "L'état d'une pièce se voit à son aménagement : vide, en travaux, finie, défaut",
         "Transition d'entrée et de sortie douce, figée si reducedMotion"
       ],
-      "status": "à faire",
+      "status": "livré",
       "data": {
         "rooms": "liste, une entrée par fiche : { state: study | waiting | construction | reception | done | defect, trades: [métiers présents] }"
       },
