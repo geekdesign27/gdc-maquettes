@@ -1016,7 +1016,11 @@
         "activeDesks": "nombre de places occupées (chaises tirées)"
       },
       "production": "mixte",
-      "kit": "container-kit"
+      "kit": "container-kit",
+      "assets": [
+        "ENV_BRAINSTORM_ROOM_A_v001.glb",
+        "kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb"
+      ]
     },
     {
       "id": "selection-ring",
