@@ -427,7 +427,7 @@ Au clic, entrer dans un bâtiment ou un bureau : une pièce par fiche, les ouvri
 | Ordre | Identifiant | Nom | Nature | But | Statut |
 |---|---|---|---|---|---|
 | 1 | `building-interior` | L'intérieur d'un bâtiment | Composant 3D Three.js, conforme à docs/contrat-composant.md | La vue micro : une pièce par fiche, et les ouvriers au travail dans chacune. | livré |
-| 2 | `office-interior` | L'intérieur d'un bureau | Composant 3D Three.js, conforme à docs/contrat-composant.md | La vue micro d'un bureau : l'architecte devant ses plans, les ingénieurs avec leur tablette. | à faire |
+| 2 | `office-interior` | La salle de brainstorming | Composant 3D Three.js, conforme à docs/contrat-composant.md | La vue rapprochée d'une séance de brainstorming : les gens autour de la table, les idées au tableau. | à faire |
 
 ### L'intérieur d'un bâtiment (`building-interior`)
 
@@ -446,19 +446,22 @@ Une coupe du bâtiment en pièces, de plain-pied, en maison de poupée comme les
   - L'état d'une pièce se voit à son aménagement : vide, en travaux, finie, défaut
   - Transition d'entrée et de sortie douce, figée si reducedMotion
 
-### L'intérieur d'un bureau (`office-interior`)
+### La salle de brainstorming (`office-interior`)
 
-Paramétrable pour le bureau d'architecte ou le bureau d'études ; des postes de travail aux ancres desk:n.
+GDC zoome dessus pendant une phase de brainstorming (décision de Pierre-Alain du 20 octobre 2026 ; les bureaux eux-mêmes sont architect-office et design-office). Un conteneur du kit container-kit coupé en maison de poupée, sur son socle, sans totem ni marches : une longue table (1,80 m de 1 à 4 places, deux tables bout à bout de 5 à 8), un grand tableau d'idées sur le bout gauche. Décor selon kind : architect, maquette blanche et rouleaux de plans ; studies, écrans et étagère de classeurs. Les personnages sont posés par GDC aux ancres desk:n, autour de la table. idle : salle rangée, chaises rentrées, tableau vide. active : chaises tirées aux places occupées (data.activeDesks), huit feuilles s'accrochent au tableau une à une, une seule fois, puis restent ; toutes affichées d'un coup avec reducedMotion.
 
 - Fichier : `components/interior/office-interior/index.js`
-- Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `building-kit`
-- Paramètres : `kind` (architect | studies, défaut architect) ; `desks` (nombre, 1 à 8, défaut 4)
+- Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `container-kit`
+- Paramètres : `kind` (architect | studies, défaut architect) ; `desks` (nombre de places, 1 à 8, défaut 4)
 - États : `idle`, `active`
 - Ancres : `label`, `desk:*`
-- Données reçues par setState : `activeDesks` (nombre de postes occupés)
-- Budget : 15000 triangles, 8 matériaux
+- Données reçues par setState : `activeDesks` (nombre de places occupées (chaises tirées))
+- Budget : 15000 triangles, 10 matériaux
 - Critères d'acceptation :
   - Ambiance intellectuelle, distincte du chantier
+  - Distincte du bureau d'architecte et du bureau d'études au premier regard
+  - Une place par personne, désignable (ancre desk:n)
+  - État active : les feuilles s'accrochent une fois, puis restent ; rien ne bouge en continu
 
 ## G5 : Les signaux dans la scène
 
