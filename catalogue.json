@@ -974,7 +974,11 @@
         "rooms": "liste, une entrée par fiche : { state: study | waiting | construction | reception | done | defect, trades: [métiers présents] }"
       },
       "production": "mixte",
-      "kit": "building-kit"
+      "kit": "building-kit",
+      "assets": [
+        "BLD_INTERIOR_A_v001.glb",
+        "kit:building-kit/BLD_KIT_A_v003.glb"
+      ]
     },
     {
       "id": "office-interior",
