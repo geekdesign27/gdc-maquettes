@@ -6,7 +6,7 @@
 // la regle parallele monte et descend, sans lumiere emissive.
 
 const KIT = "kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb";
-const KIT_BATIMENT = "kit:building-kit/BLD_KIT_A_v002.glb";
+const KIT_BATIMENT = "kit:building-kit/BLD_KIT_A_v003.glb";
 const P = "ENV_CONTAINER_KIT_A_";
 const PLANCHER = 0.2; // dessus du plancher du conteneur
 const NU_BOUT = 3.55; // face exterieure de la paroi du bout droit
@@ -24,7 +24,7 @@ const SOCLE = {
 
 export const meta = {
   id: "architect-office",
-  version: "1.2.1",
+  version: "1.2.2",
   category: "site",
   states: ["idle", "active"],
   params: {},

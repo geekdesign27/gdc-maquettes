@@ -16,11 +16,14 @@ l'atelier le monte pour les captures, construit.py l'ecrit a cote du GLB et la g
 v002 : la qualite basse (bible 18.3 : ce qui mesure moins de 0,30 m est supprime ou fusionne). Les pieces de la v001
 sont inchangees ; le GLB porte en plus des pieces BLD_KIT_A_<PIECE>_LOW, aux aretes vives, posees au meme point
 d'assemblage. En qualite basse, on assemble <PIECE>_LOW quand elle existe, sinon <PIECE> (la dalle n'en a pas besoin).
+
+v003 : les menuiseries a part, pour les poser dans la brique (batiment en reception, avant le crepi) : WINDOW (cadre
+et verre de la baie de 1,50 x 1,50), DOOR (cadre et vantail) et WALL_BRICK_DOOR (brique, baie de porte brute).
 """
 
 import math
 
-ASSET = {"id": "building-kit", "categorie": "kit", "nom": "BLD_KIT_A_v002"}
+ASSET = {"id": "building-kit", "categorie": "kit", "nom": "BLD_KIT_A_v003"}
 
 P = "BLD_KIT_A_"
 TRAME = 3.0
@@ -122,6 +125,23 @@ def _pose_volees(c, volees):
         v.location = (x0, y0, z0)
 
 
+def _porte(c, nom):
+    """Cadre en aluminium et vantail graphite de la porte, poses dans la baie (parement sur y = 0)."""
+    l, h = PORTE
+    cadre = c.boite(P + nom + "_FRAME", (l, 0.12, h), (0, 0.10, 0), mat="MAT_ALUMINIUM")
+    c.perce(cadre, (l - 0.16, 0.40, h - 0.08 + 0.1), (0, 0.10, -0.1))
+    c.chanfreine(cadre, C1, 2)
+    vantail = c.boite(P + nom + "_LEAF", (l - 0.16, 0.05, h - 0.08), (0, 0.12, 0), mat="MAT_PAINTED_METAL_GRAPHITE")
+    return [cadre, vantail]
+
+
+def _mur_porte(c, nom, mat):
+    l, h = PORTE
+    mur = _mur(c, nom, mat)
+    c.perce(mur, (l, 1.0, h + 0.1), (0, MUR / 2, -0.1))
+    return mur
+
+
 def construit(c):
     # --- ossature beton
     _piece(c, "COLUMN", [c.boite(P + "COLUMN", (POTEAU, POTEAU, SOUS_DALLE), mat="MAT_CONCRETE", chanfrein=C2, segments=2)])
@@ -148,15 +168,16 @@ def construit(c):
     c.perce(mur, (FENETRE[0], 1.0, FENETRE[1]), (0, MUR / 2, ALLEGE))
     c.chanfreine(mur, C2, 2)
     _piece(c, "WALL_RENDER_WINDOW", [mur, *_baie_fenetre(c, "WALL_RENDER_WINDOW")])
-    mur = _mur(c, "WALL_RENDER_DOOR", "MAT_SURFACE")
-    l, h = PORTE
-    c.perce(mur, (l, 1.0, h + 0.1), (0, MUR / 2, -0.1))
+    mur = _mur_porte(c, "WALL_RENDER_DOOR", "MAT_SURFACE")
     c.chanfreine(mur, C2, 2)
-    cadre = c.boite(P + "WALL_RENDER_DOOR_FRAME", (l, 0.12, h), (0, 0.10, 0), mat="MAT_ALUMINIUM")
-    c.perce(cadre, (l - 0.16, 0.40, h - 0.08 + 0.1), (0, 0.10, -0.1))
-    c.chanfreine(cadre, C1, 2)
-    vantail = c.boite(P + "WALL_RENDER_DOOR_LEAF", (l - 0.16, 0.05, h - 0.08), (0, 0.12, 0), mat="MAT_PAINTED_METAL_GRAPHITE")
-    _piece(c, "WALL_RENDER_DOOR", [mur, cadre, vantail])
+    _piece(c, "WALL_RENDER_DOOR", [mur, *_porte(c, "WALL_RENDER_DOOR")])
+
+    # --- v003 : menuiseries a part, posees dans les baies brutes de la brique ; mur de brique a baie de porte
+    mur = _mur_porte(c, "WALL_BRICK_DOOR", "MAT_BRICK")
+    c.chanfreine(mur, C2, 2)
+    _piece(c, "WALL_BRICK_DOOR", [mur])
+    _piece(c, "WINDOW", _baie_fenetre(c, "WINDOW"))
+    _piece(c, "DOOR", _porte(c, "DOOR"))
 
     # --- garde-corps de rive : lisse a 1,10 m, sous-lisse, plinthe (protection laterale)
     # lisses et plinthe depassent d'une demi-rive a chaque bout : aux angles, elles rejoignent celles de l'autre face
@@ -294,10 +315,13 @@ def _basses(c):
     mur = _mur(c, "WALL_RENDER_WINDOW_LOW", "MAT_SURFACE")
     c.perce(mur, (l, 1.0, h), (0, MUR / 2, ALLEGE))
     basse("WALL_RENDER_WINDOW", [mur, vive("WALL_RENDER_WINDOW_LOW_GLASS", (l, 0.04, h), (0, 0.11, ALLEGE), mat="MAT_GLASS")])
+    verre = ("WINDOW_LOW", (l, 0.04, h), (0, 0.11, ALLEGE), "MAT_GLASS")
+    basse("WINDOW", [vive(*verre)])
     l, h = PORTE
-    mur = _mur(c, "WALL_RENDER_DOOR_LOW", "MAT_SURFACE")
-    c.perce(mur, (l, 1.0, h + 0.1), (0, MUR / 2, -0.1))
-    basse("WALL_RENDER_DOOR", [mur, vive("WALL_RENDER_DOOR_LOW_LEAF", (l, 0.05, h), (0, 0.12, 0), mat="MAT_PAINTED_METAL_GRAPHITE")])
+    vantail = ((l, 0.05, h), (0, 0.12, 0), "MAT_PAINTED_METAL_GRAPHITE")
+    basse("WALL_RENDER_DOOR", [_mur_porte(c, "WALL_RENDER_DOOR_LOW", "MAT_SURFACE"), vive("WALL_RENDER_DOOR_LOW_LEAF", *vantail)])
+    basse("WALL_BRICK_DOOR", [_mur_porte(c, "WALL_BRICK_DOOR_LOW", "MAT_BRICK")])
+    basse("DOOR", [vive("DOOR_LOW", *vantail)])
 
     # --- garde-corps : la lisse haute et deux montants
     y, long = -RIVE / 2, TRAME + RIVE
