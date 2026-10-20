@@ -1011,7 +1011,7 @@
         "Une place par personne, désignable (ancre desk:n)",
         "État active : les feuilles s'accrochent une fois, puis restent ; rien ne bouge en continu"
       ],
-      "status": "à faire",
+      "status": "livré",
       "data": {
         "activeDesks": "nombre de places occupées (chaises tirées)"
       },

@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-44 éléments : 24 livré, 18 à faire, 2 exemple.
+44 éléments : 25 livré, 17 à faire, 2 exemple.
 
 ## G0 : La ligne graphique
 
@@ -427,7 +427,7 @@ Au clic, entrer dans un bâtiment ou un bureau : une pièce par fiche, les ouvri
 | Ordre | Identifiant | Nom | Nature | But | Statut |
 |---|---|---|---|---|---|
 | 1 | `building-interior` | L'intérieur d'un bâtiment | Composant 3D Three.js, conforme à docs/contrat-composant.md | La vue micro : une pièce par fiche, et les ouvriers au travail dans chacune. | livré |
-| 2 | `office-interior` | La salle de brainstorming | Composant 3D Three.js, conforme à docs/contrat-composant.md | La vue rapprochée d'une séance de brainstorming : les gens autour de la table, les idées au tableau. | à faire |
+| 2 | `office-interior` | La salle de brainstorming | Composant 3D Three.js, conforme à docs/contrat-composant.md | La vue rapprochée d'une séance de brainstorming : les gens autour de la table, les idées au tableau. | livré |
 
 ### L'intérieur d'un bâtiment (`building-interior`)
 
@@ -452,6 +452,7 @@ GDC zoome dessus pendant une phase de brainstorming (décision de Pierre-Alain d
 
 - Fichier : `components/interior/office-interior/index.js`
 - Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `container-kit`
+- Modèles : `ENV_BRAINSTORM_ROOM_A_v001.glb`, `kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb`
 - Paramètres : `kind` (architect | studies, défaut architect) ; `desks` (nombre de places, 1 à 8, défaut 4)
 - États : `idle`, `active`
 - Ancres : `label`, `desk:*`
