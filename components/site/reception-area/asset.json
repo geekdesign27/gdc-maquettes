@@ -1,0 +1,13 @@
+{
+  "nom": "BLD_DELIVERY_AREA_A_v001",
+  "id": "reception-area",
+  "bible": "WORKSITE 1.2",
+  "blender": "5.3.0 Beta",
+  "script": "blender/assets/reception-area.py",
+  "script_sha256": "8ef9fa668aae0664a4939dd74bb6ebbcaceb356b11a05f43297e24e46d783fbc",
+  "commun_sha256": "d31db270f510bb4a40a645bc9a47a1af015eb52183477fb9e579cd8caf72edd7",
+  "palette_sha256": "4d7c5c91813ad7950d154c5d52b5e7164c27aeda6a4bd02c10bce89f0ab20b4f",
+  "glb_sha256": "2a5ba9a09d581890834e0eb768cc6fc2097845c433cec396dbe5444b7fa19e9e",
+  "animations": [],
+  "statut": "a valider"
+}

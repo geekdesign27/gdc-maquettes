@@ -275,7 +275,7 @@
       },
       "acceptance": [
         "En waiting, visible de loin sans être criard",
-        "Seul lieu qui utilise le rouge de signalisation"
+        "Le rouge de signalisation ne sert qu'aux décisions qui t'attendent (badge HTML), ici et à la zone de réception"
       ],
       "status": "livré",
       "data": {
@@ -411,7 +411,7 @@
       "category": "site",
       "name": "La zone de réception",
       "purpose": "Le lieu des essais et de la visite, avant la remise des clés.",
-      "description": "Une aire avec un pupitre d'essais et un panneau « réception » ; la commission de réception s'y tient.",
+      "description": "Une aire en plein air sur son socle : un auvent sur quatre poteaux, dessous le pupitre d'essais (deux écrans) et un capteur sur trépied, devant un totem à la clé en relief (le panneau « réception », sans texte) et deux bacs de verdure. Anne (la commission de réception) au pupitre, le client à côté du totem, Olivier (le surveillant) à côté d'Anne (ancres desk:1 à desk:3). En active (les essais), les écrans s'allument et la tête du capteur pivote une fois par essai ; en waiting (la réception attend ta décision), une clé géante est posée sur le pupitre et le badge HTML rouge est sur l'ancre badge. Aucune couleur d'état dans la 3D (décisions de Pierre-Alain du 20 octobre 2026).",
       "params": {},
       "states": [
         "idle",
@@ -420,7 +420,8 @@
       ],
       "anchors": [
         "label",
-        "badge"
+        "badge",
+        "desk:*"
       ],
       "budget": {
         "triangles": 10000,
@@ -433,7 +434,10 @@
       "data": {},
       "production": "blender",
       "blender": "BLD_DELIVERY_AREA_A_v001",
-      "famille_bible": "BLD_DELIVERY"
+      "famille_bible": "BLD_DELIVERY",
+      "assets": [
+        "BLD_DELIVERY_AREA_A_v001.glb"
+      ]
     },
     {
       "id": "site-fence",

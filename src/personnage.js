@@ -16,6 +16,7 @@ export const OCCUPANTS = {
   "control-office": ["helene"],
   "site-office": ["yves", "victor"],
   "design-office": ["marc", "lina", "paul", "iris", "noah", "tom", "sarah", "david"],
+  "reception-area": ["anne", "client", "olivier"],
 };
 // L'etat que jouent les occupants dans la galerie : work par defaut ; Helene controle (docs/ville.md : inspect).
 // Les agents de passage d'exemple, aux places crew:n d'un lieu (ceux qui ont fini reviennent a la baraque).

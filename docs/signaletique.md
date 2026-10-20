@@ -17,7 +17,7 @@ Le langage des signaux, à l'image des jeux de gestion et des interfaces de supe
 | État | Couleur | Forme | Icône ou mot | Où on le voit |
 |---|---|---|---|---|
 | Actif | Vert | Anneau plein | Engrenage ou outil | Agent, lot, fiche |
-| Attend ta décision | Rouge de signalisation | Panneau rectangulaire | Point d'exclamation | Fiche, bureau du client |
+| Attend ta décision | Rouge de signalisation | Panneau rectangulaire | Point d'exclamation | Fiche, bureau du client, zone de réception |
 | Bloqué | Orange | Triangle | Barrière | Lot, agent |
 | En erreur | Rouge foncé | Octogone | Croix | Contrôle, lot |
 | Terminé | Encre douce | Coche | Coche | Lot, fiche, tâche |
