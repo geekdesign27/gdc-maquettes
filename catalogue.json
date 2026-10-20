@@ -856,6 +856,9 @@
       "data": {},
       "production": "blender",
       "blender": "VEH_EXCAVATOR_A_v001",
+      "assets": [
+        "VEH_EXCAVATOR_A_v001.glb"
+      ],
       "animations": [
         "ANM_EXCAVATOR_A_DIGGING"
       ]
