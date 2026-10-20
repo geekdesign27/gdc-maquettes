@@ -157,19 +157,28 @@ async function instance(id, state) {
 }
 
 // Les donnees d'exemple d'un etat, completees par celles de l'adresse (?count=15) : seules les cles de la fiche (data)
-// sont lues ; une valeur numerique reste un nombre.
+// sont lues ; une valeur numerique reste un nombre, une liste ou un objet JSON est lu (?rooms=[{"state":"done"}]).
 function donnees(entry) {
   const q = new URLSearchParams(location.search);
-  const adresse = Object.keys(entry.data || {}).filter((k) => q.has(k)).map((k) => [k, Number.isNaN(Number(q.get(k))) ? q.get(k) : Number(q.get(k))]);
+  const adresse = Object.keys(entry.data || {}).filter((k) => q.has(k)).map((k) => [k, valeurAdresse(q.get(k))]);
   return { ...sampleData(entry), ...Object.fromEntries(adresse) };
 }
 
+function valeurAdresse(v) {
+  if (/^[[{]/.test(v)) { try { return JSON.parse(v); } catch { return v; } }
+  return Number.isNaN(Number(v)) ? v : Number(v);
+}
+
 // Les parametres pris dans l'adresse (?stack=2, ?height=30) : revoir un composant ailleurs qu'a ses valeurs par defaut.
-// Seuls les parametres declares dans meta sont lus ; un nombre reste un nombre.
+// Seuls les parametres declares dans meta sont lus ; un nombre reste un nombre ; une liste donne sa longueur (building-
+// interior : ?rooms=[...] fixe le nombre de pieces et leurs donnees).
 function parametresAdresse(meta) {
   const q = new URLSearchParams(location.search);
   return Object.fromEntries(Object.entries(meta.params || {}).filter(([nom]) => q.has(nom))
-    .map(([nom, p]) => [nom, p.type === 'number' ? Number(q.get(nom)) : q.get(nom)]));
+    .map(([nom, p]) => {
+      const v = valeurAdresse(q.get(nom));
+      return [nom, p.type === 'number' ? (Array.isArray(v) ? v.length : Number(v)) : q.get(nom)];
+    }));
 }
 
 function retire(x) { if (x && x.inst) { scene.remove(x.inst.root); x.inst.dispose(); } }
@@ -189,6 +198,33 @@ async function occupants(x) {
   for (const [groupe, ids] of groupes) {
     if (!ancres.includes(`${groupe}:*`)) continue;
     out.push(...await poseOccupants(x, groupe, ids));
+  }
+  if (ancres.includes('room:*')) out.push(...await ouvriers(x));
+  return out;
+}
+
+// Les ouvriers d'un interieur : pour chaque piece de data.rooms, la premiere personne d'equipe.json de chaque metier
+// present, ecartes de 0,9 m autour de l'ancre room:n, comme GDC les posera. Ils travaillent en travaux et en defaut,
+// controlent en reception, attendent ailleurs.
+const ETAT_PIECE = { construction: 'work', defect: 'work', reception: 'inspect' };
+async function ouvriers(x) {
+  const out = [];
+  const rooms = donnees(x.entry).rooms || [];
+  for (const [i, room] of rooms.entries()) {
+    let poste;
+    try { poste = x.inst.anchor(`room:${i + 1}`); } catch { break; }
+    const personnes = (room.trades || []).map((m) => personnage.PERSONNES.find((p) => p.metier === m)).filter(Boolean);
+    for (const [j, p] of personnes.entries()) {
+      const params = personnage.parametresDe(p);
+      const m = personnage.metaPersonne(params);
+      await charge.prepare(m);
+      const inst = byId.character.create(THREE, params, makeContext(options, await charge.assetsPour(m)));
+      inst.setState(ETAT_PIECE[room.state] || 'idle', { facing: Math.PI });
+      x.inst.root.updateMatrixWorld(true);
+      inst.root.position.copy(x.inst.root.localToWorld(poste.clone().add(new THREE.Vector3((j - (personnes.length - 1) / 2) * 0.9, 0, 0.2))));
+      scene.add(inst.root);
+      out.push({ inst });
+    }
   }
   return out;
 }
