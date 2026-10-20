@@ -1,0 +1,18 @@
+{
+  "nom": "ENV_WASTE_SKIP_A_v001",
+  "id": "waste-skip",
+  "bible": "WORKSITE 1.2",
+  "blender": "5.3.0 Beta",
+  "script": "blender/assets/waste-skip.py",
+  "script_sha256": "68ca3816d27541490fff8ea93a6e5e79c855b00c6c586066cea299cba60d6db9",
+  "commun_sha256": "d31db270f510bb4a40a645bc9a47a1af015eb52183477fb9e579cd8caf72edd7",
+  "palette_sha256": "4d7c5c91813ad7950d154c5d52b5e7164c27aeda6a4bd02c10bce89f0ab20b4f",
+  "glb_sha256": "c8ddbf97d2fe9399cf62ebb509d48d619712ad235e5ccb33560c9e4f1beab59b",
+  "animations": [],
+  "statut": "a valider",
+  "fichiers": {
+    "ENV_WASTE_SKIP_A_WOOD_v001": "4df5bf16f55be05a2331d42bbaf18e64dea248580c366f44b7417a868144a583",
+    "ENV_WASTE_SKIP_A_METAL_v001": "88837a534e702e13ce4a68f79d0e124c06f86efe0620450d930f562af95b4517",
+    "ENV_WASTE_SKIP_A_INERT_v001": "b23defb41200157a378b65821d10a4271c7f4ec96af8d034e03135899400715f"
+  }
+}

@@ -519,7 +519,7 @@
       "category": "site",
       "name": "La benne de tri",
       "purpose": "Le tri des déchets de chantier, obligatoire (OLED, art. 17).",
-      "description": "Une benne ouverte ; son contenu dit la matière par sa forme (planches, ferraille, gravats), sans texte. Plusieurs bennes s'alignent, une par matière. Couleur de caisse par matière (décision du 19 octobre 2026) : wood MAT_PAINTED_METAL_OLIVE, metal MAT_PAINTED_METAL_MOSS, inert MAT_PAINTED_METAL_PLUM, mixed MAT_PAINTED_METAL_GRAPHITE.",
+      "description": "Une benne basculante ouverte de 7 m³, à la cote réelle (3,70 × 1,80 m en haut, 1,45 m de haut ; décision de Pierre-Alain du 20 octobre 2026) ; son contenu dit la matière par sa forme, sans texte : planches (wood), barres et tubes (metal), gravats (inert), cartons et sacs (mixed). Plusieurs bennes s'alignent, une par matière. Couleur de caisse par matière (décision du 19 octobre 2026) : wood MAT_PAINTED_METAL_OLIVE, metal MAT_PAINTED_METAL_MOSS, inert MAT_PAINTED_METAL_PLUM, mixed MAT_PAINTED_METAL_GRAPHITE.",
       "params": {
         "content": "wood | metal | inert | mixed, défaut mixed"
       },
@@ -540,7 +540,13 @@
       "status": "à faire",
       "data": {},
       "production": "blender",
-      "blender": "ENV_WASTE_SKIP_A_v001"
+      "blender": "ENV_WASTE_SKIP_A_v001",
+      "assets": [
+        "ENV_WASTE_SKIP_A_v001.glb",
+        "ENV_WASTE_SKIP_A_WOOD_v001.glb",
+        "ENV_WASTE_SKIP_A_METAL_v001.glb",
+        "ENV_WASTE_SKIP_A_INERT_v001.glb"
+      ]
     },
     {
       "id": "building-kit",
