@@ -183,8 +183,14 @@ function parametresAdresse(meta) {
 
 function retire(x) { if (x && x.inst) { scene.remove(x.inst.root); x.inst.dispose(); } }
 
+// Un signal (lot G5) se juge a cote des lieux ou il apparait (signaletique) : ses voisins de planche, poses tout pres
+// (ECART_SIGNAL entre les emprises), et non les deux premiers modeles livres.
+const VOISINS_SIGNAUX = { 'decision-sign': ['client-office', 'reception-area'] };
+const ECART_SIGNAL = 1.5;
+
 // La planche : le composant choisi entre deux modeles de reference (livres d'abord, exemples a defaut).
 function references(id) {
+  if (VOISINS_SIGNAUX[id]) return VOISINS_SIGNAUX[id];
   const rang = (e) => (e.status === 'livré' ? 0 : e.status === 'exemple' ? 1 : 9);
   return entries.filter((e) => e.id !== id && byId[e.id] && rang(e) < 9 && e.id !== 'selection-ring').sort((a, b) => rang(a) - rang(b)).slice(0, 2).map((e) => e.id);
 }
@@ -290,7 +296,8 @@ async function select(id, state) {
     for (const rid of references(id)) {
       const v = await instance(rid);
       const bv = new THREE.Box3().setFromObject(v.inst.root);
-      v.inst.root.position.x = pos < 0 ? Math.min(-20, boite.min.x - 6 - bv.max.x) : Math.max(20, boite.max.x + 6 - bv.min.x);
+      if (VOISINS_SIGNAUX[id]) v.inst.root.position.x = pos < 0 ? boite.min.x - ECART_SIGNAL - bv.max.x : boite.max.x + ECART_SIGNAL - bv.min.x;
+      else v.inst.root.position.x = pos < 0 ? Math.min(-20, boite.min.x - 6 - bv.max.x) : Math.max(20, boite.max.x + 6 - bv.min.x);
       scene.add(v.inst.root);
       voisins.push(v);
       pos += 2;
