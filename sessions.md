@@ -1,5 +1,38 @@
 # Journal des sessions
 
+## 2026-10-20 16:13 — MacBook-Pro-de-Pierre-Alain-2 — main
+
+**Où on en est**
+Lot G1 : les bureaux sont des conteneurs de chantier. container-kit (v003), site-container et les cinq bureaux sont livrés. Le parking a son brief (`brief-parking.md`, notes partagées) ; il attend la réponse de PA à deux questions.
+
+**Fait et vérifié**
+- `npm run check` : 13 conformes, 0 en erreur, 15 à faire (sur 28). Chaque livraison est validée par PA sur planche (notes partagées `local_fa9d6b50…`).
+- Kit v003 utilisé partout ; la grue passe en v003 (pivots replacés, rendu identique à l'écran).
+- Pas vérifié depuis la fusion : `npm run build` (3,25 Mo la dernière fois), le thème sombre sur les derniers bureaux.
+
+**Reste à faire**
+- Parking : trancher `capacity` (reco : nombre de places marquées, donc seuil de la pile) et l'ancre des caisses (reco : `item:n` plus une ancre `pile` séparée, plutôt que `item:pile`). Amender la fiche depuis la session de PA, puis la session G1 fabrique.
+- Personnage maître v002 (demande de PA, transmise le 20 octobre) : arrondir vers REF_CHR_001 (tête plus large, jambes un peu plus courtes, membres moins filiformes), supprimer l'arête au bassin, toujours 5 têtes. Il est livré : il faut donc `CHR_BASE_MASTER_v002` et une ligne au journal (règle 7). Revérifier character, les bureaux et site-office, puis montrer une planche avant/après. Prévu dans une session dédiée.
+- Puis reception-area, site-fence, waste-skip (couleurs des bennes : amendement de palette en attente).
+- Dette : qualité basse du kit de bâtiment ; en thème sombre, le cadre graphite des conteneurs se fond dans le fond.
+
+**Décisions prises**
+- Un bureau = un conteneur 20 pieds agrandi × 1,2 (7,20 × 3,00 × 3,00 m) ; plusieurs conteneurs en grappe côte à côte, jamais en ligne.
+- Coupe « maison de poupée » : sans toit, mur avant à 0,90 m, sans longeron haut avant (captures A/B/C, MB_13). Les conteneurs sans occupants restent fermés.
+- Les occupants sont placés aux ancres `desk:n`. Hélène a un poste, Victor a un corps (desk:2 sur la coursive), les agents de passage vont aux places `crew:1-6` devant le planning.
+- Aucune couleur d'état dans la 3D : en `waiting`, le bureau du client affiche une feuille ; en `error`, le contrôle couche son trépied. Le rouge reste dans le badge HTML.
+
+**Fichiers touchés**
+- `catalogue.json`, `CHANGELOG.md`, `docs/catalogue.md`, `moodboard/prompts.md` (MB_13–16).
+- Session G1 : `blender/assets/container-kit.py`, `components/site/*`, `src/gallery.js`, `src/personnage.js`.
+
+**Pièges rencontrés**
+- Un accord de PA relayé par une autre session est refusé par le contrôle de permissions de la session G1. Les modifications de catalogue se font donc depuis la session où PA parle.
+- Ne pas enchaîner un `git commit` sur une commande qui peut échouer, dans un dossier partagé : on a commité par erreur le catalogue en cours de la session G1 (9b3bdc0, contenu correct).
+
+**Prochaine action**
+Réponds aux deux questions du brief du parking, puis renvoie la session G1 fabriquer.
+
 ## 2026-10-19 09:58 — MacBook-Pro-de-Pierre-Alain-2 — main
 
 **Où on en est**
