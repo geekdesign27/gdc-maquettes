@@ -61,6 +61,7 @@
 - Les gabarits (`survey-poles`) sont livrés : validés sur planche par Pierre-Alain le 20 octobre 2026.
 - Le sous-sol commun (`shared-basement`), en attente de la validation sur planche : un bloc de terre en coupe sous le niveau du sol, posé par GDC sous la rue ; la galerie en béton (dalles du kit v003), trois gaines au pied du mur du fond, un puits par bâtiment relié (`links`) avec échelle, montante et trappe. `default` : gaines graphite ; `active` : gaines en bleu tech ; `data.progress` : la part construite, le reste en terre pleine. Brief validé par Pierre-Alain le 20 octobre 2026. 1 800 triangles au plus (60 m, 6 puits), 5 matériaux.
 - Le sous-sol commun (`shared-basement`) est livré : validé sur planche par Pierre-Alain le 20 octobre 2026. Le lot G2 est terminé.
+- La pelleteuse (`excavator`, `VEH_EXCAVATOR_A_v001`) est livrée : pelle classique sur chenilles, cycle de creusement de 8 s avec vérins calculés, 5 200 triangles (3 220 en basse), 5 matériaux ; validée sur planche par Pierre-Alain le 20 octobre 2026.
 
 ## 0.2.0, 18 octobre 2026
 

@@ -852,7 +852,7 @@
       "acceptance": [
         "Utilisable seule ou dans le bâtiment en état excavation"
       ],
-      "status": "à faire",
+      "status": "livré",
       "data": {},
       "production": "blender",
       "blender": "VEH_EXCAVATOR_A_v001",
