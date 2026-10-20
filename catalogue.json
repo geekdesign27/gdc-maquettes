@@ -612,7 +612,7 @@
         "En qualité low, moins de 6000 triangles",
         "Clic sur le bâtiment : GDC ouvre la vue intérieure (building-interior)"
       ],
-      "status": "à faire",
+      "status": "livré",
       "data": {
         "progress": "0 à 1, avancement dans l'état courant (fait monter la structure)"
       },
