@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-44 éléments : 22 livré, 20 à faire, 2 exemple.
+44 éléments : 23 livré, 19 à faire, 2 exemple.
 
 ## G0 : La ligne graphique
 
@@ -336,7 +336,7 @@ Montrer qui travaille, où, et dans quel état.
 | 2 | `character` | Le personnage (un agent) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer qui travaille, où, et dans quel état. | livré |
 | 3 | `excavator` | La pelleteuse | Composant 3D Three.js, conforme à docs/contrat-composant.md | L'état fouille d'un bâtiment : le terrassement d'une nouvelle application. | livré |
 | 4 | `crane` | La grue | Composant 3D Three.js, conforme à docs/contrat-composant.md | La fusion vers dev, à la réception : on pose la pièce finie. | livré |
-| 5 | `delivery-truck` | Le camion de livraison | Composant 3D Three.js, conforme à docs/contrat-composant.md | L'arrivée d'une nouvelle dépendance : un événement à surveiller pour la sécurité. | à faire |
+| 5 | `delivery-truck` | Le camion de livraison | Composant 3D Three.js, conforme à docs/contrat-composant.md | L'arrivée d'une nouvelle dépendance : un événement à surveiller pour la sécurité. | livré |
 
 ### Le personnage maître et son équipe (`character-kit`)
 
@@ -411,6 +411,7 @@ Un camion de chantier ; en état arriving, GDC le déplace jusqu'à l'aire et le
 
 - Fichier : `components/machine/delivery-truck/index.js`
 - Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `VEH_DELIVERY_TRUCK_A_v001`
+- Modèles : `VEH_DELIVERY_TRUCK_A_v001.glb`
 - Animations : `ANM_DELIVERY_TRUCK_A_UNLOAD`
 - États : `idle`, `arriving`
 - Ancres : `label`, `badge`
