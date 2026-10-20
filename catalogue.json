@@ -620,7 +620,8 @@
       "kit": "building-kit",
       "assets": [
         "BLD_SITEWORK_A_v001.glb",
-        "kit:building-kit/BLD_KIT_A_v003.glb"
+        "kit:building-kit/BLD_KIT_A_v003.glb",
+        "machine:excavator/VEH_EXCAVATOR_A_v001.glb"
       ]
     },
     {

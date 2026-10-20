@@ -65,6 +65,7 @@
 - Bible 18.3 : chanfrein C4, l'arrondi d'engin (0,20 m, 3 segments), décision de Pierre-Alain du 20 octobre 2026 ; régularise le capot de la pelleteuse.
 - Le camion de livraison (`delivery-truck`, `VEH_DELIVERY_TRUCK_A_v001`) est livré : camion benne à quatre essieux, cabine arrondie en C4, déchargement joué une fois (benne levée, vérin télescopique, tas posé derrière), 5 084 triangles (4 256 en basse), 5 matériaux ; validé sur planche par Pierre-Alain le 20 octobre 2026. Le lot G3 est terminé.
 - Contrat : un composant peut emprunter le modèle d'un autre composant, `'<catégorie>:<id>/FICHIER.glb'` dans `meta.assets` (`kit:` en est un cas particulier, inchangé) ; le modèle emprunté est contrôlé chez son propriétaire. Accord de Pierre-Alain du 20 octobre 2026, pour la pelleteuse du bâtiment.
+- Bâtiment 1.1 (`building`, composant 1.1.0), en attente de la validation sur planche : en état `excavation`, la pelleteuse livrée (`machine:excavator/VEH_EXCAVATOR_A_v001.glb`) creuse au fond de la fouille, en biais vers le fond (lacet 200°, centre à 2,40 m du bord droit de l'emprise) ; son quart de tour vide le godet au-dessus du tas de déblais. Cycle de 8 s piloté par `update(dt)`, image fixe avec `reducedMotion`, détails retirés en qualité basse. Label et progress montent au-dessus du bras ; le badge passe au coin de la fouille, au sol. 5 956 triangles, 3 624 en qualité basse, 6 matériaux.
 
 ## 0.2.0, 18 octobre 2026
 

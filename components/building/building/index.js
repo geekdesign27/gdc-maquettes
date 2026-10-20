@@ -9,12 +9,23 @@
 //   demonte), finishing (crepi, rez eclaire, echafaudage sur une facade), completed (habite : fenetres eclairees) ;
 // - qualite basse : les pieces _LOW du kit (bible 18.3) ; qualite haute : au-dela du budget de la fiche, les niveaux
 //   du haut passent aux pieces _LOW, du dernier vers le bas (allegement automatique, decision du brief) ;
-// - la pelleteuse de l'etat excavation viendra avec excavator (lot G3), dans la version 1.1.
+// - version 1.1 (brief valide par Pierre-Alain le 20 octobre 2026) : en excavation, la pelleteuse livree (excavator)
+//   creuse au fond de la fouille ; son modele est emprunte (machine:excavator), son cycle rejoue ici, comme dans
+//   excavator (on n'importe pas le code d'un autre dossier).
 // Les modeles sont partages entre instances : on ne libere jamais leurs geometries ni leurs materiaux ici ; seul le
 // verre eclaire, cree par ce composant, est libere. Aucune couleur d'etat dans la scene ; aucun texte.
 
 const KIT = "kit:building-kit/BLD_KIT_A_v003.glb";
 const PARCELLE = "BLD_SITEWORK_A_v001.glb";
+const PELLETEUSE = "machine:excavator/VEH_EXCAVATOR_A_v001.glb";
+const CLIP_PELLETEUSE = "ANM_EXCAVATOR_A_DIGGING";
+const IMAGE_FIXE = 150 / 30; // sans animation : fleche levee, tournee vers le tas, godet plein (comme excavator)
+// La pelleteuse au fond de la fouille : elle creuse vers le fond en biais, et son quart de tour a droite amene le godet
+// (vide a 4,7 m de la tourelle) au-dessus du tas de deblais. Chenilles et queue de tourelle restent dans le fond.
+const PELLE_RECUL = 2.4; // du bord droit de l'emprise au centre des chenilles
+const PELLE_Y = -1.2;
+const PELLE_LACET = 200; // degres : 180 (face au fond) + 20 (en biais vers la gauche)
+const PELLE_HAUT = 4.5; // label et progress passent au-dessus du bras leve ; le badge descend au coin de la fouille
 const K = "BLD_KIT_A_";
 const S = "BLD_SITEWORK_A_";
 const TRAME = 3.0;
@@ -23,12 +34,13 @@ const DALLE = 0.3;
 const ACROTERE = 0.5;
 const RIVE = 0.2;
 const DEBORD_ECHAFAUDAGE = 0.3 + 0.8 - 0.04 - RIVE / 2; // du garde-corps de rive au bord exterieur du plancher
+const FOUILLE = 0.5; // profondeur de la fouille
 const MARGE_FOUILLE = 1.1; // du nu de l'emprise au bord de la fouille (fond 0,60 m et talus de 0,50 m)
 const MONTEE = 0.5; // part d'un niveau ou montent les poteaux ; le reste pose les cases de la dalle une a une
 
 export const meta = {
   id: "building",
-  version: "1.0.0",
+  version: "1.1.0",
   category: "building",
   states: [
     "plot",
@@ -51,8 +63,8 @@ export const meta = {
   },
   anchors: ["label", "badge", "progress", "door"],
   budget: { triangles: 20000, materials: 10 },
-  animated: false,
-  assets: [PARCELLE, KIT],
+  animated: true,
+  assets: [PARCELLE, KIT, PELLETEUSE],
 };
 
 const versThree = (x, y, z) => [x, z, -y];
@@ -126,6 +138,19 @@ export function create(THREE, params, ctx) {
   root.name = "building";
   root.userData.component = meta.id;
   const basse = ctx.quality === "low";
+
+  // La pelleteuse : une copie par instance, ajoutee au root seulement en excavation. Qualite basse (bible 18.3) : ses
+  // noeuds *_DETAIL (petits galets, patins, lame, verins) sont retires.
+  const pelle = ctx.assets[PELLETEUSE].scene;
+  const details = [];
+  pelle.traverse((o) => {
+    if (basse && o.name.endsWith("_DETAIL")) details.push(o);
+  });
+  for (const o of details) o.removeFromParent();
+  const mixer = new THREE.AnimationMixer(pelle);
+  const creuse = mixer.clipAction(
+    THREE.AnimationClip.findByName(ctx.assets[PELLETEUSE].animations, CLIP_PELLETEUSE),
+  );
 
   const type = meta.params.type.values.includes(params.type)
     ? params.type
@@ -316,7 +341,10 @@ export function create(THREE, params, ctx) {
         terrain(`PIT_${t.nx}X2`);
         // le tas de deblais sur la marge droite, entre la fouille et le bord du socle, dans le sens de la profondeur
         terrain("SPOIL_HEAP", t.ax[t.nx] + MARGE_FOUILLE + 0.9, 0.4, 90);
-        if (state === "excavation") break;
+        if (state === "excavation") {
+          hauteur = PELLE_HAUT;
+          break;
+        }
         for (const x of t.ax)
           for (const y of t.ay) {
             pose("FOOTING", x, y, 0);
@@ -472,6 +500,11 @@ export function create(THREE, params, ctx) {
         });
       root.add(piece);
     });
+    if (state === "excavation") {
+      pelle.position.set(...versThree(t.ax[t.nx] - PELLE_RECUL, PELLE_Y, -FOUILLE));
+      pelle.rotation.set(0, THREE.MathUtils.degToRad(PELLE_LACET), 0);
+      root.add(pelle);
+    }
     root.traverse((o) => {
       if (o.isMesh) o.castShadow = o.receiveShadow = !basse;
     });
@@ -479,25 +512,47 @@ export function create(THREE, params, ctx) {
     const [xPorte] = t.facades.avant.points[porte];
     Object.assign(ancres, {
       label: versThree(0, 0, hauteur + 1.5),
-      badge: versThree(t.ax[t.nx], avant, hauteur + 0.6),
+      // en excavation, le coin de l'emprise est cache par la pelleteuse : le badge passe au coin de la fouille, au sol
+      badge:
+        state === "excavation"
+          ? versThree(t.ax[t.nx] + MARGE_FOUILLE, avant - MARGE_FOUILLE, 0)
+          : versThree(t.ax[t.nx], avant, hauteur + 0.6),
       progress: versThree(0, avant - 1.2, Math.max(hauteur, DALLE) + 0.6),
       door: versThree(xPorte, avant - RIVE - 0.9, 0),
     });
   };
 
+  // le cycle de creusement : joue en excavation ; avec reducedMotion, une image fixe et lisible
+  const joue = () => {
+    creuse.stop();
+    if (state === "excavation") {
+      creuse.reset().play();
+      if (ctx.reducedMotion) {
+        mixer.setTime(IMAGE_FIXE);
+        creuse.paused = true;
+      }
+    }
+    mixer.update(0);
+  };
+
   let state = "plot";
   construit(state);
+  joue();
 
   return {
     root,
     setState(next, data = {}) {
       if (!meta.states.includes(next))
         throw new Error(`état inconnu : ${next}`);
+      const avant = state;
       state = next;
       construit(state, data.progress);
+      if (state !== avant) joue(); // un nouveau progress ne relance pas le cycle
     },
-    update() {
-      return false;
+    update(dt) {
+      if (state !== "excavation" || ctx.reducedMotion) return false;
+      mixer.update(dt);
+      return true;
     },
     anchor(name) {
       const p = ancres[name];
@@ -505,6 +560,8 @@ export function create(THREE, params, ctx) {
       return new THREE.Vector3(...p);
     },
     dispose() {
+      mixer.stopAllAction();
+      mixer.uncacheRoot(pelle);
       root.clear();
       verreEclaire.dispose();
     },
