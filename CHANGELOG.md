@@ -59,6 +59,7 @@
 - Le bâtiment d'une application (`building`) est livré : validé sur planche par Pierre-Alain le 20 octobre 2026.
 - Les gabarits (`survey-poles`), en attente de la validation sur planche : quatre perches en bois aux angles du volume futur (`width`, `depth`, `height`), un ruban corail en haut qui en dessine le contour, deux contrefiches et un plot de béton au pied de chaque perche ; tout en code. 240 triangles et 3 matériaux ; en qualité basse, perches et rubans seulement (96 triangles, 2 matériaux). Couleurs validées par Pierre-Alain le 20 octobre 2026.
 - Les gabarits (`survey-poles`) sont livrés : validés sur planche par Pierre-Alain le 20 octobre 2026.
+- Le sous-sol commun (`shared-basement`), en attente de la validation sur planche : un bloc de terre en coupe sous le niveau du sol, posé par GDC sous la rue ; la galerie en béton (dalles du kit v003), trois gaines au pied du mur du fond, un puits par bâtiment relié (`links`) avec échelle, montante et trappe. `default` : gaines graphite ; `active` : gaines en bleu tech ; `data.progress` : la part construite, le reste en terre pleine. Brief validé par Pierre-Alain le 20 octobre 2026. 1 800 triangles au plus (60 m, 6 puits), 5 matériaux.
 
 ## 0.2.0, 18 octobre 2026
 

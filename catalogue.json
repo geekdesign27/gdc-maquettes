@@ -688,7 +688,10 @@
         "progress": "0 à 1, avancement de la galerie"
       },
       "production": "mixte",
-      "kit": "building-kit"
+      "kit": "building-kit",
+      "assets": [
+        "kit:building-kit/BLD_KIT_A_v003.glb"
+      ]
     },
     {
       "id": "character-kit",
