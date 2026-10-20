@@ -71,7 +71,7 @@ let pending = 0;
 for (const entry of items) {
   const dossier = join(ROOT, 'components', entry.category, entry.id);
   const fichiers = entry.assets || [];
-  const propres = fichiers.filter((f) => !f.startsWith('kit:'));
+  const propres = fichiers.filter((f) => !f.includes(':')); // ceux d'un autre dossier sont controles chez eux
   const code = join(dossier, 'index.js');
   const present = entry.kind === 'kit' ? propres.some((f) => existsSync(join(dossier, f))) : existsSync(code);
   if (!present) {

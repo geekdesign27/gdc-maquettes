@@ -1,10 +1,12 @@
 // Les modeles 3D (GLB produits par les scripts Blender) : charges une fois par l'hote (galerie, controle, GDC),
 // puis copies pour chaque instance. Un composant ne charge jamais rien lui-meme : il recoit ctx.assets.
 //
-// Nom d'un asset dans meta.assets : 'FICHIER.glb' (dossier du composant) ou 'kit:<id>/FICHIER.glb' (dossier d'un kit).
+// Nom d'un asset dans meta.assets : 'FICHIER.glb' (dossier du composant) ou '<categorie>:<id>/FICHIER.glb' (dossier
+// d'un autre composant ou d'un kit : 'kit:building-kit/...', 'machine:excavator/...').
 
 export function cleAsset(meta, nom) {
-  if (nom.startsWith('kit:')) return 'kit/' + nom.slice(4);
+  const deux = nom.indexOf(':');
+  if (deux > 0) return nom.slice(0, deux) + '/' + nom.slice(deux + 1);
   return meta.category + '/' + meta.id + '/' + nom;
 }
 

@@ -64,6 +64,7 @@
 - La pelleteuse (`excavator`, `VEH_EXCAVATOR_A_v001`) est livrée : pelle classique sur chenilles, cycle de creusement de 8 s avec vérins calculés, 5 200 triangles (3 220 en basse), 5 matériaux ; validée sur planche par Pierre-Alain le 20 octobre 2026.
 - Bible 18.3 : chanfrein C4, l'arrondi d'engin (0,20 m, 3 segments), décision de Pierre-Alain du 20 octobre 2026 ; régularise le capot de la pelleteuse.
 - Le camion de livraison (`delivery-truck`, `VEH_DELIVERY_TRUCK_A_v001`) est livré : camion benne à quatre essieux, cabine arrondie en C4, déchargement joué une fois (benne levée, vérin télescopique, tas posé derrière), 5 084 triangles (4 256 en basse), 5 matériaux ; validé sur planche par Pierre-Alain le 20 octobre 2026. Le lot G3 est terminé.
+- Contrat : un composant peut emprunter le modèle d'un autre composant, `'<catégorie>:<id>/FICHIER.glb'` dans `meta.assets` (`kit:` en est un cas particulier, inchangé) ; le modèle emprunté est contrôlé chez son propriétaire. Accord de Pierre-Alain du 20 octobre 2026, pour la pelleteuse du bâtiment.
 
 ## 0.2.0, 18 octobre 2026
 

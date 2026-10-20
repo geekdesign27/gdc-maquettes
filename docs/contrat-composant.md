@@ -65,7 +65,7 @@ Un composant ne sort jamais d'événement : le clic, le survol et la sélection 
 
 Un composant peut s'appuyer sur un ou plusieurs modèles produits par un script Blender (`blender/assets/<id>.py`, voir `blender/README.md`).
 
-- **Déclaration** : `meta.assets` liste les fichiers, identiques à la fiche du catalogue : `'VEH_TOWER_CRANE_A_v001.glb'` (dans le dossier du composant) ou `'kit:building-kit/BLD_KIT_A_v003.glb'` (dans le dossier d'un kit, `components/kit/<id>/`).
+- **Déclaration** : `meta.assets` liste les fichiers, identiques à la fiche du catalogue : `'VEH_TOWER_CRANE_A_v001.glb'` (dans le dossier du composant) ou `'<catégorie>:<id>/FICHIER.glb'` (dans le dossier d'un kit ou d'un autre composant, `components/<catégorie>/<id>/`) : `'kit:building-kit/BLD_KIT_A_v003.glb'`, `'machine:excavator/VEH_EXCAVATOR_A_v001.glb'`. Un modèle emprunté est contrôlé chez son propriétaire ; le composant qui l'emprunte réécrit ce qu'il en joue (il n'importe jamais le code d'un autre dossier).
 - **Chargement par l'hôte** : la galerie, le contrôle et GDC chargent les modèles avant `create` et passent à chaque instance sa copie dans `ctx.assets[nom] = { scene, animations }`. Le composant ne charge jamais rien lui-même.
 - **Ressources partagées** : la géométrie et les matériaux du modèle sont partagés entre instances. `dispose()` retire la copie de la scène et arrête ses animations, mais ne libère jamais une ressource du modèle ; le contrôle le vérifie. Un matériau que le composant modifie (par exemple grisé pour `unknown`) est d'abord cloné, et ce clone, lui, est libéré.
 - **Animations** : les clips du modèle (`ANM_...`) sont joués avec `THREE.AnimationMixer`, avancé dans `update(dt)` ; avec `reducedMotion`, une image fixe et lisible de l'état.
