@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-44 éléments : 28 à faire, 14 livré, 2 exemple.
+44 éléments : 27 à faire, 15 livré, 2 exemple.
 
 ## G0 : La ligne graphique
 
@@ -66,7 +66,7 @@ Poser le plan du chantier dans l'ordre du parcours : bureau d'architecte, bureau
 | 6 | `control-office` | Le bureau de contrôle | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le poste qui mesure et tamponne les preuves ; c'est un programme, pas un personnage. | livré |
 | 7 | `site-office` | La baraque du conducteur de travaux | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu de la coordination : planning des lots, chef de chantier, répartition des agents. | livré |
 | 8 | `parking` | Le parking : le carnet des demandes | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer les demandes en attente de tri, sous forme de caisses de matériel. | livré |
-| 9 | `reception-area` | La zone de réception | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu des essais et de la visite, avant la remise des clés. | à faire |
+| 9 | `reception-area` | La zone de réception | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu des essais et de la visite, avant la remise des clés. | livré |
 | 10 | `site-fence` | La clôture de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Cloisonner le chantier, comme tout chantier romand. | à faire |
 | 11 | `waste-skip` | La benne de tri | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le tri des déchets de chantier, obligatoire (OLED, art. 17). | à faire |
 
@@ -161,7 +161,7 @@ Un conteneur du kit container-kit aménagé en salle de décision : table de ré
 - Budget : 20000 triangles, 10 matériaux
 - Critères d'acceptation :
   - En waiting, visible de loin sans être criard
-  - Seul lieu qui utilise le rouge de signalisation
+  - Le rouge de signalisation ne sert qu'aux décisions qui t'attendent (badge HTML), ici et à la zone de réception
 
 ### Le bureau de contrôle (`control-office`)
 
@@ -210,12 +210,13 @@ Une aire marquée de capacity places (rangs de 4), sur un socle maquette ; data.
 
 ### La zone de réception (`reception-area`)
 
-Une aire avec un pupitre d'essais et un panneau « réception » ; la commission de réception s'y tient.
+Une aire en plein air sur son socle : un auvent sur quatre poteaux, dessous le pupitre d'essais (deux écrans) et un capteur sur trépied, devant un totem à la clé en relief (le panneau « réception », sans texte) et deux bacs de verdure. Anne (la commission de réception) au pupitre, le client à côté du totem, Olivier (le surveillant) à côté d'Anne (ancres desk:1 à desk:3). En active (les essais), les écrans s'allument et la tête du capteur pivote une fois par essai ; en waiting (la réception attend ta décision), une clé géante est posée sur le pupitre et le badge HTML rouge est sur l'ancre badge. Aucune couleur d'état dans la 3D (décisions de Pierre-Alain du 20 octobre 2026).
 
 - Fichier : `components/site/reception-area/index.js`
 - Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `BLD_DELIVERY_AREA_A_v001` ; famille `BLD_DELIVERY`
+- Modèles : `BLD_DELIVERY_AREA_A_v001.glb`
 - États : `idle`, `active`, `waiting`
-- Ancres : `label`, `badge`
+- Ancres : `label`, `badge`, `desk:*`
 - Données reçues par setState : aucune
 - Budget : 10000 triangles, 8 matériaux
 - Critères d'acceptation :
