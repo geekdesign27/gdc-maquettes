@@ -6,8 +6,8 @@
   "script": "blender/assets/container-kit.py",
   "script_sha256": "4ee1b2d941ee2ba30531f707c34b620f32dea6c4fe20061ede92e29a2c9876df",
   "commun_sha256": "d31db270f510bb4a40a645bc9a47a1af015eb52183477fb9e579cd8caf72edd7",
-  "palette_sha256": "4d7c5c91813ad7950d154c5d52b5e7164c27aeda6a4bd02c10bce89f0ab20b4f",
-  "glb_sha256": "08dc545da01ab88d3e79fc279b2008913b64abb7c6b35347a1dfe7e254a6bf18",
+  "palette_sha256": "aa140a55ff82e130dff965264849b10e8f1c9651f4cb29109fcc99593fbe33c7",
+  "glb_sha256": "5b995dea82f68d5de1aa6239513baefd6aa91f3dc7203f1737e736cc11f6f87d",
   "animations": [],
   "statut": "a valider"
 }

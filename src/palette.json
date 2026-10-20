@@ -14,6 +14,7 @@
     "wood": "#D2A273",
     "rubber": "#232426",
     "glass": "#9CC3D5",
+    "glass_lit": "#F8E0B0",
     "steel": "#A7AFB7",
     "aluminium": "#C9CED3",
     "skip_olive": "#8B8B4B",
@@ -111,6 +112,11 @@
     },
     "MAT_GLASS": {
       "couleur": "glass",
+      "rugosite": 0.2,
+      "metal": 0.0
+    },
+    "MAT_GLASS_LIT": {
+      "couleur": "glass_lit",
       "rugosite": 0.2,
       "metal": 0.0
     },

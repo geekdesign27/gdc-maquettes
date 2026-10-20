@@ -6,7 +6,7 @@
   "script": "blender/assets/site-fence.py",
   "script_sha256": "d7b791be4ec23ca711cd293ecb65c312f5ded796ff7f8e60e3b1398452d99890",
   "commun_sha256": "d31db270f510bb4a40a645bc9a47a1af015eb52183477fb9e579cd8caf72edd7",
-  "palette_sha256": "4d7c5c91813ad7950d154c5d52b5e7164c27aeda6a4bd02c10bce89f0ab20b4f",
+  "palette_sha256": "aa140a55ff82e130dff965264849b10e8f1c9651f4cb29109fcc99593fbe33c7",
   "glb_sha256": "c93bec3c102536a734737310d9bbe99f4759fd8eb74a1aac4071a2e29cb31787",
   "animations": [],
   "statut": "a valider"
