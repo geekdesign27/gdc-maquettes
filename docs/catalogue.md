@@ -285,7 +285,7 @@ Assemblé par le code à partir du kit de bâtiment, selon le type et la taille.
 
 - Fichier : `components/building/building/index.js`
 - Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `building-kit`
-- Modèles : `BLD_SITEWORK_A_v001.glb`, `kit:building-kit/BLD_KIT_A_v003.glb`
+- Modèles : `BLD_SITEWORK_A_v001.glb`, `kit:building-kit/BLD_KIT_A_v003.glb`, `machine:excavator/VEH_EXCAVATOR_A_v001.glb`
 - Paramètres : `type` (house | block | hall, défaut block) ; `floors` (nombre, 1 à 6, défaut 3) ; `wings` (nombre de fiches, 1 à 8, défaut 3)
 - États : `plot`, `excavation`, `foundations`, `structure`, `envelope`, `finishing`, `completed`, `inspection`
 - Ancres : `label`, `badge`, `progress`, `door`
@@ -431,12 +431,12 @@ Au clic, entrer dans un bâtiment ou un bureau : une pièce par fiche, les ouvri
 
 ### L'intérieur d'un bâtiment (`building-interior`)
 
-Une coupe du bâtiment en pièces ; data.rooms donne, pour chaque pièce, son état (study, waiting, construction, reception, done, defect) et les métiers présents. Les personnages sont des composants character posés par GDC aux ancres room:n.
+Une coupe du bâtiment en pièces, de plain-pied, en maison de poupée comme les bureaux en conteneur (sans toit, murs côté caméra et cloisons coupés à l'allège) ; une pièce de 6 × 3 m par fiche, en grappe, jamais en ligne. data.rooms donne, pour chaque pièce, son état (study, waiting, construction, reception, done, defect) et les métiers présents ; quatre aspects (décision de Pierre-Alain du 20 octobre 2026) : study et waiting vides, construction en travaux, reception et done finies, defect avec un défaut visible. Les personnages sont des composants character posés par GDC aux ancres room:n. État default : la vue s'ouvre (les murs montent) ; hidden : elle se ferme (ils redescendent).
 
 - Fichier : `components/interior/building-interior/index.js`
 - Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `building-kit`
 - Paramètres : `rooms` (nombre, 1 à 12, défaut 4)
-- États : `default`
+- États : `default`, `hidden`
 - Ancres : `label`, `room:*`
 - Données reçues par setState : `rooms` (liste, une entrée par fiche : { state: study \| waiting \| construction \| reception \| done \| defect, trades: [métiers présents] })
 - Budget : 20000 triangles, 10 matériaux

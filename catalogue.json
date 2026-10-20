@@ -948,12 +948,13 @@
       "category": "interior",
       "name": "L'intérieur d'un bâtiment",
       "purpose": "La vue micro : une pièce par fiche, et les ouvriers au travail dans chacune.",
-      "description": "Une coupe du bâtiment en pièces ; data.rooms donne, pour chaque pièce, son état (study, waiting, construction, reception, done, defect) et les métiers présents. Les personnages sont des composants character posés par GDC aux ancres room:n.",
+      "description": "Une coupe du bâtiment en pièces, de plain-pied, en maison de poupée comme les bureaux en conteneur (sans toit, murs côté caméra et cloisons coupés à l'allège) ; une pièce de 6 × 3 m par fiche, en grappe, jamais en ligne. data.rooms donne, pour chaque pièce, son état (study, waiting, construction, reception, done, defect) et les métiers présents ; quatre aspects (décision de Pierre-Alain du 20 octobre 2026) : study et waiting vides, construction en travaux, reception et done finies, defect avec un défaut visible. Les personnages sont des composants character posés par GDC aux ancres room:n. État default : la vue s'ouvre (les murs montent) ; hidden : elle se ferme (ils redescendent).",
       "params": {
         "rooms": "nombre, 1 à 12, défaut 4"
       },
       "states": [
-        "default"
+        "default",
+        "hidden"
       ],
       "anchors": [
         "label",
