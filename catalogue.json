@@ -537,7 +537,7 @@
         "Reconnaissable comme benne de chantier sans légende",
         "Les contenus se distinguent par leur forme en niveaux de gris"
       ],
-      "status": "à faire",
+      "status": "livré",
       "data": {},
       "production": "blender",
       "blender": "ENV_WASTE_SKIP_A_v001",
