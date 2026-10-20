@@ -1,0 +1,15 @@
+{
+  "nom": "VEH_DELIVERY_TRUCK_A_v001",
+  "id": "delivery-truck",
+  "bible": "WORKSITE 1.2",
+  "blender": "5.3.0 Beta",
+  "script": "blender/assets/delivery-truck.py",
+  "script_sha256": "572ec176f525c797df09dc8da6d32d0374fd06eb22c06e8d4c3cd90fed4bcc9a",
+  "commun_sha256": "e8cb480c62b7bdb8b54460ec91e343989e89e93987616cc2711afd5dbcdf2f80",
+  "palette_sha256": "aa140a55ff82e130dff965264849b10e8f1c9651f4cb29109fcc99593fbe33c7",
+  "glb_sha256": "0f62a7a95491f80e0670a7bbc5398ed10ee86c1686e5fd3ed6cc93aaea34cb41",
+  "animations": [
+    "ANM_DELIVERY_TRUCK_A_UNLOAD"
+  ],
+  "statut": "a valider"
+}

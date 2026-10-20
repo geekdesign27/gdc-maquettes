@@ -932,6 +932,9 @@
       "data": {},
       "production": "blender",
       "blender": "VEH_DELIVERY_TRUCK_A_v001",
+      "assets": [
+        "VEH_DELIVERY_TRUCK_A_v001.glb"
+      ],
       "animations": [
         "ANM_DELIVERY_TRUCK_A_UNLOAD"
       ]
