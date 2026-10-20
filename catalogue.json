@@ -205,7 +205,7 @@
       "kit": "container-kit",
       "assets": [
         "kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb",
-        "kit:building-kit/BLD_KIT_A_v001.glb"
+        "kit:building-kit/BLD_KIT_A_v002.glb"
       ]
     },
     {
@@ -246,7 +246,7 @@
       "kit": "container-kit",
       "assets": [
         "kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb",
-        "kit:building-kit/BLD_KIT_A_v001.glb"
+        "kit:building-kit/BLD_KIT_A_v002.glb"
       ]
     },
     {
@@ -286,7 +286,7 @@
       "kit": "container-kit",
       "assets": [
         "kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb",
-        "kit:building-kit/BLD_KIT_A_v001.glb"
+        "kit:building-kit/BLD_KIT_A_v002.glb"
       ]
     },
     {
@@ -324,7 +324,7 @@
       "kit": "container-kit",
       "assets": [
         "kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb",
-        "kit:building-kit/BLD_KIT_A_v001.glb"
+        "kit:building-kit/BLD_KIT_A_v002.glb"
       ]
     },
     {
@@ -362,7 +362,7 @@
       "kit": "container-kit",
       "assets": [
         "kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb",
-        "kit:building-kit/BLD_KIT_A_v001.glb"
+        "kit:building-kit/BLD_KIT_A_v002.glb"
       ]
     },
     {
@@ -558,7 +558,7 @@
       "purpose": "Les pièces modulaires communes à tous les bâtiments, aux mêmes dimensions d'assemblage.",
       "description": "Sols, fondations, poteaux, poutres, dalles, murs, portes, fenêtres, toitures, escaliers, échafaudages, enseignes (bible, section 6) ; trame commune de 3 mètres. Utilisé par building, building-interior et les bureaux.",
       "assets": [
-        "BLD_KIT_A_v001.glb"
+        "BLD_KIT_A_v002.glb"
       ],
       "budget": {
         "triangles": 20000,

@@ -121,7 +121,7 @@ Un conteneur du kit container-kit aménagé en bureau d'architecte, montré en c
 
 - Fichier : `components/site/architect-office/index.js`
 - Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `container-kit` ; famille `BLD_ARCHITECT`
-- Modèles : `kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb`, `kit:building-kit/BLD_KIT_A_v001.glb`
+- Modèles : `kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb`, `kit:building-kit/BLD_KIT_A_v002.glb`
 - États : `idle`, `active`
 - Ancres : `label`, `badge`, `door`, `desk:*`
 - Données reçues par setState : aucune
@@ -137,7 +137,7 @@ Une grappe de 1 à 4 conteneurs du kit container-kit accolés par le long pan (j
 
 - Fichier : `components/site/design-office/index.js`
 - Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `container-kit` ; famille `BLD_ENGINEERING`
-- Modèles : `kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb`, `kit:building-kit/BLD_KIT_A_v001.glb`
+- Modèles : `kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb`, `kit:building-kit/BLD_KIT_A_v002.glb`
 - Paramètres : `desks` (nombre, 1 à 8, défaut 8)
 - États : `idle`, `active`
 - Ancres : `label`, `badge`, `door`, `desk:*`
@@ -154,7 +154,7 @@ Un conteneur du kit container-kit aménagé en salle de décision : table de ré
 
 - Fichier : `components/site/client-office/index.js`
 - Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `container-kit`
-- Modèles : `kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb`, `kit:building-kit/BLD_KIT_A_v001.glb`
+- Modèles : `kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb`, `kit:building-kit/BLD_KIT_A_v002.glb`
 - États : `idle`, `waiting`
 - Ancres : `label`, `badge`, `board`, `desk:*`
 - Données reçues par setState : `count` (nombre de décisions attendues (affiché par GDC sur l'ancre badge))
@@ -169,7 +169,7 @@ Un conteneur du kit container-kit équipé en machine : armoires de mesure, tré
 
 - Fichier : `components/site/control-office/index.js`
 - Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `container-kit` ; famille `BLD_QA`
-- Modèles : `kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb`, `kit:building-kit/BLD_KIT_A_v001.glb`
+- Modèles : `kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb`, `kit:building-kit/BLD_KIT_A_v002.glb`
 - États : `idle`, `active`, `error`
 - Ancres : `label`, `badge`, `desk:*`
 - Données reçues par setState : aucune
@@ -184,7 +184,7 @@ Deux conteneurs du kit container-kit empilés, avec escalier extérieur et cours
 
 - Fichier : `components/site/site-office/index.js`
 - Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `container-kit` ; famille `BLD_COORDINATION`
-- Modèles : `kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb`, `kit:building-kit/BLD_KIT_A_v001.glb`
+- Modèles : `kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb`, `kit:building-kit/BLD_KIT_A_v002.glb`
 - États : `idle`, `active`
 - Ancres : `label`, `badge`, `entry`, `desk:*`, `crew:*`
 - Budget : 20000 triangles, 10 matériaux
@@ -272,7 +272,7 @@ Sols, fondations, poteaux, poutres, dalles, murs, portes, fenêtres, toitures, e
 
 - Dossier : `components/kit/building-kit/`, script `blender/assets/building-kit.py`
 - Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres)
-- Modèles : `BLD_KIT_A_v001.glb`
+- Modèles : `BLD_KIT_A_v002.glb`
 - Budget : 20000 triangles, 10 matériaux
 - Critères d'acceptation :
   - Toutes les pièces partagent la même trame et la même hauteur d'étage

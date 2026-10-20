@@ -12,7 +12,7 @@
 // reprennent ceux d'architect-office : le contrat interdit d'importer d'un autre dossier de composant.
 
 const KIT = "kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb";
-const KIT_BATIMENT = "kit:building-kit/BLD_KIT_A_v001.glb";
+const KIT_BATIMENT = "kit:building-kit/BLD_KIT_A_v002.glb";
 const P = "ENV_CONTAINER_KIT_A_";
 const PLANCHER = 0.2;
 const NU_BOUT = 3.55; // face exterieure de la paroi du bout droit
@@ -29,7 +29,7 @@ const SOCLE = {
 
 export const meta = {
   id: "control-office",
-  version: "1.1.0",
+  version: "1.1.1",
   category: "site",
   states: ["idle", "active", "error"],
   params: {},

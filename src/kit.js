@@ -47,8 +47,12 @@ export function create(THREE, entry, plan, assets, ctx) {
   const kit = assets[entry.assets[0]].scene;
   const manquantes = new Set();
 
+  // Qualite basse (bible 18.3) : la piece <PIECE>_LOW du kit quand elle existe, sinon la piece elle-meme.
+  const basse = ctx.quality === "low";
   for (const p of plan.pieces) {
-    const source = kit.getObjectByName(p.piece);
+    const source =
+      (basse && kit.getObjectByName(p.piece + "_LOW")) ||
+      kit.getObjectByName(p.piece);
     if (!source) {
       manquantes.add(p.piece);
       continue;

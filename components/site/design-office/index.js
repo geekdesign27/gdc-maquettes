@@ -11,7 +11,7 @@
 // d'un autre dossier de composant.
 
 const KIT = "kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb";
-const KIT_BATIMENT = "kit:building-kit/BLD_KIT_A_v001.glb";
+const KIT_BATIMENT = "kit:building-kit/BLD_KIT_A_v002.glb";
 const P = "ENV_CONTAINER_KIT_A_";
 const LARGE = 3.0; // pas des conteneurs accoles par le long pan : leurs poteaux se touchent
 const PLANCHER = 0.2;
@@ -30,7 +30,7 @@ const SOCLE = {
 
 export const meta = {
   id: "design-office",
-  version: "2.1.0",
+  version: "2.1.1",
   category: "site",
   states: ["idle", "active"],
   params: { desks: { type: "number", default: 8, min: 1, max: 8 } },

@@ -12,11 +12,15 @@ Etage de 3,00 m dalle a dalle, dalle 0,30 m : un etage pose a z est occupe de z 
 
 demonstration() donne le plan du batiment de demonstration (2 x 2 trames, deux etages, sur son socle) :
 l'atelier le monte pour les captures, construit.py l'ecrit a cote du GLB et la galerie l'assemble depuis le GLB.
+
+v002 : la qualite basse (bible 18.3 : ce qui mesure moins de 0,30 m est supprime ou fusionne). Les pieces de la v001
+sont inchangees ; le GLB porte en plus des pieces BLD_KIT_A_<PIECE>_LOW, aux aretes vives, posees au meme point
+d'assemblage. En qualite basse, on assemble <PIECE>_LOW quand elle existe, sinon <PIECE> (la dalle n'en a pas besoin).
 """
 
 import math
 
-ASSET = {"id": "building-kit", "categorie": "kit", "nom": "BLD_KIT_A_v001"}
+ASSET = {"id": "building-kit", "categorie": "kit", "nom": "BLD_KIT_A_v002"}
 
 P = "BLD_KIT_A_"
 TRAME = 3.0
@@ -67,6 +71,55 @@ def _baie_fenetre(c, nom):
     c.chanfreine(cadre, C1, 2)
     verre = c.boite(P + nom + "_GLASS", (l - 0.20, 0.04, h - 0.20), (0, 0.11, ALLEGE + 0.10), mat="MAT_GLASS")
     return [cadre, verre]
+
+
+def _pan(c, nom, chanfrein):
+    """Un pan du toit a deux pans (maison, deux trames de profondeur), faitage sur l'origine, pente de 30 degres,
+    debord de 0,40 m ; la sous-face passe sur l'axe de facade a la hauteur du dessus de la dalle."""
+    a = math.radians(PENTE)
+    longueur = (TRAME + DEBORD) / math.cos(a)
+    pan = c.boite(P + nom, (TRAME, longueur, COUVERTURE), (0, 0, -COUVERTURE / 2), mat="MAT_PAINTED_METAL_GRAPHITE",
+                  chanfrein=chanfrein, segments=2, droites=("x-", "x+", "y+"))
+    pan.rotation_euler[0] = a
+    c.applique(pan)
+    faite = TRAME * math.tan(a) + COUVERTURE / math.cos(a)  # dessus du faitage, au-dessus du dessus de dalle
+    pan.location = (0, -(longueur / 2 * math.cos(a) - COUVERTURE / 2 * math.sin(a)),
+                    faite - (longueur / 2 * math.sin(a) + COUVERTURE / 2 * math.cos(a)))
+    return pan
+
+
+def _pignon(c, nom):
+    return c.prisme(P + nom, [(-TRAME, 0), (TRAME, 0), (0, TRAME * math.tan(math.radians(PENTE)))], MUR, mat="MAT_SURFACE")
+
+
+def _perron(c, nom):
+    """Deux marches de 0,15 m devant la rive du rez (dalle de 0,30 m posee sur le socle) ; a chanfreiner avant de poser."""
+    return c.prisme(P + nom, [(0, 0), (0, DALLE), (0.30, DALLE), (0.30, DALLE / 2), (0.60, DALLE / 2), (0.60, 0)],
+                    1.60, mat="MAT_CONCRETE")
+
+
+def _pose_perron(c, perron):
+    perron.rotation_euler[2] = math.radians(-90)
+    c.applique(perron)
+    perron.location = (-0.80, -RIVE, 0)
+
+
+MARCHE = ETAGE / 18
+GIRON = 0.218
+PALIER = -0.46  # bord du palier de l'escalier, en y local
+VOLEES = [(-90, -CAGE, PALIER + 8 * GIRON, 0), (90, CAGE, PALIER, ETAGE / 2)]  # (rotation, x, y, z) de chaque volee
+
+
+def _volee(c, nom, profil):
+    """Les deux volees de l'escalier, a partir du profil d'une volee ; _pose_volees les met en place dans la case."""
+    return [c.prisme(P + nom + suffixe, profil, VOLEE, mat="MAT_CONCRETE") for suffixe in ("", "_FLIGHT")]
+
+
+def _pose_volees(c, volees):
+    for v, (rot, x0, y0, z0) in zip(volees, VOLEES):
+        v.rotation_euler[2] = math.radians(rot)
+        c.applique(v)
+        v.location = (x0, y0, z0)
 
 
 def construit(c):
@@ -154,39 +207,23 @@ def construit(c):
 
     # --- toit a deux pans (maison, deux trames de profondeur) : un pan par travee, faitage sur l'origine, pente de
     # 30 degres, debord de 0,40 m ; la sous-face passe sur l'axe de facade a la hauteur du dessus de la dalle
-    a = math.radians(PENTE)
-    longueur = (TRAME + DEBORD) / math.cos(a)
-    pan = c.boite(P + "ROOF_SLOPE", (TRAME, longueur, COUVERTURE), (0, 0, -COUVERTURE / 2), mat="MAT_PAINTED_METAL_GRAPHITE",
-                  chanfrein=C2, segments=2, droites=("x-", "x+", "y+"))
-    pan.rotation_euler[0] = a
-    c.applique(pan)
-    faite = TRAME * math.tan(a) + COUVERTURE / math.cos(a)  # dessus du faitage, au-dessus du dessus de dalle
-    pan.location = (0, -(longueur / 2 * math.cos(a) - COUVERTURE / 2 * math.sin(a)),
-                    faite - (longueur / 2 * math.sin(a) + COUVERTURE / 2 * math.cos(a)))
-    _piece(c, "ROOF_SLOPE", [pan])
-    pignon = c.prisme(P + "ROOF_GABLE", [(-TRAME, 0), (TRAME, 0), (0, TRAME * math.tan(a))], MUR, mat="MAT_SURFACE")
+    _piece(c, "ROOF_SLOPE", [_pan(c, "ROOF_SLOPE", C2)])
+    pignon = _pignon(c, "ROOF_GABLE")
     c.chanfreine(pignon, C2, 2)
     _piece(c, "ROOF_GABLE", [pignon])
 
     # --- escalier a deux volees dans une case, de dalle a dalle : volee 1 de l'arriere vers le palier avant,
     # volee 2 du palier vers l'arriere, arrivee sur la case de derriere. Garde-corps de tremie a gauche et a l'arriere
     # gauche, poses sur les dalles voisines ; les cotes avant et droit sont une facade ou recoivent un GUARDRAIL.
-    marche = ETAGE / 18
-    giron = 0.218
-    palier = -0.46  # bord du palier, en y local
     profil = [(0, 0)]
     for k in range(9):
-        profil += [(k * giron, (k + 1) * marche), ((k + 1) * giron, (k + 1) * marche)]
-    profil += [(9 * giron, 9 * marche - 0.25), (0.6, 0)]
-    morceaux = []
-    for k, (rot, x0, y0, z0) in enumerate([(-90, -CAGE, palier + 8 * giron, 0), (90, CAGE, palier, ETAGE / 2)]):
-        v = c.prisme(P + "STAIR" + ("" if k == 0 else "_FLIGHT"), profil, VOLEE, mat="MAT_CONCRETE")
+        profil += [(k * GIRON, (k + 1) * MARCHE), ((k + 1) * GIRON, (k + 1) * MARCHE)]
+    profil += [(9 * GIRON, 9 * MARCHE - 0.25), (0.6, 0)]
+    morceaux = _volee(c, "STAIR", profil)
+    for v in morceaux:
         c.chanfreine(v, C1, 2)
-        v.rotation_euler[2] = math.radians(rot)
-        c.applique(v)
-        v.location = (x0, y0, z0)
-        morceaux.append(v)
-    morceaux.append(c.boite(P + "STAIR_LANDING", (2 * CAGE, palier + CAGE, 0.20), (0, (palier - CAGE) / 2, ETAGE / 2 - 0.20),
+    _pose_volees(c, morceaux)
+    morceaux.append(c.boite(P + "STAIR_LANDING", (2 * CAGE, PALIER + CAGE, 0.20), (0, (PALIER - CAGE) / 2, ETAGE / 2 - 0.20),
                             mat="MAT_CONCRETE", chanfrein=C1, segments=2))
     bord = TRAME / 2 + 0.05  # sur la dalle voisine, contre les poteaux
     for nom, taille, (x, y, z), mat in [
@@ -203,12 +240,9 @@ def construit(c):
     _piece(c, "STAIR", morceaux)
 
     # --- perron : deux marches de 0,15 m devant la rive du rez (dalle de 0,30 m posee sur le socle)
-    perron = c.prisme(P + "STEPS", [(0, 0), (0, DALLE), (0.30, DALLE), (0.30, DALLE / 2), (0.60, DALLE / 2), (0.60, 0)],
-                      1.60, mat="MAT_CONCRETE")
+    perron = _perron(c, "STEPS")
     c.chanfreine(perron, C1, 2, droites=("x-",))
-    perron.rotation_euler[2] = math.radians(-90)
-    c.applique(perron)
-    perron.location = (-0.80, -RIVE, 0)
+    _pose_perron(c, perron)
     _piece(c, "STEPS", [perron])
 
     # --- entree : marquise au-dessus de la porte ; totem d'enseigne sans texte (l'etiquette est en HTML, sur une ancre)
@@ -220,7 +254,89 @@ def construit(c):
         c.boite(P + "SIGN_TOTEM_FIELD", (1.00, 0.03, 1.10), (0, -0.075 - 0.015, 0.45), mat="MAT_SURFACE"),
     ])
 
+    _basses(c)
     return {"triangles_vises": 8000, "animations": []}
+
+
+def _basses(c):
+    """v002, la qualite basse (bible 18.3) : les memes pieces aux aretes vives, sans ce qui mesure moins de 0,30 m.
+    Cadres de baie, sous-lisses, plinthes et pied du totem disparaissent ; les fers d'attente se fusionnent en un
+    faisceau ; l'escalier devient deux rampes pleines ; l'echafaudage garde son plancher, ses montants exterieurs, sa
+    lisse et sa diagonale."""
+    def vive(nom, taille, position=(0, 0, 0), mat="MAT_CONCRETE"):
+        return c.boite(P + nom, taille, position, mat=mat)
+
+    def basse(nom, objets):
+        _piece(c, nom + "_LOW", objets)
+
+    # --- ossature et fondations : boites vives aux memes cotes
+    for nom, taille, position in [
+        ("COLUMN", (POTEAU, POTEAU, SOUS_DALLE), (0, 0, 0)),
+        ("SLAB_EDGE", (TRAME, RIVE, DALLE), (0, -RIVE / 2, 0)),
+        ("SLAB_CORNER", (RIVE, RIVE, DALLE), (-RIVE / 2, -RIVE / 2, 0)),
+        ("BEAM", (LONG_MUR, POTEAU, 0.45), (0, 0, SOUS_DALLE - 0.45)),
+        ("FOOTING", (SEMELLE, SEMELLE, 0.50), (0, 0, -0.50)),
+        ("FOUNDATION_STRIP", (TRAME - SEMELLE, 0.60, 0.40), (0, 0, -0.40)),
+        ("ROOF_PARAPET", (TRAME, RIVE, ACROTERE), (0, -RIVE / 2, 0)),
+        ("ROOF_PARAPET_CORNER", (RIVE, RIVE, ACROTERE), (-RIVE / 2, -RIVE / 2, 0)),
+    ]:
+        basse(nom, [vive(nom + "_LOW", taille, position)])
+    basse("COLUMN_STARTER", [vive("COLUMN_STARTER_LOW", (0.24, 0.24, 0.80), mat="MAT_STEEL")])
+    basse("CANOPY", [vive("CANOPY_LOW", (1.60, 1.00, 0.20), (0, -0.50, PORTE[1] + 0.10), mat="MAT_PAINTED_METAL_GRAPHITE")])
+
+    # --- murs : baies percees, sans cadre (0,10 m) ; le verre et le vantail remplissent la baie
+    l, h = FENETRE
+    basse("WALL_BRICK", [_mur(c, "WALL_BRICK_LOW", "MAT_BRICK")])
+    mur = _mur(c, "WALL_BRICK_WINDOW_LOW", "MAT_BRICK")
+    c.perce(mur, (l, 1.0, h), (0, MUR / 2, ALLEGE))
+    basse("WALL_BRICK_WINDOW", [mur])
+    basse("WALL_RENDER", [_mur(c, "WALL_RENDER_LOW", "MAT_SURFACE")])
+    mur = _mur(c, "WALL_RENDER_WINDOW_LOW", "MAT_SURFACE")
+    c.perce(mur, (l, 1.0, h), (0, MUR / 2, ALLEGE))
+    basse("WALL_RENDER_WINDOW", [mur, vive("WALL_RENDER_WINDOW_LOW_GLASS", (l, 0.04, h), (0, 0.11, ALLEGE), mat="MAT_GLASS")])
+    l, h = PORTE
+    mur = _mur(c, "WALL_RENDER_DOOR_LOW", "MAT_SURFACE")
+    c.perce(mur, (l, 1.0, h + 0.1), (0, MUR / 2, -0.1))
+    basse("WALL_RENDER_DOOR", [mur, vive("WALL_RENDER_DOOR_LOW_LEAF", (l, 0.05, h), (0, 0.12, 0), mat="MAT_PAINTED_METAL_GRAPHITE")])
+
+    # --- garde-corps : la lisse haute et deux montants
+    y, long = -RIVE / 2, TRAME + RIVE
+    basse("GUARDRAIL", [vive("GUARDRAIL_LOW", (long, TUBE, TUBE), (0, y, GARDE_CORPS - TUBE), mat="MAT_STEEL")] +
+          [vive("GUARDRAIL_LOW_POST_" + str(i), (TUBE, TUBE, GARDE_CORPS), (x, y, 0), mat="MAT_STEEL")
+           for i, x in enumerate((-TRAME / 4, TRAME / 4))])
+
+    # --- echafaudage : plancher, montants exterieurs, lisse haute, diagonale
+    yi, ye = -JEU_FACADE - TUBE / 2, -JEU_FACADE - ECHAFAUDAGE + TUBE / 2
+    morceaux = [vive("SCAFFOLD_LOW", (TRAME, ECHAFAUDAGE - 2 * TUBE, TUBE), (0, (yi + ye) / 2, ETAGE - TUBE), mat="MAT_WOOD")]
+    morceaux += [vive("SCAFFOLD_LOW_STANDARD_" + str(i), (TUBE, TUBE, ETAGE), (x, ye, 0), mat="MAT_STEEL")
+                 for i, x in enumerate((-TRAME / 2, TRAME / 2))]
+    morceaux.append(vive("SCAFFOLD_LOW_RAIL", (TRAME, TUBE, TUBE), (0, ye, GARDE_CORPS - TUBE), mat="MAT_STEEL"))
+    diag = vive("SCAFFOLD_LOW_BRACE", (4.1, TUBE, TUBE), (0, ye, ETAGE / 2 - TUBE / 2), mat="MAT_STEEL")
+    diag.rotation_euler[1] = c.degres(-45)
+    c.applique(diag)
+    morceaux.append(diag)
+    basse("SCAFFOLD", morceaux)
+
+    # --- escalier : deux rampes pleines et le palier ; garde-corps de tremie reduit a ses lisses hautes
+    volees = _volee(c, "STAIR_LOW", [(0, 0), (9 * GIRON, 9 * MARCHE), (9 * GIRON, 9 * MARCHE - 0.25), (0.6, 0)])
+    _pose_volees(c, volees)
+    bord = TRAME / 2 + 0.05
+    basse("STAIR", volees + [
+        vive("STAIR_LOW_LANDING", (2 * CAGE, PALIER + CAGE, 0.20), (0, (PALIER - CAGE) / 2, ETAGE / 2 - 0.20)),
+        vive("STAIR_LOW_RAIL_L", (TUBE, LONG_MUR, TUBE), (-bord, 0, ETAGE + GARDE_CORPS - TUBE), mat="MAT_STEEL"),
+        vive("STAIR_LOW_RAIL_B", (TRAME / 2, TUBE, TUBE), (-TRAME / 4 + 0.05, bord, ETAGE + GARDE_CORPS - TUBE), mat="MAT_STEEL"),
+    ])
+
+    # --- toiture, perron et totem
+    basse("ROOF_SLOPE", [_pan(c, "ROOF_SLOPE_LOW", 0)])
+    basse("ROOF_GABLE", [_pignon(c, "ROOF_GABLE_LOW")])
+    perron = _perron(c, "STEPS_LOW")
+    _pose_perron(c, perron)
+    basse("STEPS", [perron])
+    basse("SIGN_TOTEM", [
+        vive("SIGN_TOTEM_LOW", (1.20, 0.15, 1.75), mat="MAT_PAINTED_METAL_GRAPHITE"),
+        vive("SIGN_TOTEM_LOW_FIELD", (1.00, 0.03, 1.10), (0, -0.075 - 0.015, 0.45), mat="MAT_SURFACE"),
+    ])
 
 
 def demonstration():
