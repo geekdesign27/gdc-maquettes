@@ -149,6 +149,43 @@ def prisme(nom, profil, epaisseur, position=(0, 0, 0), mat=None, parent=None):
     return o
 
 
+def tronc(nom, bas, haut, hauteur, position=(0, 0, 0), mat=None, parent=None):
+    """Tronc de pyramide a base rectangulaire : bas=(x, y) a la base, haut=(x, y) au sommet, centres sur position
+    (centre de la base, comme boite). Fouille a talus, tas de terre, socle evase."""
+    x0, y0, z0 = position
+    sommets = [(x0 + sx * l / 2, y0 + sy * p / 2, z0 + z)
+               for (l, p), z in ((bas, 0.0), (haut, hauteur))
+               for sx, sy in ((-1, -1), (1, -1), (1, 1), (-1, 1))]
+    faces = [[3, 2, 1, 0], [4, 5, 6, 7], [0, 1, 5, 4], [1, 2, 6, 5], [2, 3, 7, 6], [3, 0, 4, 7]]
+    maillage = bpy.data.meshes.new(nom)
+    maillage.from_pydata(sommets, [], faces)
+    maillage.update()
+    o = bpy.data.objects.new(nom, maillage)
+    bpy.context.scene.collection.objects.link(o)
+    if mat:
+        o.data.materials.append(materiau(mat))
+    if parent:
+        rattache(o, parent)
+    return o
+
+
+def creuse(o, outil):
+    """Retire le volume d'un objet outil (difference booleenne exacte), puis supprime l'outil : une fouille dans un
+    socle, un creux de forme libre. Pour un simple pave, perce suffit. A faire avant chanfreine."""
+    m = o.modifiers.new("creux", "BOOLEAN")
+    m.operation = "DIFFERENCE"
+    m.solver = "EXACT"
+    m.object = outil
+    bpy.ops.object.select_all(action="DESELECT")
+    o.select_set(True)
+    bpy.context.view_layer.objects.active = o
+    bpy.ops.object.modifier_apply(modifier=m.name)
+    maillage = outil.data
+    bpy.data.objects.remove(outil)
+    bpy.data.meshes.remove(maillage)
+    return o
+
+
 def cylindre(nom, rayon, hauteur, position=(0, 0, 0), mat=None, parent=None, cotes=12):
     bpy.ops.mesh.primitive_cylinder_add(vertices=cotes, radius=rayon, depth=hauteur)
     o = bpy.context.active_object

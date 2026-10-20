@@ -617,7 +617,11 @@
         "progress": "0 à 1, avancement dans l'état courant (fait monter la structure)"
       },
       "production": "mixte",
-      "kit": "building-kit"
+      "kit": "building-kit",
+      "assets": [
+        "BLD_SITEWORK_A_v001.glb",
+        "kit:building-kit/BLD_KIT_A_v003.glb"
+      ]
     },
     {
       "id": "survey-poles",

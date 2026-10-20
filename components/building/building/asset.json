@@ -1,0 +1,13 @@
+{
+  "nom": "BLD_SITEWORK_A_v001",
+  "id": "building",
+  "bible": "WORKSITE 1.2",
+  "blender": "5.3.0 Beta",
+  "script": "blender/assets/building.py",
+  "script_sha256": "a5d1c5c79ed71fec9c01f3bbbff1238a03601956b6016b66339e86979d2cb0c7",
+  "commun_sha256": "e8cb480c62b7bdb8b54460ec91e343989e89e93987616cc2711afd5dbcdf2f80",
+  "palette_sha256": "aa140a55ff82e130dff965264849b10e8f1c9651f4cb29109fcc99593fbe33c7",
+  "glb_sha256": "f7207380850d9ed11fd9d734d0bda4f25a0cb99b5b26fa6057ffc3bafea80915",
+  "animations": [],
+  "statut": "a valider"
+}

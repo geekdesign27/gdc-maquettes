@@ -5,7 +5,7 @@
   "blender": "5.3.0 Beta",
   "script": "blender/assets/waste-skip.py",
   "script_sha256": "68ca3816d27541490fff8ea93a6e5e79c855b00c6c586066cea299cba60d6db9",
-  "commun_sha256": "d31db270f510bb4a40a645bc9a47a1af015eb52183477fb9e579cd8caf72edd7",
+  "commun_sha256": "e8cb480c62b7bdb8b54460ec91e343989e89e93987616cc2711afd5dbcdf2f80",
   "palette_sha256": "aa140a55ff82e130dff965264849b10e8f1c9651f4cb29109fcc99593fbe33c7",
   "glb_sha256": "c8ddbf97d2fe9399cf62ebb509d48d619712ad235e5ccb33560c9e4f1beab59b",
   "animations": [],
