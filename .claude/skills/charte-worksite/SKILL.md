@@ -37,7 +37,7 @@ Les sources font foi, ce résumé non : bible `docs/bible/bible-worksite.md` (1.
 
 - **Lumière** : le dessus d'un objet montre sa couleur de palette ; l'avant (gauche de l'écran) vaut 0,85 du dessus, la droite 0,65. Recette dans `src/lumiere.json`. Contrôle : le cube étalon de la galerie et `npm run atelier -- etalon` doivent afficher « conforme ».
 - **Cotes** : trame 3 m, étage 3 m (dalle 0,30 m), porte 1,10 × 2,40 m, fenêtre 1,50 × 1,50 m sur allège 0,90 m, garde-corps 1,10 m. Exagération × 1,2, la même pour toute une famille.
-- **Chanfreins** : C1 0,02 m (2 segments), C2 0,05 m (2 segments), C3 0,10 m (3 segments). Jamais plus du quart de la plus petite dimension. Lissage à 30°.
+- **Chanfreins** : C1 0,02 m (2 segments), C2 0,05 m (2 segments), C3 0,10 m (3 segments), C4 0,20 m (3 segments, arrondi d'engin : capots, cabines arrondies, chargement en tas). Jamais plus du quart de la plus petite dimension. Lissage à 30°.
 - **Affichage de référence** : portable de 13 à 14 pouces, 25 px par mètre en vue générale (18.7).
 - **Détail minimal** : 0,15 m (environ 4 px en vue générale) ; 0,06 m pour un élément filiforme ; en qualité basse, sous 0,30 m, on supprime ou on fusionne.
 - **Socle** : dalle de 0,60 m en `MAT_EARTH` (#BF8B65), dessus à `z = 0`, arêtes du dessus en C3.

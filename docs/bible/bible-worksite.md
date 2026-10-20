@@ -650,6 +650,7 @@ Le cube étalon est un module : une trame sur un étage. L'exagération est de *
 | C1 fin | 0,02 m | 2 | petites pièces d'engin, mobilier, poignées, crochet |
 | C2 moyen | 0,05 m | 2 | cabines, contrepoids, socles d'engin, murs et poteaux |
 | C3 fort | 0,10 m | 3 | socle maquette, grandes pièces arrondies |
+| C4 arrondi d'engin | 0,20 m | 3 | capots, contrepoids et cabines arrondies d'engin ; chargement en tas (amendement du 20 octobre 2026) |
 
 Règles des chanfreins :
 - Un chanfrein ne dépasse jamais le quart de la plus petite dimension de sa pièce.
