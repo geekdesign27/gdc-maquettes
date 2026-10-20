@@ -152,8 +152,16 @@ async function instance(id, state) {
   await charge.prepare(mod.meta);
   const inst = mod.create(THREE, { ...defaultParams(mod.meta), ...parametresAdresse(mod.meta) }, makeContext(options, await charge.assetsPour(mod.meta)));
   const premier = state && mod.meta.states.includes(state) ? state : mod.meta.states.find((s) => s !== 'hidden') || mod.meta.states[0];
-  inst.setState(premier, sampleData(entry));
+  inst.setState(premier, donnees(entry));
   return { inst, state: premier, entry, mod };
+}
+
+// Les donnees d'exemple d'un etat, completees par celles de l'adresse (?count=15) : seules les cles de la fiche (data)
+// sont lues ; une valeur numerique reste un nombre.
+function donnees(entry) {
+  const q = new URLSearchParams(location.search);
+  const adresse = Object.keys(entry.data || {}).filter((k) => q.has(k)).map((k) => [k, Number.isNaN(Number(q.get(k))) ? q.get(k) : Number(q.get(k))]);
+  return { ...sampleData(entry), ...Object.fromEntries(adresse) };
 }
 
 // Les parametres pris dans l'adresse (?stack=2, ?height=30) : revoir un composant ailleurs qu'a ses valeurs par defaut.
@@ -203,6 +211,10 @@ async function poseOccupants(x, groupe, ids) {
   return out;
 }
 
+// Pour la console du navigateur (outil de fabrication) : galerie.courant.inst.setState('default', { count: 4 }), puis
+// galerie.redessine() pour voir une transition.
+window.galerie = { get courant() { return current; }, redessine() { dirty = true; } };
+
 async function select(id, state) {
   retire(current);
   for (const v of current.voisins) retire(v);
@@ -239,7 +251,7 @@ function buildStates() {
     b.textContent = s;
     b.setAttribute('aria-pressed', String(s === current.state));
     b.addEventListener('click', async () => {
-      current.inst.setState(s, sampleData(current.entry));
+      current.inst.setState(s, donnees(current.entry));
       current.state = s;
       for (const x of box.children) x.setAttribute('aria-pressed', String(x === b));
       await report();
