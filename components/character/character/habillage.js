@@ -2,9 +2,9 @@
 // (corps, visage, casque, squelette, animations) recoit la coiffure, la tenue du metier et l'outil, rebranches sur ses os,
 // puis les couleurs de la personne. Partage par le composant et par la planche de l'equipe de la galerie.
 
-export const BASE = "kit:character-kit/CHR_BASE_MASTER_v001.glb";
-export const COIFFURES = "kit:character-kit/CHR_HAIR_KIT_v001.glb";
-export const OUTILS = "kit:character-kit/PRP_CHR_TOOLS_v001.glb";
+export const BASE = "kit:character-kit/CHR_BASE_MASTER_v002.glb";
+export const COIFFURES = "kit:character-kit/CHR_HAIR_KIT_v002.glb";
+export const OUTILS = "kit:character-kit/PRP_CHR_TOOLS_v002.glb";
 export const METIERS = [
   "client",
   "architect",
@@ -19,7 +19,7 @@ export const METIERS = [
   "representative",
 ];
 export const tenueDe = (trade) =>
-  `kit:character-kit/CHR_OUTFIT_${trade.toUpperCase()}_v001.glb`;
+  `kit:character-kit/CHR_OUTFIT_${trade.toUpperCase()}_v002.glb`;
 export const FICHIERS = [BASE, COIFFURES, OUTILS, ...METIERS.map(tenueDe)];
 
 // L'outil de chaque metier quand la personne n'en precise pas (docs/correspondances.md).

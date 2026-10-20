@@ -13,6 +13,12 @@ seul maillage deforme par le squelette, normales lissees partout (bible 18.3 : l
 chanfrein). Les poids suivent chaque fuseau, avec un fondu aux articulations. Cheveux, yeux et casque sont des noeuds
 a part, rattaches a l'os de la tete : le casque se montre ou se cache (le client n'en porte pas).
 
+Version 2 (demande de PA du 20 octobre 2026) : arrondie vers REF_CHR_001, toujours 1,70 m et 5 tetes. La tete est plus
+large (largeur x 1,10, profondeur x 1,05, hauteur inchangee : voir tete_large), les jambes plus courtes de 6 cm (hanche
+a 0,66 m au lieu de 0,72, genou a 0,37), le tronc gagne ces 6 cm sous la taille (voir bas), les membres sont moins fins
+(bras x 1,15, jambes x 1,12, mains x 1,08, cou x 1,08), et le bas du tronc rentre dans les cuisses au lieu de deborder
+devant et derriere : plus d'arete au bassin. Epaules, bras et mains ne bougent pas : les poses et les outils restent.
+
 Pose de repos : en A, bras ecartes de 10 degres. Axes des os : Y le long de l'os, Z vers l'avant du personnage (-Y),
 sauf le pied (Z vers le haut). Les angles s'appliquent dans l'ordre Y, X, Z : Y tourne l'os sur son axe (bras gauche :
 rotation interne ; tete : regard vers la gauche), X plie vers l'avant partout (flexion), puis Z, autour de l'axe avant
@@ -33,7 +39,8 @@ import bmesh
 import bpy
 from mathutils import Matrix, Vector
 
-ASSET = {"id": "character-kit", "categorie": "kit", "nom": "CHR_BASE_MASTER_v001"}
+V = "_v002"  # la version de tous les fichiers du kit : ils portent le meme squelette
+ASSET = {"id": "character-kit", "categorie": "kit", "nom": "CHR_BASE_MASTER" + V}
 
 P = "CHR_BASE_MASTER_"
 RIG = "RIG_CHR_BASE"
@@ -45,11 +52,12 @@ ECART_BRAS = 10  # pose de repos en A, en degres
 BRAS = 0.25  # epaule-coude
 AVANT_BRAS = 0.23  # coude-poignet
 MAIN = 0.13
-HANCHE = (0.085, 0.72)  # articulation de la hanche : ecart a l'axe, hauteur
-GENOU = 0.40
+HANCHE = (0.085, 0.66)  # articulation de la hanche : ecart a l'axe, hauteur (0,72 en v001)
+GENOU = 0.37
 CHEVILLE = 0.10
 PIED_X = 0.09  # axe des chaussures, un peu plus ecarte que les jambes
 EXAGERATION = 1.2  # chaussures et casque agrandis, comme les portes de la famille (bible 18.2)
+TETE_X, TETE_Y = 1.10, 1.05  # la tete de la v002, plus large que celle de la v001 (REF_CHR_001)
 
 MAT_PEAU = "MAT_SKIN_B"
 MAT_HABITS = "MAT_FABRIC_GRAPHITE"  # sous-pull et pantalon : la tenue civile, base de toutes les tenues
@@ -141,6 +149,23 @@ def membre(nom, a, b, rayons, cotes=12, debord=(0.0, 0.0), mat=None):
     return fuseau(nom, sections, cotes, origine=a, direction=b - a, mat=mat)
 
 
+def tete_large(o):
+    """Elargit une piece de la tete, construite aux cotes de la v001, autour de l'axe vertical : crane, oreilles, nez,
+    visage, cils, casque, coiffures, barbe, lunettes. La meme transformation pour toutes, elles restent ajustees."""
+    o.data.transform(Matrix.Diagonal((TETE_X, TETE_Y, 1, 1)))
+    return o
+
+
+def bas(z):
+    """Une cote de la v001 sous la taille, descendue avec le bassin de la v002 : rien ne bouge au-dessus de 1,00 m, tout
+    descend de 6 cm sous l'ancienne hanche (0,72 m), et l'entre-deux s'etire. Les tenues gardent ainsi leurs proportions."""
+    if z >= 1.00:
+        return z
+    if z <= 0.72:
+        return z - 0.06
+    return z - 0.06 * (1.00 - z) / 0.28
+
+
 # --- Squelette et poids -------------------------------------------------------------------------------------------
 
 def os_du_squelette():
@@ -152,8 +177,8 @@ def os_du_squelette():
     devant = (0, -1, 0)
     haut = (0, 0, 1)
     liste = [
-        ("HIPS", None, (0, 0, hz), (0, 0, 0.86), devant, True),
-        ("SPINE", "HIPS", (0, 0, 0.86), (0, 0, 1.06), devant, True),
+        ("HIPS", None, (0, 0, hz), (0, 0, 0.83), devant, True),
+        ("SPINE", "HIPS", (0, 0, 0.83), (0, 0, 1.06), devant, True),
         ("CHEST", "SPINE", (0, 0, 1.06), (0, 0, 1.30), devant, True),
         ("NECK", "CHEST", (0, 0, 1.30), (0, 0, 1.38), devant, True),
         ("HEAD", "NECK", (0, 0, 1.38), (0, 0, HAUTEUR), devant, True),
@@ -247,15 +272,19 @@ def rattache_a_l_os(o, rig, court):
 # devient la cle de forme FEMININE de chaque maillage deforme (corps et vetements), que le composant regle a 1 pour une
 # femme. Les os ne bougent pas : epaules, hanches et poignets restent aux memes articulations.
 
-# Le tronc, de l'entrejambe a la base du cou : (z, rx, ry, cx, cy).
+# Le tronc, de l'entrejambe a la base du cou : (z, rx, ry, cx, cy). Sous la taille, la v002 : a la hanche (0,66), le
+# tronc couvre le haut des deux cuisses, cotes, devant et derriere ; dessous, il rentre dans les cuisses en s'arrondissant,
+# et elles en sortent vers 0,64. En v001, il se refermait en biais au-dessus des cuisses et debordait
+# devant et derriere : l'arete au bassin.
 TRONC_M = [
-    (0.615, 0, 0, 0, 0.0),
-    (0.625, 0.085, 0.065, 0, 0.0),
-    (0.660, 0.162, 0.108, 0, 0.0),
-    (0.720, 0.178, 0.118, 0, 0.005),
-    (0.800, 0.170, 0.114, 0, 0.004),
-    (0.900, 0.160, 0.108, 0, 0.0),
-    (0.990, 0.162, 0.108, 0, -0.004),
+    (0.565, 0, 0, 0, 0.0),
+    (0.575, 0.080, 0.055, 0, 0.0),
+    (0.600, 0.140, 0.085, 0, 0.0),
+    (0.635, 0.176, 0.104, 0, 0.002),
+    (0.660, 0.192, 0.115, 0, 0.003),
+    (0.757, 0.180, 0.112, 0, 0.004),
+    (0.879, 0.165, 0.108, 0, 0.0),
+    (0.988, 0.164, 0.108, 0, -0.004),
     (1.090, 0.177, 0.116, 0, -0.008),
     (1.180, 0.190, 0.118, 0, -0.004),
     (1.250, 0.184, 0.110, 0, 0.0),
@@ -265,13 +294,14 @@ TRONC_M = [
 ]
 # Feminin : epaules plus etroites, taille marquee, hanches un peu plus larges, poitrine.
 TRONC_F = [
-    (0.615, 0, 0, 0, 0.0),
-    (0.625, 0.088, 0.066, 0, 0.0),
-    (0.660, 0.168, 0.112, 0, 0.002),
-    (0.720, 0.184, 0.122, 0, 0.008),
-    (0.800, 0.172, 0.114, 0, 0.004),
-    (0.900, 0.146, 0.100, 0, 0.0),
-    (0.990, 0.144, 0.100, 0, -0.004),
+    (0.565, 0, 0, 0, 0.0),
+    (0.575, 0.085, 0.058, 0, 0.0),
+    (0.600, 0.145, 0.088, 0, 0.0),
+    (0.635, 0.180, 0.106, 0, 0.004),
+    (0.660, 0.198, 0.118, 0, 0.006),
+    (0.757, 0.190, 0.118, 0, 0.006),
+    (0.879, 0.150, 0.100, 0, 0.0),
+    (0.988, 0.146, 0.100, 0, -0.004),
     (1.090, 0.158, 0.126, 0, -0.020),
     (1.180, 0.168, 0.122, 0, -0.014),
     (1.250, 0.164, 0.104, 0, 0.0),
@@ -279,18 +309,20 @@ TRONC_F = [
     (1.325, 0.080, 0.060, 0, 0.0),
     (1.336, 0, 0, 0, 0.0),
 ]
-MORPHO_M = {"nom": "M", "tronc": TRONC_M, "epaule": (0.172, 0.074, 0.068, 0.056), "bras": 1.0, "main": 1.0, "cou": 1.0,
-            "jambe": 1.0, "menton": ((0.065, 0.052), (0.115, 0.098))}
-MORPHO_F = {"nom": "F", "tronc": TRONC_F, "epaule": (0.160, 0.066, 0.062, 0.050), "bras": 0.88, "main": 0.9, "cou": 0.86,
-            "jambe": 0.95, "menton": ((0.054, 0.046), (0.104, 0.092))}
+# v002 : membres moins fins (bras x 1,15, jambes x 1,12, mains et cou x 1,08), machoire plus pleine ; la femme garde des
+# cuisses pleines (jambe 0,98 au lieu de 0,95) pour que ses hanches, plus larges, restent sur le haut des cuisses.
+MORPHO_M = {"nom": "M", "tronc": TRONC_M, "epaule": (0.172, 0.080, 0.076, 0.062), "bras": 1.0, "main": 1.08, "cou": 1.08,
+            "jambe": 1.0, "menton": ((0.072, 0.056), (0.124, 0.104))}
+MORPHO_F = {"nom": "F", "tronc": TRONC_F, "epaule": (0.160, 0.072, 0.070, 0.056), "bras": 0.88, "main": 0.97, "cou": 0.93,
+            "jambe": 0.98, "menton": ((0.060, 0.050), (0.113, 0.098))}
 
-RAYONS_MANCHE = [(0, 0.062), (0.35, 0.058), (0.75, 0.051), (0.92, 0.055), (1, 0.054)]  # sous-pull, manche retroussee
-RAYONS_AVANT_BRAS = [(0, 0.043), (0.45, 0.041), (1, 0.032)]
-RAYONS_BRAS = [(0, 0.062), (0.25, 0.058), (0.52, 0.050), (0.75, 0.046), (1, 0.036)]  # le bras entier, pour les manches longues
-RAYONS_JAMBE = [(0, 0.092), (0.25, 0.084), (0.5, 0.068), (0.62, 0.068), (0.85, 0.058), (1, 0.052)]
+RAYONS_MANCHE = [(0, 0.071), (0.35, 0.067), (0.75, 0.059), (0.92, 0.063), (1, 0.062)]  # sous-pull, manche retroussee
+RAYONS_AVANT_BRAS = [(0, 0.049), (0.45, 0.047), (1, 0.037)]
+RAYONS_BRAS = [(0, 0.071), (0.25, 0.067), (0.52, 0.058), (0.75, 0.053), (1, 0.041)]  # le bras entier, pour les manches longues
+RAYONS_JAMBE = [(0, 0.103), (0.25, 0.094), (0.5, 0.076), (0.62, 0.076), (0.85, 0.065), (1, 0.058)]
 SECTIONS_MAIN = [(-0.015, 0, 0, 0, 0), (-0.008, 0.023, 0.031, 0, 0), (0.020, 0.029, 0.044, 0, 0), (0.060, 0.031, 0.052, 0, 0.002),
         (0.100, 0.027, 0.047, 0, 0.004), (0.122, 0.018, 0.033, 0, 0.004), (0.130, 0, 0, 0, 0.004)]
-POIDS_TRONC = [(0.84, "HIPS"), (0.92, "SPINE"), (1.00, "SPINE"), (1.10, "CHEST")]
+POIDS_TRONC = [(0.81, "HIPS"), (0.90, "SPINE"), (1.00, "SPINE"), (1.10, "CHEST")]
 
 
 def echelle(rayons, k=1.0, ecart=0.0):
@@ -421,7 +453,7 @@ def _corps(m, mats):
         (MENTON - 0.008, 0, 0, 0, -0.012),
         (MENTON + 0.006, m1x, m1y, 0, -0.032),
         (MENTON + 0.035, m2x, m2y, 0, -0.020),
-        (MENTON + 0.080, 0.145, 0.130, 0, -0.008),
+        (MENTON + 0.080, 0.150, 0.134, 0, -0.008),
         (MENTON + 0.140, 0.158, 0.147, 0, -0.002),
         (MENTON + 0.200, 0.160, 0.152, 0, 0.004),
         (MENTON + 0.250, 0.151, 0.148, 0, 0.008),
@@ -429,14 +461,17 @@ def _corps(m, mats):
         (MENTON + 0.308, 0.080, 0.083, 0, 0.010),
         (MENTON + 0.316, 0, 0, 0, 0.010),
     ], cotes=16, mat=mat_peau)
+    tete_large(tete)
     rigide(tete, "HEAD")
     parties.append(tete)
     for sg in (1, -1):
         oreille = ellipsoide(P + "EAR_" + ("L" if sg > 0 else "R"), (sg * 0.157, 0.012, MENTON + 0.135), (0.022, 0.035, 0.048),
                              cotes=8, anneaux=6, mat=mat_peau)
+        tete_large(oreille)
         rigide(oreille, "HEAD")
         parties.append(oreille)
     nez = ellipsoide(P + "NOSE", (0, -0.147, MENTON + 0.105), (0.019, 0.015, 0.017), cotes=8, anneaux=6, mat=mat_peau)
+    tete_large(nez)
     rigide(nez, "HEAD")
     parties.append(nez)
 
@@ -515,7 +550,7 @@ def cils(rig, mat):
     oeil_z = MENTON + 0.140
     parties = [membre(P + "LASH_" + ("L" if sg > 0 else "R"), (sg * 0.068, -0.137, oeil_z + 0.020), (sg * 0.086, -0.127, oeil_z + 0.030),
                       [(0, 0.0045), (1, 0.003)], cotes=6, debord=(0.003, 0.003), mat=mat) for sg in (1, -1)]
-    o = reunit(P + "LASHES", parties)
+    o = tete_large(reunit(P + "LASHES", parties))
     rattache_a_l_os(o, rig, "HEAD")
     return o
 
@@ -546,7 +581,7 @@ def visage(rig, mats):
     sections.append((largeur, 0, 0, -releve, 0.006))
     parties.append(fuseau(P + "MOUTH", sections, cotes=8, origine=(-largeur / 2, -0.131, MENTON + 0.062), direction=(1, 0, 0),
                           mat=mats["sombre"]))
-    o = reunit(P + "FACE", parties)
+    o = tete_large(reunit(P + "FACE", parties))
     rattache_a_l_os(o, rig, "HEAD")
     return o
 
@@ -576,7 +611,7 @@ def casque(rig, mat):
         (base + 0.180, 0.030, 0.080, 0, 0.006),
         (base + 0.190, 0, 0, 0, 0.006),
     ], cotes=12, exposant=2.2, mat=mat)
-    o = reunit(P + "HELMET", [o, nervure])
+    o = tete_large(reunit(P + "HELMET", [o, nervure]))
     rattache_a_l_os(o, rig, "HEAD")
     return o
 
@@ -613,7 +648,7 @@ def _meches(n, mat):
 
 
 def _coiffure(rig, nom, parties):
-    o = reunit(H + nom, parties)
+    o = tete_large(reunit(H + nom, parties))
     rattache_a_l_os(o, rig, "HEAD")
     return o
 
@@ -662,9 +697,10 @@ def coiffures(rig, mat, mat_lunettes, seules=None):
 def barbe(rig, mat):
     """Barbe courte : une coque sur la machoire et le menton, ouverte devant la bouche et sous le nez."""
     cotes = 16
-    sections = [(MENTON - 0.014, 0.060, 0.050, 0, -0.030), (MENTON + 0.010, 0.088, 0.070, 0, -0.034),
-                (MENTON + 0.040, 0.125, 0.108, 0, -0.022), (MENTON + 0.080, 0.152, 0.138, 0, -0.010),
-                (MENTON + 0.115, 0.164, 0.152, 0, -0.004)]
+    # v002 : elargie comme la machoire, plus pleine
+    sections = [(MENTON - 0.014, 0.066, 0.054, 0, -0.030), (MENTON + 0.010, 0.096, 0.075, 0, -0.034),
+                (MENTON + 0.040, 0.134, 0.114, 0, -0.022), (MENTON + 0.080, 0.157, 0.142, 0, -0.010),
+                (MENTON + 0.115, 0.166, 0.154, 0, -0.004)]
     o = fuseau("CHR_BEARD", [(MENTON - 0.020, 0, 0, 0, -0.028)] + sections, cotes=cotes, mat=mat)
     # faces : le pole du bas (cotes triangles), puis les anneaux ; on retire l'arriere (sous les oreilles, la nuque) et la
     # bouche (devant, entre les deux derniers anneaux du bas et le haut)
@@ -685,6 +721,7 @@ def barbe(rig, mat):
     bmesh.ops.delete(b, geom=retirer, context="FACES")
     b.to_mesh(o.data)
     b.free()
+    tete_large(o)
     rattache_a_l_os(o, rig, "HEAD")
     return o
 
@@ -708,7 +745,7 @@ def lunettes(rig, mat):
                               (sg * 0.160, 0.000, oeil_z + 0.010), [(0, 0.004), (1, 0.004)], cotes=6, mat=mat))
     parties.append(membre("CHR_GLASSES_BRIDGE", (-0.020, -0.152, oeil_z + 0.004), (0.020, -0.152, oeil_z + 0.004),
                           [(0, 0.004), (1, 0.004)], cotes=6, mat=mat))
-    o = reunit("CHR_GLASSES", parties)
+    o = tete_large(reunit("CHR_GLASSES", parties))
     rattache_a_l_os(o, rig, "HEAD")
     return o
 
@@ -727,7 +764,7 @@ def applique(o):
 EQUIPE = "MAT_FABRIC_SITE"  # materiau des parties d'equipe dans le GLB
 COTES_COQUE = 24
 COTES_BANDES = 48
-BANDES_H = ((0.850, 0.892), (0.930, 0.972))  # deux bandes claires autour de la taille (MB_04)
+BANDES_H = ((bas(0.850), bas(0.892)), (bas(0.930), bas(0.972)))  # deux bandes claires autour de la taille (MB_04)
 
 
 def _piece(rig, nom, fabrique):
@@ -769,23 +806,26 @@ def _manches(nom, m, mat, ecart, longueur=None, epaules=True):
     return parties
 
 
-def _jambes(nom, m, mat, ecart, bas=CHEVILLE + 0.035):
+def _jambes(nom, m, mat, ecart, ourlet=CHEVILLE + 0.035):
     parties = []
     hx, hz = HANCHE
     for cote, sg in (("L", 1), ("R", -1)):
-        long = hz - bas
-        rayons = [(t, r * m["jambe"] + ecart) for t, r in RAYONS_JAMBE if t * (hz - CHEVILLE) <= long + 1e-6]
+        long = hz - ourlet
+        # le haut de la jambe du vetement a la largeur de la cuisse (t = 0,25) : il passe sous le bassin du vetement et
+        # en sort la ou celui-ci rentre vite, sans dents de scie
+        rayons = [(t, (RAYONS_JAMBE[1][1] if t == 0 else r) * m["jambe"] + ecart) for t, r in RAYONS_JAMBE
+                  if t * (hz - CHEVILLE) <= long + 1e-6]
         rayons.append((1.0, RAYONS_JAMBE[-2][1] * m["jambe"] + ecart + 0.004))
-        jambe = membre(nom + "_LEG_" + cote, (sg * hx, 0, hz), (sg * hx, 0, bas),
+        jambe = membre(nom + "_LEG_" + cote, (sg * hx, 0, hz), (sg * hx, 0, ourlet),
                        [(t * (hz - CHEVILLE) / long if t < 1 else 1.0, r) for t, r in rayons], debord=(0.05, 0.004), mat=mat)
         poids_jambe(jambe, cote)
         parties.append(jambe)
     return parties
 
 
-def veste(nom, m, mats, mat, ouverte, longueur=0.70):
+def veste(nom, m, mats, mat, ouverte, longueur=HANCHE[1] + 0.005):
     """Veste a manches longues et col : ouverte en V jusqu'a la poitrine (blazer, chemise dessous), ou fermee (veste
-    de travail)."""
+    de travail). L'ourlet est a la hanche : plus bas, le haut des cuisses (et du pantalon) le percerait."""
     sections = coque(m, longueur, 1.300, 0.018, _col(1.318, 0.108, 0.082))
     corps_veste = _coque_tronc(nom + "_BODY", sections, mat)
     if ouverte:
@@ -804,7 +844,7 @@ def veste(nom, m, mats, mat, ouverte, longueur=0.70):
 
 def chemise(nom, m, mat):
     """Le devant de la chemise, visible dans le V de la veste, et son col."""
-    sections = coque(m, 0.96, 1.300, 0.010, _col(1.318, 0.100, 0.076))
+    sections = coque(m, bas(0.96), 1.300, 0.010, _col(1.318, 0.100, 0.076))
     o = _coque_tronc(nom, sections, mat)
     haut = len(sections) - 3  # les deux anneaux du col
     garde_faces(o, COTES_COQUE, lambda i, k: ecart_angle(angle_colonne(k, COTES_COQUE), DEVANT) < (0.66 if i >= haut else 0.86))
@@ -813,7 +853,7 @@ def chemise(nom, m, mat):
 
 def sweat(nom, m, mat):
     """Sweat a capuche : coque du tronc et manches longues, la capuche roulee dans le dos (MB_05)."""
-    sections = coque(m, 0.76, 1.300, 0.014, _col(1.316, 0.102, 0.078))
+    sections = coque(m, bas(0.76), 1.300, 0.014, _col(1.316, 0.102, 0.078))
     o = _coque_tronc(nom + "_BODY", sections, mat)
     capuche = ellipsoide(nom + "_HOOD", (0, 0.092, 1.315), (0.150, 0.072, 0.066), cotes=12, anneaux=6, mat=mat)
     rigide(capuche, "CHEST")
@@ -822,7 +862,7 @@ def sweat(nom, m, mat):
 
 def polo(nom, m, mat):
     """Polo a manches courtes et col (MB_05, le concierge)."""
-    sections = coque(m, 0.74, 1.300, 0.012, _col(1.316, 0.104, 0.080))
+    sections = coque(m, bas(0.74), 1.300, 0.012, _col(1.316, 0.104, 0.080))
     o = _coque_tronc(nom + "_BODY", sections, mat)
     return [o] + _manches(nom, m, mat, 0.012, longueur=0.13)
 
@@ -830,7 +870,8 @@ def polo(nom, m, mat):
 def salopette(nom, m, mat, genouilleres=None):
     """Salopette : les jambes, le bas du tronc, la bavette devant et deux bretelles par-dessus les epaules."""
     parties = _jambes(nom, m, mat, 0.014)
-    parties.append(_coque_tronc(nom + "_BODY", coque(m, 0.64, 1.04, 0.016), mat))
+    # le bassin a le meme ecart que les jambes : la cuisse en sort comme du corps nu, sans dents de scie
+    parties.append(_coque_tronc(nom + "_BODY", coque(m, bas(0.64), 1.04, 0.014), mat))
     bavette = _coque_tronc(nom + "_BIB", coque(m, 1.02, 1.20, 0.016), mat)
     garde_faces(bavette, COTES_COQUE, lambda i, k: ecart_angle(angle_colonne(k, COTES_COQUE), DEVANT) < 0.62)
     parties.append(bavette)
@@ -841,7 +882,7 @@ def salopette(nom, m, mat, genouilleres=None):
     if genouilleres:
         hx = HANCHE[0]
         for cote, sg in (("L", 1), ("R", -1)):
-            g = ellipsoide(nom + "_KNEE_" + cote, (sg * hx, -0.064, GENOU), (0.052, 0.026, 0.062), cotes=10, anneaux=6,
+            g = ellipsoide(nom + "_KNEE_" + cote, (sg * hx, -0.076, GENOU), (0.056, 0.026, 0.062), cotes=10, anneaux=6,
                            mat=genouilleres)
             rigide(g, "SHIN_" + cote)
             parties.append(g)
@@ -850,7 +891,7 @@ def salopette(nom, m, mat, genouilleres=None):
 
 def pantalon(nom, m, mat):
     """Pantalon de ville (la representante) : les jambes jusqu'aux chevilles et le bassin."""
-    return _jambes(nom, m, mat, 0.012, bas=CHEVILLE + 0.030) + [_coque_tronc(nom + "_BODY", coque(m, 0.64, 0.90, 0.013), mat)]
+    return _jambes(nom, m, mat, 0.012, ourlet=CHEVILLE + 0.030) + [_coque_tronc(nom + "_BODY", coque(m, bas(0.64), bas(0.90), 0.012), mat)]
 
 
 def _colonnes_bretelles(tronc, ecart_axe):
@@ -871,7 +912,7 @@ def gilet(nom, m, mat, mat_bandes, ecart=0.012):
     """Gilet a bandes claires (bible 18.8 ; OTConst, art. 7) : sans manches, ouvert au cou en V, du haut des epaules au
     bas du ventre. Deux bandes autour de la taille, deux bretelles devant et dans le dos. ecart : plus grand par-dessus
     une veste ou un sweat."""
-    zs = [0.790, 0.800, 0.900, 0.990, 1.090, 1.180, 1.250, 1.288]
+    zs = [bas(z) for z in (0.790, 0.800, 0.900, 0.990, 1.090, 1.180, 1.250, 1.288)]
     sections = [(z, *(_interpole(m["tronc"], z)[0] + ecart, _interpole(m["tronc"], z)[1] + ecart), 0,
                  _interpole(m["tronc"], z)[3]) for z in zs]
     corps_gilet = fuseau(nom + "_BODY", sections, cotes=COTES_COQUE, mat=mat)
@@ -900,11 +941,11 @@ def gilet(nom, m, mat, mat_bandes, ecart=0.012):
 def ceinture(nom, m, mat, mat_outils):
     """Ceinture a outils simplifiee (amendement de PA du 19 octobre 2026) : la ceinture, deux poches sur les hanches et
     deux manches d'outils qui en sortent, de la couleur de l'equipe."""
-    o = _coque_tronc(nom + "_BELT", coque(m, 0.760, 0.800, 0.024), mat)
+    o = _coque_tronc(nom + "_BELT", coque(m, bas(0.760), bas(0.800), 0.024), mat)
     parties = [o]
     for cote, sg in (("L", 1), ("R", -1)):
-        poche = ellipsoide(nom + "_POUCH_" + cote, (sg * 0.150, -0.060, 0.715), (0.038, 0.040, 0.058), cotes=10, anneaux=6, mat=mat)
-        manche = membre(nom + "_HANDLE_" + cote, (sg * 0.150, -0.066, 0.740), (sg * 0.160, -0.070, 0.820), [(0, 0.011), (1, 0.011)],
+        poche = ellipsoide(nom + "_POUCH_" + cote, (sg * 0.150, -0.060, bas(0.715)), (0.038, 0.040, 0.058), cotes=10, anneaux=6, mat=mat)
+        manche = membre(nom + "_HANDLE_" + cote, (sg * 0.150, -0.066, bas(0.740)), (sg * 0.160, -0.070, bas(0.820)), [(0, 0.011), (1, 0.011)],
                         cotes=8, debord=(0.0, 0.008), mat=mat_outils)
         for x in (poche, manche):
             rigide(x, "HIPS")
@@ -1269,7 +1310,7 @@ def construit(c):
     helmet = casque(rig, mats["clair"])
     # les ancres de la fiche character : l'etiquette au-dessus du casque, le badge a cote de la tete (bible 17.7)
     c.ancre("ANCHOR_LABEL", (0, 0, 2.05))
-    c.ancre("ANCHOR_BADGE", (0.30, 0, 1.78))
+    c.ancre("ANCHOR_BADGE", (0.32, 0, 1.78))  # 0,30 en v001 : le meme ecart au casque, elargi
     animations = anime(rig)
 
     # Atelier seulement : le clip, le casque, et une personne de l'equipe habillee. L'export garde la base seule.
@@ -1291,8 +1332,8 @@ def _construit_tenue(metier):
     return lambda c: tenue(squelette(), metier, _mats(c))
 
 
-VARIANTES = {"CHR_HAIR_KIT_v001": _construit_coiffures, "PRP_CHR_TOOLS_v001": _construit_outils,
-             **{"CHR_OUTFIT_%s_v001" % t.upper(): _construit_tenue(t) for t in METIERS}}
+VARIANTES = {"CHR_HAIR_KIT" + V: _construit_coiffures, "PRP_CHR_TOOLS" + V: _construit_outils,
+             **{"CHR_OUTFIT_%s%s" % (t.upper(), V): _construit_tenue(t) for t in METIERS}}
 
 
 def cache(o):

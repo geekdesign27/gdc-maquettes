@@ -27,7 +27,7 @@ const clipDe = (etat) =>
 
 export const meta = {
   id: "character",
-  version: "1.0.0",
+  version: "1.1.0",
   category: "character",
   states: ETATS,
   params: {
