@@ -194,13 +194,14 @@ Deux conteneurs du kit container-kit empilés, avec escalier extérieur et cours
 
 ### Le parking : le carnet des demandes (`parking`)
 
-Une aire marquée ; data.count place de 0 à 12 caisses, au-delà une pile et le nombre en badge.
+Une aire marquée de capacity places (rangs de 4), sur un socle maquette ; data.count y place une caisse par demande, dans l'ordre d'arrivée ; au-delà de capacity, les caisses en trop vont sur une pile et le nombre est dans le badge. Une caisse ajoutée arrive par la rue, une caisse retirée repart (docs/ville.md). Caisses en bois, sans couleur d'état ni orange (signalétique). Décisions de Pierre-Alain du 20 octobre 2026 : capacity est le nombre de places marquées et le seuil de la pile ; item:1 à item:n désignent les caisses sur leurs places, item:pile la pile.
 
 - Fichier : `components/site/parking/index.js`
 - Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; modèle `ENV_PARKING_A_v001`
-- Paramètres : `capacity` (nombre, 4 à 24, défaut 12)
+- Modèles : `ENV_PARKING_A_v001.glb`
+- Paramètres : `capacity` (nombre de places marquées et seuil de la pile, 4 à 24, défaut 12)
 - États : `default`
-- Ancres : `label`, `badge`
+- Ancres : `label`, `badge`, `item:*`
 - Données reçues par setState : `count` (nombre de fiches au carnet des demandes, 0 ou plus)
 - Budget : 5000 triangles, 6 matériaux
 - Critères d'acceptation :

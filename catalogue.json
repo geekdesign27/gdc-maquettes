@@ -373,16 +373,17 @@
       "category": "site",
       "name": "Le parking : le carnet des demandes",
       "purpose": "Montrer les demandes en attente de tri, sous forme de caisses de matériel.",
-      "description": "Une aire marquée ; data.count place de 0 à 12 caisses, au-delà une pile et le nombre en badge.",
+      "description": "Une aire marquée de capacity places (rangs de 4), sur un socle maquette ; data.count y place une caisse par demande, dans l'ordre d'arrivée ; au-delà de capacity, les caisses en trop vont sur une pile et le nombre est dans le badge. Une caisse ajoutée arrive par la rue, une caisse retirée repart (docs/ville.md). Caisses en bois, sans couleur d'état ni orange (signalétique). Décisions de Pierre-Alain du 20 octobre 2026 : capacity est le nombre de places marquées et le seuil de la pile ; item:1 à item:n désignent les caisses sur leurs places, item:pile la pile.",
       "params": {
-        "capacity": "nombre, 4 à 24, défaut 12"
+        "capacity": "nombre de places marquées et seuil de la pile, 4 à 24, défaut 12"
       },
       "states": [
         "default"
       ],
       "anchors": [
         "label",
-        "badge"
+        "badge",
+        "item:*"
       ],
       "budget": {
         "triangles": 5000,
@@ -397,7 +398,10 @@
         "count": "nombre de fiches au carnet des demandes, 0 ou plus"
       },
       "production": "mixte",
-      "blender": "ENV_PARKING_A_v001"
+      "blender": "ENV_PARKING_A_v001",
+      "assets": [
+        "ENV_PARKING_A_v001.glb"
+      ]
     },
     {
       "id": "reception-area",
