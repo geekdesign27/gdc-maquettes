@@ -393,7 +393,7 @@
         "Le nombre de caisses suit data.count",
         "Chaque caisse est désignable (ancre item:n) pour ouvrir sa demande"
       ],
-      "status": "à faire",
+      "status": "livré",
       "data": {
         "count": "nombre de fiches au carnet des demandes, 0 ou plus"
       },
