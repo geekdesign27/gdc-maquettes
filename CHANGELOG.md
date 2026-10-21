@@ -90,6 +90,8 @@
 - L'icône de copie (`copy-button`, `<gdc-copy-button>` 1.0.0) : copie `text` tel quel s'il cite l'identifiant, sinon « text (id) » ; coche et bulle « Copié » pendant 1,5 s ; si le presse-papiers refuse, une bulle avec le texte sélectionné. Livrée : validée par Pierre-Alain le 21 octobre 2026.
 - La barre de progression (`progress-bar`, `<gdc-progress-bar>` 1.0.0) : signe d'état, barre et fraction, jamais de pourcentage ; la règle dans une bulle au survol, au focus et au toucher ; sans total, « 2 / ? » (le nombre fait reste affiché s'il est connu). Livrée : validée par Pierre-Alain le 21 octobre 2026.
 - Le badge de notification (`notification-badge`, `<gdc-notification-badge>` 1.0.0) : le signe du niveau le plus grave (décision, puis erreur, puis bloqué) et le total des alertes ; le rond vert à coche, sans nombre, quand tout est validé ; masqué à zéro ; une impulsion à l'apparition et quand le total monte. Livré : validé par Pierre-Alain le 21 octobre 2026.
+- L'inspecteur (`inspector`, `<gdc-inspector>` 1.0.0) : en-tête fixe avec l'icône de copie et la fermeture ; sections repliables qui le restent pour la même fiche ; lignes avec signe d'état et valeur citée (`ref` → `gdc-select`) ; tout texte reste du texte. Le contrôle reconnaît les événements d'une balise posée et ne compte plus ce que cite `meta`. Livré : validé par Pierre-Alain le 21 octobre 2026.
+- Fiche de l'agent (`agent-popup`) : les douze états du personnage s'affichent par un signe et un mot, l'équipe par sa couleur et son nom (décision de Pierre-Alain du 21 octobre 2026).
 
 ## 0.2.0, 18 octobre 2026
 

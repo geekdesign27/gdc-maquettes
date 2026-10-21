@@ -1257,7 +1257,7 @@
         "Sections repliables",
         "Lisible en clair et en sombre"
       ],
-      "status": "à faire",
+      "status": "livré",
       "inputs": {
         "id": "identifiant stable",
         "kind": "nature (fiche, lot, agent, lieu…)",
@@ -1287,8 +1287,8 @@
       "inputs": {
         "id": "identifiant de l'agent",
         "name": "prénom et rôle",
-        "team": "équipe",
-        "state": "état (mêmes valeurs que character)",
+        "team": "équipe (mêmes valeurs que character) : architecture, studies, site, reception, operations avec leur couleur ; client et none sans couleur ; toute autre valeur affichée telle quelle",
+        "state": "état (mêmes valeurs que character), affiché par un signe et un mot : work, typing, inspect, read, thinking, talk, walk → Actif (Travaille, Écrit, Inspecte, Lit, Réfléchit, Discute, Se déplace) ; waiting → Attend ta décision ; blocked → Bloqué ; celebrate → Terminé (A fini) ; idle → Au repos, sans signe ; unknown, absent ou autre → Inconnu",
         "doing": "liste de textes : ce qu'il fait",
         "next": "liste de textes : ce qu'il fera",
         "can": "liste de textes : ce qu'il sait faire",
