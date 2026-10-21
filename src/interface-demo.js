@@ -113,6 +113,36 @@ export const variantes = {
     { titre: "Beaucoup d'alertes", fond: "#83A78F", data: { counts: { waiting: 12, error: 87, blocked: 29 } } },
     { titre: "Tout à zéro : masqué (rien ci-dessous)", data: { counts: { waiting: 0, error: 0, blocked: 0, done: 0 } } },
   ],
+  // l'inspecteur : une fiche du projet-type, avec du texte piege qui doit rester du texte
+  inspector: [
+    {
+      titre: "Une fiche, avec du texte piégé",
+      style: "height: 520px; max-width: 380px",
+      data: {
+        id: "001-cloturer-un-audit",
+        kind: "Fiche",
+        title: "Clôturer un audit",
+        sections: [
+          { title: "Avancement", rows: [
+            { label: "Critères prouvés", value: "3 / 7" },
+            { label: "Bâtiment", value: "Application de bureau", ref: "bureau" },
+            { label: "Agent", value: "Lina, ingénieure", state: "blocked", ref: "lina" },
+          ] },
+          { title: "Tâches", rows: [
+            { label: "Écrire la fiche", value: "faite", state: "done" },
+            { label: "Construire l'export", value: "en cours", state: "active" },
+            { label: "Relire le rapport", value: "pas de nouvelles", state: "unknown" },
+          ] },
+          { title: "Blocages", rows: [
+            { label: "Essai rouge", value: "Le test d'export échoue : <img src=x onerror=\"alert('injecté')\"> <b>gras</b>", state: "error" },
+          ] },
+          { title: "Réussites", rows: [] },
+          { title: "Actions attendues", rows: [{ label: "Ta décision", value: "Valider le rapport d'audit", state: "waiting", ref: "bureau-client" }] },
+        ],
+      },
+    },
+    { titre: "Sans données", style: "height: 180px; max-width: 380px", data: {} },
+  ],
 };
 
 const journal = [];
