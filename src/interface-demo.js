@@ -89,6 +89,12 @@ export const variantes = {
     },
     { titre: "Sans données", style: "height: 160px; max-width: 300px", data: {} },
   ],
+  "copy-button": [
+    { titre: "Un nom : copie « Le bureau d'études (bureau-etudes) »", data: { id: "bureau-etudes", text: "Le bureau d'études" } },
+    { titre: "Un prompt qui cite déjà l'identifiant : copié tel quel", data: { id: "001-cloturer-un-audit", text: "Relis la fiche 001-cloturer-un-audit et liste ce qui manque." } },
+    { titre: "L'identifiant seul", data: { id: "lina" } },
+    { titre: "Sans identifiant : désactivée", data: { text: "Rien" } },
+  ],
 };
 
 const journal = [];
@@ -241,6 +247,12 @@ bascule("motion", (on) => {
   else delete document.documentElement.dataset.motion;
 });
 bascule("phone", (on) => demos.classList.toggle("phone", on));
+// la copie refusee : le presse-papiers simule rejette l'ecriture, pour voir le repli de l'icone de copie
+const ecrire = navigator.clipboard?.writeText?.bind(navigator.clipboard);
+bascule("refus", (on) => {
+  if (!navigator.clipboard) return;
+  navigator.clipboard.writeText = on ? () => Promise.reject(new Error("refus simulé")) : ecrire;
+});
 // l'adresse peut fixer les bascules : ?theme=dark&motion=reduced&phone=1
 const q = new URLSearchParams(location.search);
 if (q.get("theme") === "dark") $("theme").click();
