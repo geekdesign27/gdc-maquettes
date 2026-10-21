@@ -1123,7 +1123,7 @@
       "category": "signals",
       "name": "Le signal de défaut",
       "purpose": "Un défaut est ouvert sur une partie habitée.",
-      "description": "Un cône ou un ruban posé sur la façade ou dans la pièce concernée.",
+      "description": "Un cône de chantier orange fluo à deux bandes blanches, sur sa semelle, posé devant la façade ou dans la pièce concernée (décisions de Pierre-Alain du 21 octobre 2026 : le cône seul, sans ruban ; l'orange fluo des vrais cônes, distinct de l'orange chantier de la barrière de blocage).",
       "params": {},
       "states": [
         "default"
@@ -1142,7 +1142,10 @@
       "status": "à faire",
       "data": {},
       "production": "blender",
-      "blender": "PRP_DEFECT_CONE_A_v001"
+      "blender": "PRP_DEFECT_CONE_A_v001",
+      "assets": [
+        "PRP_DEFECT_CONE_A_v001.glb"
+      ]
     },
     {
       "id": "permit-board",

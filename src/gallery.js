@@ -184,8 +184,9 @@ function parametresAdresse(meta) {
 function retire(x) { if (x && x.inst) { scene.remove(x.inst.root); x.inst.dispose(); } }
 
 // Un signal (lot G5) se juge a cote des lieux ou il apparait (signaletique) : ses voisins de planche, poses tout pres
-// (ECART_SIGNAL entre les emprises), et non les deux premiers modeles livres.
-const VOISINS_SIGNAUX = { 'decision-sign': ['client-office', 'reception-area'], 'blocked-sign': ['site-fence', 'building'] };
+// (ECART_SIGNAL entre les emprises), et non les deux premiers modeles livres ; « id/etat » pose un voisin dans cet etat.
+const VOISINS_SIGNAUX = { 'decision-sign': ['client-office', 'reception-area'], 'blocked-sign': ['site-fence', 'building'],
+  'defect-sign': ['building/completed', 'building-interior'] };
 const ECART_SIGNAL = 1.5;
 
 // La planche : le composant choisi entre deux modeles de reference (livres d'abord, exemples a defaut).
@@ -293,8 +294,9 @@ async function select(id, state) {
     // conteneurs) : 6 m au moins entre leurs emprises
     const boite = new THREE.Box3().setFromObject(x.inst.root);
     let pos = -1;
-    for (const rid of references(id)) {
-      const v = await instance(rid);
+    for (const ref of references(id)) {
+      const [rid, rstate] = ref.split('/');
+      const v = await instance(rid, rstate);
       const bv = new THREE.Box3().setFromObject(v.inst.root);
       if (VOISINS_SIGNAUX[id]) v.inst.root.position.x = pos < 0 ? boite.min.x - ECART_SIGNAL - bv.max.x : boite.max.x + ECART_SIGNAL - bv.min.x;
       else v.inst.root.position.x = pos < 0 ? Math.min(-20, boite.min.x - 6 - bv.max.x) : Math.max(20, boite.max.x + 6 - bv.min.x);
