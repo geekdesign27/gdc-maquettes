@@ -49,8 +49,9 @@ scene.add(grid);
 function resize() {
   const { clientWidth: w, clientHeight: h } = stage;
   renderer.setSize(w, h, false);
-  // la scene de reference (trois quartiers, 75 x 65 m) se cadre en entier sur un portable de 13 pouces ; on zoome a la molette
-  const view = current.entry?.id === reference.SCENE_ID ? 29 : options.planche ? 18 : 12;
+  // la scene de reference (60 x 50 m, 14 m de plus par application) se cadre en entier sur un portable de 13 pouces ;
+  // on zoome a la molette
+  const view = current.scene ? 26 + 5 * (current.apps - 1) : options.planche ? 18 : 12;
   const aspect = w / Math.max(h, 1);
   Object.assign(camera, { left: -view * aspect, right: view * aspect, top: view, bottom: -view });
   camera.updateProjectionMatrix();
@@ -129,19 +130,26 @@ function buildList() {
 
 async function instance(id, state) {
   if (id === reference.SCENE_ID) {
-    // une instance par membre, avec ses parametres et dans son etat, puis l'assemblage
+    // le plan pour les applications de l'adresse (?applications=3, ou un projet : ?applications=auditapp) ; une instance par membre, avec ses
+    // parametres et dans son etat, puis l'assemblage, dans la phase demandee
+    const p = reference.plan(new URLSearchParams(location.search).get('applications'));
     const insts = [];
-    for (const m of reference.MEMBRES) {
+    for (const m of p.membres) {
       const mod = byId[m.id];
       // une personne d'equipe.json : ses parametres et ses seuls fichiers, comme pour la planche de l'equipe
-      const params = m.personne ? personnage.parametresDe(personnage.PERSONNES.find((p) => p.id === m.personne)) : { ...defaultParams(mod.meta), ...m.params };
+      const params = m.personne ? personnage.parametresDe(personnage.PERSONNES.find((x) => x.id === m.personne)) : { ...defaultParams(mod.meta), ...m.params };
       const metaM = m.personne ? personnage.metaPersonne(params) : mod.meta;
       await charge.prepare(metaM);
       const inst = mod.create(THREE, params, makeContext(options, await charge.assetsPour(metaM)));
       inst.setState(m.state || mod.meta.states[0], { ...sampleData(entries.find((e) => e.id === m.id)), ...m.data });
       insts.push(inst);
     }
-    return { inst: reference.create(THREE, insts), state: 'default', entry: { id, name: 'La scène de référence' }, mod: { meta: reference.meta }, scene: true };
+    const inst = reference.create(THREE, insts, p);
+    const premier = state && p.meta.states.includes(state) ? state : reference.PHASE_DEFAUT;
+    inst.setState(premier);
+    const projet = new URLSearchParams(location.search).get('applications');
+    const name = p.noms.length ? `La scène de référence, projet ${projet} (${p.apps} applications)` : p.apps > 1 ? `La scène de référence, ${p.apps} applications` : 'La scène de référence';
+    return { inst, state: premier, entry: { id, name }, mod: { meta: p.meta }, scene: true, apps: p.apps };
   }
   if (id === etalon.ETALON_ID) {
     return { inst: etalon.create(THREE, makeContext(options)), state: 'default', entry: { id, name: 'Cube étalon' }, mod: etalon };
@@ -389,39 +397,76 @@ async function report() {
 }
 
 // Les ancres : de simples etiquettes HTML, comme celles que GDC posera.
-// Les reperes de la scene de reference (scene-reference.js, REPERES) : numero, icone d'etape du lot G7, titre ; un passage
-// (une decision du client) a son propre style. Les etiquettes sont creees une fois par instance, puis deplacees.
+// Les reperes de la scene de reference (scene-reference.js) : numero dans la couleur de sa zone, icone d'etape du lot G7,
+// titre ; un passage (une decision du client) a un contour ; la pastille d'un batiment ne montre que son numero, le titre
+// au survol.
 const tmp = new THREE.Vector3();
-let etiquettes = { inst: null, tags: new Map() };
-function etiquette(name) {
-  const tag = document.createElement('div');
-  tag.className = 'anchor';
-  const r = current.scene && reference.REPERES[name];
-  if (!r) { tag.textContent = name; return tag; }
-  tag.classList.add('repere');
-  if (r.passage) tag.classList.add('passage');
+let etiquettes = { inst: null, tags: new Map(), cadres: null };
+function remplit(tag, r) {
+  tag.replaceChildren();
+  tag.className = 'anchor repere' + (r.passage ? ' passage' : '') + (r.pastille ? ' pastille' : '');
+  const couleur = r.zone ? reference.ZONES[r.zone].couleur : 'var(--ink)';
+  tag.style.setProperty('--zone', couleur);
   if (r.numero) { const n = document.createElement('b'); n.textContent = r.numero; tag.append(n); }
   const svg = r.icone && illustrations['step-icons']?.[r.icone];
   if (svg) { const i = document.createElement('span'); i.className = 'icone'; i.innerHTML = svg; tag.append(i); }
-  tag.append(r.titre);
-  return tag;
+  const t = document.createElement('span');
+  t.className = 'titre';
+  t.textContent = r.titre;
+  tag.append(t);
+  tag.title = r.numero ? `${r.numero}. ${r.titre}` : r.titre;
+}
+const projette = (v) => {
+  tmp.copy(v);
+  current.inst.root.localToWorld(tmp);
+  tmp.project(camera);
+  const { clientWidth: w, clientHeight: h } = stage;
+  return [((tmp.x + 1) / 2) * w, ((1 - tmp.y) / 2) * h];
+};
+// le nom de chaque zone, sous son coin le plus proche de la camera ; sa bordure est peinte au sol (scene-reference.js)
+function dessineCadres(layer) {
+  if (!etiquettes.cadres) {
+    etiquettes.cadres = current.inst.cadres().map((c) => {
+      const nom = document.createElement('div');
+      nom.className = 'anchor nom-zone';
+      nom.style.setProperty('--zone', c.couleur);
+      nom.textContent = c.nom;
+      layer.append(nom);
+      return { c, nom };
+    });
+  }
+  for (const { c, nom } of etiquettes.cadres) {
+    const g = c.coins.map(projette).reduce((a, b) => (b[1] > a[1] ? b : a));
+    nom.style.left = `${g[0]}px`;
+    nom.style.top = `${g[1]}px`;
+  }
 }
 function drawAnchors() {
   const layer = $('anchors');
-  if (!options.anchors || options.silhouette || !current.inst) { layer.replaceChildren(); etiquettes = { inst: null, tags: new Map() }; return; }
-  if (etiquettes.inst !== current.inst) { layer.replaceChildren(); etiquettes = { inst: current.inst, tags: new Map() }; }
-  const { clientWidth: w, clientHeight: h } = stage;
+  if (!options.anchors || options.silhouette || !current.inst) { layer.replaceChildren(); etiquettes = { inst: null, tags: new Map(), cadres: null }; return; }
+  if (etiquettes.inst !== current.inst) { layer.replaceChildren(); etiquettes = { inst: current.inst, tags: new Map(), cadres: null }; }
+  if (current.scene) dessineCadres(layer);
   for (const a of current.mod.meta.anchors) {
     const name = a.replace('*', '0');
     let v;
     try { v = current.inst.anchor(name); } catch { continue; }
-    tmp.copy(v);
-    current.inst.root.localToWorld(tmp);
-    tmp.project(camera);
+    const [x, y] = projette(v);
     let tag = etiquettes.tags.get(name);
-    if (!tag) { tag = etiquette(name); layer.append(tag); etiquettes.tags.set(name, tag); }
-    tag.style.left = `${((tmp.x + 1) / 2) * w}px`;
-    tag.style.top = `${((1 - tmp.y) / 2) * h}px`;
+    if (!tag) {
+      tag = document.createElement('div');
+      tag.className = 'anchor';
+      if (!current.scene) tag.textContent = name;
+      layer.append(tag);
+      etiquettes.tags.set(name, tag);
+    }
+    // un repere de la scene change avec la phase : on le refait quand ce qu'il dit change
+    if (current.scene) {
+      const r = current.inst.repere(name);
+      const sig = JSON.stringify(r);
+      if (tag.dataset.sig !== sig) { remplit(tag, r); tag.dataset.sig = sig; }
+    }
+    tag.style.left = `${x}px`;
+    tag.style.top = `${y}px`;
   }
 }
 
@@ -441,7 +486,7 @@ function rapportKit() {
 // La scene de reference : ce qu'elle pese en tout. Sa fluidite se mesure en images par seconde (voir le constat).
 function rapportScene() {
   const m = measure(current.inst.root);
-  $('report').replaceChildren(`${current.entry.name} · ${current.inst.instances.length} composants · ${m.triangles} triangles · ${m.materials} matériaux`);
+  $('report').replaceChildren(`${current.entry.name} · phase ${current.state} · ${current.inst.instances.length} composants · ${m.triangles} triangles · ${m.materials} matériaux`);
 }
 
 // La planche du personnage : la mesure du personnage le plus charge (sa tenue complete), comparee au budget de la
