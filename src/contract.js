@@ -131,7 +131,7 @@ export function checkHtml(mod, entry, source) {
   if (!same(meta.inputs, entrees)) problems.push(`entrées différentes du catalogue : ${JSON.stringify(meta.inputs)} au lieu de ${JSON.stringify(entrees)}`);
   if (!same(meta.outputs, sorties)) problems.push(`événements différents du catalogue : ${JSON.stringify(meta.outputs)} au lieu de ${JSON.stringify(sorties)}`);
   for (const k of entrees) if (!new RegExp(`\\b${k}\\b`).test(source)) problems.push(`l'entrée « ${k} » n'est pas lue dans le code`);
-  for (const e of sorties) if (!source.includes(`'${e}'`)) problems.push(`l'événement « ${e} » n'est jamais émis`);
+  for (const e of sorties) if (![`'${e}'`, `"${e}"`, `\`${e}\``].some((q) => source.includes(q))) problems.push(`l'événement « ${e} » n'est jamais émis`);
   // un element n'emet que les evenements de sa fiche
   for (const [, e] of source.matchAll(/CustomEvent\(\s*['"]([\w-]+)['"]/g)) if (!sorties.includes(e)) problems.push(`événement « ${e} » absent de la fiche`);
   return problems;
