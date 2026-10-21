@@ -696,9 +696,9 @@ Jeu de dix icônes SVG, au trait, de même épaisseur : idea (l'idée, une ampou
 
 ### Les icônes des lieux (`place-icons`)
 
-Bureau d'architecte, bureau d'études, bureau du client, bureau de contrôle, chantier, parking, réception, bâtiment habité.
+Une icône par lieu, avec les identifiants que GDC envoie (docs/ville.md) et le bâtiment habité (décision de Pierre-Alain du 21 octobre 2026 : neuf icônes, la baraque comprise) : bureau-architecte (le compas), bureau-etudes (la calculatrice), bureau-client (la mallette), bureau-controle (le tampon), baraque (le conteneur du conducteur de travaux), chantier (la grue), parking (la voiture), aire-reception (le camion de livraison), batiment-habite (la maison, sa fenêtre allumée). Les identifiants restent ceux de GDC, en français : ce sont des données, pas du code. Même famille que les icônes des étapes (grille de 24, trait de 2, currentColor). Dessins originaux.
 
-- Entrées (propriété data) : `place` (identifiant du lieu (nom du fichier SVG))
+- Entrées (propriété data) : `place` (identifiant du lieu dans GDC (nom du fichier SVG) : bureau-architecte, bureau-etudes, bureau-client, bureau-controle, baraque, chantier, parking, aire-reception, batiment-habite)
 - Sorties (événements) : aucune
 - Critères d'acceptation :
   - Même famille que les icônes des étapes
