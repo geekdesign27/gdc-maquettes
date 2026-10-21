@@ -160,6 +160,27 @@ export const variantes = {
     { titre: "Sans actions", style: "max-width: 420px", data: { id: "bureau-etudes", actions: [] } },
     { titre: "Sans identifiant", style: "max-width: 420px", data: { actions: [{ label: "x", prompt: "y" }] } },
   ],
+  // la fiche d'un agent : Lina au travail, Victor dont le journal ne dit rien
+  "agent-popup": [
+    {
+      titre: "Lina, au travail",
+      data: {
+        id: "lina", name: "Lina, ingénieure", team: "studies", state: "typing",
+        doing: ["Écrit la fiche technique de l'export (001-cloturer-un-audit)"],
+        next: ["Relancer l'essai d'export", "Passer la fiche au contrôle"],
+        can: ["Étudier une demande", "Écrire une fiche technique", "Chiffrer un lot"],
+        actions: [{ label: "Où en est Lina ?", prompt: "Résume ce que fait l'agent lina et ce qui la bloque." }],
+      },
+    },
+    {
+      titre: "Victor : le journal ne dit rien",
+      data: { id: "victor", name: "Victor, conducteur de travaux", team: "site", state: "unknown", doing: [], next: [], can: [], actions: [] },
+    },
+    {
+      titre: "Pierre-Alain attend ta décision",
+      data: { id: "client", name: "Pierre-Alain, le client", team: "client", state: "waiting", doing: ["Attend le rapport d'audit"], next: [], can: ["Valider une fiche", "Refuser une fiche"], actions: [] },
+    },
+  ],
 };
 
 const journal = [];
