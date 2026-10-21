@@ -3,11 +3,10 @@
 // composant s'appliquent a toute l'equipe. Outil de la galerie seulement : il n'est pas livre a GDC.
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 import { materiauPalette } from "./etalon.js";
-import equipe from "../components/kit/character-kit/equipe.json" with { type: "json" };
-import { fichiersDe } from "../components/character/character/habillage.js";
+import { PERSONNES, parametresDe, metaPersonne } from "./ville/equipe.js";
 
 export const PERSONNAGE_ID = "personnage";
-export const PERSONNES = equipe.personnes;
+export { PERSONNES, parametresDe, metaPersonne };
 // Qui occupe les postes (ancres desk:n) de chaque lieu, d'apres docs/correspondances.md : la galerie les y pose pour la
 // planche ; GDC, lui, place ses propres personnages.
 export const OCCUPANTS = {
@@ -29,26 +28,6 @@ const SOCLE = { taille: [10.6, 0.6, 4.4], chanfrein: 0.1 }; // bible 18.5 : 0,60
 
 export function entree(catalogue) {
   return catalogue.items.find((i) => i.id === "character-kit");
-}
-
-// Les parametres du composant character pour une personne d'equipe.json : ce que GDC lui passera.
-export function parametresDe(p) {
-  return {
-    trade: p.metier,
-    team: p.equipe,
-    body: p.morpho,
-    skin: p.peau,
-    hair: p.coiffure,
-    hairColor: p.cheveux,
-    beard: p.barbe,
-    glasses: p.lunettes,
-    tool: p.outil ?? "none",
-  };
-}
-
-// Les fichiers d'une personne seulement : le chargeur n'en copie pas d'autres.
-export function metaPersonne(params) {
-  return { id: "character", category: "character", assets: fichiersDe(params) };
 }
 
 export function metaDecor() {
