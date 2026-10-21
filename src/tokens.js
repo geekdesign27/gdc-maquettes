@@ -61,8 +61,11 @@ export function cssVariables() {
     // --gdc-motion as a play state, for CSS animations (the turning gear of « Actif »)
     "  --gdc-play: running;",
   ].join("\n");
+  // --gdc-sign-edge : le liseré clair de l'octogone d'erreur, trop proche du fond sombre (décision de PA du 21 octobre 2026)
+  const lisere = { light: "transparent", dark: palette.interface.dark.ink };
   const theme = (t) =>
-    bloc(palette.interface[t], "") + `\n  color-scheme: ${t};`;
+    bloc(palette.interface[t], "") +
+    `\n  --gdc-sign-edge: ${lisere[t]};\n  color-scheme: ${t};`;
   return [
     `:root {\n${fixes}\n}`,
     `:root, [data-theme="light"] {\n${theme("light")}\n}`,

@@ -19,7 +19,7 @@ Le langage des signaux, à l'image des jeux de gestion et des interfaces de supe
 | Actif | Bleu #2B7BD8 | Anneau plein | Roue dentée qui tourne lentement (fixe si moins d'animations) | Agent, lot, fiche |
 | Attend ta décision | Rouge de signalisation | Panneau rectangulaire | Point d'exclamation blanc | Fiche, bureau du client, zone de réception |
 | Bloqué | Jaune ambré #E0A100 | Triangle plein, bord sombre (panneau de danger, ISO 7010 W001) | Point d'exclamation **sombre** (encre), pour le contraste sur le jaune | Lot, agent |
-| En erreur | Rouge foncé | Octogone | Croix | Contrôle, lot |
+| En erreur | Rouge foncé | Octogone ; en thème sombre, un liseré clair de 1 px (le rouge foncé ne fait que 2,1:1 sur le fond sombre ; décision de Pierre-Alain du 21 octobre 2026) | Croix | Contrôle, lot |
 | Terminé | Vert #2F8A5C | Rond plein | Coche blanche | Lot, fiche, tâche |
 | Inconnu | Gris | Anneau pointillé | Point d'interrogation | Agent, fiche |
 

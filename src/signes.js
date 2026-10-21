@@ -39,7 +39,14 @@ export const signes = {
     plein: true,
     encre: ENCRE,
   },
-  error: { label: "En erreur", forme: "octagon", icone: "cross", plein: true },
+  // dark red is too close to the dark background: a light edge in dark theme (--gdc-sign-edge, decision of PA, 21 October 2026)
+  error: {
+    label: "En erreur",
+    forme: "octagon",
+    icone: "cross",
+    plein: true,
+    lisere: true,
+  },
   done: { label: "Terminé", forme: "disc", icone: "tick", plein: true },
   unknown: {
     label: "Inconnu",
@@ -186,9 +193,10 @@ function trace(doc, parent, primitives, couleur) {
   for (const [balise, attrs] of primitives) {
     const el = doc.createElementNS(NS, balise);
     for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, String(v));
-    // un trait prend la couleur, un aplat aussi ; « fill: none » reste vide
-    if (attrs.fill !== "none") el.setAttribute("fill", couleur);
-    el.setAttribute("stroke", "stroke-width" in attrs ? couleur : "none");
+    // un trait prend la couleur, un aplat aussi ; « fill: none » reste vide. En style plutot qu'en attribut :
+    // var() n'est pas lu partout dans les attributs de presentation SVG.
+    if (attrs.fill !== "none") el.style.fill = couleur;
+    el.style.stroke = "stroke-width" in attrs ? couleur : "none";
     parent.append(el);
   }
 }
@@ -197,7 +205,7 @@ function trace(doc, parent, primitives, couleur) {
 // Un etat inconnu de la table devient « unknown » : rien n'est invente.
 export function signIcon(doc, state, size = 16) {
   const s = signes[state] ? state : "unknown";
-  const { forme, icone, plein, encre, tourne } = signes[s];
+  const { forme, icone, plein, encre, tourne, lisere } = signes[s];
   const svg = doc.createElementNS(NS, "svg");
   svg.setAttribute("viewBox", "0 0 16 16");
   svg.setAttribute("width", String(size));
@@ -207,7 +215,12 @@ export function signIcon(doc, state, size = 16) {
   svg.dataset.state = s;
   const couleur = `var(--gdc-state-${s})`;
   trace(doc, svg, FORMES[forme], couleur);
-  if (encre) for (const el of svg.children) el.setAttribute("stroke", encre);
+  if (encre) for (const el of svg.children) el.style.stroke = encre;
+  if (lisere)
+    for (const el of svg.children) {
+      el.style.stroke = "var(--gdc-sign-edge, transparent)";
+      el.style.strokeWidth = "1";
+    }
   let calque = svg;
   if (tourne) {
     // One slow turn every 6 s; paused (upright) when less motion is asked: --gdc-play from src/tokens.js,
