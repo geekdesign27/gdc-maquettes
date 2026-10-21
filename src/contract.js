@@ -70,7 +70,9 @@ function collectDisposables(root) {
 // Des données d'essai pour setState : une valeur plausible par clé de la fiche.
 export function sampleData(entry) {
   const sample = { progress: 0.5, count: 3, facing: 0.8, activeDesks: 2, rooms: [{ state: 'construction', trades: ['mason'] }, { state: 'done', trades: [] }],
-    zones: [{ x: -8, z: 0, width: 14, depth: 12, surface: 'concrete' }, { x: 6, z: 0, width: 5, depth: 28, surface: 'asphalt' }] };
+    zones: [{ x: -8, z: 0, width: 14, depth: 12, surface: 'concrete' }, { x: 6, z: 0, width: 5, depth: 28, surface: 'asphalt' }],
+    // building 2.0.0 : un etage sans stade prend l'etat essaye ; deux lots, l'un fini
+    floors: [{ id: '001-essai', rooms: [{ id: 'L1', done: true }, { id: 'L2', done: false }] }] };
   return Object.fromEntries(Object.keys(entry.data || {}).map((k) => [k, k in sample ? sample[k] : 1]));
 }
 
@@ -99,7 +101,9 @@ export function checkInstance(THREE, mod, entry, ctx, partagees = new Set()) {
   }
   try { inst.setState('__inconnu__', {}); problems.push(`${label} setState accepte un état absent du catalogue`); } catch { /* attendu */ }
   for (const a of mod.meta.anchors) {
-    const name = a.replace('*', '1'); // les ancres numerotees comptent depuis 1 (desk:1, le premier poste)
+    // les ancres numerotees comptent depuis 1 (desk:1, le premier poste) ; a cote d'etages (floor:*), une piece est
+    // numerotee dans son etage (room:1-1, la premiere piece du rez)
+    const name = a === 'room:*' && mod.meta.anchors.includes('floor:*') ? 'room:1-1' : a.replace('*', '1');
     try { const v = inst.anchor(name); if (!v || !v.isVector3) problems.push(`${label} anchor(« ${name} ») ne renvoie pas un point`); } catch (e) { problems.push(`${label} anchor(« ${name} ») a échoué : ${e.message}`); }
   }
   const disposed = new Set();
