@@ -28,12 +28,39 @@ def charge_asset(ident):
     return script, mod
 
 
+def rend_illustration(ident, script, mod):
+    """Une illustration (lot G7) : rend(c, dossier) ecrit ses fichiers (SVG) a cote de la fiche, sans GLB. asset.json garde
+    les empreintes du script, des outils communs, de la palette, des SOURCES du script (ce qu'il reprend d'ailleurs, le
+    kit du personnage par exemple) et de chaque fichier rendu : le controle refuse un fichier retouche a la main."""
+    a = mod.ASSET
+    dossier = c.RACINE / "components" / a["categorie"] / a["id"]
+    rendus = mod.rend(c, dossier)
+    sha = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()  # noqa: E731
+    meta = {
+        "id": a["id"],
+        "bible": "WORKSITE 1.2",
+        "blender": bpy.app.version_string,
+        "script": "blender/assets/" + ident + ".py",
+        "script_sha256": sha(script),
+        "commun_sha256": sha(ICI / "gdc_blender" / "commun.py"),
+        "palette_sha256": sha(c.RACINE / "src" / "palette.json"),
+        "sources": {s: sha(c.RACINE / s) for s in getattr(mod, "SOURCES", [])},
+        "fichiers": {nom: sha(p) for nom, p in sorted(rendus.items())},
+        "statut": "a valider",
+    }
+    (dossier / "asset.json").write_text(json.dumps(meta, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print("rendu : %d fichier(s) dans %s" % (len(rendus), dossier.relative_to(c.RACINE)))
+
+
 def main(ids):
     if not ids:
         raise SystemExit("asset attendu : construit.py -- <id du catalogue>")
     for ident in ids:
         script, mod = charge_asset(ident)
         a = mod.ASSET
+        if hasattr(mod, "rend"):
+            rend_illustration(ident, script, mod)
+            continue
         c.scene_vide()
         infos = mod.construit(c) or {}
         dossier = c.RACINE / "components" / a["categorie"] / a["id"]

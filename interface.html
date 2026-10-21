@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Interface des maquettes</title>
+  <title>Interface et illustrations des maquettes</title>
   <link rel="icon" href="data:,">
   <style>
     * { box-sizing: border-box; }
@@ -24,6 +24,9 @@
     .signes { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
     .signe { display: flex; gap: 8px; align-items: center; }
     .specimen p { margin: 4px 0; }
+    .illustrations { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
+    .illustration { margin: 0; display: grid; justify-items: center; gap: 4px; }
+    .illustration figcaption { font: 11px/1.2 var(--gdc-font-mono); color: var(--gdc-muted); }
     @media (max-width: 600px) { gdc-side-nav { height: auto !important; max-width: none !important; } }
     #journal { font: 12px/1.5 var(--gdc-font-mono); white-space: pre-wrap; margin: 0; }
     #journal .ko { color: var(--gdc-state-error); font-weight: 600; }

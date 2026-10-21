@@ -8,7 +8,7 @@ Le langage des signaux, à l'image des jeux de gestion et des interfaces de supe
 2. **Les couleurs d'état sont fixes** : le thème du projet ne les change jamais.
 3. **Une seule priorité visible par élément** : s'il y a une alerte et un avertissement, on montre l'alerte, avec le total.
 4. **Les badges comptent**, ils ne racontent pas : un nombre et une icône ; le détail s'ouvre au clic.
-5. **Rien ne clignote en continu.** Une impulsion douce à l'apparition, puis un état fixe. Une seule exception, décidée par Pierre-Alain le 21 octobre 2026 : la roue dentée d'« Actif » tourne lentement tant que le travail dure, sans clignoter. Si l'utilisateur demande moins d'animations, rien ne bouge, la roue comprise.
+5. **Rien ne clignote en continu.** Une impulsion douce à l'apparition, puis un état fixe. Deux exceptions, décidées par Pierre-Alain le 21 octobre 2026 : la roue dentée d'« Actif » tourne lentement tant que le travail dure, sans clignoter ; le portrait d'un agent (lot G7) fait son petit geste, parler ou travailler, tant que l'état dure. Si l'utilisateur demande moins d'animations, rien ne bouge, la roue et les portraits compris.
 6. **Ce qui t'attend est rouge, et seulement cela** : dans l'interface, le rouge de signalisation est réservé aux décisions attendues. Dans la scène, les couleurs d'état n'existent pas (bible, 17.3) : un signal 3D se reconnaît à sa forme, et le badge HTML posé sur son ancre porte la couleur.
 7. **Inconnu n'est pas une erreur** : gris, pointillé, avec un point d'interrogation.
 

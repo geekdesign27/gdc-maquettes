@@ -8,7 +8,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils.js';
-import { checkSource, checkMeta, checkInstance, checkHtml } from '../src/contract.js';
+import { checkSource, checkMeta, checkInstance, checkHtml, checkSvg } from '../src/contract.js';
 import { makeContext } from '../src/tokens.js';
 import { creeChargeur } from '../src/assets.js';
 import { lisGlb, checkGlb } from '../src/glb.js';
@@ -16,7 +16,7 @@ import { lisGlb, checkGlb } from '../src/glb.js';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const catalogue = JSON.parse(await readFile(join(ROOT, 'catalogue.json'), 'utf8'));
 // les documents de l'interface (les polices) ont un dossier sous components/ : on y controle les licences
-const items = catalogue.items.filter((i) => ['component', 'kit', 'html'].includes(i.kind) || (i.kind === 'document' && i.category === 'interface'));
+const items = catalogue.items.filter((i) => ['component', 'kit', 'html', 'illustration'].includes(i.kind) || (i.kind === 'document' && i.category === 'interface'));
 // les evenements de chaque element d'interface, pour reconnaitre ceux d'une balise posee dans un autre
 const composes = Object.fromEntries(catalogue.items.filter((i) => i.kind === 'html').map((i) => [`gdc-${i.id}`, Object.keys(i.outputs || {})]));
 const sha = (buf) => createHash('sha256').update(buf).digest('hex');
@@ -67,6 +67,35 @@ async function fichierPrincipal(dossier) {
   return existsSync(metaP) ? JSON.parse(await readFile(metaP, 'utf8')).nom + '.glb' : null;
 }
 
+// Une illustration (lot G7) : un SVG par identifiant de la fiche (files), et rien d'autre, chacun conforme a checkSvg.
+// Un rendu Blender (production « blender ») garde dans asset.json les empreintes de ce qui l'a produit.
+async function illustration(dossier, entry) {
+  const p = [];
+  const contenu = await readdir(dossier);
+  const attendus = (entry.files || []).map((f) => f + '.svg');
+  if (!attendus.length) p.push('la fiche ne liste aucun fichier (files)');
+  for (const f of attendus) {
+    if (!contenu.includes(f)) { p.push(f + ' absent'); continue; }
+    p.push(...checkSvg(await readFile(join(dossier, f), 'utf8'), entry).map((x) => `${f} : ${x}`));
+  }
+  for (const f of contenu.filter((x) => x.endsWith('.svg') && !attendus.includes(x))) p.push(`${f} absent de la fiche (files)`);
+  if (entry.production !== 'blender') return p;
+  const metaP = join(dossier, 'asset.json');
+  if (!existsSync(metaP)) return p.concat('asset.json absent : les fichiers doivent sortir de npm run blender -- ' + entry.id);
+  const m = JSON.parse(await readFile(metaP, 'utf8'));
+  const relance = `relance npm run blender -- ${entry.id}`;
+  const chemins = { [m.script]: m.script_sha256, 'blender/gdc_blender/commun.py': m.commun_sha256, 'src/palette.json': m.palette_sha256, ...(m.sources || {}) };
+  for (const [chemin, empreinte] of Object.entries(chemins)) {
+    if (!existsSync(join(ROOT, chemin))) p.push(`${chemin} introuvable`);
+    else if (sha(await readFile(join(ROOT, chemin))) !== empreinte) p.push(`${chemin} a change depuis le rendu : ${relance}`);
+  }
+  for (const f of attendus.filter((x) => contenu.includes(x))) {
+    if (!(m.fichiers || {})[f]) p.push(`${f} absent de asset.json : ${relance}`);
+    else if (sha(await readFile(join(dossier, f))) !== m.fichiers[f]) p.push(`${f} modifie hors du script : ${relance}`);
+  }
+  return p;
+}
+
 const errors = [];
 let ok = 0;
 let pending = 0;
@@ -76,7 +105,7 @@ for (const entry of items) {
   const fichiers = entry.assets || [];
   const propres = fichiers.filter((f) => !f.includes(':')); // ceux d'un autre dossier sont controles chez eux
   const code = join(dossier, 'index.js');
-  const present = entry.kind === 'kit' ? propres.some((f) => existsSync(join(dossier, f))) : entry.kind === 'document' ? existsSync(dossier) : existsSync(code);
+  const present = entry.kind === 'kit' ? propres.some((f) => existsSync(join(dossier, f))) : ['document', 'illustration'].includes(entry.kind) ? existsSync(dossier) : existsSync(code);
   if (!present) {
     if (entry.status === 'à faire') { pending += 1; continue; }
     errors.push([entry.id, [`statut « ${entry.status} » mais rien dans components/${entry.category}/${entry.id}/`]]);
@@ -132,6 +161,7 @@ for (const entry of items) {
       if (!contenu.some((l) => l.startsWith('LICENSE-') && f.startsWith(l.slice(8, -4) + '-'))) problems.push(`${f} sans licence jointe`);
     }
   }
+  if (entry.kind === 'illustration') problems.push(...await illustration(dossier, entry));
   if (problems.length) errors.push([entry.id, problems]);
   else ok += 1;
 }

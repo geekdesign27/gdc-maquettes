@@ -252,6 +252,65 @@ function sectionSignes() {
   return s;
 }
 
+// Les illustrations (lot G7) : chaque SVG insere dans la page, comme GDC le fera (pas en <img>), a plusieurs tailles ;
+// un portrait dans chacun de ses etats (classe CSS posee sur le <svg>).
+const svgs = import.meta.glob("../components/illustration/*/*.svg", {
+  eager: true,
+  query: "?raw",
+  import: "default",
+});
+const lecteur = new DOMParser();
+function illustration(id, fichier, taille, etat) {
+  const texte = svgs[`../components/illustration/${id}/${fichier}.svg`];
+  if (!texte) return el("span", {}, `${fichier} : absent`);
+  const svg = document.importNode(
+    lecteur.parseFromString(texte, "image/svg+xml").documentElement,
+    true,
+  );
+  svg.setAttribute("width", taille);
+  svg.setAttribute("height", taille);
+  if (etat) svg.classList.replace("idle", etat);
+  return svg;
+}
+
+function sectionIllustration(entry) {
+  const s = el("section", { id: entry.id });
+  s.append(el("h2", {}, entry.name), el("p", {}, entry.purpose));
+  if (
+    !(entry.files || []).some(
+      (f) => svgs[`../components/illustration/${entry.id}/${f}.svg`],
+    )
+  ) {
+    s.append(el("p", {}, "Pas encore fabriqué."));
+    return s;
+  }
+  const rangees = entry.states
+    ? [
+        ...entry.states.map((etat) => [`${etat}, 96 px`, 96, etat]),
+        ["idle, 48 px (taille de reconnaissance)", 48],
+      ]
+    : [
+        ["20 px (taille de lecture)", 20],
+        ["24 px", 24],
+        ["48 px", 48],
+      ];
+  for (const [titre, taille, etat] of rangees) {
+    const d = el("div", { class: "variante" });
+    const c = el("div", { class: "cadre illustrations" });
+    for (const f of entry.files) {
+      const fig = el("figure", { class: "illustration" });
+      fig.append(
+        illustration(entry.id, f, taille, etat),
+        el("figcaption", {}, f),
+      );
+      c.append(fig);
+    }
+    d.append(el("h3", {}, titre), c);
+    s.append(d);
+  }
+  return s;
+}
+
 function sectionElement(entry) {
   const s = el("section", { id: entry.id });
   s.append(
@@ -312,7 +371,15 @@ const g6 = catalogue.items
   .filter((i) => i.lot === "G6" && i.kind === "html")
   .sort((a, b) => a.order - b.order);
 const demos = $("demos");
-demos.append(sectionPolices(), sectionSignes(), ...g6.map(sectionElement));
+const g7 = catalogue.items
+  .filter((i) => i.lot === "G7")
+  .sort((a, b) => a.order - b.order);
+demos.append(
+  sectionPolices(),
+  sectionSignes(),
+  ...g6.map(sectionElement),
+  ...g7.map(sectionIllustration),
+);
 const sj = el("section", { id: "controle" });
 sj.append(
   el("h2", {}, "Contrôle en direct"),

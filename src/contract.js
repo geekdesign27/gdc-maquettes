@@ -141,3 +141,50 @@ export function checkHtml(mod, entry, source, composes = {}) {
   for (const [, e] of source.matchAll(/CustomEvent\(\s*['"]([\w-]+)['"]/g)) if (!sorties.includes(e)) problems.push(`événement « ${e} » absent de la fiche`);
   return problems;
 }
+
+// Les illustrations (lot G7) : des SVG autonomes, insérés tels quels dans la page de GDC. Rien d'extérieur, aucun script.
+// La fiche du catalogue donne leurs règles dans « svg » : viewBox, monochrome (currentColor seul), strokeWidth, maxBytes ;
+// et, pour un portrait, ses états (classes CSS posées sur le <svg>, le premier étant celui de repos).
+const SVG_FORBIDDEN = [
+  [/<script\b/i, 'script'],
+  [/\son[a-z]+\s*=/i, "gestionnaire d'événement (on…)"],
+  [/<foreignObject\b/i, 'foreignObject'],
+  [/\bhref\s*=\s*["'](?!#|data:image\/(png|webp|jpeg);base64,)/i, 'lien vers une ressource extérieure'],
+  [/url\(\s*['"]?(?!#)/i, 'ressource chargée par url()'],
+  [/@import\b/i, '@import'],
+];
+
+export function checkSvg(source, entry) {
+  const problems = SVG_FORBIDDEN.filter(([motif]) => motif.test(source)).map(([, quoi]) => `interdit : ${quoi}`);
+  const regle = entry.svg || {};
+  const racine = source.match(/<svg\b[^>]*>/);
+  if (!racine) return problems.concat('pas de balise <svg>');
+  if (!racine[0].includes('xmlns="http://www.w3.org/2000/svg"')) problems.push('xmlns absent');
+  const vb = racine[0].match(/viewBox="([^"]+)"/);
+  if (!vb) problems.push('viewBox absent');
+  else if (regle.viewBox && vb[1] !== regle.viewBox) problems.push(`viewBox « ${vb[1]} » au lieu de « ${regle.viewBox} »`);
+  if (/\s(width|height)="/.test(racine[0])) problems.push('largeur ou hauteur fixée : la taille se choisit dans la page');
+  if (regle.maxBytes && Buffer.byteLength(source) > regle.maxBytes) problems.push(`${Buffer.byteLength(source)} octets, plafond ${regle.maxBytes}`);
+  if (regle.monochrome) {
+    // une seule couleur, celle du texte : aucune couleur écrite, fill et stroke à currentColor ou none
+    if (/#[0-9a-f]{3,8}\b|\b(rgb|hsl)a?\(/i.test(source)) problems.push('couleur écrite : une icône hérite de la couleur du texte (currentColor)');
+    for (const [, prop, v] of source.matchAll(/\b(fill|stroke)\s*[=:]\s*["']?([\w#()-]+)/g)) {
+      if (!['none', 'currentColor'].includes(v)) problems.push(`${prop} « ${v} » : seulement currentColor ou none`);
+    }
+    // une icône est décorative : son libellé est écrit à côté (un portrait, lui, a role="img" et un titre)
+    if (!/aria-hidden="true"/.test(racine[0])) problems.push('aria-hidden="true" absent : une icône accompagne un libellé');
+  }
+  if (regle.strokeWidth !== undefined) {
+    const epaisseurs = new Set([...source.matchAll(/stroke-width\s*[=:]\s*["']?([\d.]+)/g)].map((m) => Number(m[1])));
+    if (![...epaisseurs].every((e) => e === regle.strokeWidth)) problems.push(`épaisseurs ${[...epaisseurs].join(', ')} : une seule, ${regle.strokeWidth}`);
+    if (!epaisseurs.size) problems.push(`stroke-width absent (attendu ${regle.strokeWidth})`);
+  }
+  if (entry.states && entry.states.length) {
+    if (!/role="img"/.test(racine[0]) || !/<title>[^<]+<\/title>/.test(source)) problems.push('role="img" et <title> attendus : le nom de la personne');
+    const classes = (racine[0].match(/class="([^"]*)"/) || [, ''])[1].split(/\s+/);
+    if (!classes.includes(entry.states[0])) problems.push(`classe de repos « ${entry.states[0]} » absente du <svg>`);
+    for (const s of entry.states.slice(1)) if (!new RegExp(`\\.${s}\\b`).test(source)) problems.push(`état « ${s} » sans règle CSS (.${s})`);
+    if (!source.includes('prefers-reduced-motion') || !source.includes('data-motion="reduced"')) problems.push('moins d\'animations non respecté (prefers-reduced-motion et data-motion="reduced")');
+  }
+  return problems;
+}

@@ -41,6 +41,10 @@ def construit(c):          # c : les outils communs (gdc_blender/commun.py)
 - Outils pour les pièces d'un kit : `boite(..., droites=(...))` ou `chanfreine(objet, largeur, segments, droites)` laisse vives les faces de contact (deux pièces posées bout à bout ne font pas de sillon) ; `perce(objet, taille, position)` creuse une baie ou une porte, avant le chanfrein. `prisme(nom, profil, epaisseur)` extrude un profil plat (marches, pignon).
 - Un kit (`kind` « kit » au catalogue) : son script peut avoir une fonction `demonstration()` qui rend le plan d'un bâtiment de démonstration. L'atelier le monte pour les captures, `construit.py` l'écrit dans `demonstration.json`, à côté du GLB, et la galerie l'assemble depuis le GLB (entrée « … : démonstration »).
 
+## Une illustration rendue (lot G7)
+
+Un script peut rendre des images au lieu d'exporter un GLB : il définit `rend(c, dossier)`, qui écrit ses fichiers (des SVG) dans `components/illustration/<id>/` et renvoie `{nom de fichier: chemin}`, et `SOURCES`, la liste des fichiers qu'il reprend d'ailleurs. `construit.py` écrit alors `asset.json` avec les empreintes de tout cela. Exemple : `blender/assets/agent-portraits.py`, qui habille chaque personne avec les fonctions du kit du personnage et la photographie dans le studio de l'atelier.
+
 ## L'atelier : la boucle rapide
 
 `blender/atelier.py` construit un modèle **sans l'exporter**, le pose dans le studio (même caméra et même lumière que la galerie, lues dans `src/lumiere.json`) et rend quatre captures dans `blender/.captures/<id>/` (non versionné) :

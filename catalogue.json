@@ -1391,18 +1391,49 @@
       "category": "illustration",
       "name": "Les portraits des agents",
       "purpose": "Un visage par agent, le même sur le panneau, la page de la méthode et les rapports.",
-      "description": "Un portrait pour le client (Pierre-Alain, sans casque) et un par prénom (Claire, Marc, Lina, David, Sarah, Noah, Tom, Paul, Iris, Yves, Victor, Emma, Robin, Julie, Olivier, Anne, Bernard, Fanny, Hélène), rendu depuis le personnage du kit dans un cadrage commun (bible, section 5 : Agent Portrait) ; états idle, talking, working.",
+      "description": "Un portrait pour le client (Pierre-Alain, sans casque) et un par prénom (Claire, Marc, Lina, David, Sarah, Noah, Tom, Paul, Iris, Yves, Victor, Emma, Robin, Julie, Olivier, Anne, Bernard, Fanny, Hélène), rendu depuis le personnage du kit dans un cadrage commun (bible, section 5 : Agent Portrait) ; états idle, talking, working. Décisions de Pierre-Alain du 21 octobre 2026 : un rendu Blender (blender/assets/agent-portraits.py, habillé par le kit) enveloppé dans un SVG, en buste de trois quarts face, fond transparent, sans couleur d'équipe ajoutée. Le SVG s'insère dans la page (pas en <img>) pour que la classe d'état s'applique ; talking et working animent doucement le buste, idle et « moins d'animations » le laissent fixe.",
       "acceptance": [
         "Cohérents avec les personnages 3D",
         "Reconnaissables en petit (48 pixels)"
       ],
       "status": "à faire",
       "inputs": {
-        "name": "prénom (nom du fichier SVG)",
-        "state": "idle | talking | working (classe CSS)"
+        "name": "identifiant de la personne dans components/kit/character-kit/equipe.json (nom du fichier SVG : client, claire, helene…)",
+        "state": "idle | talking | working (classe CSS posée sur le <svg>, à la place de idle)"
       },
       "outputs": {},
-      "production": "blender"
+      "production": "blender",
+      "states": [
+        "idle",
+        "talking",
+        "working"
+      ],
+      "files": [
+        "client",
+        "claire",
+        "marc",
+        "lina",
+        "paul",
+        "iris",
+        "noah",
+        "tom",
+        "sarah",
+        "david",
+        "yves",
+        "emma",
+        "julie",
+        "robin",
+        "olivier",
+        "anne",
+        "bernard",
+        "fanny",
+        "victor",
+        "helene"
+      ],
+      "svg": {
+        "viewBox": "0 0 96 96",
+        "maxBytes": 30000
+      }
     },
     {
       "id": "step-icons",

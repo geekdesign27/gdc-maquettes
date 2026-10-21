@@ -674,10 +674,11 @@ Donner un visage aux agents et une icône à chaque étape et chaque lieu.
 
 ### Les portraits des agents (`agent-portraits`)
 
-Un portrait pour le client (Pierre-Alain, sans casque) et un par prénom (Claire, Marc, Lina, David, Sarah, Noah, Tom, Paul, Iris, Yves, Victor, Emma, Robin, Julie, Olivier, Anne, Bernard, Fanny, Hélène), rendu depuis le personnage du kit dans un cadrage commun (bible, section 5 : Agent Portrait) ; états idle, talking, working.
+Un portrait pour le client (Pierre-Alain, sans casque) et un par prénom (Claire, Marc, Lina, David, Sarah, Noah, Tom, Paul, Iris, Yves, Victor, Emma, Robin, Julie, Olivier, Anne, Bernard, Fanny, Hélène), rendu depuis le personnage du kit dans un cadrage commun (bible, section 5 : Agent Portrait) ; états idle, talking, working. Décisions de Pierre-Alain du 21 octobre 2026 : un rendu Blender (blender/assets/agent-portraits.py, habillé par le kit) enveloppé dans un SVG, en buste de trois quarts face, fond transparent, sans couleur d'équipe ajoutée. Le SVG s'insère dans la page (pas en <img>) pour que la classe d'état s'applique ; talking et working animent doucement le buste, idle et « moins d'animations » le laissent fixe.
 
 - Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres)
-- Entrées (propriété data) : `name` (prénom (nom du fichier SVG)) ; `state` (idle \| talking \| working (classe CSS))
+- États : `idle`, `talking`, `working`
+- Entrées (propriété data) : `name` (identifiant de la personne dans components/kit/character-kit/equipe.json (nom du fichier SVG : client, claire, helene…)) ; `state` (idle \| talking \| working (classe CSS posée sur le <svg>, à la place de idle))
 - Sorties (événements) : aucune
 - Critères d'acceptation :
   - Cohérents avec les personnages 3D

@@ -129,3 +129,14 @@ export function define(registry, ctx) {
 - **Composition par balise** : un élément en utilise un autre en posant sa balise (`<gdc-copy-button>`), sans import.
 - **Variables CSS** (`cssVariables()` de `src/tokens.js`) : `--gdc-background`, `--gdc-surface`, `--gdc-ink`, `--gdc-muted` selon le thème ; `--gdc-state-<état>` et `--gdc-team-<équipe>`, fixes ; `--gdc-font-title`, `--gdc-font-ui`, `--gdc-font-mono` ; `--gdc-motion` (1, ou 0 quand on demande moins d'animations). Le thème se choisit par `data-theme="dark"` sur un ancêtre ; moins d'animations par la préférence du système ou `data-motion="reduced"`. Les variables traversent le shadow DOM.
 - **Le contrôle** (`npm run check`) est statique : `meta` conforme à la fiche, `define` présent, chaque entrée lue et chaque événement de la fiche émis, aucun autre événement, mêmes motifs interdits que les composants. Le rendu, le clavier, le téléphone et les deux thèmes se vérifient sur la page de démonstration (`npm run dev`, puis `/interface.html`).
+
+## Les illustrations (lot G7)
+
+Des fichiers SVG autonomes, sans code : `components/illustration/<id>/<fichier>.svg`, un par identifiant de la liste `files` de la fiche. La bibliothèque les exporte en texte (`illustrations[id][fichier]`), et GDC les **insère dans la page** (pas en `<img>`) : une icône prend ainsi la couleur du texte, et un portrait reçoit sa classe d'état.
+
+- **Rien d'extérieur** : ni script, ni gestionnaire `on…`, ni `foreignObject`, ni lien vers une ressource ; une image ne peut être qu'intégrée (`data:image/webp;base64,…`).
+- **Taille** : un `viewBox`, jamais de `width` ni de `height` sur la balise `<svg>` ; la page choisit la taille.
+- **Règles de la fiche** (`svg` dans `catalogue.json`) : `viewBox` attendu, `maxBytes` (plafond de poids), `monochrome` (aucune couleur écrite, `fill` et `stroke` à `currentColor` ou `none`, et `aria-hidden="true"` : l'icône accompagne un libellé), `strokeWidth` (une seule épaisseur de trait).
+- **États** (`states` de la fiche, le premier est celui de repos) : des classes posées sur le `<svg>`. Le fichier porte la classe de repos ; GDC la remplace par l'état voulu. Chaque autre état a sa règle CSS dans le `<style>` du fichier, et rien ne bouge avec « moins d'animations » (`prefers-reduced-motion`, `data-motion="reduced"`, `--gdc-play`). Un portrait a `role="img"` et un `<title>` : le nom de la personne.
+- **Rendu Blender** (production `blender`) : les fichiers sortent de `blender/assets/<id>.py` (fonction `rend`), jamais retouchés à la main ; `asset.json` garde les empreintes du script, des outils communs, de la palette, des sources reprises (le kit du personnage) et de chaque fichier.
+- **Le contrôle** (`npm run check`) vérifie tout cela ; le rendu, les tailles et les deux thèmes se regardent sur `/interface.html`.

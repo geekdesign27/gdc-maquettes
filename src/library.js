@@ -11,6 +11,14 @@ export const components = Object.fromEntries(Object.values(modules).filter((m) =
 // cle 'categorie/id/FICHIER.glb' -> data URL : la page du panneau ne va rien chercher ailleurs
 export const sources = Object.fromEntries(Object.entries(glbs).map(([p, url]) => [p.replace('../components/', ''), url]));
 export const chargeur = (outils) => creeChargeur(outils, sources);
+// les illustrations (lot G7) : 'id' -> { fichier: texte du SVG }, a inserer tel quel dans la page (pas en <img>, pour
+// que la classe d'etat d'un portrait s'applique) ; les icones prennent la couleur du texte (currentColor)
+const svgs = import.meta.glob('../components/illustration/*/*.svg', { eager: true, query: '?raw', import: 'default' });
+export const illustrations = {};
+for (const [p, texte] of Object.entries(svgs)) {
+  const [, id, fichier] = p.match(/illustration\/([^/]+)\/([^/]+)\.svg$/);
+  (illustrations[id] ||= {})[fichier] = texte;
+}
 export { tokens, paletteFor, makeContext, cleAsset };
 export { elements, defineElements, interfaceCss, fontFaces, interfaceContext } from './interface.js';
 export { cssVariables } from './tokens.js';

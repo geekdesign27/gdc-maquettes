@@ -2,6 +2,12 @@
 
 ## Non publiée, après 0.2.0
 
+- Lot G7, les illustrations : `agent-portraits` (20 portraits rendus par `blender/assets/agent-portraits.py` depuis le kit du personnage, SVG à disque, états idle, talking, working).
+- Chaîne Blender : un script peut rendre des images au lieu d'un GLB (`rend`, `SOURCES`) ; `asset.json` garde leurs empreintes.
+- Contrôle : les illustrations sont vérifiées (`checkSvg` : rien d'extérieur, `viewBox`, poids, monochrome, épaisseur unique, états d'un portrait, provenance du rendu). Contrat : section « Les illustrations ».
+- Bibliothèque : `illustrations[id][fichier]`, le texte de chaque SVG. Page `/interface.html` : section de chaque illustration.
+- `equipe.json` : Bernard passe aux cheveux et à la barbe noirs (décision de Pierre-Alain du 21 octobre 2026, revue des portraits). Aucun GLB ne change : la galerie et le composant `character` lisent l'apparence au montage.
+- Signalétique, principe 5 : deuxième exception, le geste des portraits.
 - Bible WORKSITE 1.2 : fiche DA de production (section 18). Recette de lumière « 3D douce » et cube étalon, cotes communes, classes de chanfrein, taille minimale d'un détail, bibliothèque de matériaux, socle maquette, scène de référence.
 - Palette : 30 matériaux (terre, bois, caoutchouc, verre, acier corrigé, aluminium, tissus d'équipe, peaux, cheveux) ; section `personnages`.
 - Lumière (`src/lumiere.json`) : recette 1.2 et cibles du cube étalon.
