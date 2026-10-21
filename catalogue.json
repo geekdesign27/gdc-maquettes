@@ -1175,7 +1175,10 @@
       "status": "à faire",
       "data": {},
       "production": "blender",
-      "blender": "PRP_PERMIT_BOARD_A_v001"
+      "blender": "PRP_PERMIT_BOARD_A_v001",
+      "assets": [
+        "PRP_PERMIT_BOARD_A_v001.glb"
+      ]
     },
     {
       "id": "fonts",
