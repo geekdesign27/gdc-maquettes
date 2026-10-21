@@ -8,36 +8,48 @@ La maquette du panneau est une petite ville où **tout ce qui bouge veut dire qu
 
 ## L'implantation : la carte du harnais
 
-**Décision de Pierre-Alain du 21 octobre 2026** (`docs/direction-artistique.md`) : la carte suit le parcours du harnais, comme le plan « Dix étapes » de GDC. Elle remplace l'implantation en une seule rue du 19 octobre. On se sent sur un chantier vu en jeu isométrique, et chaque étape se reconnaît à un lieu ou à un objet de chantier, avec son repère.
+**Décisions de Pierre-Alain du 21 octobre 2026** (`docs/direction-artistique.md`) : la carte suit le parcours du harnais, comme le plan « Dix étapes » de GDC. Elle remplace l'implantation en une seule rue du 19 octobre. On se sent sur un chantier vu en jeu isométrique, et chaque étape se reconnaît à un lieu ou à un objet de chantier, avec son repère.
 
-Trois quartiers, reliés par de vraies voies de chantier en enrobé :
+**Quatre zones autour d'un carrefour**, parcourues dans l'ordre et reliées par des voies de chantier en enrobé : les bureaux, le chantier clôturé, la réception, la remise des clés et la garantie, puis les transformations, d'où la route ramène à l'architecte. Le cycle recommence.
 
-1. **Les bureaux** (étapes 1 à 3) : l'architecte, le client et sa décision « on continue ? », le bureau d'études (le géomètre y travaille).
-2. **Le chantier**, clôturé, avec sa boucle par fonctionnalité (étapes 4 à 7) : les baraques et les conteneurs groupés côte à côte par le long pan, le stockage, les bennes, les bâtiments d'application en cours, le bureau de contrôle et l'aire de réception.
-3. **La remise des clés (8), puis le bâtiment habité** (étapes 9 et 10) : le concierge et le carnet des demandes. Un sentier ramène une nouvelle demande au bureau de l'architecte.
+**Les lieux des étapes sont fixes et toujours visibles** :
 
-| Étape | Ce qu'on voit sur la maquette | Lieu (`id` de GDC) et composants |
+| Étape | Lieu sur la maquette | Composants |
 |---|---|---|
-| 1 L'idée | Claire écrit au bureau de l'architecte | `bureau-architecte` : `architect-office` |
-| Passage « on continue ? » | Le client attend à son bureau, le panneau de décision devant | `bureau-client` : `client-office`, `decision-sign` |
-| 2 Les plans | Le bureau d'études au travail, Marc le géomètre compris | `bureau-etudes` : `design-office` |
-| 3 Le permis (passage) | Les gabarits sur la parcelle du prochain bâtiment, le panneau du permis à l'entrée du chantier | `chantier` : `survey-poles`, `permit-board` |
-| 4 Plans d'exécution | Le conducteur de travaux à sa baraque | `baraque` : `site-office`, `site-container` |
-| Passage « feu vert » | La fouille s'ouvre | `batiment:<id>` : `building` en `excavation` |
-| 5 Préparation | Le stockage de matériaux et le camion qui livre | `chantier` : `material-storage`, `delivery-truck` |
-| 6 Construction | La structure monte, la grue lève, les ouvriers, les bennes de tri | `batiment:<id>` : `building` en `structure`, `crane`, `waste-skip` |
-| 7 Réception (passage) | Les essais à l'aire de réception, Hélène au bureau de contrôle, le bâtiment en inspection | `aire-reception`, `bureau-controle` : `reception-area`, `control-office`, `building` en `inspection` |
-| 8 Remise des clés (passage) | Le portail de sortie du chantier, vers le quartier habité | `site-fence` (portail) |
-| 9 Garantie | Le bâtiment habité, le concierge à la porte, le cône d'un défaut | `batiment-habite` : `building` en `completed`, `defect-sign` |
-| 10 Transformations | Le carnet des demandes, d'où le sentier repart vers l'architecte | `parking` : `parking` |
+| 1 L'idée | Le bureau de l'architecte, où arrive la route du retour | `architect-office` |
+| Passage « on continue ? » | Le panneau de décision, à côté du bureau du client | `client-office`, `decision-sign` |
+| 2 Les plans | Le bureau d'études ; Marc, le géomètre, y travaille | `design-office` |
+| 3 Le permis (passage) | Le panneau du permis, sur le passage du bureau d'études vers le chantier : on le consulte avant les plans d'exécution | `permit-board` |
+| 4 Plans d'exécution | Les conteneurs des experts dans le chantier : la baraque du conducteur et le bureau de contrôle | `site-office`, `control-office` |
+| Passage « feu vert » | Le panneau de décision, entre les experts et les parcelles | `decision-sign` |
+| 7 Réception (passage) | L'aire de réception | `reception-area` |
+| 8 Remise des clés (passage) | Un conteneur, à droite de la réception | `site-container` |
+| 9 Garantie | Un conteneur, à droite de la remise des clés ; le concierge | `site-container` |
+| 10 Transformations | Un conteneur, à côté du carnet des demandes ; la route repart vers l'architecte | `site-container`, `parking` |
 
-**Les repères** : les numéros 1 à 10 et les passages sont des éléments HTML posés sur des ancres, avec les icônes d'étapes du lot G7 (`step-icons`), jamais du texte dans la 3D. Les étapes 5 (préparation) et 9 (garantie) n'ont pas encore d'icône : leur repère porte le numéro et le titre.
+**Les bâtiments : un par application du projet** (une webapp desktop, une application terrain et une webapp d'administration font trois bâtiments sur le même chantier). Le chantier s'agrandit d'une parcelle par application. Chaque bâtiment vit les étapes 3, 5 et 6 à son rythme, et ils ne sont pas tous à la même étape :
 
-**Le terrain** : `site-ground`, la terre partout ; le béton couvre ce qui est fini ou habité et les plateformes des bureaux et des baraques ; l'enrobé fait le circuit ; le sentier du retour est une dalle étroite.
+| Phase du bâtiment | Ce qu'on voit | Sa pastille |
+|---|---|---|
+| Permis accordé | Les gabarits sur la parcelle | 3 |
+| Préparation | Le terrassement (la pelle), puis les fondations | 5 |
+| Construction | La structure et ses échafaudages, la grue ; puis les murs faits, échafaudages autour ; puis le second œuvre | 6 |
+| Réception | Le bâtiment en inspection | 7 |
+| Terminé, habité | Sans échafaudage, dans ses couleurs | 9 |
 
-Le placement exact (plan, espacements, caméra) est celui de la scène de référence (`reference-scene`, `src/scene-reference.js`). Un lieu de personnage `batiment:<id>` désigne la parcelle de ce bâtiment.
+Une transformation remettra des échafaudages sur un bâtiment habité (état `alteration`, `building` 2.0.0, à venir).
 
-**GDC devra suivre** dans son `plan` (ADR 0012 de son dépôt) : les trois quartiers et l'ordre des étapes au lieu de la rue. Ce dépôt ne touche pas au dépôt GDC.
+**Les repères** : les numéros 1 à 10 et les passages sont des éléments HTML posés sur des ancres, avec les icônes d'étapes du lot G7 (`step-icons`), jamais du texte dans la 3D. La pastille d'un bâtiment ne montre que son numéro ; le titre et le nom de l'application s'affichent au survol. Les étapes 5 et 9 n'ont pas encore d'icône.
+
+**Les zones** ont chacune une couleur, celle de l'équipe qui y travaille : bureaux (architecture), chantier (site), réception, clés et garantie (réception), transformations (exploitation). Leur bordure est un marquage peint au sol dans le matériau d'équipe de la palette (`MAT_FABRIC_*`), sous les objets ; la pastille et le nom de la zone prennent cette couleur dans l'interface. Ce ne sont pas des couleurs d'état.
+
+**Le terrain** : `site-ground`, la terre sur le chantier ; le béton sous les bureaux, les conteneurs et les zones fixes ; l'enrobé fait le carrefour et ses quatre branches.
+
+Le placement exact (plan, espacements, caméra) est celui de la scène de référence (`reference-scene`, `src/scene-reference.js` ; `?applications=3` ou `?applications=auditapp` dans la galerie). Un lieu de personnage `batiment:<id>` désigne la parcelle de ce bâtiment.
+
+**À signaler à la session du bâtiment** : `docs/correspondances.md` met encore `excavation` à la première fiche aux plans d'exécution (étape 4). Sur la carte, Pierre-Alain place le terrassement et les fondations à la préparation (étape 5).
+
+**GDC devra suivre** dans son `plan` (ADR 0012 de son dépôt) : les quatre zones, les lieux fixes et une parcelle par application au lieu de la rue. Ce dépôt ne touche pas au dépôt GDC.
 
 **Reporté** : la ville autour du chantier (rues, voitures, voisins).
 
