@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-44 éléments : 25 livré, 17 à faire, 2 exemple.
+44 éléments : 26 livré, 16 à faire, 2 exemple.
 
 ## G0 : La ligne graphique
 
@@ -471,7 +471,7 @@ Désigner ce qui est choisi, ce qui attend, ce qui bloque.
 | Ordre | Identifiant | Nom | Nature | But | Statut |
 |---|---|---|---|---|---|
 | 1 | `selection-ring` | L'anneau de sélection | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer l'élément survolé ou choisi. | exemple |
-| 2 | `decision-sign` | Le panneau de décision | Composant 3D Three.js, conforme à docs/contrat-composant.md | Une décision t'attend à cet endroit. | à faire |
+| 2 | `decision-sign` | Le panneau de décision | Composant 3D Three.js, conforme à docs/contrat-composant.md | Une décision t'attend à cet endroit. | livré |
 | 3 | `blocked-sign` | La barrière de blocage | Composant 3D Three.js, conforme à docs/contrat-composant.md | Un travail est bloqué ici. | à faire |
 | 4 | `defect-sign` | Le signal de défaut | Composant 3D Three.js, conforme à docs/contrat-composant.md | Un défaut est ouvert sur une partie habitée. | à faire |
 | 5 | `permit-board` | Le panneau du permis de construire | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le permis de construire est accordé ; périmé, il demande ta nouvelle décision. | à faire |
@@ -496,6 +496,7 @@ Un panneau de chantier rectangulaire sur poteau, avec une impulsion à son appar
 
 - Fichier : `components/signals/decision-sign/index.js`
 - Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `PRP_DECISION_SIGN_A_v001`
+- Modèles : `PRP_DECISION_SIGN_A_v001.glb`
 - États : `default`
 - Ancres : `badge`
 - Données reçues par setState : aucune
