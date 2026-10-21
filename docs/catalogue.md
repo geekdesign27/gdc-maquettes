@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-44 éléments : 41 livré, 1 à faire, 2 exemple.
+46 éléments : 41 livré, 3 à faire, 2 exemple.
 
 ## G0 : La ligne graphique
 
@@ -69,6 +69,8 @@ Poser le plan du chantier dans l'ordre du parcours : bureau d'architecte, bureau
 | 9 | `reception-area` | La zone de réception | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu des essais et de la visite, avant la remise des clés. | livré |
 | 10 | `site-fence` | La clôture de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Cloisonner le chantier, comme tout chantier romand. | livré |
 | 11 | `waste-skip` | La benne de tri | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le tri des déchets de chantier, obligatoire (OLED, art. 17). | livré |
+| 12 | `material-storage` | Le stockage de matériaux | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer l'approvisionnement du chantier : les matériaux qui attendent d'être posés. | à faire |
+| 13 | `site-ground` | Le terrain de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le sol du chantier clôturé : de la terre d'abord, puis du béton et des voies à mesure que le chantier avance. | à faire |
 
 ### Le terrain (`ground`)
 
@@ -254,6 +256,39 @@ Une benne basculante ouverte de 7 m³, à la cote réelle (3,70 × 1,80 m en hau
 - Critères d'acceptation :
   - Reconnaissable comme benne de chantier sans légende
   - Les contenus se distinguent par leur forme en niveaux de gris
+
+### Le stockage de matériaux (`material-storage`)
+
+Une aire de stockage posée sur le terrain de chantier, sans socle : quatre lots reconnaissables à leur forme, sans texte ni film plastique. Parpaings en cubes sur palettes de 1,20 × 1,00 m (blocks), buses en béton de Ø 0,80 m en pyramide 3 + 2 + 1 (pipes), botte de barres d'armature de 6 m sur chevrons (rebar), touret de câble de Ø 1,20 m (cable). Avec mixed, les quatre lots sur une aire d'environ 7 × 4 m. Matériaux : MAT_CONCRETE, MAT_WOOD, MAT_STEEL, MAT_PAINTED_METAL_GRAPHITE. Fiche et brief validés par Pierre-Alain le 21 octobre 2026.
+
+- Fichier : `components/site/material-storage/index.js`
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `PRP_MATERIAL_STORAGE_A_v001`
+- Modèles : `PRP_MATERIAL_STORAGE_A_v001.glb`
+- Paramètres : `content` (blocks | pipes | rebar | cable | mixed, défaut mixed)
+- États : `default`
+- Ancres : `label`
+- Données reçues par setState : aucune
+- Budget : 3000 triangles, 4 matériaux
+- Critères d'acceptation :
+  - Chaque lot se reconnaît sans légende à la caméra iso, à taille réelle
+  - Les lots se distinguent par leur forme en niveaux de gris
+  - Aucune couleur d'état, aucun orange
+
+### Le terrain de chantier (`site-ground`)
+
+Un plateau maquette de 0,60 m en MAT_EARTH (bible, 18.5), arêtes du dessus en C3, de width × depth mètres ; son dessus est à 5 mm sous zéro, pour que les socles des lieux posés dessus se fondent dans la terre. data.zones dessine des dalles de 0,10 m : { x, z, width, depth, surface }, surface concrete (dalle, aire bétonnée) ou asphalt (voie d'accès ou de circulation). C'est GDC qui choisit les zones, par exemple plus de béton quand un bâtiment avance ; le composant ne fait que les dessiner. Il se pose sur le terrain (ground). Fiche validée par Pierre-Alain le 21 octobre 2026.
+
+- Fichier : `components/site/site-ground/index.js`
+- Production : Géométrie générée par le code du composant (paramétrique, liée aux données)
+- Paramètres : `width` (nombre, 8 à 80, défaut 40) ; `depth` (nombre, 8 à 80, défaut 30)
+- États : `default`
+- Ancres : `label`
+- Données reçues par setState : `zones` (liste de { x, z, width, depth, surface: concrete \| asphalt }, en mètres, origine au centre du plateau)
+- Budget : 2000 triangles, 3 matériaux
+- Critères d'acceptation :
+  - Les socles des lieux posés dessus se fondent dans la terre, sans scintillement
+  - Le béton et l'enrobé se distinguent de la terre en niveaux de gris
+  - Les zones se redessinent quand data.zones change
 
 ## G2 : Les bâtiments et leurs états
 

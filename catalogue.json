@@ -549,6 +549,75 @@
       ]
     },
     {
+      "id": "material-storage",
+      "lot": "G1",
+      "order": 12,
+      "kind": "component",
+      "category": "site",
+      "name": "Le stockage de matériaux",
+      "purpose": "Montrer l'approvisionnement du chantier : les matériaux qui attendent d'être posés.",
+      "description": "Une aire de stockage posée sur le terrain de chantier, sans socle : quatre lots reconnaissables à leur forme, sans texte ni film plastique. Parpaings en cubes sur palettes de 1,20 × 1,00 m (blocks), buses en béton de Ø 0,80 m en pyramide 3 + 2 + 1 (pipes), botte de barres d'armature de 6 m sur chevrons (rebar), touret de câble de Ø 1,20 m (cable). Avec mixed, les quatre lots sur une aire d'environ 7 × 4 m. Matériaux : MAT_CONCRETE, MAT_WOOD, MAT_STEEL, MAT_PAINTED_METAL_GRAPHITE. Fiche et brief validés par Pierre-Alain le 21 octobre 2026.",
+      "params": {
+        "content": "blocks | pipes | rebar | cable | mixed, défaut mixed"
+      },
+      "states": [
+        "default"
+      ],
+      "anchors": [
+        "label"
+      ],
+      "budget": {
+        "triangles": 3000,
+        "materials": 4
+      },
+      "acceptance": [
+        "Chaque lot se reconnaît sans légende à la caméra iso, à taille réelle",
+        "Les lots se distinguent par leur forme en niveaux de gris",
+        "Aucune couleur d'état, aucun orange"
+      ],
+      "status": "à faire",
+      "data": {},
+      "production": "blender",
+      "blender": "PRP_MATERIAL_STORAGE_A_v001",
+      "assets": [
+        "PRP_MATERIAL_STORAGE_A_v001.glb"
+      ]
+    },
+    {
+      "id": "site-ground",
+      "lot": "G1",
+      "order": 13,
+      "kind": "component",
+      "category": "site",
+      "name": "Le terrain de chantier",
+      "purpose": "Le sol du chantier clôturé : de la terre d'abord, puis du béton et des voies à mesure que le chantier avance.",
+      "description": "Un plateau maquette de 0,60 m en MAT_EARTH (bible, 18.5), arêtes du dessus en C3, de width × depth mètres ; son dessus est à 5 mm sous zéro, pour que les socles des lieux posés dessus se fondent dans la terre. data.zones dessine des dalles de 0,10 m : { x, z, width, depth, surface }, surface concrete (dalle, aire bétonnée) ou asphalt (voie d'accès ou de circulation). C'est GDC qui choisit les zones, par exemple plus de béton quand un bâtiment avance ; le composant ne fait que les dessiner. Il se pose sur le terrain (ground). Fiche validée par Pierre-Alain le 21 octobre 2026.",
+      "params": {
+        "width": "nombre, 8 à 80, défaut 40",
+        "depth": "nombre, 8 à 80, défaut 30"
+      },
+      "states": [
+        "default"
+      ],
+      "anchors": [
+        "label"
+      ],
+      "budget": {
+        "triangles": 2000,
+        "materials": 3
+      },
+      "acceptance": [
+        "Les socles des lieux posés dessus se fondent dans la terre, sans scintillement",
+        "Le béton et l'enrobé se distinguent de la terre en niveaux de gris",
+        "Les zones se redessinent quand data.zones change"
+      ],
+      "status": "à faire",
+      "data": {
+        "zones": "liste de { x, z, width, depth, surface: concrete | asphalt }, en mètres, origine au centre du plateau"
+      },
+      "production": "code"
+    },
+    {
       "id": "building-kit",
       "lot": "G2",
       "order": 1,
