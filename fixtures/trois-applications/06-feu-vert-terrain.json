@@ -1,0 +1,588 @@
+{
+  "etape": "l'idée",
+  "titre": "Feu vert pour l'application terrain",
+  "explication": "Le terrassement commence sur la parcelle de l'application terrain ; l'administration attend toujours son feu vert.",
+  "schema": 3,
+  "projet": "AuditApp",
+  "etapes": [
+    {
+      "id": "idee",
+      "numero": 1,
+      "titre": "L'idée"
+    },
+    {
+      "id": "plans",
+      "numero": 2,
+      "titre": "Les plans"
+    },
+    {
+      "id": "permis",
+      "numero": 3,
+      "titre": "Le permis de construire"
+    },
+    {
+      "id": "plans-execution",
+      "numero": 4,
+      "titre": "Les plans d'exécution"
+    },
+    {
+      "id": "preparation",
+      "numero": 5,
+      "titre": "La préparation"
+    },
+    {
+      "id": "construction",
+      "numero": 6,
+      "titre": "La construction"
+    },
+    {
+      "id": "reception",
+      "numero": 7,
+      "titre": "La réception"
+    },
+    {
+      "id": "remise-des-cles",
+      "numero": 8,
+      "titre": "La remise des clés"
+    },
+    {
+      "id": "garantie",
+      "numero": 9,
+      "titre": "La garantie"
+    },
+    {
+      "id": "transformations",
+      "numero": 10,
+      "titre": "Les transformations"
+    }
+  ],
+  "chantier": {
+    "regime": "ouvert",
+    "depuis": "2026-10-21T15:53:31.811Z",
+    "raison": "des agents travaillent"
+  },
+  "plan": {
+    "zones": [
+      {
+        "id": "bureaux",
+        "nom": "Les bureaux",
+        "etapes": [
+          1,
+          2,
+          3
+        ],
+        "lieux": [
+          {
+            "id": "bureau-architecte",
+            "element": "architect-office",
+            "nom": "Le bureau d'architecte"
+          },
+          {
+            "id": "bureau-client",
+            "element": "client-office",
+            "nom": "Le bureau du client"
+          },
+          {
+            "id": "bureau-etudes",
+            "element": "design-office",
+            "nom": "Le bureau d'études"
+          },
+          {
+            "id": "panneau-permis",
+            "element": "permit-board",
+            "nom": "Le panneau du permis"
+          }
+        ],
+        "activee": "2026-10-21T15:53:32.525Z",
+        "par_ce_projet": true
+      },
+      {
+        "id": "chantier",
+        "nom": "Le chantier",
+        "etapes": [
+          4,
+          5,
+          6
+        ],
+        "lieux": [
+          {
+            "id": "baraque",
+            "element": "site-office",
+            "nom": "La baraque du conducteur de travaux"
+          },
+          {
+            "id": "bureau-controle",
+            "element": "control-office",
+            "nom": "Le bureau de contrôle"
+          },
+          {
+            "id": "panneau-feu-vert",
+            "element": "decision-sign",
+            "nom": "Le panneau du feu vert"
+          },
+          {
+            "id": "chantier",
+            "element": "site-fence",
+            "nom": "Le chantier, une parcelle par application"
+          }
+        ],
+        "activee": "2026-10-21T15:53:32.525Z",
+        "par_ce_projet": true
+      },
+      {
+        "id": "remise",
+        "nom": "La réception, la remise des clés et la garantie",
+        "etapes": [
+          7,
+          8,
+          9
+        ],
+        "lieux": [
+          {
+            "id": "aire-reception",
+            "element": "reception-area",
+            "nom": "L'aire de réception"
+          },
+          {
+            "id": "cabane-cles",
+            "element": "site-container",
+            "nom": "La cabane de la remise des clés"
+          },
+          {
+            "id": "cabane-garantie",
+            "element": "site-container",
+            "nom": "La cabane de la garantie"
+          }
+        ],
+        "activee": "2026-10-21T15:53:32.525Z",
+        "par_ce_projet": true
+      },
+      {
+        "id": "transformations",
+        "nom": "Les transformations",
+        "etapes": [
+          10
+        ],
+        "lieux": [
+          {
+            "id": "cabane-transformations",
+            "element": "site-container",
+            "nom": "La cabane des transformations"
+          },
+          {
+            "id": "parking",
+            "element": "parking",
+            "nom": "Le carnet des demandes"
+          }
+        ],
+        "activee": "2026-10-21T15:53:32.525Z",
+        "par_ce_projet": true
+      }
+    ],
+    "parcelles": [
+      {
+        "batiment": "bureau",
+        "nom": "Application de bureau",
+        "type": "immeuble",
+        "fiches": [
+          {
+            "fiche": "001-cloturer-un-audit",
+            "nom": "Clôturer un audit",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "L'écran de clôture"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "batiment": "terrain",
+        "nom": "Application terrain",
+        "type": "maison",
+        "fiches": [
+          {
+            "fiche": "002-saisir-un-constat-hors-ligne",
+            "nom": "Saisir un constat hors ligne",
+            "lots": []
+          }
+        ]
+      },
+      {
+        "batiment": "admin",
+        "nom": "Administration",
+        "type": "maison",
+        "fiches": [
+          {
+            "fiche": "003-gerer-les-droits-des-auditeurs",
+            "nom": "Gérer les droits des auditeurs",
+            "lots": []
+          }
+        ]
+      }
+    ]
+  },
+  "indicateurs": [
+    {
+      "id": "dossier",
+      "nom": "Le dossier du projet",
+      "valeur": 15,
+      "total": 15,
+      "regle": "15 pièces complètes sur 15"
+    }
+  ],
+  "elements": [
+    {
+      "element": "ground",
+      "id": "terrain",
+      "nom": "Le terrain",
+      "etat": "default",
+      "source": "toujours"
+    },
+    {
+      "element": "building",
+      "id": "bureau",
+      "nom": "Application de bureau",
+      "type": "immeuble",
+      "etat": "completed",
+      "etape": 8,
+      "etages": [
+        {
+          "fiche": "001-cloturer-un-audit",
+          "nom": "Clôturer un audit",
+          "stade": "completed",
+          "etape": 8,
+          "livre": true,
+          "suppose": true,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "L'écran de clôture",
+              "statut": "fini",
+              "phase": null
+            }
+          ]
+        }
+      ],
+      "ref": {
+        "application": "bureau"
+      },
+      "source": [
+        "001-cloturer-un-audit"
+      ]
+    },
+    {
+      "element": "crane",
+      "id": "grue-001-cloturer-un-audit",
+      "ancre": "bureau",
+      "nom": "La grue de la fiche « Clôturer un audit » (entrée dans dev)",
+      "etat": "lifting",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "source": "001-cloturer-un-audit"
+    },
+    {
+      "element": "delivery-truck",
+      "id": "camion-001-cloturer-un-audit",
+      "ancre": "bureau",
+      "nom": "Une nouvelle dépendance pour « Clôturer un audit » : jspdf",
+      "etat": "arriving",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit",
+        "lot": "L1"
+      },
+      "source": "001-cloturer-un-audit"
+    },
+    {
+      "element": "building",
+      "id": "terrain",
+      "nom": "Application terrain",
+      "type": "maison",
+      "etat": "excavation",
+      "etape": 5,
+      "etages": [
+        {
+          "fiche": "002-saisir-un-constat-hors-ligne",
+          "nom": "Saisir un constat hors ligne",
+          "stade": "excavation",
+          "etape": 5,
+          "pieces": []
+        }
+      ],
+      "ref": {
+        "application": "terrain"
+      },
+      "source": [
+        "002-saisir-un-constat-hors-ligne"
+      ]
+    },
+    {
+      "element": "building",
+      "id": "admin",
+      "nom": "Administration",
+      "type": "maison",
+      "existant": true,
+      "etat": "finishing",
+      "etape": 10,
+      "etages": [
+        {
+          "fiche": null,
+          "nom": "L'application existante",
+          "stade": "completed",
+          "etape": 8,
+          "livre": true,
+          "existant": true,
+          "pieces": []
+        },
+        {
+          "fiche": "003-gerer-les-droits-des-auditeurs",
+          "nom": "Gérer les droits des auditeurs",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        }
+      ],
+      "raison": "surélévation : l'étage en chantier se lit dans etages (building 2.0.0)",
+      "ref": {
+        "application": "admin"
+      },
+      "source": [
+        "003-gerer-les-droits-des-auditeurs"
+      ]
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-003-gerer-les-droits-des-auditeurs",
+      "ancre": "admin",
+      "nom": "Les gabarits de la fiche « Gérer les droits des auditeurs »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "admin",
+        "fiche": "003-gerer-les-droits-des-auditeurs"
+      },
+      "source": "003-gerer-les-droits-des-auditeurs"
+    },
+    {
+      "element": "architect-office",
+      "id": "bureau-architecte",
+      "nom": "Le bureau d'architecte",
+      "etat": "idle",
+      "source": "personne n'y travaille"
+    },
+    {
+      "element": "design-office",
+      "id": "bureau-etudes",
+      "nom": "Le bureau d'études",
+      "etat": "idle",
+      "source": "personne n'y travaille"
+    },
+    {
+      "element": "client-office",
+      "id": "bureau-client",
+      "nom": "Le bureau du client",
+      "etat": "waiting",
+      "quantite": 2,
+      "source": [
+        "003-gerer-les-droits-des-auditeurs",
+        "projet"
+      ]
+    },
+    {
+      "element": "decision-sign",
+      "id": "decision-003-gerer-les-droits-des-auditeurs-plan",
+      "ancre": "panneau-feu-vert",
+      "nom": "Ta décision « le feu vert » pour « Gérer les droits des auditeurs »",
+      "etat": "default",
+      "ref": {
+        "application": "admin",
+        "fiche": "003-gerer-les-droits-des-auditeurs"
+      },
+      "source": "003-gerer-les-droits-des-auditeurs"
+    },
+    {
+      "element": "decision-sign",
+      "id": "decision-on-continue",
+      "ancre": "bureau-client",
+      "nom": "Ta décision « On continue »",
+      "etat": "default",
+      "source": "projet"
+    },
+    {
+      "element": "control-office",
+      "id": "bureau-controle",
+      "nom": "Le bureau de contrôle (Hélène)",
+      "etat": "active",
+      "source": "mesure de moins de deux minutes"
+    },
+    {
+      "element": "site-office",
+      "id": "baraque",
+      "nom": "La baraque du conducteur de travaux",
+      "etat": "idle",
+      "source": "personne n'y travaille"
+    },
+    {
+      "element": "reception-area",
+      "id": "aire-reception",
+      "nom": "L'aire de réception",
+      "etat": "idle",
+      "source": "personne n'y travaille"
+    },
+    {
+      "element": "permit-board",
+      "id": "panneau-permis",
+      "ancre": "panneau-permis",
+      "nom": "Le permis de construire (périmé : Le cahier des besoins (PRD), Le profil du projet a changé)",
+      "etat": "expired",
+      "source": "décision du projet du 2026-10-21T15:53:16.021Z"
+    },
+    {
+      "element": "parking",
+      "id": "parking",
+      "nom": "Le carnet des demandes",
+      "etat": "default",
+      "quantite": 1,
+      "regle": "1 demande à trier",
+      "source": "dossier/plans/carnet-des-demandes.md"
+    },
+    {
+      "element": "character",
+      "id": "architecte",
+      "role": "architecte",
+      "nom": "Claire, l'architecte",
+      "etat": "waiting",
+      "lieu": "panneau-feu-vert",
+      "source": "activité de la fiche 003-gerer-les-droits-des-auditeurs, 2026-10-21T15:53:31.401Z",
+      "ref": {
+        "application": "admin",
+        "fiche": "003-gerer-les-droits-des-auditeurs"
+      },
+      "motif": "decision",
+      "decision": "decision-003-gerer-les-droits-des-auditeurs-plan"
+    },
+    {
+      "element": "character",
+      "id": "designer",
+      "role": "designer",
+      "nom": "Lina, le designer UX/UI",
+      "etat": "celebrate",
+      "lieu": "bureau-etudes",
+      "source": "activité du projet, 2026-10-21T15:53:15.795Z"
+    },
+    {
+      "element": "character",
+      "id": "developpeur-interface",
+      "role": "developpeur-interface",
+      "nom": "Emma, la développeuse interface",
+      "etat": "celebrate",
+      "lieu": "baraque",
+      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-21T15:53:20.276Z",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      }
+    },
+    {
+      "element": "character",
+      "id": "surveillant",
+      "role": "surveillant",
+      "nom": "Olivier, le surveillant de chantier",
+      "etat": "celebrate",
+      "lieu": "baraque",
+      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-21T15:53:21.091Z",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      }
+    },
+    {
+      "element": "character",
+      "id": "expert-securite",
+      "role": "expert-securite",
+      "nom": "Sarah, l'expert sécurité",
+      "etat": "thinking",
+      "lieu": "batiment:terrain",
+      "source": "activité de la fiche 002-saisir-un-constat-hors-ligne, 2026-10-21T15:53:30.888Z",
+      "ref": {
+        "application": "terrain",
+        "fiche": "002-saisir-un-constat-hors-ligne"
+      },
+      "motif": "mission",
+      "avec": [
+        "architecte"
+      ],
+      "mission": "Vérifier que la saisie hors ligne ne garde aucune donnée sensible en clair",
+      "etage": "002-saisir-un-constat-hors-ligne"
+    },
+    {
+      "element": "character",
+      "id": "helene",
+      "role": "gdc",
+      "nom": "Hélène, le bureau de contrôle",
+      "etat": "inspect",
+      "lieu": "batiment:bureau",
+      "programme": true,
+      "source": "contrôle ou preuve de moins de deux minutes sur 001-cloturer-un-audit",
+      "etage": "001-cloturer-un-audit",
+      "motif": "controle",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      }
+    }
+  ],
+  "actions": [
+    {
+      "ts": "2026-10-21T15:53:32.525Z",
+      "action": "change",
+      "element": "building",
+      "id": "terrain",
+      "nom": "Application terrain",
+      "de": "plot",
+      "vers": "excavation",
+      "phrase": "Application terrain : plot → excavation",
+      "ref": {
+        "application": "terrain"
+      }
+    },
+    {
+      "ts": "2026-10-21T15:53:32.525Z",
+      "action": "quantite",
+      "element": "client-office",
+      "id": "bureau-client",
+      "nom": "Le bureau du client",
+      "de": 3,
+      "vers": 2,
+      "phrase": "Le bureau du client : 2"
+    },
+    {
+      "ts": "2026-10-21T15:53:32.525Z",
+      "action": "disparait",
+      "element": "survey-poles",
+      "id": "gabarits-002-saisir-un-constat-hors-ligne",
+      "nom": "Les gabarits de la fiche « Saisir un constat hors ligne »",
+      "phrase": "Les gabarits de la fiche « Saisir un constat hors ligne » disparaissent",
+      "ref": {
+        "application": "terrain",
+        "fiche": "002-saisir-un-constat-hors-ligne"
+      }
+    },
+    {
+      "ts": "2026-10-21T15:53:32.525Z",
+      "action": "disparait",
+      "element": "decision-sign",
+      "id": "decision-002-saisir-un-constat-hors-ligne-plan",
+      "nom": "Ta décision « le feu vert » pour « Saisir un constat hors ligne »",
+      "phrase": "Ta décision « le feu vert » pour « Saisir un constat hors ligne » disparaît",
+      "ref": {
+        "application": "terrain",
+        "fiche": "002-saisir-un-constat-hors-ligne"
+      }
+    }
+  ]
+}
