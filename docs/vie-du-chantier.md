@@ -1,6 +1,6 @@
 # La vie du chantier : ouvriers, engins, portails et zones
 
-**Statut : proposition de direction artistique du 21 octobre 2026, à valider par Pierre-Alain.** Rien n'est fabriqué. Ce document complète `docs/ville.md` (la carte, les chemins, les actions des agents) ; ce qu'il attend de GDC est repris dans `docs/demandes-a-gdc.md`, section 8.
+**Statut : direction artistique du 21 octobre 2026 ; les choix de la fin du document sont de Pierre-Alain, le même jour.** Rien n'est fabriqué. Ce document complète `docs/ville.md` (la carte, les chemins, les actions des agents) ; ce qu'il attend de GDC est repris dans `docs/demandes-a-gdc.md`, section 8.
 
 ## Ce que Pierre-Alain demande
 
@@ -93,7 +93,7 @@ Quand un bâtiment est terminé, un à trois usagers en tenue de ville entrent e
 2. pas d'usagers : la vie d'un bâtiment habité se lit à ses fenêtres éclairées et à sa porte qui s'ouvre de temps en temps ;
 3. des usagers, et le client distingué autrement (proposition à faire).
 
-Recommandation : la première, si le bâtiment livré reste sur sa parcelle (question encore ouverte, demande 3).
+**Décision de Pierre-Alain du 21 octobre 2026 : la première.** Des usagers sans casque, seulement autour des bâtiments habités. Où va un bâtiment livré reste une question ouverte (demande 3).
 
 ## 6. Les engins et le camion
 
@@ -105,7 +105,7 @@ Les faire bouger pour l'ambiance effacerait ce sens. Proposition :
 - la grue et le camion de livraison ne bougent que sur une action de GDC ;
 - **le trafic d'ambiance**, ce que Pierre-Alain appelle le camion qui passe de temps en temps, est un autre véhicule, à ajouter au catalogue. Un camion-benne évacue la terre pendant le terrassement et apporte le béton aux fondations, ou une fourgonnette d'entreprise passe pendant le second œuvre. Il n'entre que si le régime est ouvert et si un bâtiment est dans la bonne phase, au plus une fois par minute ou deux.
 
-L'autre voie : le camion de livraison devient un camion d'ambiance, et l'arrivée d'une dépendance passe dans un badge. Dans ce cas, la fiche `delivery-truck` change de sens.
+**Décision de Pierre-Alain du 21 octobre 2026 : un second véhicule, pour l'ambiance.** Le camion de livraison garde son sens. Le choix du véhicule (camion-benne ou fourgonnette) se fera à sa fiche au catalogue.
 
 ## 7. Les portails
 
@@ -113,7 +113,7 @@ Le portail de la clôture (`site-fence`, `gate`) est aujourd'hui toujours ouvert
 
 ## 8. Les zones jamais activées, en niveaux de gris
 
-Tant qu'aucun projet n'a atteint une zone, elle est **désaturée** : en niveaux de gris, mais présente et lisible. Ses formes se lisent sans couleur, comme sur la capture des valeurs de la bible. La première fois qu'un projet l'atteint, la couleur arrive une seule fois (un fondu d'environ 1,5 seconde), puis reste.
+Demande de Pierre-Alain du 21 octobre 2026. Tant qu'aucun projet n'a atteint une zone, elle est **désaturée** : en niveaux de gris, mais présente et lisible. Ses formes se lisent sans couleur, comme sur la capture des valeurs de la bible. La première fois qu'un projet l'atteint, la couleur arrive une seule fois (un fondu d'environ 1,5 seconde), puis reste **pour toujours** (décision de Pierre-Alain du 21 octobre 2026) : la carte ne repasse pas en gris quand un nouveau projet commence.
 
 | Zone | S'active quand un projet atteint |
 |---|---|
@@ -153,10 +153,15 @@ GDC n'envoie jamais d'ouvriers : ils n'existent pas dans `elements`. La maquette
 - Le module de vie du chantier dans la bibliothèque livrée à GDC, avec le calcul des chemins (session « La ville vivante »).
 - Une planche de lecture (agent site, ouvrier, barrière, grue) et une mesure de fluidité à 12 ouvriers.
 
-## Questions à Pierre-Alain
+## Décisions de Pierre-Alain (21 octobre 2026)
 
-1. L'amendement de la section 1 : la vie d'ambiance est permise si elle naît de l'état envoyé par GDC.
-2. Le camion : un véhicule d'ambiance en plus, ou le camion de livraison change de sens (section 6) ?
-3. Les usagers des bâtiments habités : sans casque, pas d'usagers, ou autre chose (section 5) ?
-4. Les zones grises : une zone activée le reste pour toujours, ou repasse en gris quand un nouveau projet commence ?
-5. Le régime « en pause » quand le harnais t'attend : le garder ?
+1. La vie d'ambiance est voulue (sa demande du jour) : l'amendement de la section 1 la permet, à condition qu'elle naisse de l'état envoyé par GDC. Le texte est à reporter dans `docs/ville.md` quand la vie du chantier sera fabriquée.
+2. Le camion : un second véhicule pour l'ambiance ; le camion de livraison garde son sens (section 6).
+3. Les usagers : sans casque, seulement autour des bâtiments habités (section 5).
+4. Les zones grises : une zone activée reste en couleur pour toujours (section 8).
+5. Le régime « en pause » : gardé (section 2).
+
+## Questions encore ouvertes
+
+- Un bâtiment livré reste-t-il sur sa parcelle (demande 3 à GDC) ? Les usagers en dépendent.
+- Le véhicule d'ambiance : camion-benne, fourgonnette, ou les deux selon la phase.

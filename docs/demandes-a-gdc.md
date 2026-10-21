@@ -125,7 +125,7 @@ Pierre-Alain veut pouvoir ouvrir les fiches depuis la carte. Un clic sur un bât
 
 ## 8. La vie du chantier : régime, zones, attente
 
-Ajout du 21 octobre 2026 (`docs/vie-du-chantier.md`, proposition à valider par Pierre-Alain). Le chantier doit vivre quand un projet tourne : des ouvriers en casque gris et gilet jaune autour des agents, qui sont leurs chefs d'équipe, et un trafic d'ambiance. Il doit être fermé et immobile quand rien ne tourne. **La maquette invente le travail des ouvriers, mais seulement à partir de faits que GDC lui donne.** GDC n'envoie jamais d'ouvriers : ils n'existent pas dans `elements`.
+Ajout du 21 octobre 2026 (`docs/vie-du-chantier.md`, choix de Pierre-Alain du même jour). Le chantier doit vivre quand un projet tourne : des ouvriers en casque gris et gilet jaune autour des agents, qui sont leurs chefs d'équipe, et un trafic d'ambiance. Il doit être fermé et immobile quand rien ne tourne. **La maquette invente le travail des ouvriers, mais seulement à partir de faits que GDC lui donne.** GDC n'envoie jamais d'ouvriers : ils n'existent pas dans `elements`.
 
 **Demandes** :
 
@@ -140,8 +140,10 @@ Ajout du 21 octobre 2026 (`docs/vie-du-chantier.md`, proposition à valider par 
 
 **Questions** :
 - Quand le harnais est-il « en cours » au sens du chantier : une session ouverte, un lot en exécution, une fiche hors du statut livré ?
-- Le camion de livraison garde-t-il son sens (une dépendance ajoutée, émise par GDC) ? La maquette propose un autre véhicule pour l'ambiance (`docs/vie-du-chantier.md`, section 6).
-- Une zone activée l'est-elle pour toujours, ou par projet ?
+
+**Décisions de Pierre-Alain** :
+- le camion de livraison garde son sens : GDC l'émet quand une dépendance est ajoutée ; l'ambiance a son propre véhicule, géré par la maquette ;
+- une zone activée le reste pour toujours : GDC garde la trace de la première activation de chaque zone, d'un projet à l'autre.
 
 ## Ce que l'atelier fera de son côté
 
