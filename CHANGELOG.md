@@ -92,6 +92,8 @@
 - Le badge de notification (`notification-badge`, `<gdc-notification-badge>` 1.0.0) : le signe du niveau le plus grave (décision, puis erreur, puis bloqué) et le total des alertes ; le rond vert à coche, sans nombre, quand tout est validé ; masqué à zéro ; une impulsion à l'apparition et quand le total monte. Livré : validé par Pierre-Alain le 21 octobre 2026.
 - L'inspecteur (`inspector`, `<gdc-inspector>` 1.0.0) : en-tête fixe avec l'icône de copie et la fermeture ; sections repliables qui le restent pour la même fiche ; lignes avec signe d'état et valeur citée (`ref` → `gdc-select`) ; tout texte reste du texte. Le contrôle reconnaît les événements d'une balise posée et ne compte plus ce que cite `meta`. Livré : validé par Pierre-Alain le 21 octobre 2026.
 - Fiche de l'agent (`agent-popup`) : les douze états du personnage s'affichent par un signe et un mot, l'équipe par sa couleur et son nom (décision de Pierre-Alain du 21 octobre 2026).
+- Les actions rapides (`quick-actions`, `<gdc-quick-actions>` 1.0.0) : une carte par action, le prompt affiché tel qu'il sera copié (« (id) » ajouté s'il ne cite pas l'identifiant), la copie comme seule commande. Livrées : validées par Pierre-Alain le 21 octobre 2026.
+- La fiche d'un agent (`agent-popup`, `<gdc-agent-popup>` 1.0.0) : fenêtre non modale qui prend le focus à son apparition ; portrait aux initiales et à la couleur d'équipe en attendant le lot G7 ; état en signe et en mot ; « Fait en ce moment », « Fera ensuite », « Sait faire », et « inconnu » quand le journal ne dit rien ; actions rapides ; Échap ou × pour fermer. Livrée : validée par Pierre-Alain le 21 octobre 2026. Le lot G6 est terminé (bibliothèque : 5,42 Mo, 1,44 Mo compressé).
 
 ## 0.2.0, 18 octobre 2026
 

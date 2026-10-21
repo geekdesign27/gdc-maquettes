@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-44 éléments : 29 livré, 13 à faire, 2 exemple.
+44 éléments : 38 livré, 4 à faire, 2 exemple.
 
 ## G0 : La ligne graphique
 
@@ -556,15 +556,15 @@ Barre du haut, navigation, inspecteur, fiche d'agent, badges, barres de progress
 
 | Ordre | Identifiant | Nom | Nature | But | Statut |
 |---|---|---|---|---|---|
-| 0 | `fonts` | Les polices | Document de référence, pas de code | Manrope pour les titres, Inter pour l'interface, une police à chasse fixe pour les références. | à faire |
-| 1 | `top-bar` | La barre du haut | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Le projet, ce qui t'attend, qui travaille, la fraîcheur des données. | à faire |
-| 2 | `side-nav` | La navigation | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Aller à un lieu, un bâtiment, une fiche ou un agent ; la caméra suit. | à faire |
-| 3 | `inspector` | L'inspecteur | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | La fiche de l'élément choisi : avancement, lots, tâches, blocages, réussites, actions attendues. | à faire |
-| 4 | `agent-popup` | La fiche d'un agent | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Au clic sur un personnage : son illustration animée, ce qu'il fait, ce qu'il va faire, ce qu'on peut lui demander. | à faire |
-| 5 | `notification-badge` | Le badge de notification | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Compter les alertes, les avertissements, ou montrer que tout est validé. | à faire |
-| 6 | `progress-bar` | La barre de progression | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Montrer l'avancement d'une fiche ou d'un lot, avec sa règle de calcul. | à faire |
-| 7 | `copy-button` | L'icône de copie | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Copier le nom et l'identifiant d'un élément, pour le coller dans l'outil d'IA. | à faire |
-| 8 | `quick-actions` | Les actions rapides | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Copier un petit prompt prêt à l'emploi qui vise l'élément choisi. | à faire |
+| 0 | `fonts` | Les polices | Document de référence, pas de code | Manrope pour les titres, Inter pour l'interface, une police à chasse fixe pour les références. | livré |
+| 1 | `top-bar` | La barre du haut | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Le projet, ce qui t'attend, qui travaille, la fraîcheur des données. | livré |
+| 2 | `side-nav` | La navigation | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Aller à un lieu, un bâtiment, une fiche ou un agent ; la caméra suit. | livré |
+| 3 | `copy-button` | L'icône de copie | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Copier le nom et l'identifiant d'un élément, pour le coller dans l'outil d'IA. | livré |
+| 4 | `progress-bar` | La barre de progression | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Montrer l'avancement d'une fiche ou d'un lot, avec sa règle de calcul. | livré |
+| 5 | `notification-badge` | Le badge de notification | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Compter les alertes, les avertissements, ou montrer que tout est validé. | livré |
+| 6 | `inspector` | L'inspecteur | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | La fiche de l'élément choisi : avancement, lots, tâches, blocages, réussites, actions attendues. | livré |
+| 7 | `quick-actions` | Les actions rapides | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Copier un petit prompt prêt à l'emploi qui vise l'élément choisi. | livré |
+| 8 | `agent-popup` | La fiche d'un agent | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Au clic sur un personnage : son illustration animée, ce qu'il fait, ce qu'il va faire, ce qu'on peut lui demander. | livré |
 
 ### Les polices (`fonts`)
 
@@ -576,7 +576,7 @@ Fichiers de police copiés dans le projet avec leur licence (OFL attendue, à v�
 
 ### La barre du haut (`top-bar`)
 
-Nom et logo du projet, nombre de décisions attendues, agents actifs, bloqués, inconnus, heure de la dernière mise à jour.
+Nom du projet et ses initiales (en attendant un logo), nombre de décisions attendues, agents actifs, bloqués, inconnus, heure de la dernière mise à jour.
 
 - Élément : `<gdc-top-bar>`
 - Entrées (propriété data) : `project` (nom du projet) ; `decisions` (nombre de décisions attendues) ; `agents` ({ active, blocked, unknown } : nombres) ; `updatedAt` (date ISO de la dernière mise à jour) ; `staleAfter` (secondes avant avertissement de fraîcheur)
@@ -590,55 +590,11 @@ Nom et logo du projet, nombre de décisions attendues, agents actifs, bloqués, 
 Liste groupée avec pastille d'état ; recherche intégrée.
 
 - Élément : `<gdc-side-nav>`
-- Entrées (propriété data) : `groups` (liste de { title, items: [{ id, name, state }] }) ; `selected` (identifiant sélectionné)
+- Entrées (propriété data) : `groups` (liste de { title, items: [{ id, name, state }] } ; state est l'un des six états de la signalétique ; absent, pas de signe (rien à signaler) ; toute autre valeur, « inconnu ») ; `selected` (identifiant sélectionné)
 - Sorties (événements) : `gdc-select` (detail.id = identifiant choisi)
 - Critères d'acceptation :
   - Utilisable au clavier
   - Devient une rangée défilante sur téléphone
-
-### L'inspecteur (`inspector`)
-
-Panneau latéral ; tout texte venu du harnais est affiché comme du texte, jamais comme du HTML.
-
-- Élément : `<gdc-inspector>`
-- Entrées (propriété data) : `id` (identifiant stable) ; `kind` (nature (fiche, lot, agent, lieu…)) ; `title` (nom affiché) ; `sections` (liste de { title, rows: [{ label, value, state? }] } : progression, lots, tâches, blocages, réussites, actions attendues)
-- Sorties (événements) : `gdc-close` (fermeture) ; `gdc-copy` (detail.id, detail.text) ; `gdc-select` (clic sur un élément cité ; detail.id)
-- Critères d'acceptation :
-  - Aucun contenu injecté comme du code
-  - Sections repliables
-  - Lisible en clair et en sombre
-
-### La fiche d'un agent (`agent-popup`)
-
-Fenêtre avec l'illustration (lot G7) à gauche et trois colonnes à droite ; actions rapides propres à l'agent.
-
-- Élément : `<gdc-agent-popup>`
-- Entrées (propriété data) : `id` (identifiant de l'agent) ; `name` (prénom et rôle) ; `team` (équipe) ; `state` (état (mêmes valeurs que character)) ; `doing` (liste de textes : ce qu'il fait) ; `next` (liste de textes : ce qu'il fera) ; `can` (liste de textes : ce qu'il sait faire) ; `actions` (liste de { label, prompt })
-- Sorties (événements) : `gdc-close` (fermeture) ; `gdc-copy` (detail.id, detail.text (prompt copié))
-- Critères d'acceptation :
-  - Se ferme au clavier
-  - Affiche « inconnu » quand le journal ne dit rien
-
-### Le badge de notification (`notification-badge`)
-
-Posé sur une ancre badge ; niveau le plus grave affiché, total en chiffre ; voir docs/signaletique.md.
-
-- Élément : `<gdc-notification-badge>`
-- Entrées (propriété data) : `counts` ({ error, waiting, blocked, done } : nombres)
-- Sorties (événements) : aucune
-- Critères d'acceptation :
-  - Couleur, forme et icône pour chaque niveau
-  - Masqué à zéro
-
-### La barre de progression (`progress-bar`)
-
-Barre et fraction (« 3 / 7 critères prouvés ») ; la règle au survol.
-
-- Élément : `<gdc-progress-bar>`
-- Entrées (propriété data) : `done` (nombre prouvé) ; `total` (nombre attendu) ; `rule` (texte de la règle de calcul) ; `state` (état (couleur))
-- Sorties (événements) : aucune
-- Critères d'acceptation :
-  - Jamais de pourcentage sans sa règle
 
 ### L'icône de copie (`copy-button`)
 
@@ -651,6 +607,39 @@ Petite icône à côté de tout élément désignable ; confirmation discrète ;
   - Copie l'identifiant stable et le nom
   - Fonctionne au clavier
 
+### La barre de progression (`progress-bar`)
+
+Barre et fraction (« 3 / 7 critères prouvés ») ; la règle au survol.
+
+- Élément : `<gdc-progress-bar>`
+- Entrées (propriété data) : `done` (nombre prouvé) ; `total` (nombre attendu) ; `rule` (texte de la règle de calcul) ; `state` (état (couleur))
+- Sorties (événements) : aucune
+- Critères d'acceptation :
+  - Jamais de pourcentage sans sa règle
+
+### Le badge de notification (`notification-badge`)
+
+Posé sur une ancre badge ; niveau le plus grave affiché, total en chiffre ; voir docs/signaletique.md.
+
+- Élément : `<gdc-notification-badge>`
+- Entrées (propriété data) : `counts` ({ error, waiting, blocked, done } : nombres)
+- Sorties (événements) : aucune
+- Critères d'acceptation :
+  - Couleur, forme et icône pour chaque niveau
+  - Masqué à zéro
+
+### L'inspecteur (`inspector`)
+
+Panneau latéral ; tout texte venu du harnais est affiché comme du texte, jamais comme du HTML.
+
+- Élément : `<gdc-inspector>`
+- Entrées (propriété data) : `id` (identifiant stable) ; `kind` (nature (fiche, lot, agent, lieu…)) ; `title` (nom affiché) ; `sections` (liste de { title, rows: [{ label, value, state?, ref? }] } : progression, lots, tâches, blocages, réussites, actions attendues ; ref : l'identifiant de l'élément cité, sa valeur devient un bouton qui émet gdc-select)
+- Sorties (événements) : `gdc-close` (fermeture) ; `gdc-copy` (detail.id, detail.text) ; `gdc-select` (clic sur un élément cité (ligne avec ref) ; detail.id = ref)
+- Critères d'acceptation :
+  - Aucun contenu injecté comme du code
+  - Sections repliables
+  - Lisible en clair et en sombre
+
 ### Les actions rapides (`quick-actions`)
 
 Liste de boutons fournie par GDC selon le type d'élément ; le texte copié est visible avant la copie.
@@ -661,6 +650,17 @@ Liste de boutons fournie par GDC selon le type d'élément ; le texte copié est
 - Critères d'acceptation :
   - Le prompt cite l'identifiant
   - Ne déclenche jamais rien d'autre qu'une copie
+
+### La fiche d'un agent (`agent-popup`)
+
+Fenêtre avec l'illustration (lot G7) à gauche et trois colonnes à droite ; actions rapides propres à l'agent.
+
+- Élément : `<gdc-agent-popup>`
+- Entrées (propriété data) : `id` (identifiant de l'agent) ; `name` (prénom et rôle) ; `team` (équipe (mêmes valeurs que character) : architecture, studies, site, reception, operations avec leur couleur ; client et none sans couleur ; toute autre valeur affichée telle quelle) ; `state` (état (mêmes valeurs que character), affiché par un signe et un mot : work, typing, inspect, read, thinking, talk, walk → Actif (Travaille, Écrit, Inspecte, Lit, Réfléchit, Discute, Se déplace) ; waiting → Attend ta décision ; blocked → Bloqué ; celebrate → Terminé (A fini) ; idle → Au repos, sans signe ; unknown, absent ou autre → Inconnu) ; `doing` (liste de textes : ce qu'il fait) ; `next` (liste de textes : ce qu'il fera) ; `can` (liste de textes : ce qu'il sait faire) ; `actions` (liste de { label, prompt })
+- Sorties (événements) : `gdc-close` (fermeture) ; `gdc-copy` (detail.id, detail.text (prompt copié))
+- Critères d'acceptation :
+  - Se ferme au clavier
+  - Affiche « inconnu » quand le journal ne dit rien
 
 ## G7 : Les illustrations et les icônes
 

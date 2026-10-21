@@ -1283,7 +1283,7 @@
         "Se ferme au clavier",
         "Affiche « inconnu » quand le journal ne dit rien"
       ],
-      "status": "à faire",
+      "status": "livré",
       "inputs": {
         "id": "identifiant de l'agent",
         "name": "prénom et rôle",
@@ -1374,7 +1374,7 @@
         "Le prompt cite l'identifiant",
         "Ne déclenche jamais rien d'autre qu'une copie"
       ],
-      "status": "à faire",
+      "status": "livré",
       "inputs": {
         "id": "identifiant de l'élément",
         "actions": "liste de { label, prompt }"
