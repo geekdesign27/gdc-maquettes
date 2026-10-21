@@ -13,6 +13,11 @@ import * as etalon from './etalon.js';
 import * as kit from './kit.js';
 import * as personnage from './personnage.js';
 import * as reference from './scene-reference.js';
+import { creeCarte } from './ville/carte.js';
+// La ville vivante (fiche city-map) : les sequences de GDC (fixtures/), jouees etape par etape dans la galerie
+const VILLE_ID = 'ville';
+const SEQUENCES = Object.fromEntries(Object.entries(import.meta.glob('../fixtures/*/index.json', { eager: true, import: 'default' })).map(([p, index]) => [p.split('/')[2], index]));
+const SCENES_GDC = import.meta.glob('../fixtures/*/[0-9]*.json', { eager: true, import: 'default' });
 
 const charge = chargeur({ GLTFLoader, SkeletonUtils });
 const entries = catalogue.items.filter((i) => i.kind === 'component');
@@ -101,6 +106,16 @@ function buildList() {
     return b;
   });
   list.append(h0, bs, ...projets, b0);
+  // La ville vivante : une sequence de GDC jouee etape par etape (?lecture=8 : une etape toutes les 8 s ; ?ouvriers=max :
+  // chaque parcelle en chantier prend son plafond, pour mesurer la fluidite a 12 ouvriers)
+  for (const [nom, index] of Object.entries(SEQUENCES)) {
+    const b = document.createElement('button');
+    b.textContent = `La ville : ${nom === 'projet-type' ? 'un projet type' : nom.replace('-', ' ')}`;
+    b.title = index.description;
+    b.dataset.id = `${VILLE_ID}:${nom}`;
+    b.addEventListener('click', () => select(b.dataset.id));
+    list.append(b);
+  }
   // Les kits : leur batiment de demonstration, assemble depuis le GLB du kit (critere « s'assemble sans retouche »).
   for (const { entry } of kit.demonstrations(catalogue)) {
     const b = document.createElement('button');
@@ -137,7 +152,49 @@ function buildList() {
   }
 }
 
+// La ville : la carte vivante (src/ville/carte.js) sur une sequence de fixtures/ ; les etats sont les etapes de la
+// sequence. Passer a l'etape suivante joue ses actions, comme GDC le fera ; sauter plus loin pose la scene telle quelle.
+async function instanceVille(id, state) {
+  const nom = id.slice(VILLE_ID.length + 1);
+  const index = SEQUENCES[nom];
+  const etapes = index.etapes.map((e) => String(e.numero).padStart(2, '0'));
+  const sceneDe = (s) => SCENES_GDC[`../fixtures/${nom}/${index.etapes[etapes.indexOf(s)].fichier}`];
+  const q = new URLSearchParams(location.search);
+  const carte = await creeCarte(THREE, { components: byId, chargeur: charge, ...options, force: q.get('ouvriers') === 'max' });
+  const premier = etapes.includes(state) ? state : etapes[0];
+  await carte.applique(sceneDe(premier));
+  let etape = premier;
+  const inst = {
+    root: carte.root,
+    instances: [],
+    setState(s) {
+      const suite = etapes.indexOf(s) === etapes.indexOf(etape) + 1;
+      etape = s;
+      carte.applique(sceneDe(s), { actions: suite }).then(() => {
+        if (current.inst !== inst) return;
+        current.apps = carte.applications;
+        resize();
+        rapportVille();
+      });
+    },
+    update: (dt) => carte.update(dt),
+    anchor: (n) => carte.anchor(n),
+    repere: (n) => carte.repere(n),
+    cadres: () => carte.cadres(),
+    dispose: () => carte.dispose(),
+  };
+  const meta = { states: etapes, get anchors() { return carte.reperes(); }, budget: { triangles: 0, materials: 0 } };
+  const secondes = Number(q.get('lecture'));
+  const lecture = secondes > 0 ? setInterval(() => {
+    const i = etapes.indexOf(current.state);
+    if (current.inst !== inst || i >= etapes.length - 1) return clearInterval(lecture);
+    $('states').children[i + 1].click();
+  }, secondes * 1000) : null;
+  return { inst, state: premier, entry: { id, name: `La ville : ${index.sequence}` }, mod: { meta }, scene: true, apps: carte.applications, ville: { nom, index, carte, etapes, lecture } };
+}
+
 async function instance(id, state) {
+  if (id.startsWith(`${VILLE_ID}:`)) return instanceVille(id, state);
   if (id === reference.SCENE_ID) {
     // le plan pour les applications de l'adresse (?applications=3, ou un projet : ?applications=auditapp) ; une instance par membre, avec ses
     // parametres et dans son etat, puis l'assemblage, dans la phase demandee
@@ -222,7 +279,7 @@ function parametresAdresse(meta) {
     }));
 }
 
-function retire(x) { if (x && x.inst) { scene.remove(x.inst.root); x.inst.dispose(); } }
+function retire(x) { if (x && x.ville?.lecture) clearInterval(x.ville.lecture); if (x && x.inst) { scene.remove(x.inst.root); x.inst.dispose(); } }
 
 // Un signal (lot G5) se juge a cote des lieux ou il apparait (signaletique) : ses voisins de planche, poses tout pres
 // (ECART_SIGNAL entre les emprises), et non les deux premiers modeles livres ; « id/etat » pose un voisin dans cet etat.
@@ -325,7 +382,72 @@ async function poseOccupants(x, groupe, ids) {
 
 // Pour la console du navigateur (outil de fabrication) : galerie.courant.inst.setState('default', { count: 4 }), puis
 // galerie.redessine() pour voir une transition.
-window.galerie = { get courant() { return current; }, redessine() { dirty = true; } };
+window.galerie = {
+  get courant() { return current; },
+  redessine() { dirty = true; },
+  // Cadrer de pres pour une revue : zoom de la camera orthographique, centre sur un point de la scene (x, y, z) ;
+  // galerie.cadre(1) revient au cadrage d'ensemble.
+  cadre(zoom = 1, centre = null) {
+    const vers = centre ? new THREE.Vector3(...centre) : new THREE.Vector3(...lumiere.camera.cible);
+    camera.position.add(vers.clone().sub(controls.target));
+    controls.target.copy(vers);
+    camera.zoom = zoom;
+    camera.updateProjectionMatrix();
+    controls.update();
+    dirty = true;
+  },
+  // La fluidite : un rendu force a chaque image pendant quelques secondes ; images par seconde et 95e centile (ms).
+  fluidite(secondes = 5) {
+    return new Promise((ok) => {
+      const debut = performance.now();
+      const durees = [];
+      let avant = debut;
+      const pas = () => {
+        dirty = true;
+        const t = performance.now();
+        durees.push(t - avant);
+        avant = t;
+        if (t - debut < secondes * 1000) return requestAnimationFrame(pas);
+        durees.shift();
+        durees.sort((a, b) => a - b);
+        ok({ images: durees.length, fps: +((1000 * durees.length) / (t - debut)).toFixed(1), p95: +durees[Math.floor(durees.length * 0.95)].toFixed(1) });
+      };
+      requestAnimationFrame(pas);
+    });
+  },
+};
+
+// La ville : un clic sur un batiment ouvre sa vue en coupe, comme le fera GDC ; un clic ailleurs ou Echap la ferme. Le
+// survol d'un batiment, d'un etage ou d'une piece pose l'anneau (le survol partage, cote carte).
+const rayon = new THREE.Raycaster();
+const pointeur = new THREE.Vector2();
+const visible = (o) => { for (let x = o; x; x = x.parent) if (!x.visible) return false; return true; };
+function sousPointeur(ev) {
+  const r = renderer.domElement.getBoundingClientRect();
+  pointeur.set(((ev.clientX - r.left) / r.width) * 2 - 1, -((ev.clientY - r.top) / r.height) * 2 + 1);
+  rayon.setFromCamera(pointeur, camera);
+  const touche = rayon.intersectObject(current.inst.root, true).find((h) => visible(h.object));
+  return touche ? touche.object : null;
+}
+let appui = null;
+let survolVille = 'null';
+renderer.domElement.addEventListener('pointerdown', (ev) => { appui = [ev.clientX, ev.clientY]; });
+renderer.domElement.addEventListener('pointerup', async (ev) => {
+  if (!current.ville || !appui || Math.hypot(ev.clientX - appui[0], ev.clientY - appui[1]) > 4) return;
+  const { carte } = current.ville;
+  const cible = carte.cible(sousPointeur(ev));
+  if (cible && cible.element === 'building' && carte.coupe !== cible.id) await carte.ouvreCoupe(cible.id);
+  else carte.fermeCoupe();
+  dirty = true;
+});
+renderer.domElement.addEventListener('pointermove', (ev) => {
+  if (!current.ville || ev.buttons) return;
+  const ref = current.ville.carte.refSous(sousPointeur(ev));
+  if (JSON.stringify(ref) === survolVille) return;
+  survolVille = JSON.stringify(ref);
+  current.ville.carte.surligne(ref).then(() => { dirty = true; });
+});
+addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && current.ville) { current.ville.carte.fermeCoupe(); dirty = true; } });
 
 async function select(id, state) {
   retire(current);
@@ -387,6 +509,7 @@ async function report() {
   if (mod === etalon) return; // le compte rendu de l'etalon est sa mesure, ecrite apres chaque rendu (rapportEtalon)
   if (current.kit) return rapportKit();
   if (current.personnage) return rapportPersonnage();
+  if (current.ville) return rapportVille();
   if (current.scene) return rapportScene();
   const m = measure(current.inst.root);
   const problems = [...checkMeta(mod.meta, entry)];
@@ -415,7 +538,7 @@ const tmp = new THREE.Vector3();
 let etiquettes = { inst: null, tags: new Map(), cadres: null };
 function remplit(tag, r) {
   tag.replaceChildren();
-  tag.className = 'anchor repere' + (r.passage ? ' passage' : '') + (r.pastille ? ' pastille' : '');
+  tag.className = 'anchor repere' + (r.passage ? ' passage' : '') + (r.pastille ? ' pastille' : '') + (r.attenue ? ' attenue' : '');
   const couleur = r.zone ? reference.ZONES[r.zone].couleur : 'var(--ink)';
   tag.style.setProperty('--zone', couleur);
   if (r.numero) { const n = document.createElement('b'); n.textContent = r.numero; tag.append(n); }
@@ -446,7 +569,10 @@ function dessineCadres(layer) {
       return { c, nom };
     });
   }
-  for (const { c, nom } of etiquettes.cadres) {
+  // la ville : une zone jamais activee a son nom attenue, jusqu'a ce que sa couleur arrive
+  const frais = current.ville ? current.inst.cadres() : null;
+  for (const [i, { c, nom }] of etiquettes.cadres.entries()) {
+    if (frais) nom.classList.toggle('attenue', !frais[i].activee);
     const g = c.coins.map(projette).reduce((a, b) => (b[1] > a[1] ? b : a));
     nom.style.left = `${g[0]}px`;
     nom.style.top = `${g[1]}px`;
@@ -494,6 +620,22 @@ function rapportKit() {
   el.append(verdict);
 }
 
+// La ville : l'etape jouee, le regime du chantier, qui est sur la carte, ce qu'elle pese, et ce que la carte a signale.
+function rapportVille() {
+  const { carte, index, etapes } = current.ville;
+  const m = measure(current.inst.root);
+  const c = carte.compte();
+  const e = index.etapes[etapes.indexOf(current.state)];
+  const el = $('report');
+  el.replaceChildren(`${e.numero}. ${e.titre} · régime ${carte.regime} · ${c.agents} agents · ${c.ouvriers} ouvriers · ${c.usagers} usagers · ${m.triangles} triangles · ${m.materials} matériaux`);
+  if (carte.signalements.length) {
+    const s = document.createElement('span');
+    s.className = 'ko';
+    s.textContent = ` · signalé : ${carte.signalements.join(' ; ')}`;
+    el.append(s);
+  }
+}
+
 // La scene de reference : ce qu'elle pese en tout. Sa fluidite se mesure en images par seconde (voir le constat).
 function rapportScene() {
   const m = measure(current.inst.root);
@@ -535,6 +677,7 @@ function rapportEtalon(faces) {
 }
 
 const clock = new THREE.Clock();
+let rapporte = 0;
 function loop() {
   const dt = Math.min(clock.getDelta(), 0.1);
   for (const x of [current, ...current.voisins]) if (x.inst && x.inst.update(dt)) dirty = true;
@@ -542,6 +685,8 @@ function loop() {
     renderer.render(scene, camera);
     if (current.mod === etalon && !options.silhouette) rapportEtalon(etalon.mesureFaces(THREE, renderer, camera, current.inst.root));
     drawAnchors();
+    // la ville change sans qu'on clique (les actions jouees, la vie) : son compte rendu suit, deux fois par seconde
+    if (current.ville && performance.now() - rapporte > 500) { rapportVille(); rapporte = performance.now(); }
     dirty = false;
   }
   requestAnimationFrame(loop);
@@ -572,6 +717,6 @@ buildList();
 resize();
 const [hashId, hashState, hashPlanche] = decodeURIComponent(location.hash.slice(1)).split('/');
 if (hashPlanche === 'planche') { options.planche = true; $('planche').setAttribute('aria-pressed', 'true'); resize(); }
-const start = byId[hashId] || hashId === etalon.ETALON_ID || hashId === personnage.PERSONNAGE_ID || hashId === reference.SCENE_ID || hashId?.startsWith(kit.PREFIXE_ID) ? hashId : entries.find((e) => byId[e.id])?.id;
+const start = byId[hashId] || hashId === etalon.ETALON_ID || hashId === personnage.PERSONNAGE_ID || hashId === reference.SCENE_ID || hashId?.startsWith(kit.PREFIXE_ID) || SEQUENCES[hashId?.split(':')[1]] ? hashId : entries.find((e) => byId[e.id])?.id;
 if (start) await select(start, hashState);
 loop();

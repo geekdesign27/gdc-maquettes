@@ -36,6 +36,8 @@
     .anchor.repere.pastille:hover { padding-right: 7px; z-index: 1; }
     .anchor.repere.pastille:hover .icone, .anchor.repere.pastille:hover .titre { display: inline; }
     .anchor.nom-zone { transform: translate(-50%, 25%); border-color: var(--zone); color: var(--zone); font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; }
+    /* la ville : une zone jamais activee, son nom et ses reperes atténués, sans couleur d'etat */
+    .anchor.repere.attenue, .anchor.nom-zone.attenue { filter: grayscale(1); opacity: .7; }
     footer { padding: 8px 12px; border-top: 1px solid var(--line); background: var(--panel); font-size: 13px; }
     footer .ok { color: var(--good); } footer .ko { color: var(--bad); }
     footer ul { margin: 4px 0 0; padding-left: 18px; }
