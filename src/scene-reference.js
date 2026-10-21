@@ -18,40 +18,14 @@
 // l'etape. La bordure de chaque zone est peinte au sol dans un materiau d'equipe ; les pastilles et les noms de zone sont
 // de l'interface, dessines par la galerie. Aucune couleur d'etat dans la 3D. La ville autour (rues, voitures, voisins)
 // est reportee.
-import { tokens } from "./tokens.js";
+// L'implantation (zones, lieux fixes, parcelles, clotures, voies) est celle de la carte vivante, livree a GDC
+// (src/ville/implantation.js) : la scene de reference la lit au lieu de la repeter.
 import { materiauPalette } from "./etalon.js";
+import { ETAPES, ZONES, BORDURE, implantation } from "./ville/implantation.js";
 
+export { ETAPES, ZONES };
 export const SCENE_ID = "scene";
 const RECUL = 2; // en metres, sur X et Z : la scene descend d'environ 1,6 m a l'ecran
-
-// Les dix etapes du harnais : titre, icone du lot G7 (step-icons 2.0, identifiants de GDC), zone.
-export const ETAPES = {
-  1: { titre: "L’idée", icone: "idee", zone: "bureaux" },
-  2: { titre: "Les plans", icone: "plans", zone: "bureaux" },
-  3: { titre: "Le permis", icone: "permis", zone: "bureaux" },
-  4: { titre: "Plans d’exécution", icone: "plans-execution", zone: "chantier" },
-  5: { titre: "Préparation", icone: "preparation", zone: "chantier" },
-  6: { titre: "Construction", icone: "construction", zone: "chantier" },
-  7: { titre: "Réception", icone: "reception", zone: "remise" },
-  8: { titre: "Remise des clés", icone: "remise-des-cles", zone: "remise" },
-  9: { titre: "Garantie", icone: "garantie", zone: "remise" },
-  10: {
-    titre: "Transformations",
-    icone: "transformations",
-    zone: "transformations",
-  },
-};
-// Les zones et leur couleur d'interface : celle de l'equipe qui y travaille (src/palette.json, equipe).
-// La bordure de chaque zone est un marquage peint au sol, dans le materiau d'equipe de la palette (MAT_FABRIC_*) : elle
-// passe sous les objets au lieu de les couvrir (demande de Pierre-Alain du 21 octobre 2026). Ce n'est pas une couleur
-// d'etat ; la pastille et le nom de la zone, eux, restent dans l'interface.
-export const ZONES = {
-  bureaux: { nom: "Les bureaux", couleur: tokens.team.architecture, materiau: "MAT_FABRIC_ARCHITECTURE" },
-  chantier: { nom: "Le chantier", couleur: tokens.team.site, materiau: "MAT_FABRIC_SITE" },
-  remise: { nom: "Réception, clés et garantie", couleur: tokens.team.reception, materiau: "MAT_FABRIC_RECEPTION" },
-  transformations: { nom: "Les transformations", couleur: tokens.team.operations, materiau: "MAT_FABRIC_OPERATIONS" },
-};
-const BORDURE = { largeur: 0.4, epaisseur: 0.03, dessus: 0.07 }; // au-dessus du beton (0,05) et de l'enrobe (0,04)
 
 // Les phases d'un batiment, dans l'ordre : son etat (building), l'etape que dit sa pastille, et ce qui l'entoure
 // (gabarits, grue, ouvriers).
@@ -68,35 +42,9 @@ const PHASES = {
 export const PHASE_DEFAUT = "structure";
 // les applications suivantes, pour l'exemple a plusieurs batiments : chacune a une autre phase
 const PHASES_AUTRES = ["completed", "foundations", "permit"];
-const PAS_PARCELLE = 14; // socle de 12 m (une fiche) et 2 m entre deux parcelles
 
 const centre = (a) => (a[0] + a[1]) / 2;
 const long = (a) => a[1] - a[0];
-
-// Un cote de cloture, de a a b le long d'un bord ; son interieur (-Z local, site-fence) tourne vers le chantier.
-const ROTATION_CLOTURE = {
-  "x-": -Math.PI / 2,
-  "x+": Math.PI / 2,
-  "z-": Math.PI,
-  "z+": 0,
-};
-function cloture(enceinte, cle, bord, [a, b], gate = false) {
-  const fixe = {
-    "x-": enceinte.x[0],
-    "x+": enceinte.x[1],
-    "z-": enceinte.z[0],
-    "z+": enceinte.z[1],
-  }[bord];
-  const position =
-    bord[0] === "x" ? [fixe, 0, (a + b) / 2] : [(a + b) / 2, 0, fixe];
-  return {
-    cle,
-    id: "site-fence",
-    params: { length: b - a, gate },
-    position,
-    rotation: ROTATION_CLOTURE[bord],
-  };
-}
 
 // Une personne d'equipe.json a une ancre d'un lieu, dans un etat, tournee vers facing (radians).
 const personne = (cle, sur, state = "idle", facing = Math.PI) => ({
@@ -117,50 +65,28 @@ export const PROJETS = {
 // reperes, les zones, et meta. Le nom d'une application s'affiche au survol de la pastille de son batiment.
 export function plan(applications = 1) {
   const noms = PROJETS[String(applications).toLowerCase()] || [];
-  const apps = noms.length || Math.min(Math.max(Math.round(Number(applications)) || 1, 1), 4);
-  const parcelle = (k) => 49 + PAS_PARCELLE * k; // le centre en X de la parcelle k ; en Z : 37
-  const CHANTIER = {
-    x: [29.5, 56.5 + PAS_PARCELLE * (apps - 1)],
-    z: [28.5, 54.5],
-  };
-  const TERRAIN = { x: [0, Math.max(CHANTIER.x[1] + 1.5, 60)], z: [7, 56] };
-  const CADRES = {
-    bureaux: { x: [1, 24.5], z: [29, 55] },
-    chantier: CHANTIER,
-    remise: { x: [29.5, 58.5], z: [9, 23] },
-    transformations: { x: [1, 24.5], z: [9, 23] },
-  };
+  const imp = implantation(noms.length || applications);
+  const { apps, lieux } = imp;
+  const CADRES = imp.cadres;
+  const TERRAIN = imp.terrain;
+  const lieu = (id, extra = {}) => ({
+    id: lieux[id].element,
+    position: lieux[id].position,
+    ...(lieux[id].params ? { params: lieux[id].params } : {}),
+    ...extra,
+  });
 
-  // Les dalles du terrain de chantier (site-ground, data.zones) : le beton sous les bureaux, les baraques et les
-  // conteneurs ; la terre sur le chantier ; l'enrobe fait le carrefour et ses quatre branches.
-  const dalles = [
-    [CADRES.bureaux.x, CADRES.bureaux.z, "concrete"],
-    [CADRES.remise.x, CADRES.remise.z, "concrete"],
-    [CADRES.transformations.x, CADRES.transformations.z, "concrete"],
-    [[30, 41.5], [29, 46], "concrete"], // la plateforme des experts, dans le chantier
-    [[25, 29], [8, 56], "asphalt"], // la voie entre les bureaux et le chantier, puis vers les transformations
-    [[1, 58.5], [24, 28], "asphalt"], // la voie entre les transformations et les bureaux, puis vers la reception
-  ];
-  const zones = dalles.map(([x, z, surface]) => ({
-    x: centre(x) - centre(TERRAIN.x),
-    z: centre(z) - centre(TERRAIN.z),
-    width: long(x),
-    depth: long(z),
-    surface,
-  }));
-
-  // l'entree du chantier face au bureau d'etudes, sa sortie en haut vers la reception
-  const sortie = [CHANTIER.x[1] - 12.5, CHANTIER.x[1]];
   const batiments = [];
-  for (let k = 0; k < apps; k++) {
-    const x = parcelle(k);
+  for (const p of imp.parcelles) {
+    const k = p.index;
+    const [x] = p.position;
     batiments.push(
       {
         cle: `building:${k + 1}`,
         id: "building",
         app: k,
         params: { wings: 1 },
-        position: [x, 0, 37],
+        position: p.position,
         ancre: "label",
       },
       {
@@ -169,7 +95,7 @@ export function plan(applications = 1) {
         app: k,
         quand: "gabarits",
         params: { width: 8, depth: 6, height: 6 },
-        position: [x, 0, 37],
+        position: p.position,
       },
       {
         cle: `crane:${k + 1}`,
@@ -177,8 +103,8 @@ export function plan(applications = 1) {
         app: k,
         quand: "grue",
         state: "lifting",
-        position: [x - 4.4, 0, 32.6],
-        rotation: -Math.PI / 2,
+        position: p.grue.position,
+        rotation: p.grue.rotation,
       },
       {
         ...personne(`julie:${k + 1}`, null, "work"),
@@ -196,48 +122,24 @@ export function plan(applications = 1) {
       },
     );
   }
+  const [clotureEntree, ...clotures] = imp.clotures;
 
   const membres = [
     {
       cle: "site-ground",
       id: "site-ground",
       params: { width: long(TERRAIN.x), depth: long(TERRAIN.z) },
-      data: { zones },
+      data: { zones: imp.dalles },
       position: [centre(TERRAIN.x), 0, centre(TERRAIN.z)],
     },
 
     // --- les bureaux : l'architecte au fond, ou arrive la route du retour, le client et sa decision, le bureau d'etudes,
     // et le panneau du permis sur le passage vers le chantier
-    {
-      cle: "architect-office",
-      id: "architect-office",
-      state: "active",
-      position: [6.5, 0, 34],
-    },
-    {
-      cle: "client-office",
-      id: "client-office",
-      state: "waiting",
-      position: [18.5, 0, 34],
-    },
-    {
-      cle: "decision-sign:continue",
-      id: "decision-sign",
-      position: [12.8, 0, 30.5],
-    },
-    {
-      cle: "design-office",
-      id: "design-office",
-      state: "active",
-      params: { desks: 4 },
-      position: [16.5, 0, 49],
-    },
-    {
-      cle: "permit-board",
-      id: "permit-board",
-      state: "granted",
-      position: [23.8, 0, 46.5],
-    },
+    lieu("bureau-architecte", { cle: "architect-office", state: "active" }),
+    lieu("bureau-client", { cle: "client-office", state: "waiting" }),
+    { cle: "decision-sign:continue", id: "decision-sign", position: lieux["bureau-client"].panneau },
+    lieu("bureau-etudes", { cle: "design-office", state: "active" }),
+    lieu("panneau-permis", { cle: "permit-board", state: "granted" }),
     personne("claire", ["architect-office", "desk:1"], "typing"),
     personne("client", ["client-office", "desk:1"], "waiting"),
     {
@@ -251,76 +153,34 @@ export function plan(applications = 1) {
     personne("lina", ["design-office", "desk:2"], "thinking"),
 
     // --- le chantier : la cloture, ses deux portails, les conteneurs des experts, le feu vert, les parcelles, la logistique
-    cloture(CHANTIER, "fence:entree", "x-", [44, CHANTIER.z[1]], true),
-    cloture(CHANTIER, "fence:gauche", "x-", [CHANTIER.z[0], 44]),
-    cloture(CHANTIER, "fence:sortie", "z-", sortie, true),
-    cloture(CHANTIER, "fence:fond", "z-", [CHANTIER.x[0], sortie[0]]),
-    cloture(CHANTIER, "fence:droite", "x+", CHANTIER.z),
-    cloture(CHANTIER, "fence:avant", "z+", CHANTIER.x),
+    clotureEntree,
+    ...clotures,
     // les experts : le bureau de controle et la baraque du conducteur, groupes long pan contre long pan
-    {
-      cle: "control-office",
-      id: "control-office",
-      state: "active",
-      position: [35, 0, 32],
-    },
-    {
-      cle: "site-office",
-      id: "site-office",
-      state: "active",
-      position: [35, 0, 38.6],
-    },
+    lieu("bureau-controle", { cle: "control-office", state: "active" }),
+    lieu("baraque", { cle: "site-office", state: "active" }),
     personne("helene", ["control-office", "desk:1"], "inspect"),
     personne("yves", ["site-office", "desk:1"], "typing"),
-    {
-      cle: "decision-sign:feu-vert",
-      id: "decision-sign",
-      position: [41.8, 0, 37.5], // entre les experts et la parcelle
-    },
+    { cle: "decision-sign:feu-vert", id: "decision-sign", position: lieux["panneau-feu-vert"].panneau },
     ...batiments,
-    {
-      cle: "material-storage",
-      id: "material-storage",
-      position: [35.5, 0, 51],
-    },
-    ...["wood", "metal", "inert", "mixed"].map((content, i) => ({
-      cle: `waste-skip:${content}`,
-      id: "waste-skip",
-      params: { content },
-      position: [41.5, 0, 46.3 + i * 2.2],
-    })),
+    ...imp.decor,
     {
       cle: "delivery-truck",
       id: "delivery-truck",
       state: "idle",
-      position: [CHANTIER.x[1] - 4.5, 0, 51],
+      position: [imp.chantier.x[1] - 4.5, 0, 51],
       rotation: Math.PI / 2,
     },
 
     // --- la reception, la remise des cles et la garantie, de gauche a droite ; les deux conteneurs groupes
-    {
-      cle: "reception-area",
-      id: "reception-area",
-      state: "active",
-      position: [35, 0, 16],
-    },
+    lieu("aire-reception", { cle: "reception-area", state: "active" }),
     personne("anne", ["reception-area", "desk:1"], "inspect"),
-    // cote a cote le long de la voie, un peu ecartes : leurs reperes ne se chevauchent pas
-    { cle: "container:cles", id: "site-container", position: [46, 0, 18] },
-    {
-      cle: "container:garantie",
-      id: "site-container",
-      position: [53.5, 0, 18],
-    },
+    lieu("cabane-cles", { cle: "container:cles" }),
+    lieu("cabane-garantie", { cle: "container:garantie" }),
     personne("bernard", ["container:garantie", "entry"], "idle", 0),
 
     // --- les transformations, et le carnet des demandes
-    {
-      cle: "container:transformations",
-      id: "site-container",
-      position: [18, 0, 17.5],
-    },
-    { cle: "parking", id: "parking", position: [6.5, 0, 18] },
+    lieu("cabane-transformations", { cle: "container:transformations" }),
+    lieu("parking", { cle: "parking" }),
   ];
 
   // Les reperes fixes : une etape ou un passage (une decision du client) sur l'ancre d'un lieu. Les pastilles des
