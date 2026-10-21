@@ -415,7 +415,8 @@ function sectionSurvol(entry) {
   const batiments = scenes
     .at(-1)
     .elements.filter((e) => e.element === "building");
-  // chaque bouton porte la reference que GDC a donnee ; le banc n'en fabrique aucune
+  // chaque bouton porte la reference que GDC a donnee au batiment, completee par les identifiants de GDC (la fiche
+  // de l'etage, le lot de la piece) : le banc n'invente aucun identifiant
   const refs = new WeakMap();
   const bouton = (texte, ref) => {
     const b = el("button", { type: "button" }, texte);
@@ -509,9 +510,13 @@ demos.append(
   ...g7.map(sectionIllustration),
 );
 // Le relais du survol partage, comme GDC le fera : chaque gdc-hover revient en highlight a tous les elements qui le
-// lisent, l'emetteur compris, et aux colonnes du banc d'essai.
+// lisent, l'emetteur compris, et aux colonnes du banc d'essai. La derniere reference de chaque element est gardee ;
+// highlight est la plus recente qui n'est pas null : quand le pointeur quitte l'arbre, le focus reste dans le fil.
+const survolsParElement = new Map();
 document.addEventListener("gdc-hover", (e) => {
-  const ref = e.detail?.ref ?? null;
+  survolsParElement.delete(e.target);
+  if (e.detail?.ref) survolsParElement.set(e.target, e.detail.ref);
+  const ref = [...survolsParElement.values()].at(-1) ?? null;
   for (const m of Object.values(elements))
     if (m.meta.inputs.includes("highlight"))
       for (const n of document.querySelectorAll(m.meta.tag)) n.highlight = ref;

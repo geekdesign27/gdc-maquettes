@@ -142,6 +142,8 @@ export function checkHtml(mod, entry, source, composes = {}) {
   if (survol) poses.push('gdc-hover');
   for (const e of sorties) if (![`'${e}'`, `"${e}"`, `\`${e}\``].some((q) => source.includes(q)) && !poses.includes(e)) problems.push(`l'événement « ${e} » n'est jamais émis`);
   if (survol && !sorties.includes('gdc-hover')) problems.push('ctx.hoverLink émet gdc-hover, absent de la fiche');
+  // highlight est une propriété à part, posée par GDC à chaque survol, pas une clé de data
+  if (entrees.includes('highlight') && !/\bset\s+highlight\s*\(/.test(source)) problems.push('highlight doit être une propriété à part (set highlight), pas une clé de data');
   // un element n'emet que les evenements de sa fiche
   for (const [, e] of source.matchAll(/CustomEvent\(\s*['"]([\w-]+)['"]/g)) if (!sorties.includes(e)) problems.push(`événement « ${e} » absent de la fiche`);
   return problems;
