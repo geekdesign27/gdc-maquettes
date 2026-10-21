@@ -64,11 +64,13 @@ export function cssVariables() {
   // --gdc-sign-edge : le liseré clair de l'octogone d'erreur, trop proche du fond sombre (décision de PA du 21 octobre 2026)
   const lisere = { light: "transparent", dark: palette.interface.dark.ink };
   // la mise en evidence du survol partage (hover-link) : un fond teinte et un trait d'encre, plus legers que la
-  // selection ; un trait en box-shadow, qui ne fait pas sauter la liste
+  // selection ; un trait en box-shadow, qui ne fait pas sauter la liste. Le trait tient 3:1 contre le fond teinte
+  // (WCAG 1.4.11) : 60 % d'encre en clair, 45 % en sombre
   const encre = (t) => palette.interface[t].ink;
+  const trait = { light: 60, dark: 45 };
   const survol = (t) =>
     `\n  --gdc-highlight-fill: color-mix(in srgb, ${encre(t)} 6%, transparent);` +
-    `\n  --gdc-highlight-ring: inset 0 0 0 1px color-mix(in srgb, ${encre(t)} 45%, transparent);`;
+    `\n  --gdc-highlight-ring: inset 0 0 0 1px color-mix(in srgb, ${encre(t)} ${trait[t]}%, transparent);`;
   const theme = (t) =>
     bloc(palette.interface[t], "") +
     survol(t) +
