@@ -1330,7 +1330,7 @@
       "acceptance": [
         "Jamais de pourcentage sans sa règle"
       ],
-      "status": "à faire",
+      "status": "livré",
       "inputs": {
         "done": "nombre prouvé",
         "total": "nombre attendu",
@@ -1352,7 +1352,7 @@
         "Copie l'identifiant stable et le nom",
         "Fonctionne au clavier"
       ],
-      "status": "à faire",
+      "status": "livré",
       "inputs": {
         "id": "identifiant stable",
         "text": "texte à copier"

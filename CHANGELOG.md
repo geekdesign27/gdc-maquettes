@@ -87,6 +87,8 @@
 - Fiche de la navigation (`side-nav`) : un élément sans `state` n'a pas de signe ; une valeur hors des six états s'affiche « inconnu » (décision de Pierre-Alain du 21 octobre 2026).
 - La navigation (`side-nav`, `<gdc-side-nav>` 1.0.0) : liste groupée avec signes d'état, recherche sans accents ni majuscules, un seul arrêt de tabulation et les flèches ; sur téléphone, une rangée de pastilles qui défile jusqu'à l'élément choisi. Livrée : validée par Pierre-Alain le 21 octobre 2026.
 - Catalogue, lot G6 : les briques avant ce qui les assemble (décision de Pierre-Alain du 21 octobre 2026) ; nouvel ordre : `copy-button`, `progress-bar`, `notification-badge`, `inspector`, `quick-actions`, `agent-popup`. Les lignes de l'inspecteur peuvent porter `ref`, l'identifiant de l'élément cité, qui émet `gdc-select`.
+- L'icône de copie (`copy-button`, `<gdc-copy-button>` 1.0.0) : copie `text` tel quel s'il cite l'identifiant, sinon « text (id) » ; coche et bulle « Copié » pendant 1,5 s ; si le presse-papiers refuse, une bulle avec le texte sélectionné. Livrée : validée par Pierre-Alain le 21 octobre 2026.
+- La barre de progression (`progress-bar`, `<gdc-progress-bar>` 1.0.0) : signe d'état, barre et fraction, jamais de pourcentage ; la règle dans une bulle au survol, au focus et au toucher ; sans total, « 2 / ? » (le nombre fait reste affiché s'il est connu). Livrée : validée par Pierre-Alain le 21 octobre 2026.
 
 ## 0.2.0, 18 octobre 2026
 
