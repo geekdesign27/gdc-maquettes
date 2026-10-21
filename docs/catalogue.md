@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-53 éléments : 44 livré, 7 à faire, 2 exemple ; 5 nouvelle(s) version(s) prévue(s).
+54 éléments : 44 livré, 8 à faire, 2 exemple ; 5 nouvelle(s) version(s) prévue(s).
 
 ## G0 : La ligne graphique
 
@@ -748,6 +748,7 @@ Faire de la carte la visualisation du harnais : relier au survol la carte, le fi
 | 11 | `site-fence` | La clôture de chantier (version 1.1.0) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Cloisonner le chantier, comme tout chantier romand. | à faire |
 | 12 | `party-shed` | Le cabanon de la fête | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer la pause : le chantier est fermé et l'équipe fait la fête au cabanon en attendant ta décision. | à faire |
 | 13 | `city-car` | La voiture d'ambiance | Composant 3D Three.js, conforme à docs/contrat-composant.md | Faire vivre la ville autour du chantier, sans rien dire du harnais. | à faire |
+| 14 | `city-map` | La carte vivante | Document de référence, pas de code | Assembler et animer la carte du chantier à partir des scènes que GDC envoie : où chaque élément se pose, par où chacun marche, et la vie du chantier qui naît de l'état reçu. | à faire |
 
 ### Le survol partagé (`hover-link`)
 
@@ -885,6 +886,20 @@ Une petite citadine arrondie (chanfrein C4), en trois teintes de ville. Deux ou 
   - Trois au plus sur la carte, une en qualité low
   - reducedMotion : garée et immobile
   - Ni clic, ni badge, ni anneau de sélection
+
+### La carte vivante (`city-map`)
+
+Pas un composant : un module de la bibliothèque livrée à GDC (src/ville/), qui assemble les composants sans en modifier aucun. 1. L'implantation : quatre zones autour d'un carrefour, les lieux d'étape fixes, une parcelle par application (docs/ville.md ; la scène de référence lit la même implantation). 2. Les chemins : le long des voies de chantier, de porte à porte ; le client ne traverse jamais le chantier ; une marche dure selon la distance, plafonnée à quelques secondes. 3. La lecture des actions de GDC (apparait, deplace, change, disparait, quantite, ouverture, pause, fermeture, et les actions proposées à GDC quand elles arrivent), dans l'ordre de leur horodatage ; un élément inconnu du catalogue est ignoré et signalé. 4. La vie du chantier (docs/vie-du-chantier.md) : le régime, les ouvriers qui suivent leurs chefs phase par phase, les usagers autour des bâtiments habités, à partir d'une graine ; en pause, les ouvriers rejoignent le point de rassemblement près de la baraque (le cabanon party-shed, quand il sera fabriqué). 5. Les zones jamais activées en niveaux de gris, colorées pour toujours à la première activation, sur des copies des matériaux. 6. La vue en coupe (building-interior) au clic sur un bâtiment. Tant que character 1.2.0 n'existe pas, l'assemblage habille les ouvriers et les usagers en recolorant des copies de matériaux (remplaçant explicite, retiré avec la 1.2.0) ; le portail reste ouvert jusqu'à site-fence 1.1.0 ; aucune voiture avant city-car. Fiche validée par Pierre-Alain le 21 octobre 2026.
+
+- Fabriqué par : intégrateur (assemblage) ; directeur artistique (relecture)
+- Critères d'acceptation :
+  - Livré dans la bibliothèque (npm run build), Three.js injecté comme pour les composants
+  - Les chemins, la lecture des actions et la vie se contrôlent sans navigateur sur les séquences de fixtures/ (npm run check)
+  - La galerie joue une séquence de fixtures/ de bout en bout, sans erreur de console : chantier fermé puis ouvert, ouvriers selon la phase, zones grises qui se colorent
+  - Rien ne bouge sans projet ; même scène, mêmes ouvriers (graine)
+  - Plafonds : 12 ouvriers sur la carte et 4 par bâtiment ; 4 et 1 en qualité basse ; postures fixes et aucun trajet avec reducedMotion
+  - Fluidité mesurée à 12 ouvriers ; lisible en clair et en sombre
+  - Aucune couleur d'état dans la scène ; ouvriers et usagers sans badge, sans nom, sans clic
 
 ### La clôture de chantier (`site-fence`), version 1.1.0
 

@@ -1932,6 +1932,27 @@
       "role": "modeleur",
       "data": {},
       "production": "blender"
+    },
+    {
+      "id": "city-map",
+      "lot": "G8",
+      "order": 14,
+      "kind": "document",
+      "category": "contrat",
+      "name": "La carte vivante",
+      "purpose": "Assembler et animer la carte du chantier à partir des scènes que GDC envoie : où chaque élément se pose, par où chacun marche, et la vie du chantier qui naît de l'état reçu.",
+      "description": "Pas un composant : un module de la bibliothèque livrée à GDC (src/ville/), qui assemble les composants sans en modifier aucun. 1. L'implantation : quatre zones autour d'un carrefour, les lieux d'étape fixes, une parcelle par application (docs/ville.md ; la scène de référence lit la même implantation). 2. Les chemins : le long des voies de chantier, de porte à porte ; le client ne traverse jamais le chantier ; une marche dure selon la distance, plafonnée à quelques secondes. 3. La lecture des actions de GDC (apparait, deplace, change, disparait, quantite, ouverture, pause, fermeture, et les actions proposées à GDC quand elles arrivent), dans l'ordre de leur horodatage ; un élément inconnu du catalogue est ignoré et signalé. 4. La vie du chantier (docs/vie-du-chantier.md) : le régime, les ouvriers qui suivent leurs chefs phase par phase, les usagers autour des bâtiments habités, à partir d'une graine ; en pause, les ouvriers rejoignent le point de rassemblement près de la baraque (le cabanon party-shed, quand il sera fabriqué). 5. Les zones jamais activées en niveaux de gris, colorées pour toujours à la première activation, sur des copies des matériaux. 6. La vue en coupe (building-interior) au clic sur un bâtiment. Tant que character 1.2.0 n'existe pas, l'assemblage habille les ouvriers et les usagers en recolorant des copies de matériaux (remplaçant explicite, retiré avec la 1.2.0) ; le portail reste ouvert jusqu'à site-fence 1.1.0 ; aucune voiture avant city-car. Fiche validée par Pierre-Alain le 21 octobre 2026.",
+      "acceptance": [
+        "Livré dans la bibliothèque (npm run build), Three.js injecté comme pour les composants",
+        "Les chemins, la lecture des actions et la vie se contrôlent sans navigateur sur les séquences de fixtures/ (npm run check)",
+        "La galerie joue une séquence de fixtures/ de bout en bout, sans erreur de console : chantier fermé puis ouvert, ouvriers selon la phase, zones grises qui se colorent",
+        "Rien ne bouge sans projet ; même scène, mêmes ouvriers (graine)",
+        "Plafonds : 12 ouvriers sur la carte et 4 par bâtiment ; 4 et 1 en qualité basse ; postures fixes et aucun trajet avec reducedMotion",
+        "Fluidité mesurée à 12 ouvriers ; lisible en clair et en sombre",
+        "Aucune couleur d'état dans la scène ; ouvriers et usagers sans badge, sans nom, sans clic"
+      ],
+      "status": "à faire",
+      "role": "intégrateur (assemblage) ; directeur artistique (relecture)"
     }
   ],
   "bible": "WORKSITE 1.2 (docs/bible/bible-worksite.md)",
