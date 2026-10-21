@@ -1788,7 +1788,7 @@
         "Le contrôle vérifie que tout élément qui émet gdc-hover lit aussi highlight",
         "La page /interface.html relie le fil, la navigation et le sélecteur d'étages"
       ],
-      "status": "à faire",
+      "status": "livré",
       "role": "intégrateur d'interface"
     },
     {
