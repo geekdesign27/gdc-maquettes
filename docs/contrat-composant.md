@@ -106,3 +106,26 @@ Ce sont des éléments personnalisés du navigateur (`customElements.define`), s
 - **Style** : variables CSS reprises de `src/tokens.js` (`--gdc-...`) ; clair et sombre ; aucune police chargée depuis Internet.
 - **Accessibilité** : utilisable au clavier, rôles et libellés ARIA, contraste suffisant.
 - **Même contrôle** : aucun accès extérieur, aucun `innerHTML` alimenté par des données.
+
+### Le module d'un élément
+
+`components/interface/<id>/index.js` exporte `meta` et `define(registry, ctx)`. Rien n'est défini à l'import : la bibliothèque appelle `defineElements()` (`src/interface.js`), qui pose une fois la feuille des polices et des variables dans le document, puis appelle `define` pour chaque élément.
+
+```js
+export const meta = {
+  id: 'top-bar',                // identique au catalogue
+  version: '1.0.0',
+  category: 'interface',
+  tag: 'gdc-top-bar',           // gdc-<id>
+  inputs: ['project', 'decisions', 'agents', 'updatedAt', 'staleAfter'], // les clés de « inputs » de la fiche
+  outputs: ['gdc-select'],      // les clés de « outputs » de la fiche
+};
+export function define(registry, ctx) {
+  registry.define(meta.tag, class extends HTMLElement { /* … */ });
+}
+```
+
+- **`ctx`, injecté** comme Three.js l'est dans les composants 3D (décision de Pierre-Alain du 21 octobre 2026) : `ctx.tokens` (les couleurs), `ctx.signes` (le mot, la forme et l'icône de chaque état, `src/signes.js`), `ctx.signIcon(document, state, taille)` (le signe en SVG, décoratif), `ctx.plusGrave(counts)` et `ctx.gravite` (l'ordre de gravité). Un élément n'importe toujours rien hors de son dossier.
+- **Composition par balise** : un élément en utilise un autre en posant sa balise (`<gdc-copy-button>`), sans import.
+- **Variables CSS** (`cssVariables()` de `src/tokens.js`) : `--gdc-background`, `--gdc-surface`, `--gdc-ink`, `--gdc-muted` selon le thème ; `--gdc-state-<état>` et `--gdc-team-<équipe>`, fixes ; `--gdc-font-title`, `--gdc-font-ui`, `--gdc-font-mono` ; `--gdc-motion` (1, ou 0 quand on demande moins d'animations). Le thème se choisit par `data-theme="dark"` sur un ancêtre ; moins d'animations par la préférence du système ou `data-motion="reduced"`. Les variables traversent le shadow DOM.
+- **Le contrôle** (`npm run check`) est statique : `meta` conforme à la fiche, `define` présent, chaque entrée lue et chaque événement de la fiche émis, aucun autre événement, mêmes motifs interdits que les composants. Le rendu, le clavier, le téléphone et les deux thèmes se vérifient sur la page de démonstration (`npm run dev`, puis `/interface.html`).

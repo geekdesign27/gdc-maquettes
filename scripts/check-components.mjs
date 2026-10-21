@@ -8,14 +8,15 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils.js';
-import { checkSource, checkMeta, checkInstance } from '../src/contract.js';
+import { checkSource, checkMeta, checkInstance, checkHtml } from '../src/contract.js';
 import { makeContext } from '../src/tokens.js';
 import { creeChargeur } from '../src/assets.js';
 import { lisGlb, checkGlb } from '../src/glb.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const catalogue = JSON.parse(await readFile(join(ROOT, 'catalogue.json'), 'utf8'));
-const items = catalogue.items.filter((i) => i.kind === 'component' || i.kind === 'kit');
+// les documents de l'interface (les polices) ont un dossier sous components/ : on y controle les licences
+const items = catalogue.items.filter((i) => ['component', 'kit', 'html'].includes(i.kind) || (i.kind === 'document' && i.category === 'interface'));
 const sha = (buf) => createHash('sha256').update(buf).digest('hex');
 
 const contexts = [];
@@ -73,7 +74,7 @@ for (const entry of items) {
   const fichiers = entry.assets || [];
   const propres = fichiers.filter((f) => !f.includes(':')); // ceux d'un autre dossier sont controles chez eux
   const code = join(dossier, 'index.js');
-  const present = entry.kind === 'kit' ? propres.some((f) => existsSync(join(dossier, f))) : existsSync(code);
+  const present = entry.kind === 'kit' ? propres.some((f) => existsSync(join(dossier, f))) : entry.kind === 'document' ? existsSync(dossier) : existsSync(code);
   if (!present) {
     if (entry.status === 'à faire') { pending += 1; continue; }
     errors.push([entry.id, [`statut « ${entry.status} » mais rien dans components/${entry.category}/${entry.id}/`]]);
@@ -111,6 +112,22 @@ for (const entry of items) {
           for (const o of contexts) problems.push(...checkInstance(THREE, mod, entry, makeContext(o, await chargeur.assetsPour(mod.meta)), partagees));
         } catch (e) { problems.push('modeles non chargeables : ' + e.message); }
       }
+    }
+  }
+  if (entry.kind === 'html') {
+    const source = await readFile(code, 'utf8');
+    const src = checkSource(source);
+    problems.push(...src);
+    if (!src.length) {
+      try { problems.push(...checkHtml(await import(pathToFileURL(code).href), entry, source)); } catch (e) { problems.push(`le module ne se charge pas : ${e.message}`); }
+    }
+  }
+  if (entry.kind === 'document') {
+    // une police n'entre dans le depot qu'avec sa licence (LICENSE-<famille>.txt) et sa fiche (README.md)
+    const contenu = await readdir(dossier);
+    if (!contenu.includes('README.md')) problems.push('README.md absent : source, licence et empreintes');
+    for (const f of contenu.filter((x) => /\.(woff2?|ttf|otf)$/.test(x))) {
+      if (!contenu.some((l) => l.startsWith('LICENSE-') && f.startsWith(l.slice(8, -4) + '-'))) problems.push(`${f} sans licence jointe`);
     }
   }
   if (problems.length) errors.push([entry.id, problems]);

@@ -13,6 +13,7 @@ const FORBIDDEN = [
   [/\beval\s*\(|new\s+Function\s*\(/, 'code évalué'],
   [/\bimport\s[^;]*?from\s+['"](?!\.\/)/, 'import hors du dossier du composant'],
   [/\bimport\s*\(/, 'import dynamique'],
+  [/url\(\s*['"]?(https?:)?\/\/|@import\b/, 'ressource chargée depuis Internet'],
 ];
 
 export function checkSource(source) {
@@ -107,5 +108,31 @@ export function checkInstance(THREE, mod, entry, ctx, partagees = new Set()) {
   if (left.length) problems.push(`${label} dispose() laisse ${left.length} géométrie(s), matériau(x) ou texture(s)`);
   const abimees = [...seen].filter((d) => disposed.has(d) && partagees.has(d));
   if (abimees.length) problems.push(`${label} dispose() libère ${abimees.length} ressource(s) partagée(s) d'un modèle 3D : les autres instances la perdraient`);
+  return problems;
+}
+
+// Les elements d'interface (lot G6) : meta conforme a la fiche, define() present, entrees et evenements de la fiche.
+// Controle statique : le rendu et le clavier se verifient sur la page de demonstration (interface.html).
+const HTML_META_KEYS = ['id', 'version', 'category', 'tag', 'inputs', 'outputs'];
+
+export function checkHtml(mod, entry, source) {
+  const problems = [];
+  const meta = mod && mod.meta;
+  if (!meta || typeof meta !== 'object') return ['meta absent'];
+  for (const key of HTML_META_KEYS) if (!(key in meta)) problems.push(`meta.${key} manquant`);
+  if (meta.id !== entry.id) problems.push(`meta.id « ${meta.id} » différent du catalogue « ${entry.id} »`);
+  if (meta.category !== entry.category) problems.push(`meta.category « ${meta.category} » différent du catalogue « ${entry.category} »`);
+  if (!/^\d+\.\d+\.\d+$/.test(meta.version || '')) problems.push('meta.version doit être de la forme 1.0.0');
+  if (meta.tag !== `gdc-${entry.id}`) problems.push(`meta.tag doit valoir « gdc-${entry.id} »`);
+  if (typeof mod.define !== 'function') problems.push('define(registry, ctx) manquant');
+  const same = (a = [], b = []) => a.length === b.length && a.every((x) => b.includes(x));
+  const entrees = Object.keys(entry.inputs || {});
+  const sorties = Object.keys(entry.outputs || {});
+  if (!same(meta.inputs, entrees)) problems.push(`entrées différentes du catalogue : ${JSON.stringify(meta.inputs)} au lieu de ${JSON.stringify(entrees)}`);
+  if (!same(meta.outputs, sorties)) problems.push(`événements différents du catalogue : ${JSON.stringify(meta.outputs)} au lieu de ${JSON.stringify(sorties)}`);
+  for (const k of entrees) if (!new RegExp(`\\b${k}\\b`).test(source)) problems.push(`l'entrée « ${k} » n'est pas lue dans le code`);
+  for (const e of sorties) if (!source.includes(`'${e}'`)) problems.push(`l'événement « ${e} » n'est jamais émis`);
+  // un element n'emet que les evenements de sa fiche
+  for (const [, e] of source.matchAll(/CustomEvent\(\s*['"]([\w-]+)['"]/g)) if (!sorties.includes(e)) problems.push(`événement « ${e} » absent de la fiche`);
   return problems;
 }

@@ -25,3 +25,27 @@ export function makeContext({ theme = 'light', quality = 'high', reducedMotion =
   const t = theme === 'dark' ? 'dark' : 'light';
   return { tokens, theme: t, palette: paletteFor(t), quality: quality === 'low' ? 'low' : 'high', reducedMotion: Boolean(reducedMotion), assets };
 }
+
+// Les variables CSS des elements d'interface (lot G6), en clair et en sombre. Le theme se choisit par
+// data-theme="dark" sur un ancetre (la racine de GDC) ; --gdc-motion vaut 0 quand on demande moins d'animations
+// (preference du systeme, ou data-motion="reduced"). Les variables traversent le shadow DOM des elements.
+export function cssVariables() {
+  const kebab = (k) => k.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase());
+  const bloc = (o, prefixe) => Object.entries(o).map(([k, v]) => `  --gdc-${prefixe}${kebab(k)}: ${v};`).join('\n');
+  const fixes = [
+    bloc(palette.etat, 'state-'),
+    bloc(palette.equipe, 'team-'),
+    "  --gdc-font-title: 'Manrope', system-ui, sans-serif;",
+    "  --gdc-font-ui: 'Inter', system-ui, sans-serif;",
+    "  --gdc-font-mono: 'JetBrains Mono', ui-monospace, monospace;",
+    '  --gdc-motion: 1;',
+  ].join('\n');
+  const theme = (t) => bloc(palette.interface[t], '') + `\n  color-scheme: ${t};`;
+  return [
+    `:root {\n${fixes}\n}`,
+    `:root, [data-theme="light"] {\n${theme('light')}\n}`,
+    `[data-theme="dark"] {\n${theme('dark')}\n}`,
+    '@media (prefers-reduced-motion: reduce) { :root { --gdc-motion: 0; } }',
+    '[data-motion="reduced"] { --gdc-motion: 0; }',
+  ].join('\n');
+}

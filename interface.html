@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="fr" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Interface des maquettes</title>
+  <link rel="icon" href="data:,">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font: 14px/1.45 var(--gdc-font-ui); background: var(--gdc-background); color: var(--gdc-ink); }
+    header { position: sticky; top: 0; z-index: 10; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 16px; background: var(--gdc-surface); border-bottom: 1px solid color-mix(in srgb, var(--gdc-ink) 15%, transparent); }
+    header h1 { font: 600 16px/1.2 var(--gdc-font-title); margin: 0 auto 0 0; }
+    header button { border: 1px solid color-mix(in srgb, var(--gdc-ink) 25%, transparent); background: var(--gdc-background); color: var(--gdc-ink); border-radius: 6px; padding: 6px 10px; font: inherit; cursor: pointer; min-height: 36px; }
+    header button[aria-pressed="true"] { background: var(--gdc-ink); color: var(--gdc-background); }
+    button:focus-visible { outline: 2px solid var(--gdc-ink); outline-offset: 2px; }
+    main { padding: 16px; margin: 0 auto; max-width: 1100px; }
+    main.phone { max-width: 375px; border-inline: 1px dashed var(--gdc-muted); padding: 16px 8px; }
+    section { margin: 0 0 32px; }
+    section > h2 { font: 600 18px/1.3 var(--gdc-font-title); margin: 0 0 4px; }
+    section > p { margin: 0 0 12px; color: var(--gdc-muted); }
+    .variante { margin: 0 0 16px; }
+    .variante > h3 { font: 500 12px/1.3 var(--gdc-font-ui); text-transform: uppercase; letter-spacing: .05em; color: var(--gdc-muted); margin: 0 0 6px; }
+    .cadre { background: var(--gdc-surface); border: 1px solid color-mix(in srgb, var(--gdc-ink) 12%, transparent); border-radius: 8px; padding: 12px; }
+    .signes { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+    .signe { display: flex; gap: 8px; align-items: center; }
+    .specimen p { margin: 4px 0; }
+    #journal { font: 12px/1.5 var(--gdc-font-mono); white-space: pre-wrap; margin: 0; }
+    #journal .ko { color: var(--gdc-state-error); font-weight: 600; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Interface des maquettes</h1>
+    <button id="theme" aria-pressed="false">Sombre</button>
+    <button id="motion" aria-pressed="false">Moins d'animation</button>
+    <button id="phone" aria-pressed="false">Largeur téléphone</button>
+  </header>
+  <main id="demos"></main>
+  <script type="module" src="/src/interface-demo.js"></script>
+</body>
+</html>

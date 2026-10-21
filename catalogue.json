@@ -1193,7 +1193,8 @@
         "Licence vérifiée et jointe",
         "Aucune requête vers un service de polices"
       ],
-      "status": "à faire"
+      "status": "à faire",
+      "license": "SIL Open Font License 1.1 (OFL-1.1), acceptée par Pierre-Alain le 21 octobre 2026 : Inter © 2016 The Inter Project Authors, Manrope © 2019 The Manrope Project Authors, JetBrains Mono © 2020 The JetBrains Mono Project Authors. Fichiers Fontsource 5.3.0, sous-ensemble latin, dans components/interface/fonts/ avec leurs licences."
     },
     {
       "id": "top-bar",
