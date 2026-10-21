@@ -185,7 +185,7 @@ function retire(x) { if (x && x.inst) { scene.remove(x.inst.root); x.inst.dispos
 
 // Un signal (lot G5) se juge a cote des lieux ou il apparait (signaletique) : ses voisins de planche, poses tout pres
 // (ECART_SIGNAL entre les emprises), et non les deux premiers modeles livres.
-const VOISINS_SIGNAUX = { 'decision-sign': ['client-office', 'reception-area'] };
+const VOISINS_SIGNAUX = { 'decision-sign': ['client-office', 'reception-area'], 'blocked-sign': ['site-fence', 'building'] };
 const ECART_SIGNAL = 1.5;
 
 // La planche : le composant choisi entre deux modeles de reference (livres d'abord, exemples a defaut).

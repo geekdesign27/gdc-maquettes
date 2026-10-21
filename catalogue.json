@@ -1110,7 +1110,10 @@
       "status": "à faire",
       "data": {},
       "production": "blender",
-      "blender": "PRP_BLOCKED_BARRIER_A_v001"
+      "blender": "PRP_BLOCKED_BARRIER_A_v001",
+      "assets": [
+        "PRP_BLOCKED_BARRIER_A_v001.glb"
+      ]
     },
     {
       "id": "defect-sign",

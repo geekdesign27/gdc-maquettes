@@ -1,0 +1,13 @@
+{
+  "nom": "PRP_BLOCKED_BARRIER_A_v001",
+  "id": "blocked-sign",
+  "bible": "WORKSITE 1.2",
+  "blender": "5.3.0 Beta",
+  "script": "blender/assets/blocked-sign.py",
+  "script_sha256": "eef83d6c372df49c3e8f2d86df8610cc75d63e4ca8f4c80d459a5c0d758b5f06",
+  "commun_sha256": "e8cb480c62b7bdb8b54460ec91e343989e89e93987616cc2711afd5dbcdf2f80",
+  "palette_sha256": "aa140a55ff82e130dff965264849b10e8f1c9651f4cb29109fcc99593fbe33c7",
+  "glb_sha256": "2781ca07410a2f16f69ec324fa9a06ca599a7c73b0ef76e73326863f3ac24556",
+  "animations": [],
+  "statut": "a valider"
+}
