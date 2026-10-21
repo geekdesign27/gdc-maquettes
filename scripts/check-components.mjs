@@ -17,6 +17,8 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const catalogue = JSON.parse(await readFile(join(ROOT, 'catalogue.json'), 'utf8'));
 // les documents de l'interface (les polices) ont un dossier sous components/ : on y controle les licences
 const items = catalogue.items.filter((i) => ['component', 'kit', 'html'].includes(i.kind) || (i.kind === 'document' && i.category === 'interface'));
+// les evenements de chaque element d'interface, pour reconnaitre ceux d'une balise posee dans un autre
+const composes = Object.fromEntries(catalogue.items.filter((i) => i.kind === 'html').map((i) => [`gdc-${i.id}`, Object.keys(i.outputs || {})]));
 const sha = (buf) => createHash('sha256').update(buf).digest('hex');
 
 const contexts = [];
@@ -119,7 +121,7 @@ for (const entry of items) {
     const src = checkSource(source);
     problems.push(...src);
     if (!src.length) {
-      try { problems.push(...checkHtml(await import(pathToFileURL(code).href), entry, source)); } catch (e) { problems.push(`le module ne se charge pas : ${e.message}`); }
+      try { problems.push(...checkHtml(await import(pathToFileURL(code).href), entry, source, composes)); } catch (e) { problems.push(`le module ne se charge pas : ${e.message}`); }
     }
   }
   if (entry.kind === 'document') {

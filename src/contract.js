@@ -115,7 +115,9 @@ export function checkInstance(THREE, mod, entry, ctx, partagees = new Set()) {
 // Controle statique : le rendu et le clavier se verifient sur la page de demonstration (interface.html).
 const HTML_META_KEYS = ['id', 'version', 'category', 'tag', 'inputs', 'outputs'];
 
-export function checkHtml(mod, entry, source) {
+// composes : pour chaque balise d'element d'interface (gdc-<id>), les evenements de sa fiche. Un element qui pose
+// une de ces balises emet aussi ses evenements : ils traversent son shadow DOM (composition par balise).
+export function checkHtml(mod, entry, source, composes = {}) {
   const problems = [];
   const meta = mod && mod.meta;
   if (!meta || typeof meta !== 'object') return ['meta absent'];
@@ -130,8 +132,11 @@ export function checkHtml(mod, entry, source) {
   const sorties = Object.keys(entry.outputs || {});
   if (!same(meta.inputs, entrees)) problems.push(`entrées différentes du catalogue : ${JSON.stringify(meta.inputs)} au lieu de ${JSON.stringify(entrees)}`);
   if (!same(meta.outputs, sorties)) problems.push(`événements différents du catalogue : ${JSON.stringify(meta.outputs)} au lieu de ${JSON.stringify(sorties)}`);
+  // le code hors de meta : meta cite deja chaque entree et chaque evenement, il ne prouve rien
+  source = source.replace(/export\s+const\s+meta\s*=\s*\{[\s\S]*?\n\};?/, '');
   for (const k of entrees) if (!new RegExp(`\\b${k}\\b`).test(source)) problems.push(`l'entrée « ${k} » n'est pas lue dans le code`);
-  for (const e of sorties) if (![`'${e}'`, `"${e}"`, `\`${e}\``].some((q) => source.includes(q))) problems.push(`l'événement « ${e} » n'est jamais émis`);
+  const poses = Object.entries(composes).filter(([tag]) => tag !== meta.tag && source.includes(tag)).flatMap(([, evts]) => evts);
+  for (const e of sorties) if (![`'${e}'`, `"${e}"`, `\`${e}\``].some((q) => source.includes(q)) && !poses.includes(e)) problems.push(`l'événement « ${e} » n'est jamais émis`);
   // un element n'emet que les evenements de sa fiche
   for (const [, e] of source.matchAll(/CustomEvent\(\s*['"]([\w-]+)['"]/g)) if (!sorties.includes(e)) problems.push(`événement « ${e} » absent de la fiche`);
   return problems;
