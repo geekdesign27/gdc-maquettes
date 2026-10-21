@@ -91,7 +91,16 @@ function buildList() {
   bs.title = 'La carte du harnais : les bureaux, le chantier clôturé, le bâtiment habité, et le repère de chaque étape ; même caméra, même lumière';
   bs.dataset.id = reference.SCENE_ID;
   bs.addEventListener('click', () => select(reference.SCENE_ID));
-  list.append(h0, bs, b0);
+  // les projets d'exemple a plusieurs applications : un batiment chacune ; le plan se lit dans l'adresse, d'ou le rechargement
+  const projets = Object.entries(reference.PROJETS).map(([cle, noms]) => {
+    const b = document.createElement('button');
+    b.textContent = `La scène de référence : ${cle === 'auditapp' ? 'AuditApp' : cle}, ${noms.length} bâtiments`;
+    b.title = noms.join(', ');
+    b.dataset.id = `${reference.SCENE_ID}?${cle}`;
+    b.addEventListener('click', () => { location.href = `${location.pathname}?applications=${cle}#${reference.SCENE_ID}/${reference.PHASE_DEFAUT}`; });
+    return b;
+  });
+  list.append(h0, bs, ...projets, b0);
   // Les kits : leur batiment de demonstration, assemble depuis le GLB du kit (critere « s'assemble sans retouche »).
   for (const { entry } of kit.demonstrations(catalogue)) {
     const b = document.createElement('button');
@@ -343,7 +352,9 @@ async function select(id, state) {
   }
   current = { ...x, voisins };
   resize(); // le cadrage depend du composant (la scene de reference)
-  for (const b of $('list').querySelectorAll('button')) b.setAttribute('aria-current', String(b.dataset.id === id));
+  const projet = new URLSearchParams(location.search).get('applications');
+  const choisi = id === reference.SCENE_ID && reference.PROJETS[projet] ? `${id}?${projet}` : id;
+  for (const b of $('list').querySelectorAll('button')) b.setAttribute('aria-current', String(b.dataset.id === choisi));
   buildStates();
   await report();
   dirty = true;
