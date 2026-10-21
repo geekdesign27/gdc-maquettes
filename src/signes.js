@@ -18,7 +18,14 @@ export const GRAVITE = [
 // lisible sur le jaune (signaletique, decision de PA du 21 octobre 2026).
 const ENCRE = "#303841";
 export const signes = {
-  active: { label: "Actif", forme: "ring", icone: "gear", plein: false },
+  // the only sign that moves: its gear turns slowly while the work lasts (signaletique, principle 5)
+  active: {
+    label: "Actif",
+    forme: "ring",
+    icone: "gear",
+    plein: false,
+    tourne: true,
+  },
   waiting: {
     label: "Attend ta décision",
     forme: "panel",
@@ -190,7 +197,7 @@ function trace(doc, parent, primitives, couleur) {
 // Un etat inconnu de la table devient « unknown » : rien n'est invente.
 export function signIcon(doc, state, size = 16) {
   const s = signes[state] ? state : "unknown";
-  const { forme, icone, plein, encre } = signes[s];
+  const { forme, icone, plein, encre, tourne } = signes[s];
   const svg = doc.createElementNS(NS, "svg");
   svg.setAttribute("viewBox", "0 0 16 16");
   svg.setAttribute("width", String(size));
@@ -201,7 +208,22 @@ export function signIcon(doc, state, size = 16) {
   const couleur = `var(--gdc-state-${s})`;
   trace(doc, svg, FORMES[forme], couleur);
   if (encre) for (const el of svg.children) el.setAttribute("stroke", encre);
-  trace(doc, svg, ICONES[icone], encre || (plein ? "#FFFFFF" : couleur));
+  let calque = svg;
+  if (tourne) {
+    // One slow turn every 6 s; paused (upright) when less motion is asked: --gdc-play from src/tokens.js,
+    // and the system preference for a page without those variables.
+    const style = doc.createElementNS(NS, "style");
+    style.textContent =
+      "@keyframes gdc-spin { to { transform: rotate(360deg); } }" +
+      ".gdc-spin { transform-box: view-box; transform-origin: 8px 8px;" +
+      " animation: gdc-spin 6s linear infinite; animation-play-state: var(--gdc-play, running); }" +
+      "@media (prefers-reduced-motion: reduce) { .gdc-spin { animation: none; } }";
+    svg.append(style);
+    calque = doc.createElementNS(NS, "g");
+    calque.setAttribute("class", "gdc-spin");
+    svg.append(calque);
+  }
+  trace(doc, calque, ICONES[icone], encre || (plein ? "#FFFFFF" : couleur));
   return svg;
 }
 
