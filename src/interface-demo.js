@@ -52,17 +52,38 @@ export const variantes = {
       data: {
         selected: "bureau",
         groups: [
+          // les quatre zones du contrat GDC (plan.zones, schema 3) et leurs lieux, dans l'ordre de fixtures/projet-type
           {
-            title: "Les lieux",
+            title: "Les bureaux",
             items: [
               { id: "bureau-architecte", name: "Le bureau d'architecte" },
-              { id: "bureau-etudes", name: "Le bureau d'études", state: "active" },
               { id: "bureau-client", name: "Le bureau du client", state: "waiting" },
-              { id: "bureau-controle", name: "Le bureau de contrôle", state: "error" },
+              { id: "bureau-etudes", name: "Le bureau d'études", state: "active" },
+              { id: "panneau-permis", name: "Le panneau du permis" },
+            ],
+          },
+          {
+            title: "Le chantier",
+            items: [
               { id: "baraque", name: "La baraque du conducteur de travaux", state: "active" },
+              { id: "bureau-controle", name: "Le bureau de contrôle", state: "error" },
+              { id: "panneau-feu-vert", name: "Le panneau du feu vert" },
               { id: "chantier", name: "Le chantier, une parcelle par application" },
-              { id: "parking", name: "Le parking, le carnet des demandes" },
+            ],
+          },
+          {
+            title: "La réception, la remise des clés et la garantie",
+            items: [
               { id: "aire-reception", name: "L'aire de réception" },
+              { id: "cabane-cles", name: "La cabane de la remise des clés" },
+              { id: "cabane-garantie", name: "La cabane de la garantie" },
+            ],
+          },
+          {
+            title: "Les transformations",
+            items: [
+              { id: "cabane-transformations", name: "La cabane des transformations" },
+              { id: "parking", name: "Le carnet des demandes" },
             ],
           },
           {
@@ -80,8 +101,9 @@ export const variantes = {
             title: "Les agents",
             items: [
               { id: "claire", name: "Claire, architecte", state: "active" },
-              { id: "lina", name: "Lina, ingénieure", state: "blocked" },
-              { id: "victor", name: "Victor", state: "dormant" },
+              { id: "lina", name: "Lina, designer UX/UI", state: "blocked" },
+              { id: "yves", name: "Yves, conducteur de travaux", state: "active" },
+              { id: "victor", name: "Victor, chef de chantier", state: "dormant" },
             ],
           },
         ],
@@ -126,7 +148,7 @@ export const variantes = {
           { title: "Avancement", rows: [
             { label: "Critères prouvés", value: "3 / 7" },
             { label: "Bâtiment", value: "Application de bureau", ref: "bureau" },
-            { label: "Agent", value: "Lina, ingénieure", state: "blocked", ref: "lina" },
+            { label: "Agent", value: "Lina, designer UX/UI", state: "blocked", ref: "lina" },
           ] },
           { title: "Tâches", rows: [
             { label: "Écrire la fiche", value: "faite", state: "done" },
@@ -165,16 +187,16 @@ export const variantes = {
     {
       titre: "Lina, au travail",
       data: {
-        id: "lina", name: "Lina, ingénieure", team: "studies", state: "typing",
-        doing: ["Écrit la fiche technique de l'export (001-cloturer-un-audit)"],
-        next: ["Relancer l'essai d'export", "Passer la fiche au contrôle"],
-        can: ["Étudier une demande", "Écrire une fiche technique", "Chiffrer un lot"],
+        id: "lina", name: "Lina, designer UX/UI", team: "studies", state: "typing",
+        doing: ["Dessine l'écran de clôture d'un audit (001-cloturer-un-audit)"],
+        next: ["Relire le parcours au clavier", "Passer la maquette à Robin"],
+        can: ["Dessiner un écran", "Proposer un parcours", "Vérifier le contraste et le clavier"],
         actions: [{ label: "Où en est Lina ?", prompt: "Résume ce que fait l'agent lina et ce qui la bloque." }],
       },
     },
     {
       titre: "Victor : le journal ne dit rien",
-      data: { id: "victor", name: "Victor, conducteur de travaux", team: "site", state: "unknown", doing: [], next: [], can: [], actions: [] },
+      data: { id: "victor", name: "Victor, chef de chantier", team: "site", state: "unknown", doing: [], next: [], can: [], actions: [] },
     },
     {
       titre: "Pierre-Alain attend ta décision",
