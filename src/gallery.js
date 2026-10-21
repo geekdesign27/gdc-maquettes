@@ -29,7 +29,9 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 stage.prepend(renderer.domElement);
 const scene = new THREE.Scene();
 const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 500);
-camera.position.set(...lumiere.camera.position);
+// reculee quatre fois dans son axe : la vue orthographique ne change pas, mais une grande scene (la scene de reference)
+// n'est plus rognee par le plan proche
+camera.position.set(...lumiere.camera.position).multiplyScalar(4);
 camera.lookAt(...lumiere.camera.cible);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.addEventListener('change', () => { dirty = true; });
