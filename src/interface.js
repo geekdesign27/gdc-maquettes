@@ -2,6 +2,7 @@
 // signaletique injectee. Chaque element exporte meta et define(registry, ctx) ; rien n'est defini a l'import.
 import { tokens, cssVariables } from "./tokens.js";
 import { signes, signIcon, plusGrave, GRAVITE } from "./signes.js";
+import { correspond, sameRef, hoverLink } from "./survol.js";
 import manrope from "../components/interface/fonts/manrope-latin-wght-normal.woff2?inline";
 import inter from "../components/interface/fonts/inter-latin-wght-normal.woff2?inline";
 import jetbrainsMono from "../components/interface/fonts/jetbrains-mono-latin-wght-normal.woff2?inline";
@@ -54,7 +55,8 @@ function portrait(document, id) {
   return svg.localName === "svg" ? document.importNode(svg, true) : null;
 }
 
-// Le contexte injecte dans chaque element : les jetons, la signaletique et les portraits, une seule source.
+// Le contexte injecte dans chaque element : les jetons, la signaletique, les portraits et le survol partage (lot G8),
+// une seule source.
 export const interfaceContext = {
   tokens,
   signes,
@@ -62,6 +64,9 @@ export const interfaceContext = {
   plusGrave,
   gravite: GRAVITE,
   portrait,
+  correspond,
+  sameRef,
+  hoverLink,
 };
 
 // Definit tous les elements (gdc-<id>) et pose, une fois, la feuille des polices et des variables dans le document.
