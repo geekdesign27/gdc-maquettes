@@ -2,6 +2,7 @@
 // Les couleurs d'etat ne servent qu'aux badges et a l'interface HTML : elles ne colorent jamais les materiaux du monde
 // (bible WORKSITE 1.2). Les couleurs d'equipe habillent les tenues des personnages.
 import palette from "./palette.json" with { type: "json" };
+import { groupFloors } from "./etages.js";
 
 export const tokens = {
   monde: palette.monde,
@@ -27,6 +28,8 @@ export function paletteFor(theme) {
 
 // Le contexte passe a create() : le meme pour la galerie, le controle et GDC.
 // assets : une copie des modeles du composant pour cette instance (voir src/assets.js).
+// groupFloors : la regle des six etages (src/etages.js), injectee comme Three.js : un composant n'importe rien hors de
+// son dossier.
 export function makeContext(
   { theme = "light", quality = "high", reducedMotion = false } = {},
   assets = {},
@@ -39,6 +42,7 @@ export function makeContext(
     quality: quality === "low" ? "low" : "high",
     reducedMotion: Boolean(reducedMotion),
     assets,
+    groupFloors,
   };
 }
 
