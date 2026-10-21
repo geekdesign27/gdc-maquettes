@@ -8,7 +8,7 @@ import catalogue from '../catalogue.json' with { type: 'json' };
 import lumiere from './lumiere.json' with { type: 'json' };
 import { makeContext } from './tokens.js';
 import { checkMeta, checkInstance, defaultParams, measure, sampleData } from './contract.js';
-import { components as byId, chargeur } from './library.js';
+import { components as byId, chargeur, illustrations } from './library.js';
 import * as etalon from './etalon.js';
 import * as kit from './kit.js';
 import * as personnage from './personnage.js';
@@ -47,8 +47,8 @@ scene.add(grid);
 function resize() {
   const { clientWidth: w, clientHeight: h } = stage;
   renderer.setSize(w, h, false);
-  // la scene de reference s'etend sur pres de 60 m : son terrain se cadre en entier sur un portable de 13 pouces
-  const view = current.entry?.id === reference.SCENE_ID ? 24 : options.planche ? 18 : 12;
+  // la scene de reference (trois quartiers, 75 x 65 m) se cadre en entier sur un portable de 13 pouces ; on zoome a la molette
+  const view = current.entry?.id === reference.SCENE_ID ? 29 : options.planche ? 18 : 12;
   const aspect = w / Math.max(h, 1);
   Object.assign(camera, { left: -view * aspect, right: view * aspect, top: view, bottom: -view });
   camera.updateProjectionMatrix();
@@ -85,7 +85,7 @@ function buildList() {
   b0.addEventListener('click', () => select(etalon.ETALON_ID));
   const bs = document.createElement('button');
   bs.textContent = 'La scène de référence';
-  bs.title = 'Un chantier clôturé : le bâtiment dans quatre états, la grue, les installations, le stockage, les bennes et le personnage sélectionné ; même caméra, même lumière';
+  bs.title = 'La carte du harnais : les bureaux, le chantier clôturé, le bâtiment habité, et le repère de chaque étape ; même caméra, même lumière';
   bs.dataset.id = reference.SCENE_ID;
   bs.addEventListener('click', () => select(reference.SCENE_ID));
   list.append(h0, bs, b0);
@@ -131,8 +131,11 @@ async function instance(id, state) {
     const insts = [];
     for (const m of reference.MEMBRES) {
       const mod = byId[m.id];
-      await charge.prepare(mod.meta);
-      const inst = mod.create(THREE, { ...defaultParams(mod.meta), ...m.params }, makeContext(options, await charge.assetsPour(mod.meta)));
+      // une personne d'equipe.json : ses parametres et ses seuls fichiers, comme pour la planche de l'equipe
+      const params = m.personne ? personnage.parametresDe(personnage.PERSONNES.find((p) => p.id === m.personne)) : { ...defaultParams(mod.meta), ...m.params };
+      const metaM = m.personne ? personnage.metaPersonne(params) : mod.meta;
+      await charge.prepare(metaM);
+      const inst = mod.create(THREE, params, makeContext(options, await charge.assetsPour(metaM)));
       inst.setState(m.state || mod.meta.states[0], { ...sampleData(entries.find((e) => e.id === m.id)), ...m.data });
       insts.push(inst);
     }
@@ -384,11 +387,27 @@ async function report() {
 }
 
 // Les ancres : de simples etiquettes HTML, comme celles que GDC posera.
+// Les reperes de la scene de reference (scene-reference.js, REPERES) : numero, icone d'etape du lot G7, titre ; un passage
+// (une decision du client) a son propre style. Les etiquettes sont creees une fois par instance, puis deplacees.
 const tmp = new THREE.Vector3();
+let etiquettes = { inst: null, tags: new Map() };
+function etiquette(name) {
+  const tag = document.createElement('div');
+  tag.className = 'anchor';
+  const r = current.scene && reference.REPERES[name];
+  if (!r) { tag.textContent = name; return tag; }
+  tag.classList.add('repere');
+  if (r.passage) tag.classList.add('passage');
+  if (r.numero) { const n = document.createElement('b'); n.textContent = r.numero; tag.append(n); }
+  const svg = r.icone && illustrations['step-icons']?.[r.icone];
+  if (svg) { const i = document.createElement('span'); i.className = 'icone'; i.innerHTML = svg; tag.append(i); }
+  tag.append(r.titre);
+  return tag;
+}
 function drawAnchors() {
   const layer = $('anchors');
-  layer.replaceChildren();
-  if (!options.anchors || options.silhouette || !current.inst) return;
+  if (!options.anchors || options.silhouette || !current.inst) { layer.replaceChildren(); etiquettes = { inst: null, tags: new Map() }; return; }
+  if (etiquettes.inst !== current.inst) { layer.replaceChildren(); etiquettes = { inst: current.inst, tags: new Map() }; }
   const { clientWidth: w, clientHeight: h } = stage;
   for (const a of current.mod.meta.anchors) {
     const name = a.replace('*', '0');
@@ -397,12 +416,10 @@ function drawAnchors() {
     tmp.copy(v);
     current.inst.root.localToWorld(tmp);
     tmp.project(camera);
-    const tag = document.createElement('div');
-    tag.className = 'anchor';
-    tag.textContent = name;
+    let tag = etiquettes.tags.get(name);
+    if (!tag) { tag = etiquette(name); layer.append(tag); etiquettes.tags.set(name, tag); }
     tag.style.left = `${((tmp.x + 1) / 2) * w}px`;
     tag.style.top = `${((1 - tmp.y) / 2) * h}px`;
-    layer.append(tag);
   }
 }
 

@@ -1,32 +1,41 @@
 // La scene de reference (lot G0) : un assemblage de composants livres, sous la camera et la lumiere de la galerie,
 // pour juger qu'un nouveau composant appartient au meme monde (bible, sections 8 et 14). Outil de la galerie seulement :
 // il n'est pas livre a GDC. Il suit la forme du contrat (root, setState, update, anchor, dispose).
-// Choix de Pierre-Alain du 21 octobre 2026 : un chantier cloture, comme un vrai. La terre partout, le beton qui gagne
-// avec l'avancement, une voie d'acces depuis le portail ; le batiment en fouille, structure, second oeuvre et termine, la
-// grue, la baraque du conducteur de travaux et ses conteneurs groupes, les bennes de tri, le stockage de materiaux, le
-// camion qui livre, le permis a l'entree, le personnage maitre selectionne.
+//
+// La carte suit le parcours du harnais (decision de Pierre-Alain du 21 octobre 2026, docs/direction-artistique.md) :
+// trois quartiers relies par des voies de chantier, comme le plan « Dix etapes » de GDC, et chaque etape se reconnait a
+// un lieu ou a un objet de chantier, avec son repere HTML (numero, icone du lot G7, titre ; jamais de texte en 3D).
+// 1. Les bureaux (a gauche) : 1 l'idee chez l'architecte, la decision « on continue ? » chez le client, 2 les plans au
+//    bureau d'etudes (le geometre y travaille), 3 le permis : les gabarits sur la parcelle et le panneau a l'entree.
+// 2. Le chantier cloture (au centre) : 4 les plans d'execution a la baraque du conducteur, puis le feu vert a la fouille ;
+//    5 la preparation, le stockage et le camion qui livre ; 6 la construction, la grue, les ouvriers et les bennes ;
+//    7 la reception a l'aire de reception, avec le bureau de controle et le batiment en inspection.
+// 3. La remise des cles (8) au portail de sortie, puis le batiment habite (a droite) : 9 la garantie, le cone d'un defaut
+//    devant le batiment et le concierge ; 10 les transformations, le carnet des demandes (le parking), d'ou un sentier
+//    repart vers l'architecte.
+// La ville autour (rues, voitures, voisins) est reportee.
 
 export const SCENE_ID = "scene";
-const PAS_BATIMENT = 13.5; // socle du batiment de 12 m de profondeur, et 1,50 m entre deux socles
 const RECUL = 5; // en metres, sur X et Z : la scene descend d'environ 4 m a l'ecran
 
-// Le plan, en coordonnees Three.js (Y vertical, X vers la droite et le bas de l'ecran, Z vers la gauche et le bas).
-// La rue des batiments monte de gauche a droite de l'ecran (le long de -Z), dans l'ordre du chantier ; la voie longe
-// la rue cote camera ; au-dela, les installations de chantier : baraques au-dessus de l'entree, stockage et bennes
-// en dessous. La cloture fait le tour, le portail au milieu du cote droit.
-const TERRAIN = { x: [-10.5, 30], z: [-29, 29] };
-const CLOTURE = { x: [-9.5, 29], z: [-28, 28] };
+// Le plan, en coordonnees Three.js (Y vertical ; X vers la droite et le bas de l'ecran, Z vers la gauche et le bas).
+const TERRAIN = { x: [-28, 47.5], z: [-20, 44.5] };
+const CHANTIER = { x: [0, 46], z: [0, 43] }; // la cloture
 const centre = (a) => (a[0] + a[1]) / 2;
 const long = (a) => a[1] - a[0];
 
-// les dalles, de la plus avancee a la voie : bornes en X et en Z, surface (site-ground, data.zones)
+// Les dalles du terrain de chantier (site-ground, data.zones) : bornes en X et en Z, surface. Le beton couvre ce qui est
+// fini ou habite, la terre reste ou l'on construit ; l'enrobe fait le circuit, le sentier ramene a l'architecte.
 const DALLES = [
-  [[-9.5, 9], [-27.5, -13.5], "concrete"], // autour du batiment termine, et dessous
-  [[0, 9], [-13, -0.5], "concrete"], // la moitie du second oeuvre, cote voie
-  [[15.5, 28.5], [4, 27.5], "concrete"], // la plateforme des baraques
-  [[18.5, 24.5], [-22, -12.5], "concrete"], // l'aire des bennes
-  [[9, 14], [-27.5, 27.5], "asphalt"], // la voie le long des batiments
-  [[14, 29.5], [-2.5, 2.5], "asphalt"], // l'entree, du portail a la voie
+  [[-27, -1], [4, 28.5], "concrete"], // les bureaux, au-dessus de la voie
+  [[1, 22], [32.5, 42.5], "concrete"], // la plateforme des baraques
+  [[35.5, 40], [15, 24.5], "concrete"], // l'aire des bennes
+  [[22, 40], [-19, -4], "concrete"], // les abords du batiment habite
+  [[-21, -6], [-5.75, -4.25], "concrete"], // le sentier du retour, du carnet des demandes
+  [[-21, -19.5], [-5, 4], "concrete"], // puis vers le bureau de l'architecte
+  [[-27, 44], [28.5, 32.5], "asphalt"], // la voie des bureaux, qui entre au chantier et le traverse
+  [[40, 44], [-19, 32.5], "asphalt"], // la voie qui sort du chantier et longe le batiment habite
+  [[-6, 40], [-4, -0.5], "asphalt"], // la voie du carnet des demandes, le long du chantier
 ];
 const zones = DALLES.map(([x, z, surface]) => ({
   x: centre(x) - centre(TERRAIN.x),
@@ -36,7 +45,42 @@ const zones = DALLES.map(([x, z, surface]) => ({
   surface,
 }));
 
-// sur : pose le membre a une ancre d'un autre membre ; ancre : l'etiquette que la galerie affiche (une de ses ancres).
+// Un cote de cloture, de a a b le long d'un bord ; son interieur (-Z local, site-fence) tourne vers le chantier.
+const ROTATION_CLOTURE = {
+  "x-": -Math.PI / 2,
+  "x+": Math.PI / 2,
+  "z-": Math.PI,
+  "z+": 0,
+};
+function cloture(cle, bord, [a, b], gate = false) {
+  const fixe = {
+    "x-": CHANTIER.x[0],
+    "x+": CHANTIER.x[1],
+    "z-": CHANTIER.z[0],
+    "z+": CHANTIER.z[1],
+  }[bord];
+  const position =
+    bord[0] === "x" ? [fixe, 0, (a + b) / 2] : [(a + b) / 2, 0, fixe];
+  return {
+    cle,
+    id: "site-fence",
+    params: { length: b - a, gate },
+    position,
+    rotation: ROTATION_CLOTURE[bord],
+  };
+}
+
+// Une personne d'equipe.json a une ancre d'un lieu, dans un etat, tournee vers facing (radians).
+const personne = (cle, sur, state = "idle", facing = Math.PI) => ({
+  cle,
+  id: "character",
+  personne: cle,
+  sur,
+  state,
+  data: { facing },
+});
+
+// sur : pose le membre a une ancre d'un autre membre ; personne : l'identifiant d'equipe.json d'un personnage.
 export const MEMBRES = [
   {
     cle: "site-ground",
@@ -45,110 +89,233 @@ export const MEMBRES = [
     data: { zones },
     position: [centre(TERRAIN.x), 0, centre(TERRAIN.z)],
   },
-  ...["excavation", "structure", "finishing", "completed"].map((etat, i) => ({
-    cle: `building:${etat}`,
-    id: "building",
-    state: etat,
-    position: [0, 0, (1.5 - i) * PAS_BATIMENT],
-    ancre: "label",
-  })),
-  // la grue sur le socle du batiment en structure, a cote du batiment, fleche vers l'avant ; sans etiquette, qui
-  // tomberait sur celle du batiment en second oeuvre
+
+  // --- 1. les bureaux, en deux rangs : au fond l'architecte, ou arrive le sentier, puis le client et sa decision ;
+  // devant, le bureau d'etudes, au bord de la voie qui mene au chantier
   {
-    cle: "crane",
-    id: "crane",
-    state: "idle",
-    position: [5.8, 0, 3.4],
-    rotation: -Math.PI / 2,
-  },
-  // la cloture : quatre cotes, le portail au milieu du cote droit, face a l'entree ; l'interieur d'un cote est son -Z
-  // local (site-fence), tourne vers le chantier
-  {
-    cle: "fence:back",
-    id: "site-fence",
-    params: { length: long(CLOTURE.x) },
-    position: [centre(CLOTURE.x), 0, CLOTURE.z[0]],
-    rotation: Math.PI,
+    cle: "architect-office",
+    id: "architect-office",
+    state: "active",
+    position: [-20, 0, 10.5],
   },
   {
-    cle: "fence:front",
-    id: "site-fence",
-    params: { length: long(CLOTURE.x) },
-    position: [centre(CLOTURE.x), 0, CLOTURE.z[1]],
+    cle: "design-office",
+    id: "design-office",
+    state: "active",
+    params: { desks: 4 },
+    position: [-8, 0, 24],
   },
   {
-    cle: "fence:left",
-    id: "site-fence",
-    params: { length: long(CLOTURE.z) },
-    position: [CLOTURE.x[0], 0, centre(CLOTURE.z)],
-    rotation: -Math.PI / 2,
+    cle: "client-office",
+    id: "client-office",
+    state: "waiting",
+    position: [-8, 0, 10.5],
   },
-  {
-    cle: "fence:gate",
-    id: "site-fence",
-    params: { length: long(CLOTURE.z), gate: true },
-    position: [CLOTURE.x[1], 0, centre(CLOTURE.z)],
-    rotation: Math.PI / 2,
-  },
-  // le permis de construire a l'entree, face a la camera
-  {
-    cle: "permit-board",
-    id: "permit-board",
-    state: "granted",
-    position: [27, 0, 3.6],
-    ancre: "badge",
-  },
-  // les installations : la baraque au-dessus de l'entree, deux conteneurs groupes contre elle, long pan contre long pan
-  {
-    cle: "site-office",
-    id: "site-office",
-    state: "idle",
-    position: [20.5, 0, 8.5],
-    ancre: "label",
-  },
-  { cle: "container:1", id: "site-container", position: [21.5, 0, 17.6] },
-  { cle: "container:2", id: "site-container", position: [21.5, 0, 21.2] },
-  // le personnage maitre devant la baraque, selectionne : l'anneau a ses pieds
-  {
-    cle: "character",
-    id: "character",
-    state: "idle",
-    sur: ["site-office", "crew:2"],
-    ancre: "label",
-  },
+  { cle: "decision-sign", id: "decision-sign", position: [-2.5, 0, 12] },
+  personne("claire", ["architect-office", "desk:1"], "typing"),
+  personne("marc", ["design-office", "desk:1"], "work"),
+  personne("lina", ["design-office", "desk:2"], "thinking"),
+  personne("client", ["client-office", "desk:1"], "waiting"),
   {
     cle: "selection-ring",
     id: "selection-ring",
     state: "selected",
     params: { radius: 0.7 },
-    sur: ["site-office", "crew:2"],
+    sur: ["client-office", "desk:1"],
   },
-  // sous l'entree : le stockage pres de la voie, les bennes groupees sur leur aire, le camion qui livre sur la voie
+
+  // --- 2. le chantier : la cloture, une entree a gauche sur la voie, une sortie en haut vers le batiment habite
+  cloture("fence:entree", "x-", [19, 43], true),
+  cloture("fence:gauche", "x-", [0, 19]),
+  cloture("fence:sortie", "z-", [38, 46], true),
+  cloture("fence:fond", "z-", [0, 38]),
+  cloture("fence:droite", "x+", [0, 43]),
+  cloture("fence:avant", "z+", [0, 46]),
   {
-    cle: "material-storage",
-    id: "material-storage",
-    position: [21.5, 0, -7.5],
-    ancre: "label",
+    cle: "permit-board",
+    id: "permit-board",
+    state: "granted",
+    position: [2.5, 0, 27],
+  },
+  // les gabarits du permis, sur la parcelle du prochain batiment, juste apres l'entree
+  {
+    cle: "survey-poles",
+    id: "survey-poles",
+    params: { width: 8, depth: 6, height: 6 },
+    position: [6, 0, 21],
+  },
+  // la rangee des batiments en cours, le long de la voie : fouille (feu vert), structure (construction)
+  {
+    cle: "building:excavation",
+    id: "building",
+    state: "excavation",
+    params: { wings: 1 },
+    position: [17, 0, 21],
+  },
+  {
+    cle: "building:structure",
+    id: "building",
+    state: "structure",
+    params: { wings: 1 },
+    position: [31, 0, 21],
+  },
+  {
+    cle: "crane",
+    id: "crane",
+    state: "lifting",
+    position: [26.6, 0, 16.6],
+    rotation: -Math.PI / 2,
   },
   ...["wood", "metal", "inert", "mixed"].map((content, i) => ({
     cle: `waste-skip:${content}`,
     id: "waste-skip",
     params: { content },
-    position: [21.5, 0, -14 - i * 2.2],
+    position: [38, 0, 16.5 + i * 2.2],
   })),
+  personne("julie", ["building:structure", "door"], "work", Math.PI),
+  // Robin au pied de la structure, a cote de Julie (la porte est la seule ancre au sol du batiment)
+  { ...personne("robin", null, "work", Math.PI), position: [32.5, 0, 25.6] },
+  // les baraques sous la voie : le conducteur de travaux (plans d'execution) et deux conteneurs groupes
+  {
+    cle: "site-office",
+    id: "site-office",
+    state: "active",
+    position: [6.5, 0, 35.5],
+  },
+  { cle: "container:1", id: "site-container", position: [16.6, 0, 35] },
+  { cle: "container:2", id: "site-container", position: [16.6, 0, 38.6] },
+  personne("yves", ["site-office", "desk:1"], "typing"),
+  // la preparation : le stockage, et le camion qui livre sur la voie
+  {
+    cle: "material-storage",
+    id: "material-storage",
+    position: [28.5, 0, 37.5],
+  },
   {
     cle: "delivery-truck",
     id: "delivery-truck",
     state: "idle",
-    position: [11.5, 0, -10],
-    rotation: Math.PI,
+    position: [33, 0, 30.5],
+    rotation: Math.PI / 2,
   },
+  // la rangee du haut : le bureau de controle, l'aire de reception, le batiment en inspection face a la voie de sortie
+  {
+    cle: "control-office",
+    id: "control-office",
+    state: "active",
+    position: [6, 0, 6.5],
+  },
+  {
+    cle: "reception-area",
+    id: "reception-area",
+    state: "active",
+    position: [19, 0, 7.5],
+  },
+  {
+    cle: "building:inspection",
+    id: "building",
+    state: "inspection",
+    params: { wings: 1 },
+    position: [31, 0, 7.5],
+    rotation: Math.PI / 2,
+  },
+  personne("helene", ["control-office", "desk:1"], "inspect"),
+  personne("anne", ["reception-area", "desk:1"], "inspect"),
+
+  // --- 3. le batiment habite, face a la voie ; le cone d'un defaut sous garantie ; le carnet des demandes
+  {
+    cle: "building:completed",
+    id: "building",
+    state: "completed",
+    position: [31, 0, -10],
+    rotation: Math.PI / 2,
+  },
+  { cle: "defect-sign", id: "defect-sign", position: [38.6, 0, -6] },
+  personne("bernard", ["building:completed", "door"], "idle", Math.PI / 2),
+  { cle: "parking", id: "parking", position: [-2, 0, -8] },
 ];
+
+// Les reperes : un par etape, plus les passages ou le client decide. Chacun est pose sur une ancre d'un membre, ou a une
+// position du plan ; icone : une icone du lot G7 (step-icons), absente quand aucune ne dit l'etape.
+export const REPERES = {
+  "etape:1": {
+    numero: 1,
+    titre: "L’idée",
+    icone: "idea",
+    sur: ["architect-office", "label"],
+  },
+  "passage:continue": {
+    titre: "On continue ?",
+    passage: true,
+    sur: ["client-office", "badge"],
+  },
+  "etape:2": {
+    numero: 2,
+    titre: "Les plans",
+    icone: "plans",
+    sur: ["design-office", "label"],
+  },
+  "etape:3": {
+    numero: 3,
+    titre: "Le permis",
+    icone: "permit",
+    passage: true,
+    sur: ["survey-poles", "label"],
+  },
+  "etape:4": {
+    numero: 4,
+    titre: "Plans d’exécution",
+    icone: "execution-plans",
+    sur: ["site-office", "label"],
+  },
+  "passage:feu-vert": {
+    titre: "Feu vert",
+    icone: "green-light",
+    passage: true,
+    sur: ["building:excavation", "label"],
+  },
+  "etape:5": {
+    numero: 5,
+    titre: "Préparation",
+    sur: ["material-storage", "label"],
+  },
+  "etape:6": {
+    numero: 6,
+    titre: "Construction",
+    icone: "construction",
+    sur: ["building:structure", "label"],
+  },
+  "etape:7": {
+    numero: 7,
+    titre: "Réception",
+    icone: "reception",
+    passage: true,
+    sur: ["reception-area", "label"],
+  },
+  "etape:8": {
+    numero: 8,
+    titre: "Remise des clés",
+    icone: "production",
+    passage: true,
+    position: [42, 3, 0],
+  },
+  "etape:9": {
+    numero: 9,
+    titre: "Garantie",
+    sur: ["building:completed", "label"],
+  },
+  "etape:10": {
+    numero: 10,
+    titre: "Transformations",
+    icone: "transformations",
+    sur: ["parking", "label"],
+  },
+};
 
 export const meta = {
   id: SCENE_ID,
   states: ["default"],
-  anchors: MEMBRES.filter((m) => m.ancre).map((m) => m.cle),
+  anchors: Object.keys(REPERES),
   budget: { triangles: 0, materials: 0 },
 };
 
@@ -167,15 +334,14 @@ export function create(THREE, instances) {
     if (m.rotation) inst.root.rotation.y = m.rotation;
     plateau.add(inst.root);
   });
-  for (const { m, inst } of Object.values(parCle)) {
-    if (!m.sur) continue;
-    const [cle, ancre] = m.sur;
+  // un point d'une ancre d'un membre, dans le repere du plateau
+  const point = ([cle, ancre]) => {
     const hote = parCle[cle].inst;
     hote.root.updateMatrix();
-    inst.root.position.copy(
-      hote.anchor(ancre).clone().applyMatrix4(hote.root.matrix),
-    );
-  }
+    return hote.anchor(ancre).clone().applyMatrix4(hote.root.matrix);
+  };
+  for (const { m, inst } of Object.values(parCle))
+    if (m.sur) inst.root.position.copy(point(m.sur));
   // recentrer sur le terrain, qui couvre tout (une boite englobante compterait aussi les os des personnages), et
   // l'avancer vers la camera de RECUL : les batiments et la grue montent haut, le cadre descend d'autant
   const [tx, , tz] = MEMBRES[0].position;
@@ -190,17 +356,13 @@ export function create(THREE, instances) {
       for (const inst of instances) encore = inst.update(dt) || encore;
       return encore;
     },
-    // l'etiquette d'un membre : son ancre, ramenee dans le repere de la scene
+    // un repere : l'ancre de son membre, ou sa position du plan, dans le repere de la scene
     anchor(nom) {
-      const x = parCle[nom];
-      if (!x || !x.m.ancre) throw new Error(`ancre inconnue : ${nom}`);
-      x.inst.root.updateMatrix();
+      const r = REPERES[nom];
+      if (!r) throw new Error(`ancre inconnue : ${nom}`);
       plateau.updateMatrix();
-      return x.inst
-        .anchor(x.m.ancre)
-        .clone()
-        .applyMatrix4(x.inst.root.matrix)
-        .applyMatrix4(plateau.matrix);
+      const p = r.sur ? point(r.sur) : new THREE.Vector3(...r.position);
+      return p.applyMatrix4(plateau.matrix);
     },
     dispose() {
       for (const inst of instances) inst.dispose();
