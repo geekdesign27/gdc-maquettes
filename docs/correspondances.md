@@ -6,15 +6,16 @@ Ce que GDC enverra aux composants. Le projet n'a pas à le programmer, mais chaq
 
 | Dans le harnais | Composant | États utilisés |
 |---|---|---|
-| Une application du projet | `building` | selon l'étape la plus avancée de ses fiches |
+| Une application du projet | `building` | un étage par fiche, chacun à son stade (voir « Étapes d'une fiche et stade de son étage ») |
 | Une fiche à l'étude | `survey-poles` dans la pièce ou l'aile prévue | default |
-| Une fiche en construction | pièce de `building-interior` | construction |
-| Un lot en cours | `character` des développeurs, dans la pièce de la fiche | work, blocked |
+| Une fiche | un étage de `building` ; au clic, sa vue en coupe `building-interior`, une pièce par lot | le stade de l'étage |
+| Un lot en cours | `character` des développeurs, dans la pièce du lot, à l'étage de sa fiche | work, blocked |
 | Une décision attendue | `decision-sign` (forme) et `client-office`, badge rouge sur l'ancre | waiting |
 | Une demande au carnet | caisse du `parking` | default |
 | Un agent | `character` | idle, walk, work, typing, inspect, read, thinking, waiting, talk, celebrate, blocked, unknown |
 | Une preuve enregistrée | impulsion du `control-office` | active |
 | Une fusion vers dev | `crane` près du bâtiment | lifting |
+| Une nouvelle dépendance, à la fin d'un lot | `delivery-truck` au bâtiment, dix minutes. Il ne vient que pour cela : le trafic d'ambiance, ce sont les voitures (`city-car`) | arriving |
 | Un défaut ouvert | `defect-sign` sur la pièce | default |
 
 ## Le projet avant les fiches (GDC 0.16)
@@ -55,19 +56,33 @@ GDC lit l'activité des agents (`gdc activite`, ou `activites` dans `gdc etat --
 | `inconnu` (aucune nouvelle depuis le délai) | unknown |
 | L'agent change de lot ou de fiche (`sur`) | walk, le temps que GDC le déplace |
 
-## Étapes d'une application et états du bâtiment
+## Les déplacements et leur motif
 
-| Étape la plus avancée de ses fiches | État de `building` |
+GDC envoie chaque déplacement (`deplace`, schéma 3) avec son lieu de départ, son lieu d'arrivée et, quand il en a un, son `motif`. L'agent marche le long des voies (`docs/ville.md`), puis prend l'état que GDC lui donne.
+
+| Motif | Quand GDC l'émet | À l'arrivée |
+|---|---|---|
+| `decision` | Une décision t'attend : les agents de la fiche qui ne travaillent pas, et l'architecte, se rassemblent au lieu de la décision (le bureau du client pour « on continue » et le permis, le panneau du feu vert, l'aire de réception, la cabane des clés) | waiting, près du panneau |
+| `controle` | Après une mesure, Hélène va inspecter l'étage de la fiche pendant deux minutes, puis rentre au bureau de contrôle | inspect, sur l'étage |
+| `mission` | Un agent missionné (une délégation) part en consultation ; son retour le ramène | l'état reçu, par exemple thinking |
+| aucun | L'agent change de lieu pour son travail (son rôle, la fiche ou le lot sur lequel il travaille) | l'état de son activité (table ci-dessus) |
+
+## Étapes d'une fiche et stade de son étage
+
+Le contrat de GDC (ADR 0013, schéma 3) fait de **l'étage le niveau de vérité** : une fiche est un étage du bâtiment de son application, la plus ancienne en bas ; un lot est une pièce de son étage (`etages` et `pieces` du bâtiment). Chaque étage a son stade, qui suit sa fiche. L'état global du bâtiment reste envoyé par GDC ; `building` 2.0.0 (lot G8) montre chaque étage à son stade.
+
+| Étape de la fiche | Stade de son étage |
 |---|---|
-| Aucune fiche commencée | plot |
-| Première fiche aux plans d'exécution | excavation |
-| Feu vert donné, préparation | foundations |
-| Construction | structure (progress = lots terminés sur lots) |
-| Construction, gros œuvre terminé | envelope |
-| Réception en cours | inspection |
-| Première fiche en production, d'autres en cours | finishing |
-| Toutes les fiches en production | completed |
-| Un défaut ouvert | l'état ne change pas ; `defect-sign` est posé sur la façade |
+| Projet ouvert, aucune fiche encore | le bâtiment en `plot`, sans étage |
+| Fiche ouverte, jusqu'au feu vert (4, les plans d'exécution) | `plot` : les gabarits (`survey-poles`) |
+| 5 La préparation, dès le feu vert | `excavation`, puis `foundations` (les essais rouges) |
+| 6 La construction | `structure` (progress = lots finis sur lots), `envelope` quand tous les lots sont finis, `finishing` pendant la relecture et les corrections |
+| 7 La réception | `inspection` |
+| 8 La remise des clés | `completed` : l'étage est fini et habité |
+| 9 La garantie | `completed` ; un défaut ouvert ne change pas le stade : `defect-sign` est posé sur la façade |
+| 10 Les transformations : une nouvelle fiche sur un bâtiment habité | La surélévation : un étage de plus en haut, qui repart de `plot` ; le bas reste `completed`. Il n'y a pas d'état `alteration` (décision de Pierre-Alain du 21 octobre 2026) |
+
+Six étages sont visibles au plus : le rez regroupe les fiches livrées les plus anciennes ; s'il reste encore trop d'étages, les plus anciens s'y fondent aussi, et le rez prend l'aspect du moins avancé d'entre eux.
 
 ## Travail et tenue
 
