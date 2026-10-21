@@ -95,6 +95,15 @@ export const variantes = {
     { titre: "L'identifiant seul", data: { id: "lina" } },
     { titre: "Sans identifiant : désactivée", data: { text: "Rien" } },
   ],
+  // la barre de progression : les regles du projet-type (fixtures/projet-type)
+  "progress-bar": [
+    { titre: "Fiche en cours : 3 / 7", style: "max-width: 360px", data: { done: 3, total: 7, rule: "3 critères d'acceptation prouvés sur 7", state: "active" } },
+    { titre: "Dossier complet", style: "max-width: 360px", data: { done: 15, total: 15, rule: "15 pièces complètes sur 15", state: "done" } },
+    { titre: "Lot bloqué", style: "max-width: 360px", data: { done: 2, total: 5, rule: "2 tâches finies sur 5", state: "blocked" } },
+    { titre: "Plus que prévu : les vrais nombres", style: "max-width: 360px", data: { done: 9, total: 7, rule: "9 critères prouvés pour 7 attendus" } },
+    { titre: "Sans règle", style: "max-width: 360px", data: { done: 1, total: 4 } },
+    { titre: "Sans total : inconnu", style: "max-width: 360px", data: { done: 2, state: "unknown" } },
+  ],
 };
 
 const journal = [];
