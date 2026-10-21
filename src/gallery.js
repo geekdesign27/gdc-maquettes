@@ -12,6 +12,7 @@ import { components as byId, chargeur } from './library.js';
 import * as etalon from './etalon.js';
 import * as kit from './kit.js';
 import * as personnage from './personnage.js';
+import * as reference from './scene-reference.js';
 
 const charge = chargeur({ GLTFLoader, SkeletonUtils });
 const entries = catalogue.items.filter((i) => i.kind === 'component');
@@ -46,7 +47,8 @@ scene.add(grid);
 function resize() {
   const { clientWidth: w, clientHeight: h } = stage;
   renderer.setSize(w, h, false);
-  const view = options.planche ? 18 : 12;
+  // la scene de reference s'etend sur plus de 50 m : son terrain se cadre en entier sur un portable de 13 pouces
+  const view = current.entry?.id === reference.SCENE_ID ? 21 : options.planche ? 18 : 12;
   const aspect = w / Math.max(h, 1);
   Object.assign(camera, { left: -view * aspect, right: view * aspect, top: view, bottom: -view });
   camera.updateProjectionMatrix();
@@ -81,7 +83,12 @@ function buildList() {
   b0.title = 'Le cube neutre dont on mesure les trois faces, et un cube par matériau de la palette';
   b0.dataset.id = etalon.ETALON_ID;
   b0.addEventListener('click', () => select(etalon.ETALON_ID));
-  list.append(h0, b0);
+  const bs = document.createElement('button');
+  bs.textContent = 'La scène de référence';
+  bs.title = 'Le terrain, le bâtiment dans quatre états, la grue, la baraque, le permis et le personnage sélectionné : même caméra, même lumière';
+  bs.dataset.id = reference.SCENE_ID;
+  bs.addEventListener('click', () => select(reference.SCENE_ID));
+  list.append(h0, bs, b0);
   // Les kits : leur batiment de demonstration, assemble depuis le GLB du kit (critere « s'assemble sans retouche »).
   for (const { entry } of kit.demonstrations(catalogue)) {
     const b = document.createElement('button');
@@ -119,6 +126,18 @@ function buildList() {
 }
 
 async function instance(id, state) {
+  if (id === reference.SCENE_ID) {
+    // une instance par membre, avec ses parametres et dans son etat, puis l'assemblage
+    const insts = [];
+    for (const m of reference.MEMBRES) {
+      const mod = byId[m.id];
+      await charge.prepare(mod.meta);
+      const inst = mod.create(THREE, { ...defaultParams(mod.meta), ...m.params }, makeContext(options, await charge.assetsPour(mod.meta)));
+      inst.setState(m.state || mod.meta.states[0], sampleData(entries.find((e) => e.id === m.id)));
+      insts.push(inst);
+    }
+    return { inst: reference.create(THREE, insts), state: 'default', entry: { id, name: 'La scène de référence' }, mod: { meta: reference.meta }, scene: true };
+  }
   if (id === etalon.ETALON_ID) {
     return { inst: etalon.create(THREE, makeContext(options)), state: 'default', entry: { id, name: 'Cube étalon' }, mod: etalon };
   }
@@ -189,11 +208,14 @@ const VOISINS_SIGNAUX = { 'decision-sign': ['client-office', 'reception-area'], 
   'defect-sign': ['building/completed', 'building-interior'], 'permit-board': ['site-office', 'decision-sign'] };
 const ECART_SIGNAL = 1.5;
 
-// La planche : le composant choisi entre deux modeles de reference (livres d'abord, exemples a defaut).
+// La planche : le composant choisi entre les deux modeles maitres (choix de Pierre-Alain du 21 octobre 2026), le
+// batiment termine et le personnage maitre ; un maitre se compare a la baraque du conducteur de travaux au lieu de
+// lui-meme.
+const MAITRES = ['building/completed', 'character'];
+const SUPPLEANT = 'site-office';
 function references(id) {
   if (VOISINS_SIGNAUX[id]) return VOISINS_SIGNAUX[id];
-  const rang = (e) => (e.status === 'livré' ? 0 : e.status === 'exemple' ? 1 : 9);
-  return entries.filter((e) => e.id !== id && byId[e.id] && rang(e) < 9 && e.id !== 'selection-ring').sort((a, b) => rang(a) - rang(b)).slice(0, 2).map((e) => e.id);
+  return MAITRES.map((m) => (m.split('/')[0] === id ? SUPPLEANT : m));
 }
 
 // Les occupants d'un lieu : un personnage d'exemple a chaque ancre desk:n (personnage.OCCUPANTS), au travail, et a chaque
@@ -289,16 +311,17 @@ async function select(id, state) {
   const x = await instance(id, state);
   scene.add(x.inst.root);
   const voisins = await occupants(x);
-  if (options.planche && id !== etalon.ETALON_ID) {
+  if (options.planche && id !== etalon.ETALON_ID && id !== reference.SCENE_ID) {
     // les voisins a 20 m de part et d'autre, ou plus loin si le composant ou le voisin est large (un plateau de
-    // conteneurs) : 6 m au moins entre leurs emprises
+    // conteneurs) : 6 m au moins entre leurs emprises ; le personnage maitre, lui, se pose tout pres, comme les voisins
+    // d'un signal : il donne l'echelle
     const boite = new THREE.Box3().setFromObject(x.inst.root);
     let pos = -1;
     for (const ref of references(id)) {
       const [rid, rstate] = ref.split('/');
       const v = await instance(rid, rstate);
       const bv = new THREE.Box3().setFromObject(v.inst.root);
-      if (VOISINS_SIGNAUX[id]) v.inst.root.position.x = pos < 0 ? boite.min.x - ECART_SIGNAL - bv.max.x : boite.max.x + ECART_SIGNAL - bv.min.x;
+      if (VOISINS_SIGNAUX[id] || rid === 'character') v.inst.root.position.x = pos < 0 ? boite.min.x - ECART_SIGNAL - bv.max.x : boite.max.x + ECART_SIGNAL - bv.min.x;
       else v.inst.root.position.x = pos < 0 ? Math.min(-20, boite.min.x - 6 - bv.max.x) : Math.max(20, boite.max.x + 6 - bv.min.x);
       scene.add(v.inst.root);
       voisins.push(v);
@@ -306,6 +329,7 @@ async function select(id, state) {
     }
   }
   current = { ...x, voisins };
+  resize(); // le cadrage depend du composant (la scene de reference)
   for (const b of $('list').querySelectorAll('button')) b.setAttribute('aria-current', String(b.dataset.id === id));
   buildStates();
   await report();
@@ -339,6 +363,7 @@ async function report() {
   if (mod === etalon) return; // le compte rendu de l'etalon est sa mesure, ecrite apres chaque rendu (rapportEtalon)
   if (current.kit) return rapportKit();
   if (current.personnage) return rapportPersonnage();
+  if (current.scene) return rapportScene();
   const m = measure(current.inst.root);
   const problems = [...checkMeta(mod.meta, entry)];
   if (!problems.length) problems.push(...checkInstance(THREE, mod, entry, makeContext(options, await charge.assetsPour(mod.meta)), await charge.partagees(mod.meta)));
@@ -392,6 +417,12 @@ function rapportKit() {
   verdict.className = manquantes.length ? 'ko' : 'ok';
   verdict.textContent = manquantes.length ? `pièces absentes du GLB : ${manquantes.join(', ')}` : 's\u2019assemble sans retouche';
   el.append(verdict);
+}
+
+// La scene de reference : ce qu'elle pese en tout. Sa fluidite se mesure en images par seconde (voir le constat).
+function rapportScene() {
+  const m = measure(current.inst.root);
+  $('report').replaceChildren(`${current.entry.name} · ${current.inst.instances.length} composants · ${m.triangles} triangles · ${m.materials} matériaux`);
 }
 
 // La planche du personnage : la mesure du personnage le plus charge (sa tenue complete), comparee au budget de la
@@ -466,6 +497,6 @@ buildList();
 resize();
 const [hashId, hashState, hashPlanche] = decodeURIComponent(location.hash.slice(1)).split('/');
 if (hashPlanche === 'planche') { options.planche = true; $('planche').setAttribute('aria-pressed', 'true'); resize(); }
-const start = byId[hashId] || hashId === etalon.ETALON_ID || hashId === personnage.PERSONNAGE_ID || hashId?.startsWith(kit.PREFIXE_ID) ? hashId : entries.find((e) => byId[e.id])?.id;
+const start = byId[hashId] || hashId === etalon.ETALON_ID || hashId === personnage.PERSONNAGE_ID || hashId === reference.SCENE_ID || hashId?.startsWith(kit.PREFIXE_ID) ? hashId : entries.find((e) => byId[e.id])?.id;
 if (start) await select(start, hashState);
 loop();

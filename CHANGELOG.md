@@ -2,6 +2,7 @@
 
 ## Non publiée, après 0.2.0
 
+- Galerie : « La scène de référence » (`src/scene-reference.js`), l'étalon du lot G0 : le terrain, le bâtiment en fouille, structure, second œuvre et terminé, la grue, la baraque du conducteur de travaux, le permis accordé et le personnage maître sélectionné, sous la caméra et la lumière de la galerie. La planche pose désormais chaque composant entre les deux modèles maîtres, le bâtiment terminé et le personnage maître (posé à 1,50 m pour donner l'échelle) ; un maître se compare à la baraque. Choix de Pierre-Alain du 21 octobre 2026.
 - Lot G7, les illustrations : `agent-portraits` (20 portraits rendus par `blender/assets/agent-portraits.py` depuis le kit du personnage, SVG à disque, états idle, talking, working), `step-icons` (dix icônes d'étape) et `place-icons` (neuf icônes de lieu), au trait, en `currentColor`.
 - Chaîne Blender : un script peut rendre des images au lieu d'un GLB (`rend`, `SOURCES`) ; `asset.json` garde leurs empreintes.
 - Contrôle : les illustrations sont vérifiées (`checkSvg` : rien d'extérieur, `viewBox`, poids, monochrome, épaisseur unique, états d'un portrait, provenance du rendu). Contrat : section « Les illustrations ».
