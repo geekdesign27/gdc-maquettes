@@ -707,7 +707,7 @@
         "En qualité low, moins de 6000 triangles",
         "Brief validé par Pierre-Alain avant la fabrication ; ligne au journal des versions"
       ],
-      "status": "à faire",
+      "status": "livré",
       "data": {
         "floors": "du bas vers le haut, une entrée par fiche : { id, stage : un des huit états, rooms : [{ id, done }] (un lot par pièce), occupied : un agent travaille à cet étage (les fenêtres la nuit) }"
       },

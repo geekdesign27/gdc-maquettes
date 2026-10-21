@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-53 éléments : 43 livré, 8 à faire, 2 exemple ; 5 nouvelle(s) version(s) prévue(s).
+53 éléments : 44 livré, 7 à faire, 2 exemple ; 5 nouvelle(s) version(s) prévue(s).
 
 ## G0 : La ligne graphique
 
@@ -736,7 +736,7 @@ Faire de la carte la visualisation du harnais : relier au survol la carte, le fi
 | Ordre | Identifiant | Nom | Nature | But | Statut |
 |---|---|---|---|---|---|
 | 1 | `hover-link` | Le survol partagé | Document de référence, pas de code | Relier au survol, dans les deux sens, la carte, le fil des déclencheurs à gauche et l'arbre des fiches à droite. | livré |
-| 2 | `building` | Le bâtiment (une application) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer l'avancement d'une application étage par étage : une fiche par étage, un lot par pièce. | à faire |
+| 2 | `building` | Le bâtiment (une application) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer l'avancement d'une application étage par étage : une fiche par étage, un lot par pièce. | livré |
 | 3 | `floor-selector` | Le sélecteur d'étages | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Choisir l'étage d'un bâtiment, c'est-à-dire la fiche à regarder ; la vue en coupe s'ouvre sur cet étage. | à faire |
 | 4 | `building-interior` | L'intérieur d'un bâtiment (version 2.0.0) | Composant 3D Three.js, conforme à docs/contrat-composant.md | La vue micro : un étage ouvert, c'est-à-dire une fiche, avec une pièce par lot, l'étape où en est chaque lot et les experts au travail. | à faire |
 | 5 | `trigger-feed` | Le fil des déclencheurs | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Lire à gauche ce que le harnais vient de faire, action par action, dans l'ordre. | à faire |
