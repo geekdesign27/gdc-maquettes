@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-44 éléments : 27 livré, 15 à faire, 2 exemple.
+44 éléments : 29 livré, 13 à faire, 2 exemple.
 
 ## G0 : La ligne graphique
 
@@ -473,8 +473,8 @@ Désigner ce qui est choisi, ce qui attend, ce qui bloque.
 | 1 | `selection-ring` | L'anneau de sélection | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer l'élément survolé ou choisi. | exemple |
 | 2 | `decision-sign` | Le panneau de décision | Composant 3D Three.js, conforme à docs/contrat-composant.md | Une décision t'attend à cet endroit. | livré |
 | 3 | `blocked-sign` | La barrière de blocage | Composant 3D Three.js, conforme à docs/contrat-composant.md | Un travail est bloqué ici. | livré |
-| 4 | `defect-sign` | Le signal de défaut | Composant 3D Three.js, conforme à docs/contrat-composant.md | Un défaut est ouvert sur une partie habitée. | à faire |
-| 5 | `permit-board` | Le panneau du permis de construire | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le permis de construire est accordé ; périmé, il demande ta nouvelle décision. | à faire |
+| 4 | `defect-sign` | Le signal de défaut | Composant 3D Three.js, conforme à docs/contrat-composant.md | Un défaut est ouvert sur une partie habitée. | livré |
+| 5 | `permit-board` | Le panneau du permis de construire | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le permis de construire est accordé ; périmé, il demande ta nouvelle décision. | livré |
 
 ### L'anneau de sélection (`selection-ring`)
 
@@ -522,10 +522,11 @@ Une barrière de chantier orange avec un triangle.
 
 ### Le signal de défaut (`defect-sign`)
 
-Un cône ou un ruban posé sur la façade ou dans la pièce concernée.
+Un cône de chantier orange fluo à deux bandes blanches, sur sa semelle, posé devant la façade ou dans la pièce concernée (décisions de Pierre-Alain du 21 octobre 2026 : le cône seul, sans ruban ; l'orange fluo des vrais cônes, distinct de l'orange chantier de la barrière de blocage).
 
 - Fichier : `components/signals/defect-sign/index.js`
 - Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `PRP_DEFECT_CONE_A_v001`
+- Modèles : `PRP_DEFECT_CONE_A_v001.glb`
 - États : `default`
 - Ancres : `badge`
 - Données reçues par setState : aucune
@@ -540,6 +541,7 @@ Un panneau de permis sur deux poteaux, posé à l'entrée du chantier quand le p
 
 - Fichier : `components/signals/permit-board/index.js`
 - Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `PRP_PERMIT_BOARD_A_v001`
+- Modèles : `PRP_PERMIT_BOARD_A_v001.glb`
 - États : `granted`, `expired`
 - Ancres : `badge`
 - Données reçues par setState : aucune

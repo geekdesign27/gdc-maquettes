@@ -1139,7 +1139,7 @@
         "Reconnaissable à sa forme seule",
         "Se pose sur une façade ou dans une pièce"
       ],
-      "status": "à faire",
+      "status": "livré",
       "data": {},
       "production": "blender",
       "blender": "PRP_DEFECT_CONE_A_v001",
@@ -1172,7 +1172,7 @@
         "Reconnaissable comme un panneau de permis à sa forme seule, distinct du panneau de décision",
         "L'état périmé se lit par la forme (la bande en diagonale), sans couleur d'état"
       ],
-      "status": "à faire",
+      "status": "livré",
       "data": {},
       "production": "blender",
       "blender": "PRP_PERMIT_BOARD_A_v001",
