@@ -1,23 +1,49 @@
 // La scene de reference (lot G0) : un assemblage de composants livres, sous la camera et la lumiere de la galerie,
-// pour juger qu'un nouveau composant appartient au meme monde (bible, sections 8 et 14). Choix de Pierre-Alain du
-// 21 octobre 2026 : le batiment en fouille, structure, second oeuvre et termine, la baraque du conducteur de travaux, la
-// grue, le panneau du permis, le personnage maitre selectionne, sur le terrain. Outil de la galerie seulement : il n'est
-// pas livre a GDC. Il suit la forme du contrat (root, setState, update, anchor, dispose).
+// pour juger qu'un nouveau composant appartient au meme monde (bible, sections 8 et 14). Outil de la galerie seulement :
+// il n'est pas livre a GDC. Il suit la forme du contrat (root, setState, update, anchor, dispose).
+// Choix de Pierre-Alain du 21 octobre 2026 : un chantier cloture, comme un vrai. La terre partout, le beton qui gagne
+// avec l'avancement, une voie d'acces depuis le portail ; le batiment en fouille, structure, second oeuvre et termine, la
+// grue, la baraque du conducteur de travaux et ses conteneurs groupes, les bennes de tri, le stockage de materiaux, le
+// camion qui livre, le permis a l'entree, le personnage maitre selectionne.
 
 export const SCENE_ID = "scene";
 const PAS_BATIMENT = 13.5; // socle du batiment de 12 m de profondeur, et 1,50 m entre deux socles
-const SOCLE = 0.6;
-const RECUL = 5; // en metres, sur X et Z : la scene descend d'environ 4 m a l'ecran // epaisseur des socles maquette (bible 18.5) : le terrain se pose dessous
+const RECUL = 5; // en metres, sur X et Z : la scene descend d'environ 4 m a l'ecran
 
-// Les membres de la scene, en coordonnees Three.js (Y vertical). La rue des batiments monte de gauche a droite de
-// l'ecran (le long de -Z), dans l'ordre du chantier. sur : pose le membre a une ancre d'un autre membre.
-// ancre : l'etiquette que la galerie affiche pour ce membre (une de ses propres ancres).
+// Le plan, en coordonnees Three.js (Y vertical, X vers la droite et le bas de l'ecran, Z vers la gauche et le bas).
+// La rue des batiments monte de gauche a droite de l'ecran (le long de -Z), dans l'ordre du chantier ; la voie longe
+// la rue cote camera ; au-dela, les installations de chantier : baraques au-dessus de l'entree, stockage et bennes
+// en dessous. La cloture fait le tour, le portail au milieu du cote droit.
+const TERRAIN = { x: [-10.5, 30], z: [-29, 29] };
+const CLOTURE = { x: [-9.5, 29], z: [-28, 28] };
+const centre = (a) => (a[0] + a[1]) / 2;
+const long = (a) => a[1] - a[0];
+
+// les dalles, de la plus avancee a la voie : bornes en X et en Z, surface (site-ground, data.zones)
+const DALLES = [
+  [[-9.5, 9], [-27.5, -13.5], "concrete"], // autour du batiment termine, et dessous
+  [[0, 9], [-13, -0.5], "concrete"], // la moitie du second oeuvre, cote voie
+  [[15.5, 28.5], [4, 27.5], "concrete"], // la plateforme des baraques
+  [[18.5, 24.5], [-22, -12.5], "concrete"], // l'aire des bennes
+  [[9, 14], [-27.5, 27.5], "asphalt"], // la voie le long des batiments
+  [[14, 29.5], [-2.5, 2.5], "asphalt"], // l'entree, du portail a la voie
+];
+const zones = DALLES.map(([x, z, surface]) => ({
+  x: centre(x) - centre(TERRAIN.x),
+  z: centre(z) - centre(TERRAIN.z),
+  width: long(x),
+  depth: long(z),
+  surface,
+}));
+
+// sur : pose le membre a une ancre d'un autre membre ; ancre : l'etiquette que la galerie affiche (une de ses ancres).
 export const MEMBRES = [
   {
-    cle: "ground",
-    id: "ground",
-    params: { width: 30, depth: 56 },
-    position: [6, -SOCLE, 0],
+    cle: "site-ground",
+    id: "site-ground",
+    params: { width: long(TERRAIN.x), depth: long(TERRAIN.z) },
+    data: { zones },
+    position: [centre(TERRAIN.x), 0, centre(TERRAIN.z)],
   },
   ...["excavation", "structure", "finishing", "completed"].map((etat, i) => ({
     cle: `building:${etat}`,
@@ -35,22 +61,53 @@ export const MEMBRES = [
     position: [5.8, 0, 3.4],
     rotation: -Math.PI / 2,
   },
-  // le permis de construire au coin avant du socle en fouille, face a la camera
+  // la cloture : quatre cotes, le portail au milieu du cote droit, face a l'entree ; l'interieur d'un cote est son -Z
+  // local (site-fence), tourne vers le chantier
+  {
+    cle: "fence:back",
+    id: "site-fence",
+    params: { length: long(CLOTURE.x) },
+    position: [centre(CLOTURE.x), 0, CLOTURE.z[0]],
+    rotation: Math.PI,
+  },
+  {
+    cle: "fence:front",
+    id: "site-fence",
+    params: { length: long(CLOTURE.x) },
+    position: [centre(CLOTURE.x), 0, CLOTURE.z[1]],
+  },
+  {
+    cle: "fence:left",
+    id: "site-fence",
+    params: { length: long(CLOTURE.z) },
+    position: [CLOTURE.x[0], 0, centre(CLOTURE.z)],
+    rotation: -Math.PI / 2,
+  },
+  {
+    cle: "fence:gate",
+    id: "site-fence",
+    params: { length: long(CLOTURE.z), gate: true },
+    position: [CLOTURE.x[1], 0, centre(CLOTURE.z)],
+    rotation: Math.PI / 2,
+  },
+  // le permis de construire a l'entree, face a la camera
   {
     cle: "permit-board",
     id: "permit-board",
     state: "granted",
-    position: [5.6, 0, 25.1],
+    position: [27, 0, 3.6],
     ancre: "badge",
   },
-  // la baraque devant le milieu de la rue, la ou le conducteur de travaux voit tout le chantier
+  // les installations : la baraque au-dessus de l'entree, deux conteneurs groupes contre elle, long pan contre long pan
   {
     cle: "site-office",
     id: "site-office",
     state: "idle",
-    position: [14, 0, -1.7],
+    position: [20.5, 0, 8.5],
     ancre: "label",
   },
+  { cle: "container:1", id: "site-container", position: [21.5, 0, 17.6] },
+  { cle: "container:2", id: "site-container", position: [21.5, 0, 21.2] },
   // le personnage maitre devant la baraque, selectionne : l'anneau a ses pieds
   {
     cle: "character",
@@ -65,6 +122,26 @@ export const MEMBRES = [
     state: "selected",
     params: { radius: 0.7 },
     sur: ["site-office", "crew:2"],
+  },
+  // sous l'entree : le stockage pres de la voie, les bennes groupees sur leur aire, le camion qui livre sur la voie
+  {
+    cle: "material-storage",
+    id: "material-storage",
+    position: [21.5, 0, -7.5],
+    ancre: "label",
+  },
+  ...["wood", "metal", "inert", "mixed"].map((content, i) => ({
+    cle: `waste-skip:${content}`,
+    id: "waste-skip",
+    params: { content },
+    position: [21.5, 0, -14 - i * 2.2],
+  })),
+  {
+    cle: "delivery-truck",
+    id: "delivery-truck",
+    state: "idle",
+    position: [11.5, 0, -10],
+    rotation: Math.PI,
   },
 ];
 
@@ -95,10 +172,12 @@ export function create(THREE, instances) {
     const [cle, ancre] = m.sur;
     const hote = parCle[cle].inst;
     hote.root.updateMatrix();
-    inst.root.position.copy(hote.anchor(ancre).clone().applyMatrix4(hote.root.matrix));
+    inst.root.position.copy(
+      hote.anchor(ancre).clone().applyMatrix4(hote.root.matrix),
+    );
   }
-  // recentrer sur le terrain, qui couvre tous les socles (une boite englobante compterait aussi les os des personnages)
-  // et l'avancer vers la camera de RECUL : les batiments et la grue montent haut, le cadre descend d'autant
+  // recentrer sur le terrain, qui couvre tout (une boite englobante compterait aussi les os des personnages), et
+  // l'avancer vers la camera de RECUL : les batiments et la grue montent haut, le cadre descend d'autant
   const [tx, , tz] = MEMBRES[0].position;
   plateau.position.set(RECUL - tx, 0, RECUL - tz);
 
@@ -118,7 +197,8 @@ export function create(THREE, instances) {
       x.inst.root.updateMatrix();
       plateau.updateMatrix();
       return x.inst
-        .anchor(x.m.ancre).clone()
+        .anchor(x.m.ancre)
+        .clone()
         .applyMatrix4(x.inst.root.matrix)
         .applyMatrix4(plateau.matrix);
     },

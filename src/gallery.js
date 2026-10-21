@@ -47,8 +47,8 @@ scene.add(grid);
 function resize() {
   const { clientWidth: w, clientHeight: h } = stage;
   renderer.setSize(w, h, false);
-  // la scene de reference s'etend sur plus de 50 m : son terrain se cadre en entier sur un portable de 13 pouces
-  const view = current.entry?.id === reference.SCENE_ID ? 21 : options.planche ? 18 : 12;
+  // la scene de reference s'etend sur pres de 60 m : son terrain se cadre en entier sur un portable de 13 pouces
+  const view = current.entry?.id === reference.SCENE_ID ? 24 : options.planche ? 18 : 12;
   const aspect = w / Math.max(h, 1);
   Object.assign(camera, { left: -view * aspect, right: view * aspect, top: view, bottom: -view });
   camera.updateProjectionMatrix();
@@ -85,7 +85,7 @@ function buildList() {
   b0.addEventListener('click', () => select(etalon.ETALON_ID));
   const bs = document.createElement('button');
   bs.textContent = 'La scène de référence';
-  bs.title = 'Le terrain, le bâtiment dans quatre états, la grue, la baraque, le permis et le personnage sélectionné : même caméra, même lumière';
+  bs.title = 'Un chantier clôturé : le bâtiment dans quatre états, la grue, les installations, le stockage, les bennes et le personnage sélectionné ; même caméra, même lumière';
   bs.dataset.id = reference.SCENE_ID;
   bs.addEventListener('click', () => select(reference.SCENE_ID));
   list.append(h0, bs, b0);
@@ -133,7 +133,7 @@ async function instance(id, state) {
       const mod = byId[m.id];
       await charge.prepare(mod.meta);
       const inst = mod.create(THREE, { ...defaultParams(mod.meta), ...m.params }, makeContext(options, await charge.assetsPour(mod.meta)));
-      inst.setState(m.state || mod.meta.states[0], sampleData(entries.find((e) => e.id === m.id)));
+      inst.setState(m.state || mod.meta.states[0], { ...sampleData(entries.find((e) => e.id === m.id)), ...m.data });
       insts.push(inst);
     }
     return { inst: reference.create(THREE, insts), state: 'default', entry: { id, name: 'La scène de référence' }, mod: { meta: reference.meta }, scene: true };
