@@ -12,8 +12,11 @@ export const GRAVITE = [
   "done",
 ];
 
-// forme : ring (anneau plein), panel (panneau rectangulaire), triangle, octagon, check (coche seule), dashed (anneau pointille).
+// forme : ring (anneau plein), panel (panneau rectangulaire), triangle, octagon, disc (rond plein), dashed (anneau pointille).
 // L'icone est dessinee dans un carre de 16 x 16 ; « plein » : forme pleine et icone blanche, sinon trait de la couleur d'etat.
+// « encre » remplace le blanc de l'icone et colore le bord de la forme : le « ! » sombre du panneau de danger jaune,
+// lisible sur le jaune (signaletique, decision de PA du 21 octobre 2026).
+const ENCRE = "#303841";
 export const signes = {
   active: { label: "Actif", forme: "ring", icone: "gear", plein: false },
   waiting: {
@@ -25,11 +28,12 @@ export const signes = {
   blocked: {
     label: "Bloqué",
     forme: "triangle",
-    icone: "barrier",
+    icone: "exclamationLow",
     plein: true,
+    encre: ENCRE,
   },
   error: { label: "En erreur", forme: "octagon", icone: "cross", plein: true },
-  done: { label: "Terminé", forme: "check", icone: "check", plein: false },
+  done: { label: "Terminé", forme: "disc", icone: "tick", plein: true },
   unknown: {
     label: "Inconnu",
     forme: "dashed",
@@ -70,7 +74,7 @@ const FORMES = {
     ],
   ],
   octagon: [["path", { d: "M5.2 1h5.6L15 5.2v5.6L10.8 15H5.2L1 10.8V5.2Z" }]],
-  check: [],
+  disc: [["circle", { cx: 8, cy: 8, r: 7 }]],
 };
 const ICONES = {
   gear: [
@@ -96,6 +100,19 @@ const ICONES = {
       },
     ],
     ["circle", { cx: 8, cy: 11.6, r: 1.1 }],
+  ],
+  // the triangle narrows towards its apex: the mark sits lower than in the rectangular panel
+  exclamationLow: [
+    [
+      "path",
+      {
+        d: "M8 6v3.4",
+        fill: "none",
+        "stroke-width": 1.8,
+        "stroke-linecap": "round",
+      },
+    ],
+    ["circle", { cx: 8, cy: 12, r: 1 }],
   ],
   barrier: [
     [
@@ -131,6 +148,19 @@ const ICONES = {
       },
     ],
   ],
+  // a check sized to sit inside the disc
+  tick: [
+    [
+      "path",
+      {
+        d: "M4.7 8.3 7 10.6 11.3 5.6",
+        fill: "none",
+        "stroke-width": 1.8,
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+      },
+    ],
+  ],
   question: [
     [
       "path",
@@ -160,7 +190,7 @@ function trace(doc, parent, primitives, couleur) {
 // Un etat inconnu de la table devient « unknown » : rien n'est invente.
 export function signIcon(doc, state, size = 16) {
   const s = signes[state] ? state : "unknown";
-  const { forme, icone, plein } = signes[s];
+  const { forme, icone, plein, encre } = signes[s];
   const svg = doc.createElementNS(NS, "svg");
   svg.setAttribute("viewBox", "0 0 16 16");
   svg.setAttribute("width", String(size));
@@ -170,7 +200,8 @@ export function signIcon(doc, state, size = 16) {
   svg.dataset.state = s;
   const couleur = `var(--gdc-state-${s})`;
   trace(doc, svg, FORMES[forme], couleur);
-  trace(doc, svg, ICONES[icone], plein ? "#FFFFFF" : couleur);
+  if (encre) for (const el of svg.children) el.setAttribute("stroke", encre);
+  trace(doc, svg, ICONES[icone], encre || (plein ? "#FFFFFF" : couleur));
   return svg;
 }
 
