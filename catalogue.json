@@ -1209,7 +1209,7 @@
         "Tient sur un téléphone",
         "La fraîcheur passe en avertissement au-delà d'un délai"
       ],
-      "status": "à faire",
+      "status": "livré",
       "inputs": {
         "project": "nom du projet",
         "decisions": "nombre de décisions attendues",
@@ -1236,7 +1236,7 @@
       ],
       "status": "à faire",
       "inputs": {
-        "groups": "liste de { title, items: [{ id, name, state }] }",
+        "groups": "liste de { title, items: [{ id, name, state }] } ; state est l'un des six états de la signalétique ; absent, pas de signe (rien à signaler) ; toute autre valeur, « inconnu »",
         "selected": "identifiant sélectionné"
       },
       "outputs": {

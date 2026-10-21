@@ -83,6 +83,8 @@
 - Lot G6, le socle de l'interface : les polices Manrope, Inter et JetBrains Mono (OFL 1.1, acceptée par Pierre-Alain le 21 octobre 2026) sont copiées dans `components/interface/fonts/` et intégrées à la bibliothèque (156 Ko de plus) ; `src/signes.js` (mot, forme et icône de chaque état) et `src/interface.js` (`defineElements`, `interfaceCss`) ; `cssVariables()` dans `src/tokens.js` ; la bibliothèque exporte les éléments à part des composants 3D. Le contrôle couvre les éléments HTML (statique) et la licence des polices. Page de démonstration `interface.html`.
 - Les polices (`fonts`) sont livrées : validées par Pierre-Alain le 21 octobre 2026.
 - Signalétique : en thème sombre, l'octogone d'« En erreur » reçoit un liseré clair de 1 px (`--gdc-sign-edge`), le rouge foncé ne faisant que 2,1:1 sur le fond (décision de Pierre-Alain du 21 octobre 2026). Les couleurs des signes passent par le style plutôt que par les attributs SVG. Fiche de la barre du haut : les initiales du projet en attendant un logo.
+- La barre du haut (`top-bar`, `<gdc-top-bar>` 1.0.0) : le projet et ses initiales, les décisions (rouges seulement s'il y en a), les agents actifs, bloqués et inconnus avec leurs signes, la fraîcheur qui passe en avertissement au-delà de `staleAfter` (600 s par défaut) ; « ? » pour une valeur absente ; une ligne sur téléphone. Livrée : validée par Pierre-Alain le 21 octobre 2026.
+- Fiche de la navigation (`side-nav`) : un élément sans `state` n'a pas de signe ; une valeur hors des six états s'affiche « inconnu » (décision de Pierre-Alain du 21 octobre 2026).
 
 ## 0.2.0, 18 octobre 2026
 
