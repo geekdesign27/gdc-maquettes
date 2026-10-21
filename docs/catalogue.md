@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-46 éléments : 43 livré, 1 à faire, 2 exemple.
+53 éléments : 43 livré, 8 à faire, 2 exemple ; 6 nouvelle(s) version(s) prévue(s).
 
 ## G0 : La ligne graphique
 
@@ -241,6 +241,8 @@ Une clôture mobile : panneaux en treillis gris (maille de 0,45 m) sur plots en 
   - Impossible à confondre avec la barrière de blocage sur une planche côte à côte
   - Les panneaux et les plots se répètent par instance
 
+Nouvelle version prévue : 1.1.0, au lot G8 (à faire).
+
 ### La benne de tri (`waste-skip`)
 
 Une benne basculante ouverte de 7 m³, à la cote réelle (3,70 × 1,80 m en haut, 1,45 m de haut ; décision de Pierre-Alain du 20 octobre 2026) ; son contenu dit la matière par sa forme, sans texte : planches (wood), barres et tubes (metal), gravats (inert), cartons et sacs (mixed). Plusieurs bennes s'alignent, une par matière. Couleur de caisse par matière (décision du 19 octobre 2026) : wood MAT_PAINTED_METAL_OLIVE, metal MAT_PAINTED_METAL_MOSS, inert MAT_PAINTED_METAL_PLUM, mixed MAT_PAINTED_METAL_GRAPHITE.
@@ -332,6 +334,8 @@ Assemblé par le code à partir du kit de bâtiment, selon le type et la taille.
   - En qualité low, moins de 6000 triangles
   - Clic sur le bâtiment : GDC ouvre la vue intérieure (building-interior)
 
+Nouvelle version prévue : 2.0.0, au lot G8 (à faire).
+
 ### Les gabarits (`survey-poles`)
 
 Quatre perches et les rubans qui dessinent le volume ; paramètres de taille.
@@ -387,6 +391,8 @@ CHR_BASE_MASTER (1,70 m, 5 têtes, décision du 19 octobre 2026), son armature R
   - Un seul squelette pour tous
   - Le portrait (G7) et le corps se correspondent
 
+Nouvelle version prévue : v003, au lot G8 (à faire).
+
 ### Le personnage (un agent) (`character`)
 
 Un personnage par agent, à partir du personnage maître : tenue et outil de son métier, couleur de son équipe. GDC le déplace ; le composant joue l'animation de l'état, sur place. L'apparence de chaque personne (morphologie, peau, coiffure, barbe, lunettes, outil) est dans components/kit/character-kit/equipe.json ; GDC la passe en paramètres (décision de PA du 19 octobre 2026 : chaque personne a son personnage). blocked : posture d'arrêt devant la barrière ; unknown : immobile, matériaux grisés, lisible sans animation.
@@ -406,6 +412,8 @@ Un personnage par agent, à partir du personnage maître : tenue et outil de son
   - unknown : gris, immobile, lisible
   - reducedMotion : posture fixe et lisible pour chaque état
   - Animations sur place, sans déplacement non maîtrisé
+
+Nouvelle version prévue : 1.2.0, au lot G8 (à faire).
 
 ### La pelleteuse (`excavator`)
 
@@ -480,6 +488,8 @@ Une coupe du bâtiment en pièces, de plain-pied, en maison de poupée comme les
   - Chaque pièce lisible et désignable (ancre room:n)
   - L'état d'une pièce se voit à son aménagement : vide, en travaux, finie, défaut
   - Transition d'entrée et de sortie douce, figée si reducedMotion
+
+Nouvelle version prévue : 2.0.0, au lot G8 (à faire).
 
 ### La salle de brainstorming (`office-interior`)
 
@@ -631,6 +641,8 @@ Liste groupée avec pastille d'état ; recherche intégrée.
   - Utilisable au clavier
   - Devient une rangée défilante sur téléphone
 
+Nouvelle version prévue : 2.0.0, au lot G8 (à faire).
+
 ### L'icône de copie (`copy-button`)
 
 Petite icône à côté de tout élément désignable ; confirmation discrète ; repli si le presse-papiers est refusé.
@@ -737,3 +749,243 @@ Une icône par lieu, avec les identifiants que GDC envoie (docs/ville.md) et le 
 - Sorties (événements) : aucune
 - Critères d'acceptation :
   - Même famille que les icônes des étapes
+
+## G8 : La ville vivante
+
+Faire de la carte la visualisation du harnais : relier au survol la carte, le fil des déclencheurs et l'arbre des fiches ; montrer chaque application étage par étage, une fiche par étage et un lot par pièce ; faire vivre la ville de jour comme de nuit, au travail comme en pause, sans jamais ajouter un fait que GDC n'a pas envoyé (contrat de GDC, ADR 0013, schéma 3 de la scène).
+
+| Ordre | Identifiant | Nom | Nature | But | Statut |
+|---|---|---|---|---|---|
+| 1 | `hover-link` | Le survol partagé | Document de référence, pas de code | Relier au survol, dans les deux sens, la carte, le fil des déclencheurs à gauche et l'arbre des fiches à droite. | à faire |
+| 2 | `building` | Le bâtiment (une application) (version 2.0.0) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer l'avancement d'une application étage par étage : une fiche par étage, un lot par pièce. | à faire |
+| 3 | `floor-selector` | Le sélecteur d'étages | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Choisir l'étage d'un bâtiment, c'est-à-dire la fiche à regarder ; la vue en coupe s'ouvre sur cet étage. | à faire |
+| 4 | `building-interior` | L'intérieur d'un bâtiment (version 2.0.0) | Composant 3D Three.js, conforme à docs/contrat-composant.md | La vue micro : un étage ouvert, c'est-à-dire une fiche, avec une pièce par lot, l'étape où en est chaque lot et les experts au travail. | à faire |
+| 5 | `trigger-feed` | Le fil des déclencheurs | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Lire à gauche ce que le harnais vient de faire, action par action, dans l'ordre. | à faire |
+| 6 | `side-nav` | La navigation (version 2.0.0) | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Aller à un lieu, un agent, un bâtiment, une fiche ou un lot ; la caméra suit. La navigation descend jusqu'aux lots. | à faire |
+| 7 | `day-night` | L'heure réelle | Document de référence, pas de code | La carte suit l'heure réelle : le jour, une nuit pas trop sombre, une courte aube et un court crépuscule ; la nuit, les fenêtres disent où l'on travaille. | à faire |
+| 8 | `floodlight` | Le projecteur de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Éclairer le chantier la nuit quand on y travaille. | à faire |
+| 9 | `character-kit` | Le personnage maître et son équipe (version v003) | Bibliothèque de modèles 3D produite par un script Blender (blender/assets/<id>.py) et réutilisée par plusieurs composants : components/kit/<id>/ | Un squelette, une morphologie et des animations communes pour tous les agents. | à faire |
+| 10 | `character` | Le personnage (un agent) (version 1.2.0) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer qui travaille, où, et dans quel état. | à faire |
+| 11 | `site-fence` | La clôture de chantier (version 1.1.0) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Cloisonner le chantier, comme tout chantier romand. | à faire |
+| 12 | `party-shed` | Le cabanon de la fête | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer la pause : le chantier est fermé et l'équipe fait la fête au cabanon en attendant ta décision. | à faire |
+| 13 | `city-car` | La voiture d'ambiance | Composant 3D Three.js, conforme à docs/contrat-composant.md | Faire vivre la ville autour du chantier, sans rien dire du harnais. | à faire |
+
+### Le survol partagé (`hover-link`)
+
+Un événement commun et une entrée commune pour tous les éléments qui montrent du travail référencé. Toutes les actions et les éléments de GDC liés au travail portent ref (application, fiche, lot). L'événement gdc-hover porte detail.ref = { application, fiche?, lot? } quand le pointeur ou le focus entre sur un élément référencé, et detail.ref = null quand il en sort. L'entrée highlight a la même forme : GDC la renvoie à tous les éléments. Deux références correspondent quand l'une prolonge l'autre : survoler un lot allume sa fiche et son application ; survoler une application allume ses fiches et ses lots. Cette règle est écrite une seule fois, ctx.correspond(a, b), injectée comme ctx.signIcon. Côté carte, l'assemblage pose l'anneau de sélection (selection-ring, état hover) sur le bâtiment, l'étage ou la pièce qui correspond, et émet gdc-hover quand on survole un bâtiment, un étage ou une pièce. Fiche validée par Pierre-Alain le 21 octobre 2026.
+
+- Fabriqué par : intégrateur d'interface
+- Critères d'acceptation :
+  - Le contrat est écrit dans docs/contrat-composant.md (section des éléments d'interface) ; ctx.correspond est fourni par src/interface.js
+  - Le focus clavier vaut un survol
+  - Pas de rafale : un seul événement par changement de référence, null à la sortie
+  - La mise en évidence est un fond teinté et un trait d'encre, plus léger que selected, sans couleur d'état et sans faire sauter la liste
+  - Le contrôle vérifie que tout élément qui émet gdc-hover lit aussi highlight
+  - La page /interface.html relie le fil, la navigation et le sélecteur d'étages
+
+### Le sélecteur d'étages (`floor-selector`)
+
+Un panneau d'ascenseur, l'étage du haut en haut. Chaque bouton porte le niveau (R, 1, 2…), le nom de la fiche, le numéro de son étape et son signe d'état s'il en a un. Six étages au plus, comme le bâtiment : le rez regroupe les fiches livrées les plus anciennes (« Rez · 4 fiches livrées ») et se déplie pour en choisir une ; s'il reste encore trop d'étages, les plus anciens se fondent aussi dans le rez (« Rez · n fiches »). Fiche validée par Pierre-Alain le 21 octobre 2026.
+
+- Fabriqué par : intégrateur d'interface
+- Élément : `<gdc-floor-selector>`
+- Entrées (propriété data) : `building` ({ id, name } : le bâtiment) ; `floors` (du bas vers le haut, une entrée par fiche : { id, name, etape, state?, delivered? } ; state est l'un des six états de la signalétique) ; `selected` (identifiant de la fiche choisie) ; `highlight` (référence survolée ailleurs ({ application, fiche?, lot? } ou null))
+- Sorties (événements) : `gdc-select` (detail.id = fiche choisie, detail.building = bâtiment) ; `gdc-hover` (detail.ref = { application, fiche } survolée, ou null)
+- Critères d'acceptation :
+  - Utilisable au clavier : flèches haut et bas, Début, Fin, Entrée
+  - La règle de regroupement est écrite une seule fois (src/etages.js) et sert au bâtiment comme au sélecteur : ils montrent toujours les mêmes étages
+  - Émet gdc-hover et lit highlight (le survol partagé)
+  - Devient une rangée sur téléphone
+  - Lisible en clair et en sombre
+
+### Le fil des déclencheurs (`trigger-feed`)
+
+Une liste, la plus récente en haut ; les actions d'un même instant (ts) sont groupées sous leur heure. Chaque ligne montre la phrase en clair de GDC (phrase), et le portrait de l'agent quand l'action concerne un personnage (ctx.portrait). Les actions du régime du chantier (ouverture, pause, fermeture) font des séparateurs sur toute la largeur. Une ligne qui porte une référence se survole (gdc-hover) et se clique (gdc-select). Fiche validée par Pierre-Alain le 21 octobre 2026.
+
+- Fabriqué par : intégrateur d'interface
+- Élément : `<gdc-trigger-feed>`
+- Entrées (propriété data) : `actions` (liste des actions telle que GDC la rend (gdc scene --avant) : { ts, action, element, id, phrase, ref?, motif? }) ; `limit` (nombre d'actions gardées, défaut 200) ; `highlight` (référence survolée ailleurs ({ application, fiche?, lot? } ou null))
+- Sorties (événements) : `gdc-select` (clic sur une action ; detail.id = l'élément de l'action) ; `gdc-hover` (detail.ref = la référence de l'action survolée, ou null)
+- Critères d'acceptation :
+  - Tout texte venu du harnais est affiché comme du texte, jamais comme du HTML
+  - Utilisable au clavier : un seul arrêt de tabulation, flèches, Entrée
+  - Les nouvelles actions sont annoncées poliment aux lecteurs d'écran, un instant à la fois
+  - Une nouvelle action arrive avec une seule impulsion douce ; rien ne bouge si l'utilisateur demande moins d'animations
+  - Si l'utilisateur a remonté la liste, elle ne saute pas : un bouton « n nouvelles actions » ramène en haut
+  - Repliée sur la dernière action sur téléphone
+  - Lisible en clair et en sombre
+
+### L'heure réelle (`day-night`)
+
+Pas un composant. 1. src/lumiere.json gagne une recette de nuit (ciel, lune à la place du soleil, intensités) à côté de celle du jour, un bloc transitions, un bloc fenetres (une couleur blanc chaud, une intensité faible et une franche) et la couleur des projecteurs (floodlight) ; il est séparé de la palette exprès, aucun modèle n'est à reconstruire. 2. L'assemblage de la carte, dans la bibliothèque livrée à GDC, lit l'heure du poste et calcule le lever et le coucher du soleil à Fribourg selon la date, sur le poste, sans réseau (choix de Pierre-Alain). Il éclaire les vitres comme il désature les zones grises : sur des copies des matériaux de vitre, sans logique dans les composants ; faiblement sur tout bâtiment habité et tout bureau, franchement là où un agent travaille (bureau active, étage occupied du bâtiment, conteneur où se trouve un agent). 3. La galerie gagne une bascule jour, aube et nuit pour les revues. Fiche validée par Pierre-Alain le 21 octobre 2026.
+
+- Fabriqué par : directeur artistique (la recette) ; modeleur (les vitres par étage du bâtiment)
+- Critères d'acceptation :
+  - Le jour, rien ne change : le cube étalon reste conforme
+  - La nuit, sur la capture des valeurs, chaque objet se lit à sa forme et l'interface reste lisible
+  - Les vitres éclairées sont blanc chaud, jamais une couleur d'état
+  - L'aube et le crépuscule durent 30 minutes chacun, centrés sur le lever et le coucher du soleil à Fribourg
+  - Aucune horloge du réseau : l'heure du poste
+  - Le passage est trop lent pour être une animation : rien de particulier avec moins d'animations
+
+### Le projecteur de chantier (`floodlight`)
+
+Un mât de chantier galvanisé, lesté, avec un ou deux projecteurs LED. Aucune vraie lumière (bible : ni lumière dans le modèle ; et pour la fluidité) : le composant fait briller la tête, dans la couleur des projecteurs de src/lumiere.json, et pose une tache de lumière douce au sol. L'assemblage le pose aux coins du chantier ; allumé la nuit en régime ouvert, éteint sinon, la pause comprise (le chantier est fermé). Fiche validée par Pierre-Alain le 21 octobre 2026.
+
+- Fichier : `components/site/floodlight/index.js`
+- Fabriqué par : modeleur
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres)
+- Paramètres : `heads` (1 | 2, défaut 2) ; `height` (nombre, 4 à 8, défaut 6)
+- États : `off`, `on`
+- Ancres : `label`
+- Données reçues par setState : aucune
+- Budget : 1500 triangles, 3 matériaux
+- Critères d'acceptation :
+  - Reconnaissable comme projecteur de chantier à 25 px par mètre
+  - Lumière blanche, jamais une couleur d'état ; rien ne clignote
+  - Allumage en fondu de 0,5 seconde, une fois ; direct si reducedMotion
+  - La tache au sol laisse lire les objets dessous
+  - En qualité low, 600 triangles au plus et pas de tache au sol
+
+### Le cabanon de la fête (`party-shed`)
+
+Un petit cabanon en bois, avec un auvent et une table haute. Sous l'auvent, une lanterne à facettes tourne lentement (un tour en 8 secondes environ) et projette trois taches de couleur qui glissent au sol et sur le mur : elles ne s'allument et ne s'éteignent jamais, donc aucun flash (WCAG 2.3.1). Des notes de musique, des formes en 3D et non une police, montent doucement depuis la porte et s'effacent, trois au plus à la fois. Les trois teintes de fête sont des lumières (bloc fete de src/lumiere.json), choisies loin des six couleurs d'état et des couleurs d'équipe (ΔE 2000 d'au moins 20, mesuré) et proposées sur planche à Pierre-Alain. L'assemblage le pose près de la baraque, hors de la clôture (à confirmer sur la scène de référence) ; en régime pause, les ouvriers s'y rassemblent (talk, idle, jamais celebrate, qui reste aux agents) ; les agents restent où GDC les place. Fiche validée par Pierre-Alain le 21 octobre 2026.
+
+- Fichier : `components/site/party-shed/index.js`
+- Fabriqué par : modeleur
+- Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces)
+- États : `closed`, `party`
+- Ancres : `label`, `door`, `gather`
+- Données reçues par setState : aucune
+- Budget : 3000 triangles, 5 matériaux
+- Critères d'acceptation :
+  - On reconnaît la fête de loin : le cabanon, la lanterne, les notes
+  - closed : porte fermée, lanterne éteinte, rien ne bouge ; party : la porte s'ouvre une fois, puis la fête
+  - Aucune variation de lumière en flash : les taches glissent, elles ne s'allument ni ne s'éteignent
+  - reducedMotion : lanterne fixe, taches posées, deux ou trois notes immobiles au-dessus de la porte
+  - Aucune couleur d'état dans la scène
+
+### La voiture d'ambiance (`city-car`)
+
+Une petite citadine arrondie (chanfrein C4), en trois teintes de ville. Deux ou trois voitures roulent sur la route autour de la carte, se garent et repartent ; la vie d'ambiance de l'assemblage les déplace, toujours hors des zones et du chantier. C'est le véhicule d'ambiance de la vie du chantier (docs/vie-du-chantier.md, section 6) : Pierre-Alain a choisi les voitures, il n'y a ni camion-benne ni fourgonnette dans le chantier. Fiche validée par Pierre-Alain le 21 octobre 2026.
+
+- Fichier : `components/machine/city-car/index.js`
+- Fabriqué par : modeleur
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres)
+- Paramètres : `color` (a | b | c, défaut a)
+- États : `parked`, `driving`
+- Ancres : aucune
+- Données reçues par setState : aucune
+- Budget : 1200 triangles, 4 matériaux
+- Critères d'acceptation :
+  - Jamais confondue avec un engin du chantier (ni orange, ni jaune) ni avec le camion de livraison
+  - driving : les roues tournent, pilotées par update(dt)
+  - Trois au plus sur la carte, une en qualité low
+  - reducedMotion : garée et immobile
+  - Ni clic, ni badge, ni anneau de sélection
+
+### La clôture de chantier (`site-fence`), version 1.1.0
+
+Le portail ferme (docs/vie-du-chantier.md, section 7) : default reste le portail ouvert de la 1.0, pour que GDC ne casse pas ; closed ferme les deux vantaux par une rotation douce d'environ 1,5 seconde, une fois. L'assemblage le ferme en régime ferme et pause, l'ouvre en régime ouvert. Fiche validée par Pierre-Alain le 21 octobre 2026.
+
+- Fichier : `components/site/site-fence/index.js`
+- Fabriqué par : modeleur
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `ENV_SITE_FENCE_A_v001`
+- Paramètres : `length` (nombre, 2 à 60, défaut 12) ; `gate` (booléen, défaut false)
+- États : `default`, `closed`
+- Ancres : `label`
+- Données reçues par setState : aucune
+- Budget : 4000 triangles, 3 matériaux
+- Critères d'acceptation :
+  - Le passage de default à closed, et retour, est une rotation douce d'environ 1,5 seconde, une fois ; l'état final directement si reducedMotion
+  - Sans gate, closed ne change rien
+  - Ligne au journal des versions
+
+### Le bâtiment (une application) (`building`), version 2.0.0
+
+Un étage par fiche, la plus ancienne en bas (etages de GDC, ADR 0013). Chaque étage suit son stade : plot (rien de construit ; les gabarits sont survey-poles, posés par GDC) jusqu'au feu vert ; excavation puis foundations pendant la préparation, au sol la fouille avec la pelle puis les semelles, en étage la toiture déposée et la dalle à nu puis les attentes d'armatures ; structure (poteaux, dalle, échafaudage de l'étage ; chaque pièce, une travée par lot, se ferme quand son lot est fini), envelope (murs fermés, échafaudage encore là), finishing (fenêtres posées, échafaudage déposé) pendant la construction ; inspection à la réception ; completed à la remise des clés. Six étages visibles au plus : le rez regroupe les fiches livrées les plus anciennes, et s'il reste encore trop d'étages, les plus anciens s'y fondent aussi ; le rez prend alors l'aspect du moins avancé d'entre eux (src/etages.js, la même règle que floor-selector). Un bâtiment habité qui reçoit une fiche est surélevé : il gagne un étage en haut, sa toiture monte d'un niveau, le bas reste habité, et seul l'étage du haut est en chantier, avec un petit échafaudage et deux ou trois cônes de balisage groupés au pied (sans badge : le défaut reste un cône seul avec son badge, docs/signaletique.md). L'état alteration n'existe pas (décision de Pierre-Alain du 21 octobre 2026). Les huit états restent ceux que GDC envoie : sans data.floors, l'état donne un bâtiment d'un étage à ce stade ; avec data.floors, l'étage est le niveau de vérité. Fiche validée par Pierre-Alain le 21 octobre 2026.
+
+- Fichier : `components/building/building/index.js`
+- Fabriqué par : modeleur
+- Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `building-kit`
+- Paramètres : `type` (house | block | hall, défaut block)
+- États : `plot`, `excavation`, `foundations`, `structure`, `envelope`, `finishing`, `completed`, `inspection`
+- Ancres : `label`, `badge`, `progress`, `door`, `floor:*`, `room:*`
+- Données reçues par setState : `floors` (du bas vers le haut, une entrée par fiche : { id, stage : un des huit états, rooms : [{ id, done }] (un lot par pièce), occupied : un agent travaille à cet étage (les fenêtres la nuit) })
+- Budget : 20000 triangles, 10 matériaux
+- Critères d'acceptation :
+  - Chaque stade se reconnaît sans légende sur un étage, au sol comme en étage
+  - Six étages à des stades différents restent lisibles (planche AuditApp à trois applications)
+  - fixtures/projet-type et fixtures/trois-applications se rejouent sans saut : l'étage nouveau monte, la toiture remonte ; reducedMotion : l'état final directement
+  - Ancres floor:n pour chaque étage visible et room:<étage>-<pièce> pour chaque pièce
+  - Les vitres de chaque étage sont nommées, pour que l'assemblage les éclaire la nuit (day-night)
+  - Les cônes de balisage ne se confondent pas avec defect-sign sur une planche côte à côte
+  - En qualité low, moins de 6000 triangles
+  - Brief validé par Pierre-Alain avant la fabrication ; ligne au journal des versions
+
+### Le personnage maître et son équipe (`character-kit`), version v003
+
+Ce que la ville vivante ajoute au kit : la tenue d'ouvrier CHR_OUTFIT_WORKER (bleu de travail graphite, casque gris #8E959C, gilet jaune fluo #D7EC23 à bandes claires, docs/vie-du-chantier.md, section 3) ; la tenue de ville CHR_OUTFIT_CIVILIAN, sans casque, en trois coloris vifs, jamais graphite, jamais une couleur d'équipe ni d'état, pour que le client reste le seul en civil graphite (badauds et usagers des bâtiments habités) ; la lampe frontale PRP_CHR_HEADLAMP, fixée au casque, dont la lentille peut briller ; l'animation ANM_CHR_CARRY (porter). Les tissus des trois coloris de ville (MAT_FABRIC_CIVIL_*) et la tenue d'ouvrier sont une proposition d'ajout à src/palette.json, à valider par Pierre-Alain : changer la palette oblige à reconstruire tous les modèles. Fiche validée par Pierre-Alain le 21 octobre 2026.
+
+- Dossier : `components/kit/character-kit/`, script `blender/assets/character-kit.py`
+- Fabriqué par : animateur
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres)
+- Budget : 8000 triangles, 6 matériaux
+- Critères d'acceptation :
+  - Planche : un agent de l'équipe site, un ouvrier, la barrière de blocage et la grue côte à côte ; l'ouvrier se distingue de l'agent d'un coup d'œil
+  - Planche : le client, trois badauds, un usager et Fanny côte à côte ; le client reste le seul en civil graphite
+  - La lampe frontale se lit à 25 px par mètre sans changer la silhouette du casque ; la couleur d'équipe du casque reste lisible
+  - Chaque personne tient toujours dans 8 000 triangles et 6 matériaux
+  - Tous les modèles reconstruits après l'ajout à la palette ; ligne au journal des versions
+
+### Le personnage (un agent) (`character`), version 1.2.0
+
+Deux métiers de plus, qui ne sont pas des agents : worker (l'ouvrier, de l'équipe qui accompagne un agent : casque gris, gilet jaune) et civilian (badaud ou usager d'un bâtiment habité, sans casque, en tenue de ville). Un ouvrier ne joue jamais celebrate, blocked ni unknown ; un civil non plus. Le paramètre headlamp allume la lampe frontale : la lentille brille avec une petite lueur, sans vraie lumière ; l'assemblage l'allume la nuit pour toute personne casquée qui est dehors. Un état de plus, carry (porter), joué par les ouvriers seulement ; GDC ne l'envoie jamais. Fiche validée par Pierre-Alain le 21 octobre 2026.
+
+- Fichier : `components/character/character/index.js`
+- Fabriqué par : animateur
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; kit `character-kit`
+- Paramètres : `trade` (client | architect | engineer | foreman | mason | electrician | plumber | painter | inspector | concierge | representative | worker | civilian) ; `team` (none | client | architecture | studies | site | reception | operations) ; `body` (M | F) ; `skin` (A | B | C | D | E) ; `hair` (short | side | crop | bob | long | ponytail | bun) ; `hairColor` (black | brown | blond | red | grey) ; `beard` (true | false) ; `glasses` (true | false) ; `tool` (auto (l'outil du métier) | none | plans | tablet | tripod | radio | roller | trowel | cable | clipboard | stamp | keys | binder | wrench) ; `headlamp` (true | false, défaut false) ; `outfitColor` (a | b | c, défaut a (tenue de ville seulement))
+- États : `idle`, `walk`, `work`, `typing`, `inspect`, `read`, `thinking`, `waiting`, `talk`, `celebrate`, `blocked`, `unknown`, `carry`
+- Ancres : `label`, `badge`
+- Données reçues par setState : `facing` (angle en radians, sens du regard ou de la marche)
+- Budget : 8000 triangles, 6 matériaux
+- Critères d'acceptation :
+  - worker et civilian se lisent à la tenue, sans badge ni nom
+  - headlamp : la lentille brille sans vraie lumière ; le client n'a pas de casque, donc pas de lampe
+  - Ligne au journal des versions
+
+### L'intérieur d'un bâtiment (`building-interior`), version 2.0.0
+
+Une coupe en maison de poupée, comme en 1.0, mais d'un seul étage, celui choisi au sélecteur d'étages (floor-selector). Une pièce de 6 × 3 m par lot, en grappe, jamais en ligne ; l'enveloppe suit le stade de l'étage (data.floor.stage). Chaque pièce montre où en est son lot par un aspect : todo (vide : à faire, cadre, explore, plan), preparing (traçage au sol, attentes : tests), building (en travaux : code, verifie, securite, ou en_cours sans phase), finishing (finitions : relis, corrige), done (finie : prouve, livre, fini), defect (un défaut visible, comme en 1.0). La traduction de la phase du lot (pieces[].phase de GDC, les phases du run) en aspect est faite par l'assemblage, sur le modèle du regroupement des étages de GDC ; quand phase manque, il se rabat sur statut. Le nom de la phase s'affiche au survol, dans l'interface, jamais dans la 3D. Les agents sont des composants character posés par GDC à l'ancre de leur pièce (piece du personnage). État default : la vue s'ouvre ; hidden : elle se ferme. Fiche validée par Pierre-Alain le 21 octobre 2026.
+
+- Fichier : `components/interior/building-interior/index.js`
+- Fabriqué par : modeleur
+- Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `building-kit`
+- Paramètres : `rooms` (nombre de lots, 1 à 12, défaut 4)
+- États : `default`, `hidden`
+- Ancres : `label`, `room:*`
+- Données reçues par setState : `floor` ({ stage : un des huit états de building } : l'enveloppe de l'étage) ; `rooms` (liste, une entrée par lot : { id, state: todo \| preparing \| building \| finishing \| done \| defect, trades: [métiers présents] })
+- Budget : 20000 triangles, 10 matériaux
+- Critères d'acceptation :
+  - Chaque aspect de pièce se reconnaît sans légende
+  - La vue s'ouvre depuis le sélecteur d'étages, sur l'étage choisi
+  - fixtures/trois-applications, étape 7 : Julie est dans la pièce L1 de « Saisir un constat hors ligne »
+  - Transition d'entrée et de sortie douce, figée si reducedMotion
+  - Ligne au journal des versions
+
+### La navigation (`side-nav`), version 2.0.0
+
+La navigation devient un arbre (choix de Pierre-Alain du 21 octobre 2026, plutôt qu'un arbre séparé à droite) : un élément d'un groupe peut avoir des enfants, sur trois niveaux au plus, selon le modèle d'arbre ARIA. Le groupe « Les bâtiments » descend jusqu'aux fiches (les étages) puis aux lots (les pièces) ; chaque nœud a son signe d'état, son nom et, pour une fiche, son numéro d'étape et sa fraction de lots finis. Les fiches livrées sont repliées sous « Livrées · n », toujours consultables. La recherche trouve aussi un lot et ouvre ses parents. GDC place la colonne (à droite, le fil des déclencheurs étant à gauche). Fiche validée par Pierre-Alain le 21 octobre 2026.
+
+- Fabriqué par : intégrateur d'interface
+- Élément : `<gdc-side-nav>`
+- Entrées (propriété data) : `groups` (liste de { title, items } ; un item : { id, name, state?, ref?, etape?, progress?, children? : [items] }, trois niveaux au plus ; state est l'un des six états de la signalétique) ; `selected` (identifiant sélectionné) ; `expanded` (identifiants des nœuds dépliés) ; `highlight` (référence survolée ailleurs ({ application, fiche?, lot? } ou null))
+- Sorties (événements) : `gdc-select` (detail.id = identifiant choisi, detail.ref = sa référence s'il en a une) ; `gdc-hover` (detail.ref = la référence du nœud survolé, ou null)
+- Critères d'acceptation :
+  - Utilisable au clavier selon le modèle d'arbre ARIA : flèches haut et bas, gauche pour plier, droite pour déplier, Début, Fin, Entrée
+  - La recherche trouve un lot et ouvre ses parents
+  - Les fiches livrées restent consultables, repliées sous « Livrées · n »
+  - Émet gdc-hover et lit highlight (le survol partagé)
+  - Sur téléphone, la rangée de pastilles montre le premier niveau ; choisir un bâtiment ouvre une deuxième rangée avec ses fiches
+  - Ligne au journal des versions
