@@ -226,11 +226,11 @@
     }
   },
   "etat": {
-    "active": "#2F8A5C",
+    "active": "#2B7BD8",
     "waiting": "#D8343F",
-    "blocked": "#C8761A",
+    "blocked": "#E0A100",
     "error": "#9C2A24",
-    "done": "#5B6470",
+    "done": "#2F8A5C",
     "unknown": "#8A929B"
   },
   "equipe": {
