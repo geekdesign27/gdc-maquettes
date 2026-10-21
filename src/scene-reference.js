@@ -24,17 +24,17 @@ import { materiauPalette } from "./etalon.js";
 export const SCENE_ID = "scene";
 const RECUL = 2; // en metres, sur X et Z : la scene descend d'environ 1,6 m a l'ecran
 
-// Les dix etapes du harnais : titre, icone du lot G7 (step-icons ; absente quand aucune ne dit l'etape), zone.
+// Les dix etapes du harnais : titre, icone du lot G7 (step-icons 2.0, identifiants de GDC), zone.
 export const ETAPES = {
-  1: { titre: "L’idée", icone: "idea", zone: "bureaux" },
+  1: { titre: "L’idée", icone: "idee", zone: "bureaux" },
   2: { titre: "Les plans", icone: "plans", zone: "bureaux" },
-  3: { titre: "Le permis", icone: "permit", zone: "bureaux" },
-  4: { titre: "Plans d’exécution", icone: "execution-plans", zone: "chantier" },
-  5: { titre: "Préparation", zone: "chantier" },
+  3: { titre: "Le permis", icone: "permis", zone: "bureaux" },
+  4: { titre: "Plans d’exécution", icone: "plans-execution", zone: "chantier" },
+  5: { titre: "Préparation", icone: "preparation", zone: "chantier" },
   6: { titre: "Construction", icone: "construction", zone: "chantier" },
   7: { titre: "Réception", icone: "reception", zone: "remise" },
-  8: { titre: "Remise des clés", icone: "production", zone: "remise" },
-  9: { titre: "Garantie", zone: "remise" },
+  8: { titre: "Remise des clés", icone: "remise-des-cles", zone: "remise" },
+  9: { titre: "Garantie", icone: "garantie", zone: "remise" },
   10: {
     titre: "Transformations",
     icone: "transformations",
@@ -338,7 +338,7 @@ export function plan(applications = 1) {
     "etape:4": { etape: 4, sur: ["site-office", "label"] },
     "passage:feu-vert": {
       titre: "Feu vert",
-      icone: "green-light",
+      icone: "feu-vert",
       zone: "chantier",
       passage: true,
       sur: ["decision-sign:feu-vert", "badge"],

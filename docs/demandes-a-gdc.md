@@ -48,7 +48,7 @@ Les étapes de Pierre-Alain sont :
 9. la garantie ;
 10. les transformations.
 
-Les icônes du lot G7 ont pour identifiants provisoires `idea`, `survey`, `plans`, `permit`, `execution-plans`, `green-light`, `construction`, `reception`, `production` et `transformations`. Ce ne sont pas exactement ces dix étapes : il n'y a pas d'icône pour la préparation ni pour la garantie, et `survey` (le relevé du géomètre) n'est pas une étape.
+Les icônes du lot G7 avaient des identifiants provisoires (`idea`, `survey`, `permit`…), sans icône pour la préparation ni pour la garantie. Réponse de GDC (ADR 0013) : les dix identifiants `idee`, `plans`, `permis`, `plans-execution`, `preparation`, `construction`, `reception`, `remise-des-cles`, `garantie`, `transformations`. `step-icons` 2.0 les reprend tels quels (21 octobre 2026), plus `feu-vert` pour le passage.
 
 **Demandes** :
 - GDC fixe la liste des dix étapes : `id`, numéro, titre ;

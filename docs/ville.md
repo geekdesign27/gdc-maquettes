@@ -39,7 +39,7 @@ La maquette du panneau est une petite ville où **tout ce qui bouge veut dire qu
 
 Une transformation remettra des échafaudages sur un bâtiment habité (état `alteration`, `building` 2.0.0, à venir).
 
-**Les repères** : les numéros 1 à 10 et les passages sont des éléments HTML posés sur des ancres, avec les icônes d'étapes du lot G7 (`step-icons`), jamais du texte dans la 3D. La pastille d'un bâtiment ne montre que son numéro ; le titre et le nom de l'application s'affichent au survol. Les étapes 5 et 9 n'ont pas encore d'icône.
+**Les repères** : les numéros 1 à 10 et les passages sont des éléments HTML posés sur des ancres, avec les icônes d'étapes du lot G7 (`step-icons`), jamais du texte dans la 3D. La pastille d'un bâtiment ne montre que son numéro ; le titre et le nom de l'application s'affichent au survol. Chaque étape a son icône, nommée comme dans GDC (`step-icons` 2.0) ; le passage « Feu vert » a la sienne (`feu-vert`).
 
 **Les zones** ont chacune une couleur, celle de l'équipe qui y travaille : bureaux (architecture), chantier (site), réception, clés et garantie (réception), transformations (exploitation). Leur bordure est un marquage peint au sol dans le matériau d'équipe de la palette (`MAT_FABRIC_*`), sous les objets ; la pastille et le nom de la zone prennent cette couleur dans l'interface. Ce ne sont pas des couleurs d'état.
 

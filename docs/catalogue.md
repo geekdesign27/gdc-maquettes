@@ -704,7 +704,7 @@ Donner un visage aux agents et une icône à chaque étape et chaque lieu.
 | Ordre | Identifiant | Nom | Nature | But | Statut |
 |---|---|---|---|---|---|
 | 1 | `agent-portraits` | Les portraits des agents | Illustration ou icône SVG, animée en CSS si besoin | Un visage par agent, le même sur le panneau, la page de la méthode et les rapports. | livré |
-| 2 | `step-icons` | Les icônes des étapes | Illustration ou icône SVG, animée en CSS si besoin | Une icône pour chacune des dix étapes, de l'idée aux transformations. | livré |
+| 2 | `step-icons` | Les icônes des étapes | Illustration ou icône SVG, animée en CSS si besoin | Une icône pour chacune des dix étapes de GDC, de l'idée aux transformations, et une pour le passage du feu vert. | livré |
 | 3 | `place-icons` | Les icônes des lieux | Illustration ou icône SVG, animée en CSS si besoin | Une icône par lieu, pour la navigation et les rapports. | livré |
 
 ### Les portraits des agents (`agent-portraits`)
@@ -721,9 +721,9 @@ Un portrait pour le client (Pierre-Alain, sans casque) et un par prénom (Claire
 
 ### Les icônes des étapes (`step-icons`)
 
-Jeu de dix icônes SVG, au trait, de même épaisseur : idea (l'idée, une ampoule), survey (le relevé de l'existant, le trépied du géomètre), plans (les plans, le tracé des murs), permit (le permis de construire, un document scellé), execution-plans (les plans d'exécution, l'équerre graduée), green-light (le feu vert, la lampe du bas allumée), construction (le mur de briques), reception (la réception, la planchette), production (la mise en production, la clé remise), transformations (deux flèches qui tournent). Identifiants proposés par l'atelier et acceptés par Pierre-Alain le 21 octobre 2026, à aligner sur ceux de GDC quand il les fixera (seuls les noms de fichiers changeraient). Grille de 24, trait de 2 à bouts ronds, une seule couleur héritée du texte (currentColor) ; décoratives (aria-hidden), le libellé de l'étape est écrit à côté. Dessins originaux.
+Jeu de onze icônes SVG, au trait, de même épaisseur, avec les identifiants des dix étapes de GDC (docs/maquette.md de GDC, ADR 0013) : idee (une ampoule), plans (le tracé des murs), permis (un document scellé), plans-execution (l'équerre graduée), preparation (la pelle de terrassement plantée), construction (le mur de briques), reception (la planchette), remise-des-cles (la clé), garantie (le bouclier, sans coche), transformations (deux flèches qui tournent) ; et feu-vert (le feu, sa lampe du bas allumée), l'icône du passage « Feu vert », qui n'est pas une étape. Version 2.0.0 (décisions de Pierre-Alain du 21 octobre 2026) : fichiers renommés selon GDC, survey retiré (le relevé n'est pas une étape), production devient remise-des-cles, green-light devient feu-vert, preparation et garantie dessinés. Grille de 24, trait de 2 à bouts ronds, une seule couleur héritée du texte (currentColor) ; décoratives (aria-hidden), le libellé de l'étape est écrit à côté. Dessins originaux.
 
-- Entrées (propriété data) : `step` (identifiant de l'étape (nom du fichier SVG) : idea, survey, plans, permit, execution-plans, green-light, construction, reception, production, transformations)
+- Entrées (propriété data) : `step` (identifiant de l'étape dans GDC (nom du fichier SVG) : idee, plans, permis, plans-execution, preparation, construction, reception, remise-des-cles, garantie, transformations ; ou feu-vert pour le passage du feu vert)
 - Sorties (événements) : aucune
 - Critères d'acceptation :
   - Lisibles à 20 pixels
