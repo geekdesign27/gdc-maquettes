@@ -38,7 +38,8 @@ Le langage des signaux, à l'image des jeux de gestion et des interfaces de supe
 |---|---|
 | Panneau rectangulaire sur poteau, avec son badge rouge | Une décision t'attend à cet endroit |
 | Barrière de chantier, avec son badge orange | Un travail est bloqué |
-| Cône posé sur la façade ou dans la pièce | Un défaut ouvert |
+| Un cône seul, posé sur la façade ou dans la pièce, avec son badge | Un défaut ouvert |
+| Deux ou trois cônes groupés au sol, au pied de l'échafaudage d'un étage en chantier, sans badge | Le balisage d'une surélévation : un étage en chantier sur un bâtiment habité (décision de Pierre-Alain du 21 octobre 2026). Ce n'est pas un défaut |
 | Anneau de sélection | L'élément choisi, ou survolé |
 | Gabarits plantés | Une fiche à l'étude : son volume futur |
 | Échafaudage | Une fiche en construction |

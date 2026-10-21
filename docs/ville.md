@@ -37,7 +37,7 @@ La maquette du panneau est une petite ville où **tout ce qui bouge veut dire qu
 | Réception | Le bâtiment en inspection | 7 |
 | Terminé, habité | Sans échafaudage, dans ses couleurs | 9 |
 
-Une transformation remettra des échafaudages sur un bâtiment habité (état `alteration`, `building` 2.0.0, à venir).
+Une transformation surélève un bâtiment habité : il gagne un étage en haut, seul en chantier, avec un petit échafaudage et des cônes de balisage ; le bas reste habité (`building` 2.0.0, lot G8). L'état `alteration` est abandonné (décision de Pierre-Alain du 21 octobre 2026).
 
 **Les repères** : les numéros 1 à 10 et les passages sont des éléments HTML posés sur des ancres, avec les icônes d'étapes du lot G7 (`step-icons`), jamais du texte dans la 3D. La pastille d'un bâtiment ne montre que son numéro ; le titre et le nom de l'application s'affichent au survol. Chaque étape a son icône, nommée comme dans GDC (`step-icons` 2.0) ; le passage « Feu vert » a la sienne (`feu-vert`).
 
@@ -47,11 +47,9 @@ Une transformation remettra des échafaudages sur un bâtiment habité (état `a
 
 Le placement exact (plan, espacements, caméra) est celui de la scène de référence (`reference-scene`, `src/scene-reference.js` ; `?applications=3` ou `?applications=auditapp` dans la galerie). Un lieu de personnage `batiment:<id>` désigne la parcelle de ce bâtiment.
 
-**À signaler à la session du bâtiment** : `docs/correspondances.md` met encore `excavation` à la première fiche aux plans d'exécution (étape 4). Sur la carte, Pierre-Alain place le terrassement et les fondations à la préparation (étape 5).
-
 **GDC devra suivre** dans son `plan` (ADR 0012 de son dépôt) : les quatre zones, les lieux fixes et une parcelle par application au lieu de la rue. Ce dépôt ne touche pas au dépôt GDC.
 
-**Reporté** : la ville autour du chantier (rues, voitures, voisins).
+**La ville autour** : d'abord reportée, puis demandée en ambiance par Pierre-Alain le 21 octobre 2026 : deux ou trois voitures (`city-car`) et quelques badauds en tenue de ville, toujours hors des zones et du chantier (lot G8).
 
 ## Les chemins
 
