@@ -24,6 +24,7 @@
     .signes { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
     .signe { display: flex; gap: 8px; align-items: center; }
     .specimen p { margin: 4px 0; }
+    @media (max-width: 600px) { gdc-side-nav { height: auto !important; max-width: none !important; } }
     #journal { font: 12px/1.5 var(--gdc-font-mono); white-space: pre-wrap; margin: 0; }
     #journal .ko { color: var(--gdc-state-error); font-weight: 600; }
   </style>

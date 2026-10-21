@@ -44,6 +44,51 @@ export const variantes = {
       },
     },
   ],
+  // la navigation : le plan du projet-type (fixtures/projet-type), a l'etape de la construction
+  "side-nav": [
+    {
+      titre: "Le chantier, une application choisie",
+      style: "height: 420px; max-width: 300px",
+      data: {
+        selected: "bureau",
+        groups: [
+          {
+            title: "Les lieux",
+            items: [
+              { id: "bureau-architecte", name: "Le bureau d'architecte" },
+              { id: "bureau-etudes", name: "Le bureau d'études", state: "active" },
+              { id: "bureau-client", name: "Le bureau du client", state: "waiting" },
+              { id: "bureau-controle", name: "Le bureau de contrôle", state: "error" },
+              { id: "baraque", name: "La baraque du conducteur de travaux", state: "active" },
+              { id: "chantier", name: "Le chantier, une parcelle par application" },
+              { id: "parking", name: "Le parking, le carnet des demandes" },
+              { id: "aire-reception", name: "L'aire de réception" },
+            ],
+          },
+          {
+            title: "Les bâtiments",
+            items: [{ id: "bureau", name: "Application de bureau", state: "active" }],
+          },
+          {
+            title: "Les fiches",
+            items: [
+              { id: "001-cloturer-un-audit", name: "Clôturer un audit", state: "active" },
+              { id: "002-signer-le-rapport", name: "Signer le rapport", state: "done" },
+            ],
+          },
+          {
+            title: "Les agents",
+            items: [
+              { id: "claire", name: "Claire, architecte", state: "active" },
+              { id: "lina", name: "Lina, ingénieure", state: "blocked" },
+              { id: "victor", name: "Victor", state: "dormant" },
+            ],
+          },
+        ],
+      },
+    },
+    { titre: "Sans données", style: "height: 160px; max-width: 300px", data: {} },
+  ],
 };
 
 const journal = [];
@@ -132,6 +177,7 @@ function sectionElement(entry) {
     const d = el("div", { class: "variante" });
     const n = document.createElement(mod.meta.tag);
     n.data = v.data;
+    if (v.style) n.setAttribute("style", v.style);
     d.append(el("h3", {}, v.titre), n);
     s.append(d);
     // controle en direct : l'element s'est-il construit, et n'emet-il que les evenements de sa fiche ?
