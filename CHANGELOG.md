@@ -2,7 +2,7 @@
 
 ## Non publiée, après 0.2.0
 
-- Lot G7, les illustrations : `agent-portraits` (20 portraits rendus par `blender/assets/agent-portraits.py` depuis le kit du personnage, SVG à disque, états idle, talking, working).
+- Lot G7, les illustrations : `agent-portraits` (20 portraits rendus par `blender/assets/agent-portraits.py` depuis le kit du personnage, SVG à disque, états idle, talking, working), `step-icons` (dix icônes d'étape).
 - Chaîne Blender : un script peut rendre des images au lieu d'un GLB (`rend`, `SOURCES`) ; `asset.json` garde leurs empreintes.
 - Contrôle : les illustrations sont vérifiées (`checkSvg` : rien d'extérieur, `viewBox`, poids, monochrome, épaisseur unique, états d'un portrait, provenance du rendu). Contrat : section « Les illustrations ».
 - Bibliothèque : `illustrations[id][fichier]`, le texte de chaque SVG. Page `/interface.html` : section de chaque illustration.
