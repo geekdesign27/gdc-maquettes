@@ -81,6 +81,7 @@ export function lisScene(scene, connus) {
       type: TYPES[b.type] || "block",
       ...phaseDe(b),
       agents: surParcelle(b.id).map((p) => p.id),
+      grue: gardes.some((e) => e.element === "crane" && e.ancre === b.id),
       bloque: gardes.some(
         (e) => e.element === "blocked-sign" && e.ancre === b.id,
       ),

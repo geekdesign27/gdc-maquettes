@@ -10,6 +10,7 @@
 // composants sont injectes ; rien n'est charge d'ailleurs.
 import {
   implantation,
+  abords,
   ZONES,
   ETAPES,
   BORDURE,
@@ -184,6 +185,7 @@ export async function creeCarte(THREE, options) {
   function retire(cle) {
     const m = membres.get(cle);
     if (!m) return;
+    acteurs.delete(cle); // une personne qui s'en va marche jusqu'a sa porte, puis seulement elle est retiree
     colore(m.inst.root); // les copies grises restent a la zone, qui les libere
     m.inst.root.removeFromParent();
     m.inst.dispose();
@@ -278,6 +280,9 @@ export async function creeCarte(THREE, options) {
 
   // --- placer un element de GDC
   let lu = null;
+  // les abords d'un batiment, selon son type (implantation.js)
+  const abordsDe = (idBatiment) =>
+    abords(parcelleDe(idBatiment), lu.batiments.find((b) => b.id === idBatiment)?.type);
   const parcelleDe = (idBatiment) => {
     const k = lu?.parcelle.get(idBatiment);
     return k === undefined
@@ -459,7 +464,7 @@ export async function creeCarte(THREE, options) {
         }
       }
       return {
-        pos: pa.pied[rang % pa.pied.length],
+        pos: abordsDe(p.batiment).pied[rang % 5],
         y: 0,
         facing: ANGLE_DEHORS,
       };
@@ -574,6 +579,7 @@ export async function creeCarte(THREE, options) {
         })
       : tache(spec, v.n, {
           parcelle: pa,
+          abords: abordsDe(spec.batiment),
           points: imp.points,
           porte: porteBatiment(spec.batiment),
         });
@@ -675,7 +681,7 @@ export async function creeCarte(THREE, options) {
       if (!spec) {
         // il s'en va : par le vestiaire a la fermeture, sinon il s'efface
         vivants.delete(cle);
-        acteurs.delete(cle);
+        v.a.suite = null;
         if (v.pret && transition && anime && !v.usager) {
           v.a.attente = 0;
           marche(v.a, trajet(v.a, imp.points.vestiaire, null), () => retire(cle));
@@ -694,7 +700,7 @@ export async function creeCarte(THREE, options) {
         // il arrive : du vestiaire a l'ouverture, sinon il est deja a son poste
         v.pret = true;
         const pa = imp.parcelles[Math.min(spec.index, imp.parcelles.length - 1)];
-        placeActeur(v.a, v.usager ? porteBatiment(spec.batiment) : transition && anime ? imp.points.vestiaire : pa.pied[spec.rang % pa.pied.length]);
+        placeActeur(v.a, v.usager ? porteBatiment(spec.batiment) : transition && anime ? imp.points.vestiaire : abordsDe(spec.batiment).pied[spec.rang % 5]);
       }
       v.n = 0;
       if (regime === "pause" && !v.usager) pause(v, k++);
@@ -795,7 +801,6 @@ export async function creeCarte(THREE, options) {
       const el = scene.elements.get(id);
       if (!el) {
         if (m.acteur && m.acteur.marche) continue; // il rentre deja
-        acteurs.delete(cle);
         if (doucement && anime && !m.acteur)
           impulsion(m, 1, 0, () => retire(cle));
         else retire(cle);
@@ -908,7 +913,6 @@ export async function creeCarte(THREE, options) {
         // il rentre par la porte de son lieu
         const ancien = ac.m.el && { ...lisLieuSimple(ac.m.el.lieu) };
         const porte = ancien && porteDe(ancien);
-        acteurs.delete(ac.m.cle);
         if (!porte || !anime) {
           retire(ac.m.cle);
           return 0;
@@ -1005,7 +1009,8 @@ export async function creeCarte(THREE, options) {
     signalements,
     // Une nouvelle scene de GDC. La premiere se pose telle quelle ; les suivantes jouent leurs actions dans l'ordre,
     // puis l'etat recu s'applique. Une scene qui arrive pendant la lecture de la precedente la termine d'abord.
-    async applique(scene, { force = options.force } = {}) {
+    // actions: false pose la scene telle quelle (un saut de plusieurs etapes).
+    async applique(scene, { force = options.force, actions = true } = {}) {
       options.force = force;
       if (file.length) termine();
       const suivante = lisScene(scene, connus);
@@ -1014,7 +1019,7 @@ export async function creeCarte(THREE, options) {
       lu = suivante;
       await prepare(lu);
       await prepareVie(lu);
-      if (premiere || !anime) {
+      if (premiere || !anime || !actions) {
         premiere = false;
         concilie(lu, false);
         vie(lu, false);
@@ -1207,6 +1212,9 @@ export async function creeCarte(THREE, options) {
     get regime() {
       return regime;
     },
+    get applications() {
+      return imp.apps;
+    },
     // ce que la carte montre : pour le rapport de la galerie et la mesure de fluidite
     compte() {
       let ouvriers = 0;
@@ -1219,6 +1227,7 @@ export async function creeCarte(THREE, options) {
         ouvriers,
         usagers: gens,
         agents: [...membres.values()].filter((m) => m.acteur && !m.vie).length,
+        personnes: [...membres.values()].filter((m) => m.id === "character").length, // tous ceux qui sont poses
       };
     },
     dispose() {

@@ -33,7 +33,7 @@ const effectifDe = (b, graine) => {
 };
 
 // Les ouvriers de la carte, dans l'ordre des parcelles : { cle, batiment, index, phase, rang, rangement, graine }.
-// lu : lisScene ; force : chaque parcelle en chantier prend son plafond (la mesure de fluidite de la galerie).
+// lu : lisScene ; force : chaque parcelle prend son plafond (la mesure de fluidite de la galerie).
 // Une meme parcelle garde les memes ouvriers (cle et visage par batiment et par rang) d'une scene a l'autre.
 export function equipes(
   lu,
@@ -47,8 +47,7 @@ export function equipes(
       let n = effectifDe(b, graine);
       const rangement = n > 0 && !force && !b.agents.length;
       if (rangement) n = 1; // sans agent sur la parcelle, un ouvrier range
-      if (force && b.phase !== "completed" && b.phase !== "plot")
-        n = plafond.batiment;
+      if (force) n = plafond.batiment; // la mesure : chaque parcelle prend son plafond, quelle que soit sa phase
       n = Math.min(n, plafond.batiment);
       return Array.from({ length: n }, (_, rang) => ({
         cle: `ouvrier:${b.id}:${rang + 1}`,
@@ -59,6 +58,7 @@ export function equipes(
         rang,
         rangement,
         bloque: b.bloque,
+        grue: b.grue,
         graine: `${graine}:${b.id}:${rang + 1}`,
       }));
     });
@@ -102,12 +102,13 @@ export function usagers(lu, { quality = "high", graine = "gdc" } = {}) {
 // La tache numero n d'un ouvrier, rejouable : { vers, etat, duree, dedans?, echafaudage? }. vers : un point du sol
 // [x, z] ; echafaudage : l'etage ou il travaille (l'assemblage le pose a sa hauteur) ; dedans : il entre par la porte
 // et ne se voit plus le temps de la tache.
-// parcelle : implantation().parcelles[k] ; points : implantation().points ; porte : la porte du batiment [x, z].
-export function tache(ouvrier, n, { parcelle, points, porte }) {
+// parcelle : implantation().parcelles[k] ; abords : abords(parcelle, type) ; points : implantation().points ; porte :
+// la porte du batiment [x, z].
+export function tache(ouvrier, n, { parcelle, abords, points, porte }) {
   const t = alea(`${ouvrier.graine}:${ouvrier.phase}:${n}`);
   const duree = entre(t, ...DUREE_TACHE);
-  const pied = () => choisis(t, parcelle.pied);
-  const facade = () => choisis(t, parcelle.pied.slice(0, 4));
+  const pied = () => choisis(t, abords.pied);
+  const facade = () => choisis(t, abords.echafaudage);
   const pair = n % 2 === 0;
   const { rang } = ouvrier;
   if (ouvrier.bloque) return { vers: parcelle.porte, etat: "waiting", duree }; // l'equipe attend pres de la barriere
@@ -119,9 +120,9 @@ export function tache(ouvrier, n, { parcelle, points, porte }) {
     case "excavation":
       // un signaleur reste pres de la pelle et parle a la radio ; l'autre controle le niveau au bord de la fouille
       if (rang === 0)
-        return { vers: decale(parcelle.pied[0], t), etat: "talk", duree };
+        return { vers: decale(abords.pelle, t), etat: "talk", duree };
       return pair
-        ? { vers: parcelle.bord, etat: "inspect", duree }
+        ? { vers: decale(abords.bord, t), etat: "inspect", duree }
         : { vers: pied(), etat: "inspect", duree };
     case "foundations":
       // ils portent les planches du stock a la fouille, puis travaillent au sol
@@ -129,8 +130,9 @@ export function tache(ouvrier, n, { parcelle, points, porte }) {
         ? { vers: pied(), etat: "work", duree }
         : { vers: points.stock, etat: "work", duree: duree / 2 };
     case "structure":
-      // un ouvrier au pied de la grue ; les autres sur l'echafaudage, au niveau en cours, et des trajets au stock
-      if (rang === 0)
+      // un ouvrier au pied de la grue (quand GDC la pose) ; les autres sur l'echafaudage, au niveau en cours, et des
+      // trajets au stock
+      if (rang === 0 && ouvrier.grue)
         return {
           vers: [
             parcelle.grue.position[0] + 1.4,

@@ -68,13 +68,14 @@ const LIEUX = {
     element: "architect-office",
     zone: "bureaux",
     position: [6.5, 0, 34],
-    porte: [6.5, 30.2],
+    porte: [12.9, 35.2], // la porte donne a +X, entre l'architecte et le client
+    route: 13.6,
   },
   "bureau-client": {
     element: "client-office",
     zone: "bureaux",
     position: [18.5, 0, 34],
-    porte: [18.5, 30.2],
+    porte: [25.2, 33.2], // ouvert a +X, sur la voie
     panneau: [12.8, 0, 30.5],
   },
   "bureau-etudes": {
@@ -82,7 +83,7 @@ const LIEUX = {
     zone: "bureaux",
     position: [16.5, 0, 49],
     params: { desks: 4 },
-    porte: [21.6, 49],
+    porte: [22.4, 49],
   },
   "panneau-permis": {
     element: "permit-board",
@@ -100,7 +101,7 @@ const LIEUX = {
     element: "site-office",
     zone: "chantier",
     position: [35, 0, 38.6],
-    porte: [39.6, 38.6],
+    porte: [39.8, 36.5], // l'entree de la baraque (ancre entry)
   },
   "panneau-feu-vert": {
     element: "decision-sign",
@@ -121,20 +122,20 @@ const LIEUX = {
     element: "site-container",
     zone: "remise",
     position: [46, 0, 18],
-    porte: [46, 22.4],
+    porte: [44, 22.4], // l'entree d'un conteneur (ancre entry) est a -X
     panneau: [49.6, 0, 22.4],
   },
   "cabane-garantie": {
     element: "site-container",
     zone: "remise",
     position: [53.5, 0, 18],
-    porte: [53.5, 22.4],
+    porte: [51.5, 22.4],
   },
   "cabane-transformations": {
     element: "site-container",
     zone: "transformations",
     position: [18, 0, 17.5],
-    porte: [18, 22.4],
+    porte: [16, 22.4],
   },
   parking: {
     element: "parking",
@@ -243,15 +244,6 @@ export function implantation(applications = 1) {
       grue: { position: [x - 4.4, 0, 32.6], rotation: -Math.PI / 2 },
       camion: { position: [x + 3, 0, 51], rotation: Math.PI / 2 },
       porte: [x, Z_ALLEE],
-      // les reperes des ouvriers autour du batiment (socle de 12 m, batiment d'environ 8 x 6 m)
-      pied: [
-        [x - 4.6, 41.6],
-        [x + 4.6, 41.6],
-        [x - 4.8, 33.4],
-        [x + 4.8, 36.8],
-        [x, 41.8],
-      ],
-      bord: [x + 5.4, 43.8], // le bord de la fouille, ou l'on controle le niveau
     });
   }
 
@@ -300,37 +292,37 @@ function voies({ CHANTIER, ENTREE, sortie, lieux, parcelles }) {
   point("carrefour", X_ROUTE, Z_ROUTE);
   const surRoute = (id, x) => point(`route:${id}`, x, Z_ROUTE);
   const surVoie = (id, z) => point(`voie:${id}`, X_ROUTE, z);
-  // chaque lieu dont la porte donne sur la route : un point de la route en face
+  // chaque lieu dont la porte donne sur la route : un point de la route en face (ou a son acces, route)
   const horizontaux = [
     "bureau-architecte",
-    "bureau-client",
     "aire-reception",
     "cabane-cles",
     "cabane-garantie",
     "cabane-transformations",
     "parking",
   ];
-  for (const id of horizontaux) surRoute(id, lieux[id].porte[0]);
+  for (const id of horizontaux) surRoute(id, lieux[id].route ?? lieux[id].porte[0]);
   surRoute("sortie", xPortail);
   const route = Object.values(points)
     .filter((p) => p.z === Z_ROUTE)
     .sort((a, b) => a.x - b.x)
     .map((p) => p.id);
   chaine(route);
-  surVoie("permis", lieux["panneau-permis"].porte[1]);
-  surVoie("etudes", lieux["bureau-etudes"].porte[1]);
+  // la voie verticale : les lieux dont la porte donne sur elle, et l'entree du chantier, du carrefour vers le bas
+  const verticaux = ["bureau-client", "panneau-permis", "bureau-etudes"];
+  for (const id of verticaux) surVoie(id, lieux[id].porte[1]);
   surVoie("entree", centre(ENTREE));
-  chaine(["carrefour", "voie:permis", "voie:etudes", "voie:entree"]);
+  chaine(["carrefour", ...Object.values(points).filter((p) => p.x === X_ROUTE && p.z > Z_ROUTE).sort((a, b) => a.z - b.z).map((p) => p.id)]);
 
   // les portes des lieux hors du chantier
   for (const id of horizontaux) {
     point(`porte:${id}`, ...lieux[id].porte);
     relie(`porte:${id}`, `route:${id}`);
   }
-  point("porte:bureau-etudes", ...lieux["bureau-etudes"].porte);
-  relie("porte:bureau-etudes", "voie:etudes");
-  point("porte:panneau-permis", ...lieux["panneau-permis"].porte);
-  relie("porte:panneau-permis", "voie:permis");
+  for (const id of verticaux) {
+    point(`porte:${id}`, ...lieux[id].porte);
+    relie(`porte:${id}`, `voie:${id}`);
+  }
 
   // le chantier : le portail d'entree, l'allee le long des parcelles, le chemin des experts, le tour par le fond jusqu'au
   // portail de sortie
@@ -379,6 +371,36 @@ function voies({ CHANTIER, ENTREE, sortie, lieux, parcelles }) {
     "route:sortie",
   ]);
   return { points, segments };
+}
+
+// Les abords d'un batiment sur sa parcelle (building 2.0.0 : trame de 3 m, house 2 x 2 trames, block 3 x 2, hall 4 x 2 ;
+// echafaudage d'environ 1 m ; fouille a 1,1 m du nu) : ou les ouvriers travaillent, du cote de la camera (+X, +Z) pour
+// qu'on les voie. pied : au sol, hors de l'echafaudage ; echafaudage : sur son plancher (l'assemblage les pose a la
+// hauteur de l'etage) ; bord : le bord de la fouille, ou l'on controle le niveau ; pelle : pres de la pelleteuse.
+const DEMI_EMPRISE = { house: [3, 3], block: [4.5, 3], hall: [6, 3] };
+export function abords(parcelle, type = "block") {
+  const [x, , z] = parcelle.position;
+  const [dx, dz] = DEMI_EMPRISE[type] || DEMI_EMPRISE.block;
+  const [sx, sz] = [dx + 0.6, dz + 0.6];
+  const [px, pz] = [dx + 1.7, dz + 1.7];
+  return {
+    pied: [
+      [x - dx + 1, z + pz],
+      [x + 0.4, z + pz],
+      [x + dx - 0.6, z + pz],
+      [x + px, z + dz - 1],
+      [x + px, z - dz + 1.4],
+    ],
+    echafaudage: [
+      [x - dx + 1.4, z + sz],
+      [x + 0.6, z + sz],
+      [x + dx - 1, z + sz],
+      [x + sx, z + 0.6],
+      [x + sx, z - dz + 1.2],
+    ],
+    bord: [x + 0.8, z + dz + 1.3],
+    pelle: [x + dx + 1.5, z + dz + 1.6],
+  };
 }
 
 // La zone d'un point du sol, ou null hors des quatre zones (les routes).
