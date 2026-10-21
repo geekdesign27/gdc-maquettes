@@ -1396,7 +1396,7 @@
         "Cohérents avec les personnages 3D",
         "Reconnaissables en petit (48 pixels)"
       ],
-      "status": "à faire",
+      "status": "livré",
       "inputs": {
         "name": "identifiant de la personne dans components/kit/character-kit/equipe.json (nom du fichier SVG : client, claire, helene…)",
         "state": "idle | talking | working (classe CSS posée sur le <svg>, à la place de idle)"
@@ -1448,7 +1448,7 @@
         "Lisibles à 20 pixels",
         "Une seule couleur, héritée du texte"
       ],
-      "status": "à faire",
+      "status": "livré",
       "inputs": {
         "step": "identifiant de l'étape (nom du fichier SVG) : idea, survey, plans, permit, execution-plans, green-light, construction, reception, production, transformations"
       },
@@ -1484,7 +1484,7 @@
       "acceptance": [
         "Même famille que les icônes des étapes"
       ],
-      "status": "à faire",
+      "status": "livré",
       "inputs": {
         "place": "identifiant du lieu dans GDC (nom du fichier SVG) : bureau-architecte, bureau-etudes, bureau-client, bureau-controle, baraque, chantier, parking, aire-reception, batiment-habite"
       },

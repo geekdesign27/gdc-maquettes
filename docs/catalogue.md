@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-44 éléments : 38 livré, 4 à faire, 2 exemple.
+44 éléments : 41 livré, 1 à faire, 2 exemple.
 
 ## G0 : La ligne graphique
 
@@ -668,9 +668,9 @@ Donner un visage aux agents et une icône à chaque étape et chaque lieu.
 
 | Ordre | Identifiant | Nom | Nature | But | Statut |
 |---|---|---|---|---|---|
-| 1 | `agent-portraits` | Les portraits des agents | Illustration ou icône SVG, animée en CSS si besoin | Un visage par agent, le même sur le panneau, la page de la méthode et les rapports. | à faire |
-| 2 | `step-icons` | Les icônes des étapes | Illustration ou icône SVG, animée en CSS si besoin | Une icône pour chacune des dix étapes, de l'idée aux transformations. | à faire |
-| 3 | `place-icons` | Les icônes des lieux | Illustration ou icône SVG, animée en CSS si besoin | Une icône par lieu, pour la navigation et les rapports. | à faire |
+| 1 | `agent-portraits` | Les portraits des agents | Illustration ou icône SVG, animée en CSS si besoin | Un visage par agent, le même sur le panneau, la page de la méthode et les rapports. | livré |
+| 2 | `step-icons` | Les icônes des étapes | Illustration ou icône SVG, animée en CSS si besoin | Une icône pour chacune des dix étapes, de l'idée aux transformations. | livré |
+| 3 | `place-icons` | Les icônes des lieux | Illustration ou icône SVG, animée en CSS si besoin | Une icône par lieu, pour la navigation et les rapports. | livré |
 
 ### Les portraits des agents (`agent-portraits`)
 
