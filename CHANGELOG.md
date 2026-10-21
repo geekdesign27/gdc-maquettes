@@ -85,6 +85,8 @@
 - Signalétique : en thème sombre, l'octogone d'« En erreur » reçoit un liseré clair de 1 px (`--gdc-sign-edge`), le rouge foncé ne faisant que 2,1:1 sur le fond (décision de Pierre-Alain du 21 octobre 2026). Les couleurs des signes passent par le style plutôt que par les attributs SVG. Fiche de la barre du haut : les initiales du projet en attendant un logo.
 - La barre du haut (`top-bar`, `<gdc-top-bar>` 1.0.0) : le projet et ses initiales, les décisions (rouges seulement s'il y en a), les agents actifs, bloqués et inconnus avec leurs signes, la fraîcheur qui passe en avertissement au-delà de `staleAfter` (600 s par défaut) ; « ? » pour une valeur absente ; une ligne sur téléphone. Livrée : validée par Pierre-Alain le 21 octobre 2026.
 - Fiche de la navigation (`side-nav`) : un élément sans `state` n'a pas de signe ; une valeur hors des six états s'affiche « inconnu » (décision de Pierre-Alain du 21 octobre 2026).
+- La navigation (`side-nav`, `<gdc-side-nav>` 1.0.0) : liste groupée avec signes d'état, recherche sans accents ni majuscules, un seul arrêt de tabulation et les flèches ; sur téléphone, une rangée de pastilles qui défile jusqu'à l'élément choisi. Livrée : validée par Pierre-Alain le 21 octobre 2026.
+- Catalogue, lot G6 : les briques avant ce qui les assemble (décision de Pierre-Alain du 21 octobre 2026) ; nouvel ordre : `copy-button`, `progress-bar`, `notification-badge`, `inspector`, `quick-actions`, `agent-popup`. Les lignes de l'inspecteur peuvent porter `ref`, l'identifiant de l'élément cité, qui émet `gdc-select`.
 
 ## 0.2.0, 18 octobre 2026
 

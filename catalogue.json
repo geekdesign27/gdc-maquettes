@@ -1234,7 +1234,7 @@
         "Utilisable au clavier",
         "Devient une rangée défilante sur téléphone"
       ],
-      "status": "à faire",
+      "status": "livré",
       "inputs": {
         "groups": "liste de { title, items: [{ id, name, state }] } ; state est l'un des six états de la signalétique ; absent, pas de signe (rien à signaler) ; toute autre valeur, « inconnu »",
         "selected": "identifiant sélectionné"
@@ -1246,7 +1246,7 @@
     {
       "id": "inspector",
       "lot": "G6",
-      "order": 3,
+      "order": 6,
       "kind": "html",
       "category": "interface",
       "name": "L'inspecteur",
@@ -1262,18 +1262,18 @@
         "id": "identifiant stable",
         "kind": "nature (fiche, lot, agent, lieu…)",
         "title": "nom affiché",
-        "sections": "liste de { title, rows: [{ label, value, state? }] } : progression, lots, tâches, blocages, réussites, actions attendues"
+        "sections": "liste de { title, rows: [{ label, value, state?, ref? }] } : progression, lots, tâches, blocages, réussites, actions attendues ; ref : l'identifiant de l'élément cité, sa valeur devient un bouton qui émet gdc-select"
       },
       "outputs": {
         "gdc-close": "fermeture",
         "gdc-copy": "detail.id, detail.text",
-        "gdc-select": "clic sur un élément cité ; detail.id"
+        "gdc-select": "clic sur un élément cité (ligne avec ref) ; detail.id = ref"
       }
     },
     {
       "id": "agent-popup",
       "lot": "G6",
-      "order": 4,
+      "order": 8,
       "kind": "html",
       "category": "interface",
       "name": "La fiche d'un agent",
@@ -1321,7 +1321,7 @@
     {
       "id": "progress-bar",
       "lot": "G6",
-      "order": 6,
+      "order": 4,
       "kind": "html",
       "category": "interface",
       "name": "La barre de progression",
@@ -1342,7 +1342,7 @@
     {
       "id": "copy-button",
       "lot": "G6",
-      "order": 7,
+      "order": 3,
       "kind": "html",
       "category": "interface",
       "name": "L'icône de copie",
@@ -1364,7 +1364,7 @@
     {
       "id": "quick-actions",
       "lot": "G6",
-      "order": 8,
+      "order": 7,
       "kind": "html",
       "category": "interface",
       "name": "Les actions rapides",
