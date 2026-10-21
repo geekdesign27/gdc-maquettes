@@ -77,5 +77,6 @@ Le placement exact (plan, espacements, caméra) est celui de la scène de réfé
 ## Les interdits
 
 - Aucun mouvement de décor sans action de GDC ; aucune animation d'ambiance qui suggère une activité.
+  Amendement proposé le 21 octobre 2026, à valider par Pierre-Alain : une vie d'ambiance qui naît de l'état envoyé par GDC (`docs/vie-du-chantier.md`, section 1).
 - Aucune couleur d'état dans la scène (bible 17.3) ; un état se lit par la forme et l'animation, la couleur reste dans l'interface.
 - Une action dont l'élément est inconnu du catalogue est ignorée et signalée, jamais inventée.

@@ -123,6 +123,26 @@ Pierre-Alain veut pouvoir ouvrir les fiches depuis la carte. Un clic sur un bât
 - Une nouvelle séquence de `fixtures/` qui contient ces actions : consultations, contrôles sur le bâtiment, remise des clés, un projet à trois applications (AuditApp : webapp desktop, application terrain, webapp d'administration), et des bâtiments à des étapes différentes.
 - Le numéro de schéma de la scène incrémenté (`schema: 3`), pour que la maquette sache ce qu'elle reçoit.
 
+## 8. La vie du chantier : régime, zones, attente
+
+Ajout du 21 octobre 2026 (`docs/vie-du-chantier.md`, proposition à valider par Pierre-Alain). Le chantier doit vivre quand un projet tourne : des ouvriers en casque gris et gilet jaune autour des agents, qui sont leurs chefs d'équipe, et un trafic d'ambiance. Il doit être fermé et immobile quand rien ne tourne. **La maquette invente le travail des ouvriers, mais seulement à partir de faits que GDC lui donne.** GDC n'envoie jamais d'ouvriers : ils n'existent pas dans `elements`.
+
+**Demandes** :
+
+| Champ ou action | Valeurs | Ce que la carte en fait |
+|---|---|---|
+| `chantier.regime` | `ferme`, `ouvert`, `pause` | `ferme` : portails fermés, personne, rien ne bouge ; `ouvert` : la vie selon la phase de chaque bâtiment ; `pause` : les ouvriers attendent sur place |
+| Action `ouverture`, action `fermeture` | Horodatées | Le portail s'ouvre et les ouvriers arrivent ; ils repartent et le portail se ferme |
+| `zones.<id>.activee` | Booléen, ou la date de la première activation | Une zone jamais activée est en niveaux de gris ; la couleur arrive une fois, à l'activation |
+| `pause` : le motif | `decision` (une décision attendue de Pierre-Alain) | La pause se lit sur le chantier ; le badge rouge reste dans l'interface |
+
+**Ce qui existe déjà et suffit** : la phase de chaque bâtiment, les agents présents sur une parcelle (`lieu: batiment:<id>`), les lots bloqués (`blocked-sign`).
+
+**Questions** :
+- Quand le harnais est-il « en cours » au sens du chantier : une session ouverte, un lot en exécution, une fiche hors du statut livré ?
+- Le camion de livraison garde-t-il son sens (une dépendance ajoutée, émise par GDC) ? La maquette propose un autre véhicule pour l'ambiance (`docs/vie-du-chantier.md`, section 6).
+- Une zone activée l'est-elle pour toujours, ou par projet ?
+
 ## Ce que l'atelier fera de son côté
 
 Ce n'est pas commencé : les fiches sont à valider par Pierre-Alain (session proposée « La ville vivante »).
@@ -130,3 +150,4 @@ Ce n'est pas commencé : les fiches sont à valider par Pierre-Alain (session pr
 - **L'assemblage de la carte** depuis la scène de GDC.
 - **La vue en coupe** au clic.
 - **La lecture de ces actions**.
+- **La vie du chantier** : les ouvriers, les usagers, le trafic d'ambiance, les portails et la désaturation des zones, à partir du régime et des phases que GDC envoie (`docs/vie-du-chantier.md`).
