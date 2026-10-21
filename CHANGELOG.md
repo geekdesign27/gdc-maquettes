@@ -89,6 +89,7 @@
 - Catalogue, lot G6 : les briques avant ce qui les assemble (décision de Pierre-Alain du 21 octobre 2026) ; nouvel ordre : `copy-button`, `progress-bar`, `notification-badge`, `inspector`, `quick-actions`, `agent-popup`. Les lignes de l'inspecteur peuvent porter `ref`, l'identifiant de l'élément cité, qui émet `gdc-select`.
 - L'icône de copie (`copy-button`, `<gdc-copy-button>` 1.0.0) : copie `text` tel quel s'il cite l'identifiant, sinon « text (id) » ; coche et bulle « Copié » pendant 1,5 s ; si le presse-papiers refuse, une bulle avec le texte sélectionné. Livrée : validée par Pierre-Alain le 21 octobre 2026.
 - La barre de progression (`progress-bar`, `<gdc-progress-bar>` 1.0.0) : signe d'état, barre et fraction, jamais de pourcentage ; la règle dans une bulle au survol, au focus et au toucher ; sans total, « 2 / ? » (le nombre fait reste affiché s'il est connu). Livrée : validée par Pierre-Alain le 21 octobre 2026.
+- Le badge de notification (`notification-badge`, `<gdc-notification-badge>` 1.0.0) : le signe du niveau le plus grave (décision, puis erreur, puis bloqué) et le total des alertes ; le rond vert à coche, sans nombre, quand tout est validé ; masqué à zéro ; une impulsion à l'apparition et quand le total monte. Livré : validé par Pierre-Alain le 21 octobre 2026.
 
 ## 0.2.0, 18 octobre 2026
 

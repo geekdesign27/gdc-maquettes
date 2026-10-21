@@ -1312,7 +1312,7 @@
         "Couleur, forme et icône pour chaque niveau",
         "Masqué à zéro"
       ],
-      "status": "à faire",
+      "status": "livré",
       "inputs": {
         "counts": "{ error, waiting, blocked, done } : nombres"
       },
