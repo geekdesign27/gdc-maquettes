@@ -8,8 +8,9 @@ dans la piece concernee de building-interior. Aucune couleur d'etat (bible 17.3)
 ANCHOR_BADGE. Le cone est seul, plein et rond : il ne se confond pas avec le triangle de la barriere, debout sur sa
 latte.
 
-Cotes, exageration x 1,2 de la famille comprise : 0,90 m de haut ; semelle de 0,48 m sur 0,05 m ; cone de 0,40 m de
-diametre en bas a 0,07 m en haut ; bandes blanches de 0,10 m, de 0,38 a 0,48 m et de 0,60 a 0,70 m.
+Cotes : le cone de 0,90 m (exageration x 1,2 de la famille) agrandi a 1,20 m, toutes cotes a l'echelle (decision de
+Pierre-Alain du 21 octobre 2026, apres la planche : a 0,90 m, il ne faisait que 14 px et les murs coupes a 0,90 m de
+building-interior le cachaient a moitie). Semelle de 0,64 m ; cone de 0,53 m de diametre en bas ; deux bandes blanches.
 
 Noeuds : PRP_DEFECT_CONE_A_CONE (tout fusionne, origine au milieu, au sol), PRP_DEFECT_CONE_A_CONE_LOW (moins de cotes,
 sans chanfrein, pour la qualite basse), ANCHOR_BADGE. L'impulsion d'apparition est jouee par le composant.
@@ -25,11 +26,12 @@ import bpy
 ASSET = {"id": "defect-sign", "categorie": "signals", "nom": "PRP_DEFECT_CONE_A_v001"}
 
 P = "PRP_DEFECT_CONE_A_"
-SEMELLE = (0.48, 0.05)  # cote et epaisseur
-HAUT = 0.90
-R_BAS, R_HAUT = 0.20, 0.035
-BANDES = ((0.38, 0.48), (0.60, 0.70))  # les bandes blanches, de z a z
-BADGE = 1.20
+K = 1.20 / 0.90  # l'agrandissement du cone de la famille (x 1,2) a 1,20 m
+SEMELLE = (0.48 * K, 0.05 * K)  # cote et epaisseur
+HAUT = 0.90 * K
+R_BAS, R_HAUT = 0.20 * K, 0.035 * K
+BANDES = ((0.38 * K, 0.48 * K), (0.60 * K, 0.70 * K))  # les bandes blanches, de z a z
+BADGE = 1.55
 C1 = 0.02
 
 
