@@ -1,0 +1,87 @@
+{
+  "sequence": "trois-applications",
+  "description": "Le même projet avec trois applications à des étapes différentes : une surélévation, une consultation, deux feux verts attendus, un contrôle sur un bâtiment (ADR 0013).",
+  "gdc": "0.19.0",
+  "etapes": [
+    {
+      "numero": 1,
+      "fichier": "01-trois-applications.json",
+      "titre": "Le projet compte trois applications",
+      "actions": [
+        "Application terrain apparaît",
+        "Administration apparaît"
+      ]
+    },
+    {
+      "numero": 2,
+      "fichier": "02-fiche-terrain.json",
+      "titre": "Une fiche pour l'application terrain",
+      "actions": [
+        "Les gabarits de la fiche « Saisir un constat hors ligne » apparaissent (le bâtiment « Application terrain »)"
+      ]
+    },
+    {
+      "numero": 3,
+      "fichier": "03-surelevation.json",
+      "titre": "Une fiche pour l'administration : une surélévation",
+      "actions": [
+        "Administration : completed → finishing",
+        "Les gabarits de la fiche « Gérer les droits des auditeurs » apparaissent (le bâtiment « Administration »)"
+      ]
+    },
+    {
+      "numero": 4,
+      "fichier": "04-consultation.json",
+      "titre": "Claire consulte Sarah",
+      "actions": [
+        "Le chantier ouvre",
+        "Sarah, l'expert sécurité apparaît (le bâtiment « Application terrain ») pour sa mission"
+      ]
+    },
+    {
+      "numero": 5,
+      "fichier": "05-deux-feux-verts.json",
+      "titre": "Deux feux verts t'attendent",
+      "actions": [
+        "Le bureau du client : 3",
+        "Ta décision « le feu vert » pour « Saisir un constat hors ligne » apparaît (Le panneau du feu vert)",
+        "Ta décision « le feu vert » pour « Gérer les droits des auditeurs » apparaît (Le panneau du feu vert)",
+        "Claire, l'architecte va du bureau du client au panneau du feu vert : ta décision l'attend"
+      ]
+    },
+    {
+      "numero": 6,
+      "fichier": "06-feu-vert-terrain.json",
+      "titre": "Feu vert pour l'application terrain",
+      "actions": [
+        "Application terrain : plot → excavation",
+        "Le bureau du client : 2",
+        "Les gabarits de la fiche « Saisir un constat hors ligne » disparaissent",
+        "Ta décision « le feu vert » pour « Saisir un constat hors ligne » disparaît"
+      ]
+    },
+    {
+      "numero": 7,
+      "fichier": "07-julie-construit.json",
+      "titre": "Julie construit le stockage local",
+      "actions": [
+        "Application terrain : excavation → structure",
+        "Julie, la développeuse base de données apparaît (le bâtiment « Application terrain »)",
+        "Hélène, le bureau de contrôle va du bâtiment « Application de bureau » au bâtiment « Application terrain » pour un contrôle"
+      ]
+    },
+    {
+      "numero": 8,
+      "fichier": "08-trois-chantiers.json",
+      "titre": "Trois bâtiments, trois étapes",
+      "actions": [
+        "Application de bureau : completed → finishing",
+        "Les gabarits de la fiche « Exporter un audit en PDF » apparaissent (le bâtiment « Application de bureau »)",
+        "Le bureau du client : 1",
+        "Claire, l'architecte va du panneau du feu vert au bureau du client : ta décision l'attend",
+        "Les gabarits de la fiche « Gérer les droits des auditeurs » disparaissent",
+        "Ta décision « le feu vert » pour « Gérer les droits des auditeurs » disparaît"
+      ]
+    }
+  ]
+}

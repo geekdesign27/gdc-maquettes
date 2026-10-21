@@ -2,49 +2,178 @@
   "etape": "les plans",
   "titre": "Le dossier est complet : ton permis de construire est attendu",
   "explication": "Lina a fini et célèbre ; le panneau de décision revient au bureau du client.",
-  "schema": 2,
+  "schema": 3,
   "projet": "AuditApp",
+  "etapes": [
+    {
+      "id": "idee",
+      "numero": 1,
+      "titre": "L'idée"
+    },
+    {
+      "id": "plans",
+      "numero": 2,
+      "titre": "Les plans"
+    },
+    {
+      "id": "permis",
+      "numero": 3,
+      "titre": "Le permis de construire"
+    },
+    {
+      "id": "plans-execution",
+      "numero": 4,
+      "titre": "Les plans d'exécution"
+    },
+    {
+      "id": "preparation",
+      "numero": 5,
+      "titre": "La préparation"
+    },
+    {
+      "id": "construction",
+      "numero": 6,
+      "titre": "La construction"
+    },
+    {
+      "id": "reception",
+      "numero": 7,
+      "titre": "La réception"
+    },
+    {
+      "id": "remise-des-cles",
+      "numero": 8,
+      "titre": "La remise des clés"
+    },
+    {
+      "id": "garantie",
+      "numero": 9,
+      "titre": "La garantie"
+    },
+    {
+      "id": "transformations",
+      "numero": 10,
+      "titre": "Les transformations"
+    }
+  ],
+  "chantier": {
+    "regime": "pause",
+    "depuis": "2026-10-21T15:53:15.795Z",
+    "raison": "personne n'avance et 1 décision t'attend"
+  },
   "plan": {
-    "rue": [
+    "zones": [
       {
-        "id": "bureau-architecte",
-        "element": "architect-office",
-        "nom": "Le bureau d'architecte"
-      },
-      {
-        "id": "bureau-etudes",
-        "element": "design-office",
-        "nom": "Le bureau d'études"
-      },
-      {
-        "id": "bureau-client",
-        "element": "client-office",
-        "nom": "Le bureau du client"
-      },
-      {
-        "id": "bureau-controle",
-        "element": "control-office",
-        "nom": "Le bureau de contrôle"
-      },
-      {
-        "id": "baraque",
-        "element": "site-office",
-        "nom": "La baraque du conducteur de travaux"
+        "id": "bureaux",
+        "nom": "Les bureaux",
+        "etapes": [
+          1,
+          2,
+          3
+        ],
+        "lieux": [
+          {
+            "id": "bureau-architecte",
+            "element": "architect-office",
+            "nom": "Le bureau d'architecte"
+          },
+          {
+            "id": "bureau-client",
+            "element": "client-office",
+            "nom": "Le bureau du client"
+          },
+          {
+            "id": "bureau-etudes",
+            "element": "design-office",
+            "nom": "Le bureau d'études"
+          },
+          {
+            "id": "panneau-permis",
+            "element": "permit-board",
+            "nom": "Le panneau du permis"
+          }
+        ],
+        "activee": "2026-10-21T15:53:15.916Z",
+        "par_ce_projet": true
       },
       {
         "id": "chantier",
-        "element": "site-fence",
-        "nom": "Le chantier, une parcelle par application"
+        "nom": "Le chantier",
+        "etapes": [
+          4,
+          5,
+          6
+        ],
+        "lieux": [
+          {
+            "id": "baraque",
+            "element": "site-office",
+            "nom": "La baraque du conducteur de travaux"
+          },
+          {
+            "id": "bureau-controle",
+            "element": "control-office",
+            "nom": "Le bureau de contrôle"
+          },
+          {
+            "id": "panneau-feu-vert",
+            "element": "decision-sign",
+            "nom": "Le panneau du feu vert"
+          },
+          {
+            "id": "chantier",
+            "element": "site-fence",
+            "nom": "Le chantier, une parcelle par application"
+          }
+        ],
+        "activee": null
       },
       {
-        "id": "parking",
-        "element": "parking",
-        "nom": "Le parking, le carnet des demandes"
+        "id": "remise",
+        "nom": "La réception, la remise des clés et la garantie",
+        "etapes": [
+          7,
+          8,
+          9
+        ],
+        "lieux": [
+          {
+            "id": "aire-reception",
+            "element": "reception-area",
+            "nom": "L'aire de réception"
+          },
+          {
+            "id": "cabane-cles",
+            "element": "site-container",
+            "nom": "La cabane de la remise des clés"
+          },
+          {
+            "id": "cabane-garantie",
+            "element": "site-container",
+            "nom": "La cabane de la garantie"
+          }
+        ],
+        "activee": null
       },
       {
-        "id": "aire-reception",
-        "element": "reception-area",
-        "nom": "L'aire de réception"
+        "id": "transformations",
+        "nom": "Les transformations",
+        "etapes": [
+          10
+        ],
+        "lieux": [
+          {
+            "id": "cabane-transformations",
+            "element": "site-container",
+            "nom": "La cabane des transformations"
+          },
+          {
+            "id": "parking",
+            "element": "parking",
+            "nom": "Le carnet des demandes"
+          }
+        ],
+        "activee": null
       }
     ],
     "parcelles": [
@@ -52,7 +181,7 @@
         "batiment": "bureau",
         "nom": "Application de bureau",
         "type": "immeuble",
-        "pieces": []
+        "fiches": []
       }
     ]
   },
@@ -79,7 +208,12 @@
       "nom": "Application de bureau",
       "type": "immeuble",
       "etat": "plot",
+      "etape": 4,
+      "etages": [],
       "raison": "aucune fiche commencée",
+      "ref": {
+        "application": "bureau"
+      },
       "source": "dossier/profil.json"
     },
     {
@@ -101,6 +235,7 @@
       "id": "bureau-client",
       "nom": "Le bureau du client",
       "etat": "waiting",
+      "quantite": 1,
       "source": [
         "projet"
       ]
@@ -149,8 +284,10 @@
       "role": "architecte",
       "nom": "Claire, l'architecte",
       "etat": "waiting",
-      "lieu": "bureau-architecte",
-      "source": "activité du projet, 2026-10-19T09:07:15.392Z"
+      "lieu": "bureau-client",
+      "source": "activité du projet, 2026-10-21T15:53:14.701Z",
+      "motif": "decision",
+      "decision": "decision-permis-de-construire"
     },
     {
       "element": "character",
@@ -159,7 +296,7 @@
       "nom": "Lina, le designer UX/UI",
       "etat": "celebrate",
       "lieu": "bureau-etudes",
-      "source": "activité du projet, 2026-10-19T09:07:16.711Z"
+      "source": "activité du projet, 2026-10-21T15:53:15.795Z"
     },
     {
       "element": "character",
@@ -174,6 +311,16 @@
   ],
   "actions": [
     {
+      "ts": "2026-10-21T15:53:15.917Z",
+      "action": "pause",
+      "element": "chantier",
+      "id": "chantier",
+      "de": "ouvert",
+      "vers": "pause",
+      "phrase": "Le chantier s'arrête : il attend ta décision"
+    },
+    {
+      "ts": "2026-10-21T15:53:15.917Z",
       "action": "change",
       "element": "design-office",
       "id": "bureau-etudes",
@@ -183,6 +330,7 @@
       "phrase": "Le bureau d'études : active → idle"
     },
     {
+      "ts": "2026-10-21T15:53:15.917Z",
       "action": "change",
       "element": "client-office",
       "id": "bureau-client",
@@ -192,6 +340,16 @@
       "phrase": "Le bureau du client : idle → waiting"
     },
     {
+      "ts": "2026-10-21T15:53:15.917Z",
+      "action": "quantite",
+      "element": "client-office",
+      "id": "bureau-client",
+      "nom": "Le bureau du client",
+      "vers": 1,
+      "phrase": "Le bureau du client : 1"
+    },
+    {
+      "ts": "2026-10-21T15:53:15.917Z",
       "action": "apparait",
       "element": "decision-sign",
       "id": "decision-permis-de-construire",
@@ -201,6 +359,18 @@
       "phrase": "Ta décision « Le permis de construire » apparaît (Le bureau du client)"
     },
     {
+      "ts": "2026-10-21T15:53:15.917Z",
+      "action": "deplace",
+      "element": "character",
+      "id": "architecte",
+      "nom": "Claire, l'architecte",
+      "de": "bureau-architecte",
+      "vers": "bureau-client",
+      "motif": "decision",
+      "phrase": "Claire, l'architecte va du bureau d'architecte au bureau du client : ta décision l'attend"
+    },
+    {
+      "ts": "2026-10-21T15:53:15.917Z",
       "action": "change",
       "element": "character",
       "id": "designer",

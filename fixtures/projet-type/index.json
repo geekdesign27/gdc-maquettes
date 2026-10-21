@@ -1,7 +1,7 @@
 {
   "sequence": "projet-type",
   "description": "Un projet type, de l'ouverture à la mise en production, déroulé avec le vrai binaire GDC ; chaque fichier est une scène et les actions qui y mènent depuis la précédente (ADR 0012).",
-  "gdc": "0.17.0",
+  "gdc": "0.19.0",
   "etapes": [
     {
       "numero": 1,
@@ -14,6 +14,7 @@
       "fichier": "02-projet-ouvert.json",
       "titre": "Le projet est ouvert",
       "actions": [
+        "Le chantier ouvre",
         "Application de bureau apparaît"
       ]
     },
@@ -31,9 +32,12 @@
       "fichier": "04-on-continue-attendu.json",
       "titre": "L'idée est complète : ta décision « On continue » est attendue",
       "actions": [
+        "Le chantier s'arrête : il attend ta décision",
         "Le bureau d'architecte : active → idle",
         "Le bureau du client : idle → waiting",
+        "Le bureau du client : 1",
         "Ta décision « On continue » apparaît (Le bureau du client)",
+        "Claire, l'architecte va du bureau d'architecte au bureau du client : ta décision l'attend",
         "Claire, l'architecte : typing → waiting"
       ]
     },
@@ -42,7 +46,9 @@
       "fichier": "05-on-continue.json",
       "titre": "Tu as dit « On continue »",
       "actions": [
+        "Le chantier ouvre",
         "Le bureau du client : waiting → idle",
+        "Claire, l'architecte va du bureau du client au bureau d'architecte",
         "Ta décision « On continue » disparaît"
       ]
     },
@@ -60,9 +66,12 @@
       "fichier": "07-permis-attendu.json",
       "titre": "Le dossier est complet : ton permis de construire est attendu",
       "actions": [
+        "Le chantier s'arrête : il attend ta décision",
         "Le bureau d'études : active → idle",
         "Le bureau du client : idle → waiting",
+        "Le bureau du client : 1",
         "Ta décision « Le permis de construire » apparaît (Le bureau du client)",
+        "Claire, l'architecte va du bureau d'architecte au bureau du client : ta décision l'attend",
         "Lina, le designer UX/UI : typing → celebrate"
       ]
     },
@@ -71,8 +80,10 @@
       "fichier": "08-permis.json",
       "titre": "Le permis de construire est accordé",
       "actions": [
+        "Le chantier ouvre",
         "Le bureau du client : waiting → idle",
-        "Le permis de construire apparaît (Le chantier, une parcelle par application)",
+        "Le permis de construire apparaît (Le panneau du permis)",
+        "Claire, l'architecte va du bureau du client au bureau d'architecte",
         "Ta décision « Le permis de construire » disparaît"
       ]
     },
@@ -89,7 +100,6 @@
       "fichier": "10-fiche.json",
       "titre": "La fiche « Clôturer un audit » est ouverte",
       "actions": [
-        "Application de bureau : plot → excavation",
         "Les gabarits de la fiche « Clôturer un audit » apparaissent (le bâtiment « Application de bureau »)"
       ]
     },
@@ -98,17 +108,22 @@
       "fichier": "11-feu-vert-attendu.json",
       "titre": "Ton feu vert est attendu",
       "actions": [
+        "Le chantier s'arrête : il attend ta décision",
         "Le bureau du client : idle → waiting",
-        "Ta décision « le feu vert » pour « Clôturer un audit » apparaît (Le bureau du client)"
+        "Le bureau du client : 1",
+        "Ta décision « le feu vert » pour « Clôturer un audit » apparaît (Le panneau du feu vert)",
+        "Claire, l'architecte va du bureau d'architecte au panneau du feu vert : ta décision l'attend"
       ]
     },
     {
       "numero": 12,
       "fichier": "12-feu-vert.json",
-      "titre": "Feu vert : les fondations",
+      "titre": "Feu vert : la préparation commence",
       "actions": [
-        "Application de bureau : excavation → foundations",
+        "Le chantier ouvre",
+        "Application de bureau : plot → excavation",
         "Le bureau du client : waiting → idle",
+        "Claire, l'architecte va du panneau du feu vert au bureau d'architecte",
         "Les gabarits de la fiche « Clôturer un audit » disparaissent",
         "Ta décision « le feu vert » pour « Clôturer un audit » disparaît"
       ]
@@ -116,9 +131,9 @@
     {
       "numero": 13,
       "fichier": "13-construction.json",
-      "titre": "Emma construit l'écran de clôture",
+      "titre": "Emma prend le lot de l'écran de clôture",
       "actions": [
-        "Application de bureau : foundations → structure",
+        "Application de bureau : excavation → foundations",
         "Emma, la développeuse interface apparaît (le bâtiment « Application de bureau »)"
       ]
     },
@@ -127,7 +142,9 @@
       "fichier": "14-essai-rouge.json",
       "titre": "Emma écrit d'abord l'essai qui échoue",
       "actions": [
+        "Application de bureau : foundations → structure",
         "Le bureau de contrôle (Hélène) : idle → active",
+        "Hélène, le bureau de contrôle va du bureau de contrôle au bâtiment « Application de bureau » pour un contrôle",
         "Hélène, le bureau de contrôle : idle → inspect"
       ]
     },
@@ -143,49 +160,74 @@
       "titre": "Emma a fini son lot",
       "actions": [
         "Application de bureau : structure → envelope",
+        "Une nouvelle dépendance pour « Clôturer un audit » : jspdf apparaît (le bâtiment « Application de bureau »)",
         "Emma, la développeuse interface va du bâtiment « Application de bureau » à la baraque du conducteur de travaux",
         "Emma, la développeuse interface : typing → celebrate"
       ]
     },
     {
       "numero": 17,
-      "fichier": "17-reception-attendue.json",
-      "titre": "Ta réception est attendue",
+      "fichier": "17-relecture.json",
+      "titre": "Olivier relit le travail",
       "actions": [
-        "Application de bureau : envelope → inspection",
-        "Le bureau du client : idle → waiting",
-        "Ta décision « la réception » pour « Clôturer un audit » apparaît (Le bureau du client)",
-        "L'aire de réception : idle → waiting"
+        "Application de bureau : envelope → finishing",
+        "Olivier, le surveillant de chantier apparaît (le bâtiment « Application de bureau »)"
       ]
     },
     {
       "numero": 18,
-      "fichier": "18-dev.json",
-      "titre": "Réception accordée : la fiche entre dans dev",
+      "fichier": "18-reception-attendue.json",
+      "titre": "Ta réception est attendue",
       "actions": [
-        "La grue de la fiche « Clôturer un audit » (entrée dans dev) apparaît (le bâtiment « Application de bureau »)",
-        "Le bureau du client : waiting → idle",
-        "L'aire de réception : waiting → idle",
-        "Ta décision « la réception » pour « Clôturer un audit » disparaît"
+        "Le chantier s'arrête : il attend ta décision",
+        "Application de bureau : finishing → inspection",
+        "Le bureau du client : idle → waiting",
+        "Le bureau du client : 1",
+        "Ta décision « la réception » pour « Clôturer un audit » apparaît (L'aire de réception)",
+        "L'aire de réception : idle → waiting",
+        "Claire, l'architecte va du bureau d'architecte à l'aire de réception : ta décision l'attend",
+        "Emma, la développeuse interface va de la baraque du conducteur de travaux à l'aire de réception : ta décision l'attend",
+        "Emma, la développeuse interface : celebrate → waiting",
+        "Olivier, le surveillant de chantier va du bâtiment « Application de bureau » à l'aire de réception : ta décision l'attend",
+        "Olivier, le surveillant de chantier : read → waiting"
       ]
     },
     {
       "numero": 19,
-      "fichier": "19-production.json",
-      "titre": "Remise des clés : la fiche est en production",
+      "fichier": "19-dev.json",
+      "titre": "Réception accordée : la fiche entre dans dev",
       "actions": [
-        "Application de bureau : inspection → finishing",
-        "Le camion de livraison de la fiche « Clôturer un audit » (mise en production) apparaît (le bâtiment « Application de bureau »)"
+        "Le chantier ouvre",
+        "La grue de la fiche « Clôturer un audit » (entrée dans dev) apparaît (le bâtiment « Application de bureau »)",
+        "Le bureau du client : waiting → idle",
+        "L'aire de réception : waiting → idle",
+        "Claire, l'architecte va de l'aire de réception au bureau d'architecte",
+        "Emma, la développeuse interface va de l'aire de réception à la baraque du conducteur de travaux",
+        "Emma, la développeuse interface : waiting → celebrate",
+        "Olivier, le surveillant de chantier va de l'aire de réception à la baraque du conducteur de travaux",
+        "Olivier, le surveillant de chantier : waiting → celebrate",
+        "Ta décision « la réception » pour « Clôturer un audit » disparaît"
       ]
     },
     {
       "numero": 20,
-      "fichier": "20-permis-perime.json",
+      "fichier": "20-production.json",
+      "titre": "Remise des clés : la fiche est en production",
+      "actions": [
+        "Application de bureau : inspection → completed"
+      ]
+    },
+    {
+      "numero": 21,
+      "fichier": "21-permis-perime.json",
       "titre": "Le cahier des besoins a changé : le permis est périmé",
       "actions": [
+        "Le chantier s'arrête : il attend ta décision",
         "Le bureau du client : idle → waiting",
+        "Le bureau du client : 1",
         "Ta décision « On continue » apparaît (Le bureau du client)",
-        "Le permis de construire (périmé : Le cahier des besoins (PRD) a changé) : granted → expired"
+        "Le permis de construire (périmé : Le cahier des besoins (PRD) a changé) : granted → expired",
+        "Claire, l'architecte va du bureau d'architecte au bureau du client : ta décision l'attend"
       ]
     }
   ]
