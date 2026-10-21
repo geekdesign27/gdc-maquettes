@@ -28,6 +28,17 @@
     .illustration { margin: 0; display: grid; justify-items: center; gap: 4px; }
     .illustration figcaption { font: 11px/1.2 var(--gdc-font-mono); color: var(--gdc-muted); }
     @media (max-width: 600px) { gdc-side-nav { height: auto !important; max-width: none !important; } }
+    .banc { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: start; }
+    main.phone .banc { grid-template-columns: 1fr; }
+    @media (max-width: 600px) { .banc { grid-template-columns: 1fr; } }
+    .banc ul { list-style: none; margin: 0; padding: 0; }
+    .banc ul ul { padding-left: 14px; }
+    .banc-colonne > h3 { font: 600 13px/1.3 var(--gdc-font-title); margin: 0 0 8px; }
+    .banc h4 { font: 500 11px/1.3 var(--gdc-font-ui); text-transform: uppercase; letter-spacing: .05em; color: var(--gdc-muted); margin: 10px 0 4px; }
+    .banc button { display: block; width: 100%; text-align: left; border: 0; background: transparent; color: var(--gdc-ink); font: 13px/1.35 var(--gdc-font-ui); padding: 5px 8px; border-radius: 6px; cursor: pointer; }
+    .banc button:hover { background: color-mix(in srgb, var(--gdc-ink) 7%, transparent); }
+    .banc button[data-highlight] { background: var(--gdc-highlight-fill); box-shadow: var(--gdc-highlight-ring); }
+    .banc-journal { font: 12px/1.5 var(--gdc-font-mono); color: var(--gdc-muted); margin: 8px 0 0; }
     #journal { font: 12px/1.5 var(--gdc-font-mono); white-space: pre-wrap; margin: 0; }
     #journal .ko { color: var(--gdc-state-error); font-weight: 600; }
   </style>

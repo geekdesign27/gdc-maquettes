@@ -365,7 +365,7 @@ function sectionElement(entry) {
         `${mod.meta.tag} « ${v.titre} » : rendu`,
       ),
     );
-    for (const e of ["gdc-select", "gdc-copy", "gdc-close"]) {
+    for (const e of ["gdc-select", "gdc-copy", "gdc-close", "gdc-hover"]) {
       n.addEventListener(e, (ev) => {
         const attendu = e in (entry.outputs || {});
         note(
@@ -389,6 +389,107 @@ function rendJournal() {
   );
 }
 
+// Le survol partage (lot G8, hover-link) : un banc d'essai a trois colonnes tire de fixtures/trois-applications (le fil,
+// les etages, l'arbre), branche par ctx.hoverLink comme le seront trigger-feed, floor-selector et side-nav 2.0.0.
+// Le relais de la page (plus bas) fait ce que fera GDC : chaque gdc-hover revient en highlight a tous.
+const etapesTrois = import.meta.glob("../fixtures/trois-applications/0*.json", {
+  eager: true,
+  import: "default",
+});
+const recepteurs = new Set(); // (ref) => void : les colonnes du banc
+let survols = 0;
+function sectionSurvol(entry) {
+  const s = el("section", { id: entry.id });
+  s.append(
+    el("h2", {}, entry.name),
+    el("p", {}, entry.purpose),
+    el(
+      "p",
+      {},
+      "Banc d'essai : trois listes simples, tirées de fixtures/trois-applications, branchées par ctx.hoverLink comme le seront le fil des déclencheurs, le sélecteur d'étages et la navigation 2.0.0. Survole ou parcours au clavier : ce qui correspond s'allume dans les trois. La carte se branche avec building 2.0.0.",
+    ),
+  );
+  const scenes = Object.keys(etapesTrois)
+    .sort()
+    .map((k) => etapesTrois[k]);
+  const batiments = scenes
+    .at(-1)
+    .elements.filter((e) => e.element === "building");
+  // chaque bouton porte la reference que GDC a donnee ; le banc n'en fabrique aucune
+  const refs = new WeakMap();
+  const bouton = (texte, ref) => {
+    const b = el("button", { type: "button" }, texte);
+    refs.set(b, ref);
+    return b;
+  };
+  const item = (b, enfants) => {
+    const li = el("li");
+    li.append(b);
+    if (enfants) li.append(enfants);
+    return li;
+  };
+  const colonne = (titre) => {
+    const c = el("div", { class: "cadre banc-colonne" });
+    c.append(el("h3", {}, titre));
+    return c;
+  };
+  // le fil : les actions referencees des huit etapes, la plus recente en haut
+  const fil = colonne("Le fil, à gauche");
+  const actions = el("ul");
+  for (const a of scenes
+    .flatMap((sc) => sc.actions || [])
+    .filter((a) => a.ref)
+    .reverse()
+    .slice(0, 12))
+    actions.append(item(bouton(a.phrase, a.ref)));
+  fil.append(actions);
+  // les etages : le panneau d'ascenseur de chaque batiment, l'etage du haut en haut
+  const etages = colonne("Les étages");
+  const refEtage = (b, e) =>
+    e.fiche ? { ...b.ref, fiche: e.fiche } : b.ref;
+  for (const b of batiments) {
+    const ul = el("ul");
+    b.etages.forEach((e, i) =>
+      ul.prepend(item(bouton(`${i ? i : "R"} · ${e.nom}`, refEtage(b, e)))),
+    );
+    etages.append(el("h4", {}, b.nom), ul);
+  }
+  // l'arbre : application, fiches, lots
+  const arbre = colonne("L'arbre, à droite");
+  const racine = el("ul");
+  for (const b of batiments) {
+    const fiches = el("ul");
+    for (const e of b.etages.filter((x) => x.fiche)) {
+      const lots = el("ul");
+      for (const p of e.pieces)
+        lots.append(item(bouton(`${p.lot} · ${p.nom}`, { ...refEtage(b, e), lot: p.lot })));
+      fiches.append(item(bouton(e.nom, refEtage(b, e)), e.pieces.length ? lots : null));
+    }
+    racine.append(item(bouton(b.nom, b.ref), fiches));
+  }
+  arbre.append(racine);
+  const grille = el("div", { class: "banc" });
+  for (const c of [fil, etages, arbre]) {
+    interfaceContext.hoverLink(c, (n) => refs.get(n) || null);
+    recepteurs.add((ref) => {
+      for (const b of c.querySelectorAll("button"))
+        b.toggleAttribute(
+          "data-highlight",
+          interfaceContext.correspond(ref, refs.get(b)),
+        );
+    });
+    grille.append(c);
+  }
+  // le compteur : un seul evenement par changement de reference, null a la sortie
+  const compteur = el("p", { class: "banc-journal" }, "Aucun gdc-hover encore.");
+  s.addEventListener("gdc-hover", (e) => {
+    survols += 1;
+    compteur.textContent = `gdc-hover n° ${survols} : ${JSON.stringify(e.detail.ref)}`;
+  });
+  s.append(grille, compteur);
+  return s;
+}
+
 const g6 = catalogue.items
   .filter((i) => i.lot === "G6" && i.kind === "html")
   .sort((a, b) => a.order - b.order);
@@ -396,12 +497,26 @@ const demos = $("demos");
 const g7 = catalogue.items
   .filter((i) => i.lot === "G7")
   .sort((a, b) => a.order - b.order);
+const g8 = catalogue.items
+  .filter((i) => i.lot === "G8" && i.kind === "html")
+  .sort((a, b) => a.order - b.order);
 demos.append(
   sectionPolices(),
   sectionSignes(),
   ...g6.map(sectionElement),
+  sectionSurvol(catalogue.items.find((i) => i.id === "hover-link")),
+  ...g8.map(sectionElement),
   ...g7.map(sectionIllustration),
 );
+// Le relais du survol partage, comme GDC le fera : chaque gdc-hover revient en highlight a tous les elements qui le
+// lisent, l'emetteur compris, et aux colonnes du banc d'essai.
+document.addEventListener("gdc-hover", (e) => {
+  const ref = e.detail?.ref ?? null;
+  for (const m of Object.values(elements))
+    if (m.meta.inputs.includes("highlight"))
+      for (const n of document.querySelectorAll(m.meta.tag)) n.highlight = ref;
+  for (const r of recepteurs) r(ref);
+});
 const sj = el("section", { id: "controle" });
 sj.append(
   el("h2", {}, "Contrôle en direct"),
