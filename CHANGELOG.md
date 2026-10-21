@@ -5,6 +5,7 @@
 - Lot G7, les illustrations : `agent-portraits` (20 portraits rendus par `blender/assets/agent-portraits.py` depuis le kit du personnage, SVG à disque, états idle, talking, working), `step-icons` (dix icônes d'étape) et `place-icons` (neuf icônes de lieu), au trait, en `currentColor`.
 - Chaîne Blender : un script peut rendre des images au lieu d'un GLB (`rend`, `SOURCES`) ; `asset.json` garde leurs empreintes.
 - Contrôle : les illustrations sont vérifiées (`checkSvg` : rien d'extérieur, `viewBox`, poids, monochrome, épaisseur unique, états d'un portrait, provenance du rendu). Contrat : section « Les illustrations ».
+- `agent-popup` 1.1.0 : la fiche d'agent affiche le portrait du lot G7 (fabriqué par `ctx.portrait(document, id)`, comme `signIcon` : un élément n'injecte pas de HTML) au lieu des initiales, qui restent le repli ; talk le fait parler, work, typing, inspect, read et thinking le font travailler, les autres états le laissent fixe (décision de Pierre-Alain du 21 octobre 2026).
 - Bibliothèque : `illustrations[id][fichier]`, le texte de chaque SVG. Page `/interface.html` : section de chaque illustration.
 - `equipe.json` : Bernard passe aux cheveux et à la barbe noirs (décision de Pierre-Alain du 21 octobre 2026, revue des portraits). Aucun GLB ne change : la galerie et le composant `character` lisent l'apparence au montage.
 - Signalétique, principe 5 : deuxième exception, le geste des portraits.

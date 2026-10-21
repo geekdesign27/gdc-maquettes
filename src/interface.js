@@ -30,13 +30,38 @@ export function interfaceCss() {
   return fontFaces() + "\n" + cssVariables();
 }
 
-// Le contexte injecte dans chaque element : les jetons et la signaletique, une seule source.
+// Les portraits des agents (lot G7) : 'id' de equipe.json -> texte du SVG, a inserer tel quel (classe d'etat).
+const fichiersPortraits = import.meta.glob(
+  "../components/illustration/agent-portraits/*.svg",
+  { eager: true, query: "?raw", import: "default" },
+);
+const portraits = Object.fromEntries(
+  Object.entries(fichiersPortraits).map(([p, texte]) => [
+    p.match(/([^/]+)\.svg$/)[1],
+    texte,
+  ]),
+);
+
+// Le portrait d'un agent en element SVG pret a poser (lu en XML : ni script ni HTML), ou null s'il n'existe pas.
+// Les elements n'injectent jamais de HTML (src/contract.js) : c'est ici, une fois, que le texte devient un noeud.
+function portrait(document, id) {
+  const source = Object.hasOwn(portraits, id) ? portraits[id] : "";
+  if (!source) return null;
+  const svg = new DOMParser().parseFromString(
+    source,
+    "image/svg+xml",
+  ).documentElement;
+  return svg.localName === "svg" ? document.importNode(svg, true) : null;
+}
+
+// Le contexte injecte dans chaque element : les jetons, la signaletique et les portraits, une seule source.
 export const interfaceContext = {
   tokens,
   signes,
   signIcon,
   plusGrave,
   gravite: GRAVITE,
+  portrait,
 };
 
 // Definit tous les elements (gdc-<id>) et pose, une fois, la feuille des polices et des variables dans le document.

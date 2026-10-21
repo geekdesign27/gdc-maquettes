@@ -1,10 +1,11 @@
 // La fiche d'un agent (lot G6) : au clic sur un personnage, ce qu'il fait, ce qu'il fera, ce qu'on peut lui demander.
 // Brief valide par Pierre-Alain le 21 octobre 2026 : fenetre non modale qui prend le focus a son apparition ;
-// « inconnu » quand le journal ne dit rien (bible, 17.4) ; portrait de remplacement en attendant le lot G7.
+// « inconnu » quand le journal ne dit rien (bible, 17.4).
+// 1.1.0 : le portrait du lot G7 (ctx.portrait, par l'identifiant), anime selon l'etat ; les initiales en repli.
 
 export const meta = {
   id: "agent-popup",
-  version: "1.0.0",
+  version: "1.1.0",
   category: "interface",
   tag: "gdc-agent-popup",
   inputs: ["id", "name", "team", "state", "doing", "next", "can", "actions"],
@@ -25,6 +26,16 @@ const ETATS = {
   celebrate: ["done", "A fini"],
   idle: [null, "Au repos"],
   unknown: ["unknown", "Inconnu"],
+};
+// L'etat du portrait (agent-portraits) : talk parle, les etats qui produisent travaillent, le reste est fixe
+// (decision de Pierre-Alain du 21 octobre 2026).
+const GESTES = {
+  talk: "talking",
+  work: "working",
+  typing: "working",
+  inspect: "working",
+  read: "working",
+  thinking: "working",
 };
 const EQUIPES = {
   architecture: ["Architecture", true],
@@ -62,6 +73,8 @@ const CSS = `
 .portrait { align-self: start; display: grid; place-items: center; aspect-ratio: 1; border-radius: 50%;
   background: color-mix(in srgb, var(--equipe) 22%, var(--gdc-surface)); border: 3px solid var(--equipe);
   font: 700 36px/1 var(--gdc-font-title, system-ui, sans-serif); color: var(--gdc-ink); }
+.portrait.illustre { background: none; overflow: hidden; }
+.portrait > svg { display: block; width: 100%; height: 100%; }
 .contenu { min-width: 0; display: grid; gap: 14px; }
 header { display: grid; grid-template-columns: 1fr auto; gap: 4px 8px; align-items: start; }
 h2 { margin: 0; font: 700 20px/1.25 var(--gdc-font-title, system-ui, sans-serif); overflow-wrap: anywhere; border-radius: 4px; }
@@ -91,7 +104,7 @@ svg { flex: none; }
 `;
 
 export function define(registry, ctx) {
-  const { signIcon } = ctx;
+  const { signIcon, portrait: portraitDe = () => null } = ctx;
 
   class AgentPopup extends HTMLElement {
     #data = {};
@@ -160,9 +173,15 @@ export function define(registry, ctx) {
         colore ? `var(--gdc-team-${team})` : "var(--gdc-muted)",
       );
 
-      // le portrait de remplacement, jusqu'a l'illustration du lot G7
-      const portrait = el("div", "portrait", initiales(nom));
+      // le portrait (le nom est deja dans le titre : il n'est pas relu) ; les initiales quand il manque
+      const portrait = el("div", "portrait");
       portrait.setAttribute("aria-hidden", "true");
+      const svg = id ? portraitDe(document, id) : null;
+      if (svg) {
+        portrait.classList.add("illustre");
+        svg.classList.replace("idle", GESTES[texte(d.state)] || "idle");
+        portrait.append(svg);
+      } else portrait.textContent = initiales(nom);
 
       const h2 = el("h2", "", nom);
       h2.id = "nom";
