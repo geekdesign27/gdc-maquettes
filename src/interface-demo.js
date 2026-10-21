@@ -143,6 +143,23 @@ export const variantes = {
     },
     { titre: "Sans données", style: "height: 180px; max-width: 380px", data: {} },
   ],
+  // les actions rapides : des prompts pour une fiche ; le troisieme ne cite pas l'identifiant, « (id) » est ajoute
+  "quick-actions": [
+    {
+      titre: "Trois prompts pour une fiche",
+      style: "max-width: 420px",
+      data: {
+        id: "001-cloturer-un-audit",
+        actions: [
+          { label: "Relire la fiche", prompt: "Relis la fiche 001-cloturer-un-audit et liste les critères d'acceptation qui ne sont pas encore prouvés." },
+          { label: "Débloquer l'essai rouge", prompt: "L'essai d'export de 001-cloturer-un-audit échoue : trouve la cause et propose une correction, sans rien modifier." },
+          { label: "Résumer pour le client", prompt: "Résume en cinq lignes, pour le client, où en est cette fiche." },
+        ],
+      },
+    },
+    { titre: "Sans actions", style: "max-width: 420px", data: { id: "bureau-etudes", actions: [] } },
+    { titre: "Sans identifiant", style: "max-width: 420px", data: { actions: [{ label: "x", prompt: "y" }] } },
+  ],
 };
 
 const journal = [];
