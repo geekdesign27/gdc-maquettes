@@ -104,6 +104,15 @@ export const variantes = {
     { titre: "Sans règle", style: "max-width: 360px", data: { done: 1, total: 4 } },
     { titre: "Sans total : inconnu", style: "max-width: 360px", data: { done: 2, state: "unknown" } },
   ],
+  // le badge, pose sur la scene : terre du socle, gazon, asphalte (couleurs du monde, src/palette.json)
+  "notification-badge": [
+    { titre: "Une décision et deux erreurs : le rouge de la décision, total 3", fond: "#BF8B65", data: { counts: { waiting: 1, error: 2, blocked: 0, done: 4 } } },
+    { titre: "Deux erreurs et un blocage : l'octogone, total 3", fond: "#83A78F", data: { counts: { error: 2, blocked: 1 } } },
+    { titre: "Bloqué seul", fond: "#6C6674", data: { counts: { blocked: 1 } } },
+    { titre: "Tout est validé : la coche, sans nombre", fond: "#BF8B65", data: { counts: { done: 6 } } },
+    { titre: "Beaucoup d'alertes", fond: "#83A78F", data: { counts: { waiting: 12, error: 87, blocked: 29 } } },
+    { titre: "Tout à zéro : masqué (rien ci-dessous)", data: { counts: { waiting: 0, error: 0, blocked: 0, done: 0 } } },
+  ],
 };
 
 const journal = [];
@@ -193,7 +202,12 @@ function sectionElement(entry) {
     const n = document.createElement(mod.meta.tag);
     n.data = v.data;
     if (v.style) n.setAttribute("style", v.style);
-    d.append(el("h3", {}, v.titre), n);
+    // fond : pour voir un badge pose sur la scene (sol ou ciel), pas sur la surface de l'interface
+    if (v.fond) {
+      const f = el("div", { style: `display: inline-flex; gap: 12px; padding: 18px 24px; border-radius: 8px; background: ${v.fond}` });
+      f.append(n);
+      d.append(el("h3", {}, v.titre), f);
+    } else d.append(el("h3", {}, v.titre), n);
     s.append(d);
     // controle en direct : l'element s'est-il construit, et n'emet-il que les evenements de sa fiche ?
     queueMicrotask(() =>
