@@ -8,7 +8,8 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils.js';
-import { checkSource, checkMeta, checkInstance, checkHtml, checkSvg } from '../src/contract.js';
+import { checkSource, checkMeta, checkInstance, checkHtml, checkSvg, checkHoverFiche, checkCorrespond } from '../src/contract.js';
+import { correspond, sameRef } from '../src/survol.js';
 import { makeContext } from '../src/tokens.js';
 import { creeChargeur } from '../src/assets.js';
 import { lisGlb, checkGlb } from '../src/glb.js';
@@ -165,6 +166,11 @@ for (const entry of items) {
   if (problems.length) errors.push([entry.id, problems]);
   else ok += 1;
 }
+
+// Le survol partage (hover-link) : la regle sur des exemples, et chaque fiche qui emet gdc-hover lit highlight,
+// y compris les fiches a faire et les prochaines versions, avant meme leur fabrication.
+const survol = [...checkCorrespond({ correspond, sameRef }), ...catalogue.items.filter((i) => i.kind === 'html').flatMap((i) => checkHoverFiche(i).map((p) => `${i.id} : ${p}`))];
+if (survol.length) errors.push(['hover-link', survol]);
 
 // Un dossier absent du catalogue est une erreur : le catalogue est la source unique.
 const known = new Set(items.map((i) => `${i.category}/${i.id}`));

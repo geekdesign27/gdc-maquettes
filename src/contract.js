@@ -137,10 +137,51 @@ export function checkHtml(mod, entry, source, composes = {}) {
   source = source.replace(/export\s+const\s+meta\s*=\s*\{[\s\S]*?\n\};?/, '');
   for (const k of entrees) if (!new RegExp(`\\b${k}\\b`).test(source)) problems.push(`l'entrée « ${k} » n'est pas lue dans le code`);
   const poses = Object.entries(composes).filter(([tag]) => tag !== meta.tag && source.includes(tag)).flatMap(([, evts]) => evts);
+  // le survol partagé : ctx.hoverLink émet gdc-hover pour l'élément (src/survol.js)
+  const survol = /\bhoverLink\s*\(/.test(source);
+  if (survol) poses.push('gdc-hover');
   for (const e of sorties) if (![`'${e}'`, `"${e}"`, `\`${e}\``].some((q) => source.includes(q)) && !poses.includes(e)) problems.push(`l'événement « ${e} » n'est jamais émis`);
+  if (survol && !sorties.includes('gdc-hover')) problems.push('ctx.hoverLink émet gdc-hover, absent de la fiche');
   // un element n'emet que les evenements de sa fiche
   for (const [, e] of source.matchAll(/CustomEvent\(\s*['"]([\w-]+)['"]/g)) if (!sorties.includes(e)) problems.push(`événement « ${e} » absent de la fiche`);
   return problems;
+}
+
+// Le survol partagé (lot G8, hover-link) : tout élément qui émet gdc-hover lit aussi highlight, la même référence
+// renvoyée par GDC à tous les éléments. Vérifié sur la fiche (et sur sa prochaine version, next) ; le code de
+// l'élément, lui, doit lire chaque entrée de sa fiche (checkHtml).
+export function checkHoverFiche(entry) {
+  const problems = [];
+  for (const [quoi, f] of [['', entry], [' (next)', entry.next]]) {
+    if (!f || !Object.hasOwn(f.outputs || {}, 'gdc-hover')) continue;
+    if (!Object.hasOwn(f.inputs || {}, 'highlight')) problems.push(`la fiche${quoi} émet gdc-hover sans lire highlight (le survol partagé)`);
+  }
+  return problems;
+}
+
+// La règle du survol partagé, sur des exemples : correspond(a, b) et sameRef(a, b) de src/survol.js.
+export function checkCorrespond({ correspond, sameRef }) {
+  const app = { application: 'terrain' };
+  const fiche = { application: 'terrain', fiche: '002-saisir-un-constat-hors-ligne' };
+  const lot = { ...fiche, lot: 'L1' };
+  const voisine = { application: 'terrain', fiche: '005-autre' };
+  const ailleurs = { application: 'admin', fiche: '002-saisir-un-constat-hors-ligne', lot: 'L1' };
+  const cas = [
+    ['un lot allume sa fiche', correspond(lot, fiche), true],
+    ['un lot allume son application', correspond(lot, app), true],
+    ['une application allume ses lots', correspond(app, lot), true],
+    ['une fiche allume ses lots', correspond(fiche, lot), true],
+    ['une référence se correspond', correspond(fiche, { ...fiche }), true],
+    ['deux fiches voisines ne se correspondent pas', correspond(fiche, voisine), false],
+    ['le même lot ailleurs ne correspond pas', correspond(lot, ailleurs), false],
+    ['null ne correspond à rien', correspond(null, app), false],
+    ['un lot sans fiche vaut son application', correspond({ application: 'terrain', lot: 'L1' }, voisine), true],
+    ['une fiche nulle (l\'existant) vaut son application', correspond({ application: 'admin', fiche: null }, ailleurs), true],
+    ['sameRef : même chemin', sameRef(lot, { ...lot }), true],
+    ['sameRef : un parent n\'est pas la même référence', sameRef(lot, fiche), false],
+    ['sameRef : deux null', sameRef(null, null), true],
+  ];
+  return cas.filter(([, vu, attendu]) => vu !== attendu).map(([quoi, vu]) => `correspond : « ${quoi} » donne ${vu}`);
 }
 
 // Les illustrations (lot G7) : des SVG autonomes, insérés tels quels dans la page de GDC. Rien d'extérieur, aucun script.
