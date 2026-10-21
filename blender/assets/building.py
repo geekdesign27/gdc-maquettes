@@ -10,15 +10,24 @@ que ce qui est propre a la parcelle, avant et pendant la fouille :
 - BATTER_BOARD : une chaise d'implantation (trois piquets et deux lattes), posee a l'angle de l'emprise, en dehors ;
 - LAYOUT_LINE : le tracage au sol d'une trame de facade (0,15 m, le detail minimal), etire par le composant le long
   de chaque facade : avec les chaises, il dit « terrain prepare, batiment implante ».
-L'emprise suit le nombre de fiches (2, 3 ou 4 trames de facade, 2 de profondeur) : un socle par emprise.
+- CONE_GROUP (version 2, building 2.0.0) : le balisage d'une surelevation, trois cones de 0,90 m groupes au pied de
+  la tour d'echafaudage (decision de Pierre-Alain du 21 octobre 2026, docs/signaletique.md). Ils ne se confondent pas
+  avec le defaut (defect-sign) : un cone seul de 1,20 m, avec son badge. Ici, trois cones plus petits, sans badge, en
+  orange fluo (MAT_FABRIC_HIVIS) a deux bandes blanches (MAT_SURFACE), semelle orange : pas de caoutchouc, pour tenir
+  le plafond de dix materiaux du batiment.
+L'emprise suit le type du batiment (2, 3 ou 4 trames de facade, 2 de profondeur) : un socle par emprise.
 Origine de chaque piece : le centre de l'emprise, sur le dessus du socle (z = 0). Avant vers -Y.
 
 Qualite basse (bible 18.3) : SPOIL_HEAP_LOW aux aretes vives ; BATTER_BOARD_LOW, les lattes fusionnees en deux
 panneaux pleins de 0,10 m (piquets et lattes, sous 0,30 m, disparaitraient sinon) ; LAYOUT_LINE_LOW, le tracage
-elargi a 0,30 m. Les socles restent : ils font la parcelle.
+elargi a 0,30 m ; CONE_GROUP_LOW, trois cones a huit pans, tout orange, sans bande ni semelle (sous 0,30 m). Les socles
+restent : ils font la parcelle.
 """
 
-ASSET = {"id": "building", "categorie": "building", "nom": "BLD_SITEWORK_A_v001"}
+import bmesh
+import bpy
+
+ASSET = {"id": "building", "categorie": "building", "nom": "BLD_SITEWORK_A_v002"}
 
 P = "BLD_SITEWORK_A_"
 TRAME = 3.0
@@ -29,6 +38,13 @@ SOCLE = 0.60
 FOUILLE = 0.50
 FOND = 0.60  # du nu de l'emprise au pied du talus
 C1, C3 = 0.02, 0.10
+# Le cone de balisage : celui de la famille (0,90 m, exageration x 1,2 d'un cone de 0,75 m), sans l'agrandissement du
+# cone de defaut ; semelle de 0,48 m, deux bandes blanches. Trois cones en grappe, 0,62 m entre leurs axes.
+CONE_SEMELLE = (0.48, 0.05)
+CONE_HAUT = 0.90
+CONE_R = (0.20, 0.035)  # rayon en bas et en haut
+CONE_BANDES = ((0.38, 0.48), (0.60, 0.70))
+CONES = ((-0.31, -0.18), (0.31, -0.18), (0.0, 0.36))
 
 
 def _piece(c, nom, objets):
@@ -67,6 +83,52 @@ def _chaise(c, nom, basse):
     return morceaux
 
 
+def _rayon(z):
+    """Le rayon du cone a la hauteur z."""
+    bas, haut = CONE_R
+    return bas + (haut - bas) * (z - CONE_SEMELLE[1]) / (CONE_HAUT - CONE_SEMELLE[1])
+
+
+def _troncon(c, nom, z0, z1, mat, cotes, chapeau, xy):
+    """Un troncon de cone de z0 a z1, ouvert en bas ; ferme en haut seulement pour le dernier (chapeau)."""
+    bpy.ops.mesh.primitive_cone_add(vertices=cotes, radius1=_rayon(z0), radius2=_rayon(z1), depth=z1 - z0,
+                                    end_fill_type="NGON" if chapeau else "NOTHING",
+                                    location=(xy[0], xy[1], (z0 + z1) / 2))
+    o = bpy.context.active_object
+    o.name = o.data.name = nom
+    if chapeau:
+        # le cone primitif ferme aussi le bas : on retire ce disque, cache par le troncon du dessous
+        b = bmesh.new()
+        b.from_mesh(o.data)
+        bas = [f for f in b.faces if len(f.verts) > 4 and f.calc_center_median().z < 0]
+        bmesh.ops.delete(b, geom=bas, context="FACES_ONLY")
+        b.to_mesh(o.data)
+        b.free()
+    o.data.materials.append(c.materiau(mat))
+    return o
+
+
+def _cones(c, nom, basse):
+    """Les trois cones du balisage. Qualite basse : un seul troncon orange par cone, a huit pans, pose au sol."""
+    morceaux = []
+    for n, xy in enumerate(CONES):
+        if basse:
+            bpy.ops.mesh.primitive_cone_add(vertices=8, radius1=_rayon(0), radius2=CONE_R[1], depth=CONE_HAUT,
+                                            end_fill_type="NOTHING", location=(xy[0], xy[1], CONE_HAUT / 2))
+            o = bpy.context.active_object
+            o.name = o.data.name = "%s_%d" % (nom, n)
+            o.data.materials.append(c.materiau("MAT_FABRIC_HIVIS"))
+            morceaux.append(o)
+            continue
+        limites = [CONE_SEMELLE[1]] + [z for bande in CONE_BANDES for z in bande] + [CONE_HAUT]
+        for k, (z0, z1) in enumerate(zip(limites, limites[1:])):
+            mat = "MAT_SURFACE" if k % 2 else "MAT_FABRIC_HIVIS"  # orange, blanc, orange, blanc, orange
+            morceaux.append(_troncon(c, "%s_%d_PART_%d" % (nom, n, k), z0, z1, mat, 16, z1 == CONE_HAUT, xy))
+        morceaux.append(c.boite("%s_%d_FOOT" % (nom, n), (CONE_SEMELLE[0], CONE_SEMELLE[0], CONE_SEMELLE[1]),
+                                (xy[0], xy[1], 0), mat="MAT_FABRIC_HIVIS", chanfrein=C1, segments=2))
+    return morceaux
+
+
 def construit(c):
     for nx in FACADES:
         emprise = (nx * TRAME, PROFONDEUR * TRAME)
@@ -85,4 +147,6 @@ def construit(c):
     _piece(c, "BATTER_BOARD_LOW", _chaise(c, "BATTER_BOARD_LOW", True))
     for nom, large in (("LAYOUT_LINE", 0.15), ("LAYOUT_LINE_LOW", 0.30)):
         _piece(c, nom, [c.boite(P + nom, (TRAME, large, 0.02), mat="MAT_SURFACE")])
+    _piece(c, "CONE_GROUP", _cones(c, "CONE_GROUP", False))
+    _piece(c, "CONE_GROUP_LOW", _cones(c, "CONE_GROUP_LOW", True))
     return {"animations": []}

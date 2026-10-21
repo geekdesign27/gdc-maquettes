@@ -1,22 +1,29 @@
-// Le batiment d'une application : son avancement se lit a l'etat de son chantier (catalogue : building).
-// Production mixte, brief valide par Pierre-Alain le 20 octobre 2026 :
-// - le batiment est assemble a partir du kit livre building-kit (v003), sur la trame de 3 m ;
-// - la parcelle (socle, fouille, tas de deblais, chaises d'implantation) vient de BLD_SITEWORK_A_v001
-//   (blender/assets/building.py) ;
-// - l'emprise suit le nombre de fiches : 2, 3 ou 4 trames de facade (1 a 2, 3 a 4, 5 a 8 fiches), 2 de profondeur ;
-// - les etats suivent l'ordre ou GDC les envoie : plot, excavation, foundations, structure (data.progress fait monter
-//   les niveaux), envelope (brique, toit ferme, echafaudage), inspection (brique, menuiseries posees, echafaudage
-//   demonte), finishing (crepi, rez eclaire, echafaudage sur une facade), completed (habite : fenetres eclairees) ;
-// - qualite basse : les pieces _LOW du kit (bible 18.3) ; qualite haute : au-dela du budget de la fiche, les niveaux
-//   du haut passent aux pieces _LOW, du dernier vers le bas (allegement automatique, decision du brief) ;
-// - version 1.1 (brief valide par Pierre-Alain le 20 octobre 2026) : en excavation, la pelleteuse livree (excavator)
-//   creuse au fond de la fouille ; son modele est emprunte (machine:excavator), son cycle rejoue ici, comme dans
-//   excavator (on n'importe pas le code d'un autre dossier).
+// Le batiment d'une application : son avancement se lit etage par etage (catalogue : building, version 2.0.0, lot G8).
+// Production mixte, fiche validee par Pierre-Alain le 21 octobre 2026, brief valide le meme jour :
+// - une fiche par etage, la plus ancienne en bas (data.floors, ADR 0013 de GDC) ; un lot par piece, une travee de
+//   facade par piece, dans l'ordre avant, droite (les deux visibles en iso), arriere, gauche ; au-dela, deux lots
+//   partagent une travee ;
+// - six etages visibles au plus : la regle est ecrite une fois (src/etages.js) et injectee en ctx.groupFloors ;
+// - chaque etage a son stade : plot (rien de construit), excavation et foundations (au sol la fouille, la pelle, les
+//   semelles ; en etage la dalle a nu, puis les attentes), structure (poteaux, dalle, echafaudage ; la travee d'un lot
+//   fini se ferme en brique), envelope (brique, baies brutes), finishing (fenetres posees, echafaudage depose),
+//   inspection (crepi, vitres eteintes), completed (crepi, vitres de l'habite) ; tant que le rez n'est pas debout, les
+//   etages au-dessus attendent en plot ;
+// - la toiture coiffe le dernier etage ferme ; quand un etage du haut se ferme, elle remonte ;
+// - la surelevation : au-dessus d'etages tous finis, l'etage en chantier n'a pas d'echafaudage tout autour mais une tour
+//   d'une travee sur la facade droite, avec trois cones de balisage a son pied (sans badge : le defaut reste un cone
+//   seul avec son badge), de excavation a envelope ;
+// - l'emprise est fixe par type : house 2 x 2 trames, block 3 x 2, hall 4 x 2 (le rez de la halle est aveugle) ;
+// - qualite basse : les pieces _LOW ; qualite haute : au-dela du budget, les etages du haut passent aux pieces _LOW ;
+// - un etage qui change monte en 0,8 s depuis sa dalle, la toiture glisse a sa hauteur ; sans animation, l'etat final.
+// Pour l'assemblage (survol partage, heure reelle) : un groupe FLOOR_n par etage visible (userData.floor), un groupe
+// ROOM_n_m par piece (userData.room), les vitres de chaque etage nommees GLASS_FLOOR_n. Le composant ne gere aucun
+// evenement : les identifiants viennent de data.floors, il les repete sans les interpreter.
 // Les modeles sont partages entre instances : on ne libere jamais leurs geometries ni leurs materiaux ici ; seul le
 // verre eclaire, cree par ce composant, est libere. Aucune couleur d'etat dans la scene ; aucun texte.
 
 const KIT = "kit:building-kit/BLD_KIT_A_v003.glb";
-const PARCELLE = "BLD_SITEWORK_A_v001.glb";
+const PARCELLE = "BLD_SITEWORK_A_v002.glb";
 const PELLETEUSE = "machine:excavator/VEH_EXCAVATOR_A_v001.glb";
 const CLIP_PELLETEUSE = "ANM_EXCAVATOR_A_DIGGING";
 const IMAGE_FIXE = 150 / 30; // sans animation : fleche levee, tournee vers le tas, godet plein (comme excavator)
@@ -25,22 +32,36 @@ const IMAGE_FIXE = 150 / 30; // sans animation : fleche levee, tournee vers le t
 const PELLE_RECUL = 2.4; // du bord droit de l'emprise au centre des chenilles
 const PELLE_Y = -1.2;
 const PELLE_LACET = 200; // degres : 180 (face au fond) + 20 (en biais vers la gauche)
-const PELLE_HAUT = 4.5; // label et progress passent au-dessus du bras leve ; le badge descend au coin de la fouille
 const K = "BLD_KIT_A_";
 const S = "BLD_SITEWORK_A_";
 const TRAME = 3.0;
 const ETAGE = 3.0;
 const DALLE = 0.3;
-const ACROTERE = 0.5;
 const RIVE = 0.2;
 const DEBORD_ECHAFAUDAGE = 0.3 + 0.8 - 0.04 - RIVE / 2; // du garde-corps de rive au bord exterieur du plancher
 const FOUILLE = 0.5; // profondeur de la fouille
 const MARGE_FOUILLE = 1.1; // du nu de l'emprise au bord de la fouille (fond 0,60 m et talus de 0,50 m)
-const MONTEE = 0.5; // part d'un niveau ou montent les poteaux ; le reste pose les cases de la dalle une a une
+const CONES = 2.1; // du nu de la facade droite au centre des cones, au pied de la tour d'echafaudage
+const PIECE = 1.5; // de la facade au centre d'une piece (une travee de 3 m, une case de profondeur)
+const TRANSITION = 0.8; // secondes
+const EMPRISE = { house: 2, block: 3, hall: 4 }; // trames de facade ; 2 de profondeur
+// les stades, du moins avance au plus avance (src/etages.js)
+const STADES = [
+  "plot",
+  "excavation",
+  "foundations",
+  "structure",
+  "envelope",
+  "finishing",
+  "inspection",
+  "completed",
+];
+const rang = (stade) => STADES.indexOf(stade);
+const R = Object.fromEntries(STADES.map((s, i) => [s, i]));
 
 export const meta = {
   id: "building",
-  version: "1.1.0",
+  version: "2.0.0",
   category: "building",
   states: [
     "plot",
@@ -58,18 +79,15 @@ export const meta = {
       values: ["house", "block", "hall"],
       default: "block",
     },
-    floors: { type: "number", default: 3, min: 1, max: 6 },
-    wings: { type: "number", default: 3, min: 1, max: 8 },
   },
-  anchors: ["label", "badge", "progress", "door"],
+  anchors: ["label", "badge", "progress", "door", "floor:*", "room:*"],
   budget: { triangles: 20000, materials: 10 },
   animated: true,
   assets: [PARCELLE, KIT, PELLETEUSE],
 };
 
 const versThree = (x, y, z) => [x, z, -y];
-const borne = (v, p) =>
-  Math.round(Math.min(Math.max(Number(v) || p.default, p.min), p.max));
+const adoucit = (t) => 1 - Math.pow(1 - t, 3);
 
 // Les triangles d'une piece du modele (toutes ses primitives).
 function triangles(objet) {
@@ -84,7 +102,8 @@ function triangles(objet) {
   return n;
 }
 
-// La trame d'un batiment de nx x ny travees centre sur l'origine (Blender : avant vers -Y) : axes, cases, facades.
+// La trame d'un batiment de nx x ny travees centre sur l'origine (Blender : avant vers -Y) : axes, cases, facades, et
+// le pourtour, les travees de facade dans l'ordre ou les lots les prennent.
 function trame(nx, ny) {
   const ax = Array.from({ length: nx + 1 }, (_, i) => (i - nx / 2) * TRAME);
   const ay = Array.from({ length: ny + 1 }, (_, j) => (j - ny / 2) * TRAME);
@@ -128,7 +147,10 @@ function trame(nx, ny) {
     [x1, y1, 180],
     [x0, y1, 270],
   ];
-  return { nx, ny, ax, ay, cx, cy, facades, angles };
+  const pourtour = [];
+  for (const cle of ["avant", "droite", "arriere", "gauche"])
+    facades[cle].points.forEach((p, i) => pourtour.push({ cle, i, p }));
+  return { nx, ny, ax, ay, cx, cy, facades, angles, pourtour };
 }
 
 export function create(THREE, params, ctx) {
@@ -139,32 +161,43 @@ export function create(THREE, params, ctx) {
   root.userData.component = meta.id;
   const basse = ctx.quality === "low";
 
-  // La pelleteuse : une copie par instance, ajoutee au root seulement en excavation. Qualite basse (bible 18.3) : ses
-  // noeuds *_DETAIL (petits galets, patins, lame, verins) sont retires.
+  // La pelleteuse : une copie par instance, ajoutee au root seulement quand le rez est en excavation. Qualite basse
+  // (bible 18.3) : ses noeuds *_DETAIL (petits galets, patins, lame, verins) sont retires.
   const pelle = ctx.assets[PELLETEUSE].scene;
   const details = [];
   pelle.traverse((o) => {
     if (basse && o.name.endsWith("_DETAIL")) details.push(o);
   });
   for (const o of details) o.removeFromParent();
+
+  // Un materiau par MAT_ (bible, 17) : chaque GLB charge sa propre copie d'un meme materiau (MAT_SURFACE des bandes des
+  // cones et du crepi, MAT_EARTH du socle et du godet) ; le batiment n'en garde qu'une, celle du premier modele qui
+  // l'a. Ce sont toujours des materiaux des modeles, partages, jamais liberes ici.
+  const parNom = new Map();
+  for (const modele of [ctx.assets[KIT].scene, ctx.assets[PARCELLE].scene, pelle])
+    modele.traverse((o) => {
+      if (o.isMesh && !parNom.has(o.material.name))
+        parNom.set(o.material.name, o.material);
+    });
+  const unique = (m) => parNom.get(m.name) || m;
+  pelle.traverse((o) => {
+    if (o.isMesh) o.material = unique(o.material);
+  });
   const mixer = new THREE.AnimationMixer(pelle);
   const creuse = mixer.clipAction(
-    THREE.AnimationClip.findByName(ctx.assets[PELLETEUSE].animations, CLIP_PELLETEUSE),
+    THREE.AnimationClip.findByName(
+      ctx.assets[PELLETEUSE].animations,
+      CLIP_PELLETEUSE,
+    ),
   );
 
   const type = meta.params.type.values.includes(params.type)
     ? params.type
     : meta.params.type.default;
-  const fiches = borne(params.wings, meta.params.wings);
-  const niveaux = Math.min(
-    borne(params.floors, meta.params.floors),
-    type === "block" ? 6 : 2,
-  );
-  const t = trame(fiches <= 2 ? 2 : fiches <= 4 ? 3 : 4, 2);
+  const t = trame(EMPRISE[type], 2);
   const porte = Math.floor((t.nx - 1) / 2); // travee de la porte, sur la facade avant
-  const toit = niveaux * ETAGE + DALLE; // dessus de la derniere dalle
 
-  // Le verre des fenetres eclairees (MAT_GLASS_LIT) : en theme sombre, il luit un peu.
+  // Le verre des fenetres de l'habite (MAT_GLASS_LIT) : en theme sombre, il luit un peu.
   const lit = ctx.tokens.materiaux.MAT_GLASS_LIT;
   const couleurLit = new THREE.Color(ctx.tokens.monde[lit.couleur]);
   const verreEclaire = new THREE.MeshStandardMaterial({
@@ -176,8 +209,42 @@ export function create(THREE, params, ctx) {
     emissiveIntensity: ctx.theme === "dark" ? 0.6 : 0.15,
   });
 
-  // --- le plan d'un etat : une liste de poses { modele, nom, x, y, z, rot, echelle, niveau, eclaire }
-  function plan(state, progress) {
+  // Les etages visibles, du bas vers le haut, chacun a son stade affiche. Sans data.floors (ou une liste vide hors du
+  // plot), un etage au stade de l'etat ; une liste vide en plot : la parcelle seule (projet ouvert, aucune fiche).
+  const etages = (state, floors) => {
+    const liste = Array.isArray(floors) ? floors : null;
+    let visibles;
+    if (liste && (liste.length || state === "plot"))
+      visibles = ctx.groupFloors(liste, state);
+    else
+      visibles = [
+        {
+          index: 1,
+          ids: [null],
+          stage: state,
+          rooms: [],
+          occupied: false,
+          grouped: false,
+        },
+      ];
+    // tant que le rez n'est pas debout (structure), les etages au-dessus attendent en plot (decision du brief)
+    const debout = visibles.length && rang(visibles[0].stage) >= R.structure;
+    return visibles.map((f, k) => ({
+      ...f,
+      affiche: k > 0 && !debout ? "plot" : f.stage,
+    }));
+  };
+
+  // Les travees de chaque piece d'un etage : la piece m prend la travee m du pourtour ; au-dela, deux lots partagent
+  // une travee. Rend, par travee du pourtour, la liste des pieces qui l'occupent.
+  const travees = (rooms) => {
+    const parTravee = t.pourtour.map(() => []);
+    rooms.forEach((r, m) => parTravee[m % t.pourtour.length].push(m));
+    return parTravee;
+  };
+
+  // --- le plan : une liste de poses { modele, nom, x, y, z, rot, echelle, niveau, eclaire, groupe }
+  function plan(visibles) {
     const poses = [];
     const pose = (nom, x, y, z, rot = 0, extra = {}) =>
       poses.push({
@@ -190,6 +257,7 @@ export function create(THREE, params, ctx) {
         echelle: [1, 1, 1],
         niveau: 0,
         eclaire: false,
+        groupe: "root",
         ...extra,
       });
     const terrain = (nom, x = 0, y = 0, rot = 0, echelle = [1, 1, 1]) =>
@@ -203,102 +271,61 @@ export function create(THREE, params, ctx) {
         echelle,
         niveau: 0,
         eclaire: false,
+        groupe: "root",
       });
 
     // une dalle entiere : une case etiree sur l'emprise, une rive etiree par facade (bouts vifs : exact), les angles
-    const dalle = (z, niveau) => {
-      pose("SLAB", 0, 0, z, 0, { echelle: [t.nx, t.ny, 1], niveau });
-      rives("SLAB_EDGE", z, niveau);
-      for (const [x, y, rot] of t.angles)
-        pose("SLAB_CORNER", x, y, z, rot, { niveau });
-    };
-    const rives = (nom, z, niveau) => {
+    const dalle = (z, o) => {
+      pose("SLAB", 0, 0, z, 0, { ...o, echelle: [t.nx, t.ny, 1] });
       for (const f of Object.values(t.facades))
-        pose(nom, ...f.centre, z, f.rot, { echelle: [f.long, 1, 1], niveau });
+        pose("SLAB_EDGE", ...f.centre, z, f.rot, {
+          ...o,
+          echelle: [f.long, 1, 1],
+        });
+      for (const [x, y, rot] of t.angles) pose("SLAB_CORNER", x, y, z, rot, o);
     };
     // une piece par travee (garde-corps, echafaudage : leurs montants ne s'etirent pas en qualite haute)
     const parTravee = (
       nom,
       z,
-      niveau,
+      o,
       decalage = 0,
       facades = Object.keys(t.facades),
+      seules = null, // index des travees retenues, par facade (la tour de la surelevation)
     ) => {
       for (const cle of facades) {
         const f = t.facades[cle];
         const [dx, dy] = [f.n[0] * decalage, f.n[1] * decalage];
         // qualite basse : une seule piece etiree sur la facade (garde-corps : il deborde d'une demi-rive a chaque bout)
-        if (basse) {
-          const long = nom === "GUARDRAIL" ? (f.long * TRAME + RIVE) / (TRAME + RIVE) : f.long;
-          pose(nom, f.centre[0] + dx, f.centre[1] + dy, z, f.rot, { niveau, echelle: [long, 1, 1] });
-        } else for (const [x, y] of f.points) pose(nom, x + dx, y + dy, z, f.rot, { niveau });
+        if (basse && !seules) {
+          const long =
+            nom === "GUARDRAIL"
+              ? (f.long * TRAME + RIVE) / (TRAME + RIVE)
+              : f.long;
+          pose(nom, f.centre[0] + dx, f.centre[1] + dy, z, f.rot, {
+            ...o,
+            echelle: [long, 1, 1],
+          });
+        } else
+          f.points.forEach(([x, y], i) => {
+            if (!seules || seules.includes(i))
+              pose(nom, x + dx, y + dy, z, f.rot, o);
+          });
       }
     };
-    const poteaux = (k, echelle = 1, interieurs = true) => {
+    const poteaux = (k, o, interieurs) => {
       for (const [i, x] of t.ax.entries())
         for (const [j, y] of t.ay.entries()) {
           const bord = i === 0 || i === t.nx || j === 0 || j === t.ny;
-          if (bord || interieurs)
-            pose("COLUMN", x, y, DALLE + k * ETAGE, 0, {
-              echelle: [1, 1, echelle],
-              niveau: k,
-            });
+          if (bord || interieurs) pose("COLUMN", x, y, DALLE + k * ETAGE, 0, o);
         }
     };
-    const echafaudage = (hauteur, facades) => {
-      for (let k = 0; k < hauteur; k++)
-        parTravee("SCAFFOLD", k * ETAGE, k, 0, facades);
-      parTravee(
-        "GUARDRAIL",
-        hauteur * ETAGE,
-        hauteur - 1,
-        DEBORD_ECHAFAUDAGE,
-        facades,
-      );
-    };
-    // les murs d'un niveau : choix(facade, index de travee, niveau) donne les pieces de la travee
-    const murs = (k, choix) => {
-      for (const [cle, f] of Object.entries(t.facades))
-        f.points.forEach(([x, y], i) => {
-          for (const [nom, eclaire] of choix(cle, i, k))
-            pose(nom, x, y, DALLE + k * ETAGE, f.rot, { niveau: k, eclaire });
-        });
-    };
-    const toiture = (k, gardeCorps) => {
-      if (type === "house") {
-        for (const x of t.cx) {
-          pose("ROOF_SLOPE", x, 0, toit, 0, { niveau: k });
-          pose("ROOF_SLOPE", x, 0, toit, 180, { niveau: k });
-        }
-        pose("ROOF_GABLE", t.ax[t.nx], 0, toit, 90, { niveau: k });
-        pose("ROOF_GABLE", t.ax[0], 0, toit, 270, { niveau: k });
-        return;
-      }
-      rives("ROOF_PARAPET", toit, k);
-      for (const [x, y, rot] of t.angles)
-        pose("ROOF_PARAPET_CORNER", x, y, toit, rot, { niveau: k });
-      if (gardeCorps) parTravee("GUARDRAIL", toit + ACROTERE, k); // l'acrotere est bas : protection pendant les travaux
-    };
-    // l'ossature complete : la dalle du rez, puis chaque niveau ; la halle n'a pas de dalle intermediaire, seulement
-    // sa rive (le bandeau qui tient les murs du haut)
-    const ossature = (interieurs) => {
-      dalle(0, 0);
-      for (let k = 0; k < niveaux; k++) {
-        poteaux(k, 1, interieurs);
-        if (type === "hall" && k < niveaux - 1) {
-          rives("SLAB_EDGE", (k + 1) * ETAGE, k + 1);
-          for (const [x, y, rot] of t.angles)
-            pose("SLAB_CORNER", x, y, (k + 1) * ETAGE, rot, { niveau: k + 1 });
-        } else dalle((k + 1) * ETAGE, k + 1);
-      }
-    };
-    // une travee de facade selon la finition ; la halle : murs pleins en bas, grande baie sous poutre a la porte
-    const facade = (finition) => (cle, i, k) => {
+    // une travee de facade selon la finition ; la halle : rez aveugle, grande baie sous poutre a la porte
+    const travee = (cle, i, k, finition, eclaire) => {
       const entree = cle === "avant" && i === porte && k === 0;
-      const brique = finition !== "crepi";
       if (type === "hall" && k === 0) {
         if (entree) return [["BEAM", false]];
-        return [[brique ? "WALL_BRICK" : "WALL_RENDER", false]];
+        return [[finition === "crepi" ? "WALL_RENDER" : "WALL_BRICK", false]];
       }
       if (entree) {
         if (finition === "brute") return [["WALL_BRICK_DOOR", false]];
@@ -318,134 +345,214 @@ export function create(THREE, params, ctx) {
           ["WALL_BRICK_WINDOW", false],
           ["WINDOW", false],
         ];
-      const eclaire =
-        state === "completed" || (state === "finishing" && k === 0);
       return [["WALL_RENDER_WINDOW", eclaire]];
     };
-    const perron = () => {
-      if (type !== "hall")
-        pose("STEPS", ...t.facades.avant.points[porte], 0, 0);
+    // l'echafaudage des etages de..a-1 (a exclu), garde-corps au plancher a ; chaque plancher appartient a son etage
+    // (groupeDe). Qualite basse : une seule piece par facade (ou par travee retenue), etiree sur toute la hauteur
+    // (bible 18.3 : sous 0,30 m, on fusionne)
+    const echafaudage = (de, a, facades, seules, groupeDe) => {
+      if (a <= de) return;
+      if (basse)
+        for (const cle of facades) {
+          const f = t.facades[cle];
+          const morceaux = seules
+            ? seules.map((i) => [f.points[i], 1])
+            : [[f.centre, f.long]];
+          for (const [[x, y], long] of morceaux)
+            pose("SCAFFOLD", x, y, de * ETAGE, f.rot, {
+              niveau: de,
+              groupe: groupeDe(de),
+              echelle: [long, 1, a - de],
+            });
+        }
+      else
+        for (let k = de; k < a; k++)
+          parTravee(
+            "SCAFFOLD",
+            k * ETAGE,
+            { niveau: k, groupe: groupeDe(k) },
+            0,
+            facades,
+            seules,
+          );
+      parTravee(
+        "GUARDRAIL",
+        a * ETAGE,
+        { niveau: a - 1, groupe: groupeDe(a - 1) },
+        DEBORD_ECHAFAUDAGE,
+        facades,
+        seules,
+      );
+    };
+    const toiture = (k, gardeCorps, o) => {
+      const z = (k + 1) * ETAGE + DALLE; // dessus de la dalle du plafond
+      if (type === "house") {
+        for (const x of t.cx) {
+          pose("ROOF_SLOPE", x, 0, z, 0, o);
+          pose("ROOF_SLOPE", x, 0, z, 180, o);
+        }
+        pose("ROOF_GABLE", t.ax[t.nx], 0, z, 90, o);
+        pose("ROOF_GABLE", t.ax[0], 0, z, 270, o);
+        return;
+      }
+      for (const f of Object.values(t.facades))
+        pose("ROOF_PARAPET", ...f.centre, z, f.rot, {
+          ...o,
+          echelle: [f.long, 1, 1],
+        });
+      for (const [x, y, rot] of t.angles)
+        pose("ROOF_PARAPET_CORNER", x, y, z, rot, o);
+      if (gardeCorps) parTravee("GUARDRAIL", z + 0.5, o); // l'acrotere est bas : protection pendant les travaux
     };
 
-    let hauteur = 0; // dessus de ce qui est construit, pour les ancres
-    switch (state) {
-      case "plot":
-        terrain(`PLOT_${t.nx}X2`);
-        for (const [x, y, rot] of t.angles) terrain("BATTER_BOARD", x, y, rot);
-        // le tracage de l'emprise sur les axes : une ligne etiree par facade, qui chevauche l'autre aux angles
-        for (const f of Object.values(t.facades))
-          terrain("LAYOUT_LINE", ...f.centre, f.rot, [(f.long * TRAME + 0.15) / TRAME, 1, 1]);
-        break;
-      case "excavation":
-      case "foundations": {
-        terrain(`PIT_${t.nx}X2`);
-        // le tas de deblais sur la marge droite, entre la fouille et le bord du socle, dans le sens de la profondeur
-        terrain("SPOIL_HEAP", t.ax[t.nx] + MARGE_FOUILLE + 0.9, 0.4, 90);
-        if (state === "excavation") {
-          hauteur = PELLE_HAUT;
-          break;
-        }
-        for (const x of t.ax)
-          for (const y of t.ay) {
-            pose("FOOTING", x, y, 0);
-            pose("COLUMN_STARTER", x, y, 0);
-          }
-        for (const y of t.ay)
-          for (const x of t.cx) pose("FOUNDATION_STRIP", x, y, 0);
-        for (const x of t.ax)
-          for (const y of t.cy) pose("FOUNDATION_STRIP", x, y, 0, 90);
-        hauteur = 0.8;
-        break;
-      }
-      case "structure": {
-        terrain(`PLOT_${t.nx}X2`);
-        dalle(0, 0);
-        const h = Math.min(Math.max(Number(progress) || 0, 0), 1) * niveaux;
-        const fini = Math.min(Math.floor(h), niveaux); // niveaux termines, dalle comprise
-        const f = h - fini; // avancement dans le niveau en cours
-        for (let k = 0; k < fini; k++) {
-          poteaux(k);
-          dalle((k + 1) * ETAGE, k + 1);
-        }
-        hauteur = fini * ETAGE + DALLE;
-        let echafaudes = fini;
-        if (fini < niveaux) {
-          const monte = Math.min(f / MONTEE, 1);
-          if (monte > 0) {
-            poteaux(fini, monte);
-            echafaudes = fini + 1;
-            hauteur = DALLE + fini * ETAGE + monte * (ETAGE - DALLE);
-          } else
-            for (const x of t.ax)
-              for (const y of t.ay)
-                pose("COLUMN_STARTER", x, y, hauteur, 0, { niveau: fini });
-          // les cases de la dalle du dessus, une a une, avec leurs rives et leurs angles
-          const cases = Math.floor(
-            Math.max(0, (f - MONTEE) / (1 - MONTEE)) * t.nx * t.ny,
-          );
-          const z = (fini + 1) * ETAGE;
-          for (let n = 0; n < cases; n++) {
-            const i = n % t.nx;
-            const j = Math.floor(n / t.nx);
-            const x = t.cx[i];
-            const y = t.cy[j];
-            pose("SLAB", x, y, z, 0, { niveau: fini + 1 });
-            if (j === 0)
-              pose("SLAB_EDGE", x, t.ay[0], z, 0, { niveau: fini + 1 });
-            if (j === t.ny - 1)
-              pose("SLAB_EDGE", x, t.ay[t.ny], z, 180, { niveau: fini + 1 });
-            if (i === 0)
-              pose("SLAB_EDGE", t.ax[0], y, z, 270, { niveau: fini + 1 });
-            if (i === t.nx - 1)
-              pose("SLAB_EDGE", t.ax[t.nx], y, z, 90, { niveau: fini + 1 });
-            for (const [ax, ay, rot] of t.angles)
-              if (
-                Math.abs(ax - x) === TRAME / 2 &&
-                Math.abs(ay - y) === TRAME / 2
-              )
-                pose("SLAB_CORNER", ax, ay, z, rot, { niveau: fini + 1 });
-          }
-        }
-        // garde-corps de rive sur le dernier plancher termine (protection laterale, SST)
-        if (fini > 0) parTravee("GUARDRAIL", fini * ETAGE + DALLE, fini);
-        if (echafaudes > 0) echafaudage(echafaudes, Object.keys(t.facades));
-        break;
-      }
-      case "envelope":
-        terrain(`PLOT_${t.nx}X2`);
-        ossature(false);
-        for (let k = 0; k < niveaux; k++) murs(k, facade("brute"));
-        toiture(niveaux, true);
-        echafaudage(niveaux, Object.keys(t.facades));
-        perron();
-        hauteur = toit;
-        break;
-      case "inspection":
-        terrain(`PLOT_${t.nx}X2`);
-        ossature(false);
-        for (let k = 0; k < niveaux; k++) murs(k, facade("menuiseries"));
-        toiture(niveaux, false);
-        perron();
-        hauteur = toit;
-        break;
-      case "finishing":
-      case "completed":
-        terrain(`PLOT_${t.nx}X2`);
-        ossature(false);
-        for (let k = 0; k < niveaux; k++) murs(k, facade("crepi"));
-        toiture(niveaux, false);
-        perron();
-        if (state === "finishing") echafaudage(niveaux, ["droite"]);
-        else pose("SIGN_TOTEM", t.ax[0] - 0.8, t.ay[0] - 1.8, 0);
-        hauteur = toit;
-        break;
-      default:
-        throw new Error(`état inconnu : ${state}`);
+    const rez = visibles[0];
+    const rezStade = rez ? rez.affiche : "plot";
+
+    // le terrain : la parcelle, ou la fouille du rez
+    if (rang(rezStade) <= R.plot) {
+      terrain(`PLOT_${t.nx}X2`);
+      for (const [x, y, rot] of t.angles) terrain("BATTER_BOARD", x, y, rot);
+      // le tracage de l'emprise sur les axes : une ligne etiree par facade, qui chevauche l'autre aux angles
+      for (const f of Object.values(t.facades))
+        terrain("LAYOUT_LINE", ...f.centre, f.rot, [
+          (f.long * TRAME + 0.15) / TRAME,
+          1,
+          1,
+        ]);
+    } else if (rang(rezStade) <= R.foundations) {
+      terrain(`PIT_${t.nx}X2`);
+      // le tas de deblais sur la marge droite, entre la fouille et le bord du socle, dans le sens de la profondeur
+      terrain("SPOIL_HEAP", t.ax[t.nx] + MARGE_FOUILLE + 0.9, 0.4, 90);
+    } else {
+      terrain(`PLOT_${t.nx}X2`);
+      if (type !== "hall" && rang(rezStade) >= R.envelope)
+        pose("STEPS", ...t.facades.avant.points[porte], 0, 0);
+      if (rezStade === "completed")
+        pose("SIGN_TOTEM", t.ax[0] - 0.8, t.ay[0] - 1.8, 0);
     }
-    if (type === "house" && hauteur === toit)
-      hauteur = toit + TRAME * Math.tan(Math.PI / 6) + 0.25;
-    else if (hauteur === toit && type !== "house") hauteur = toit + ACROTERE;
-    return { poses, hauteur };
+
+    // chaque etage a son stade
+    const salles = []; // les pieces de chaque etage : { n, m, travee }
+    visibles.forEach((f, k) => {
+      const n = f.index;
+      const o = { niveau: k, groupe: `F${n}` };
+      const s = f.affiche;
+      const sol = k * ETAGE + DALLE; // dessus de la dalle de l'etage
+      if (s === "foundations") {
+        if (k === 0) {
+          for (const x of t.ax)
+            for (const y of t.ay) {
+              pose("FOOTING", x, y, 0, 0, o);
+              pose("COLUMN_STARTER", x, y, 0, 0, o);
+            }
+          for (const y of t.ay)
+            for (const x of t.cx) pose("FOUNDATION_STRIP", x, y, 0, 0, o);
+          for (const x of t.ax)
+            for (const y of t.cy) pose("FOUNDATION_STRIP", x, y, 0, 90, o);
+        } else
+          for (const x of t.ax)
+            for (const y of t.ay) pose("COLUMN_STARTER", x, y, sol, 0, o);
+      }
+      // en etage, la dalle a nu (excavation, foundations) : garde-corps de rive (SST)
+      if (k > 0 && (s === "excavation" || s === "foundations"))
+        parTravee("GUARDRAIL", sol, o);
+      // chaque piece a son ancre, a tout stade (l'anneau du survol, le personnage de son lot)
+      f.rooms.forEach((r, m) => {
+        const tr = m % t.pourtour.length;
+        salles.push({ n, m: m + 1, travee: t.pourtour[tr], room: r, floor: f });
+      });
+      if (rang(s) < R.structure) return;
+
+      if (k === 0) dalle(0, o);
+      poteaux(k, o, s === "structure");
+      dalle((k + 1) * ETAGE, o);
+      const finition =
+        s === "structure" || s === "envelope"
+          ? "brute"
+          : s === "finishing"
+            ? "menuiseries"
+            : "crepi";
+      const occupe = travees(f.rooms);
+      t.pourtour.forEach(({ cle, i, p }, tr) => {
+        const pieces = occupe[tr];
+        // en structure, seule la travee d'un lot fini se ferme (toutes ses pieces finies)
+        if (
+          s === "structure" &&
+          !(pieces.length && pieces.every((m) => f.rooms[m] && f.rooms[m].done))
+        )
+          return;
+        const groupe = pieces.length ? `R${n}_${pieces[0] + 1}` : o.groupe;
+        for (const [nom, eclaire] of travee(
+          cle,
+          i,
+          k,
+          finition,
+          s === "completed",
+        ))
+          pose(nom, ...p, DALLE + k * ETAGE, t.facades[cle].rot, {
+            niveau: k,
+            groupe,
+            eclaire,
+          });
+      });
+    });
+
+    // la toiture coiffe le dernier etage debout, si rien ne se construit au-dessus (un plot ne compte pas)
+    let haut = -1;
+    visibles.forEach((f, k) => {
+      if (rang(f.affiche) >= R.structure) haut = k;
+    });
+    let toit = null;
+    if (haut >= 0) {
+      const f = visibles[haut];
+      const dessus = visibles[haut + 1];
+      if (!dessus || dessus.affiche === "plot") {
+        const o = { niveau: haut, groupe: "TOIT" };
+        if (rang(f.affiche) >= R.envelope) {
+          toiture(haut, f.affiche === "envelope", o);
+          toit = { k: haut, z: (haut + 1) * ETAGE + DALLE };
+        } else
+          parTravee("GUARDRAIL", (haut + 1) * ETAGE + DALLE, {
+            niveau: haut,
+            groupe: `F${f.index}`,
+          }); // le dernier plancher coule (SST)
+      }
+    }
+
+    // les echafaudages : la surelevation (une tour et ses cones), ou tout autour jusqu'a l'etage le plus haut qui en a
+    // la surelevation : un seul etage en chantier, juste au-dessus d'etages tous finis (les plots au-dessus ne comptent
+    // pas) ; deux etages en chantier, c'est un chantier ordinaire, echafaude tout autour
+    let finis = 0;
+    while (finis < visibles.length && visibles[finis].affiche === "completed")
+      finis++;
+    const chantier = visibles.filter(
+      (f) => f.affiche !== "completed" && f.affiche !== "plot",
+    );
+    const sureleve =
+      finis > 0 && chantier.length === 1 && chantier[0] === visibles[finis];
+    const s = sureleve ? visibles[finis].affiche : null;
+    // la tour monte jusqu'au plancher de travail : la dalle a nu, ou le haut de l'etage en structure et en enveloppe
+    const tour =
+      s && rang(s) >= R.excavation && rang(s) <= R.envelope
+        ? finis + (rang(s) >= R.structure ? 1 : 0)
+        : 0;
+    if (tour > 0) {
+      echafaudage(0, tour, ["droite"], [0], () => "root");
+      const [x, y] = t.facades.droite.points[0];
+      terrain("CONE_GROUP", x + CONES, y, 90);
+    } else {
+      // un chantier ordinaire : chaque etage en structure ou en enveloppe a son echafaudage, pose sur l'etage du dessous
+      // s'il est debout ; les etages finis, en second oeuvre ou en reception restent visibles (lisibilite d'abord)
+      const echafaude = (f) =>
+        f && (f.affiche === "structure" || f.affiche === "envelope");
+      for (let k = 0; k < visibles.length; k++) {
+        if (!echafaude(visibles[k]) || echafaude(visibles[k - 1])) continue;
+        let a = k;
+        while (echafaude(visibles[a])) a++;
+        echafaudage(k, a, Object.keys(t.facades), null, (n) => `F${visibles[n].index}`);
+      }
+    }
+    return { poses, salles, toit, rezStade };
   }
 
   // --- les pieces : _LOW en qualite basse, ou pour les niveaux a partir de seuil (allegement de la qualite haute)
@@ -475,7 +582,7 @@ export function create(THREE, params, ctx) {
         (a, b) => b - a,
       );
       for (const niveau of hauts) {
-        if (total(seuil) <= meta.budget.triangles) break;
+        if (total(seuil) < meta.budget.triangles) break; // sous le plafond, pas a son niveau
         if (niveau === 0) break; // le rez reste plein
         seuil = niveau;
       }
@@ -484,48 +591,169 @@ export function create(THREE, params, ctx) {
   };
 
   const ancres = {};
-  const construit = (state, progress) => {
+  const groupes = new Map(); // cle -> THREE.Group, a chaque construction
+  let precedent = null; // la signature de chaque etage a la construction precedente
+  let dernierToit = null; // la derniere hauteur de la toiture, meme deposee : elle remonte de la
+  const transitions = new Map(); // groupe -> { t, de } ; de : null pour monter, sinon la hauteur de depart
+
+  const construit = (state, floors, anime) => {
     root.clear();
-    const { poses, hauteur } = plan(state, progress);
+    groupes.clear();
+    transitions.clear();
+    const visibles = etages(state, floors);
+    const { poses, salles, toit, rezStade } = plan(visibles);
     const objets = choisit(poses);
+
+    // les groupes : un par etage visible, une piece par lot dans son etage, la toiture (de son etage)
+    const groupe = (cle) => {
+      if (groupes.has(cle)) return groupes.get(cle);
+      if (cle === "root") return root;
+      const g = new THREE.Group();
+      let parent = root;
+      if (cle[0] === "F") {
+        const f = visibles.find((v) => `F${v.index}` === cle);
+        g.name = `FLOOR_${f.index}`;
+        g.userData.floor = { index: f.index, ids: f.ids, grouped: f.grouped };
+      } else if (cle[0] === "R") {
+        const [n, m] = cle.slice(1).split("_").map(Number);
+        const f = visibles.find((v) => v.index === n);
+        const r = f.rooms[m - 1] || {};
+        g.name = `ROOM_${n}_${m}`;
+        g.userData.room = {
+          floor: n,
+          index: m,
+          floorId: f.grouped ? null : f.ids[0],
+          id: r.id === undefined ? null : r.id,
+        };
+        parent = groupe(`F${n}`);
+      } else {
+        g.name = "ROOF";
+        const f = visibles[toit.k];
+        g.userData.floor = { index: f.index, ids: f.ids, grouped: f.grouped };
+      }
+      parent.add(g);
+      groupes.set(cle, g);
+      return g;
+    };
+
     poses.forEach((p, i) => {
       const piece = objets[i].clone(); // partage la geometrie et les materiaux du modele
       piece.position.set(...versThree(p.x, p.y, p.z));
       piece.rotation.set(0, THREE.MathUtils.degToRad(p.rot), 0);
       piece.scale.set(p.echelle[0], p.echelle[2], p.echelle[1]);
-      if (p.eclaire)
-        piece.traverse((o) => {
-          if (o.isMesh && o.material.name === "MAT_GLASS")
-            o.material = verreEclaire;
-        });
-      root.add(piece);
+      piece.traverse((o) => {
+        if (!o.isMesh) return;
+        if (p.eclaire && o.material.name === "MAT_GLASS")
+          o.material = verreEclaire;
+        else o.material = unique(o.material);
+      });
+      groupe(p.groupe).add(piece);
     });
-    if (state === "excavation") {
-      pelle.position.set(...versThree(t.ax[t.nx] - PELLE_RECUL, PELLE_Y, -FOUILLE));
+    if (rezStade === "excavation") {
+      pelle.position.set(
+        ...versThree(t.ax[t.nx] - PELLE_RECUL, PELLE_Y, -FOUILLE),
+      );
       pelle.rotation.set(0, THREE.MathUtils.degToRad(PELLE_LACET), 0);
       root.add(pelle);
+    }
+    // les vitres de chaque etage, nommees pour l'heure reelle (day-night) : l'assemblage les eclaire la nuit
+    for (const f of visibles) {
+      const g = groupes.get(`F${f.index}`);
+      if (!g) continue;
+      g.traverse((o) => {
+        if (o.isMesh && /^MAT_GLASS/.test(o.material.name)) {
+          o.name = `GLASS_FLOOR_${f.index}`;
+          o.userData.glass = { floor: f.index, occupied: f.occupied };
+        }
+      });
     }
     root.traverse((o) => {
       if (o.isMesh) o.castShadow = o.receiveShadow = !basse;
     });
+
+    // les ancres, sur l'etat final (avant toute transition)
+    root.updateMatrixWorld(true);
+    const boite = new THREE.Box3().setFromObject(root);
+    const hauteur = Math.max(boite.max.y, DALLE);
     const avant = t.ay[0];
     const [xPorte] = t.facades.avant.points[porte];
+    for (const cle of Object.keys(ancres)) delete ancres[cle];
     Object.assign(ancres, {
       label: versThree(0, 0, hauteur + 1.5),
       // en excavation, le coin de l'emprise est cache par la pelleteuse : le badge passe au coin de la fouille, au sol
       badge:
-        state === "excavation"
+        rezStade === "excavation"
           ? versThree(t.ax[t.nx] + MARGE_FOUILLE, avant - MARGE_FOUILLE, 0)
           : versThree(t.ax[t.nx], avant, hauteur + 0.6),
-      progress: versThree(0, avant - 1.2, Math.max(hauteur, DALLE) + 0.6),
+      progress: versThree(0, avant - 1.2, hauteur + 0.6),
       door: versThree(xPorte, avant - RIVE - 0.9, 0),
     });
+    const base = (f, k) =>
+      k === 0
+        ? rang(f.affiche) >= R.structure
+          ? DALLE
+          : 0
+        : k * ETAGE + DALLE;
+    visibles.forEach((f, k) => {
+      ancres[`floor:${f.index}`] = versThree(0, 0, base(f, k));
+    });
+    for (const s of salles) {
+      const { p, cle } = s.travee;
+      const nrm = t.facades[cle].n;
+      const k = s.n - 1;
+      ancres[`room:${s.n}-${s.m}`] = versThree(
+        p[0] - nrm[0] * PIECE,
+        p[1] - nrm[1] * PIECE,
+        base(visibles[k], k),
+      );
+    }
+
+    // les transitions : un etage qui change monte depuis sa dalle ; la toiture remonte d'ou elle etait
+    const signature = new Map(
+      visibles.map((f) => [
+        f.index,
+        `${f.affiche}|${f.rooms.filter((r) => r && r.done).length}`,
+      ]),
+    );
+    if (anime && precedent && !ctx.reducedMotion) {
+      for (const f of visibles) {
+        const g = groupes.get(`F${f.index}`);
+        if (g && precedent.get(f.index) !== signature.get(f.index))
+          transitions.set(g, { t: 0, de: null, base: base(f, f.index - 1) });
+      }
+      const g = groupes.get("TOIT");
+      // une toiture qui n'a jamais ete posee arrive avec son etage, d'un niveau plus bas
+      const depart = dernierToit === null ? toit && toit.z - ETAGE : dernierToit;
+      if (g && depart !== toit.z)
+        transitions.set(g, { t: 0, de: depart - toit.z });
+      applique(0);
+    }
+    precedent = signature;
+    if (toit) dernierToit = toit.z;
   };
 
-  // le cycle de creusement : joue en excavation ; avec reducedMotion, une image fixe et lisible
+  // pose chaque transition a l'avancement u (0 a 1)
+  const applique = (dt) => {
+    for (const [g, tr] of transitions) {
+      tr.t = Math.min(tr.t + dt / TRANSITION, 1);
+      const u = adoucit(tr.t);
+      if (tr.de === null) {
+        const s = Math.max(u, 0.02);
+        g.scale.y = s;
+        g.position.y = tr.base * (1 - s);
+      } else g.position.y = tr.de * (1 - u);
+      if (tr.t >= 1) {
+        g.scale.y = 1;
+        g.position.y = 0;
+        transitions.delete(g);
+      }
+    }
+  };
+
+  // le cycle de creusement : joue quand le rez est en excavation ; avec reducedMotion, une image fixe et lisible
   const joue = () => {
     creuse.stop();
-    if (state === "excavation") {
+    if (pelle.parent === root) {
       creuse.reset().play();
       if (ctx.reducedMotion) {
         mixer.setTime(IMAGE_FIXE);
@@ -536,23 +764,35 @@ export function create(THREE, params, ctx) {
   };
 
   let state = "plot";
-  construit(state);
+  let creusait = false;
+  construit(state, undefined, false);
   joue();
+  let premier = true; // le premier setState pose l'etat sans transition
 
   return {
     root,
     setState(next, data = {}) {
       if (!meta.states.includes(next))
         throw new Error(`état inconnu : ${next}`);
-      const avant = state;
       state = next;
-      construit(state, data.progress);
-      if (state !== avant) joue(); // un nouveau progress ne relance pas le cycle
+      construit(state, data && data.floors, !premier);
+      premier = false;
+      const creuse = pelle.parent === root;
+      if (creuse !== creusait) joue(); // de nouvelles donnees ne relancent pas le cycle
+      creusait = creuse;
     },
     update(dt) {
-      if (state !== "excavation" || ctx.reducedMotion) return false;
-      mixer.update(dt);
-      return true;
+      if (ctx.reducedMotion) return false;
+      let encore = false;
+      if (transitions.size) {
+        applique(dt);
+        encore = true;
+      }
+      if (pelle.parent === root) {
+        mixer.update(dt);
+        encore = true;
+      }
+      return encore;
     },
     anchor(name) {
       const p = ancres[name];

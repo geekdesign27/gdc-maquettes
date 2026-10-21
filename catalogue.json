@@ -665,17 +665,15 @@
     },
     {
       "id": "building",
-      "lot": "G2",
+      "lot": "G8",
       "order": 2,
       "kind": "component",
       "category": "building",
       "name": "Le bâtiment (une application)",
-      "purpose": "Montrer l'avancement d'une application par l'état de son bâtiment.",
-      "description": "Assemblé par le code à partir du kit de bâtiment, selon le type et la taille. États : plot (terrain préparé), excavation (fouille avec la pelleteuse), foundations (fondations coulées), structure (poteaux, dalles et échafaudage ; data.progress de 0 à 1), envelope (murs et toiture fermés), finishing (second œuvre : fenêtres posées, ouvriers visibles), completed (habité : fenêtres éclairées), inspection (réception en cours). Un défaut ne change pas l'état : GDC pose defect-sign sur la façade. Familles de la bible : le bâtiment d'une application relève du chantier (BLD_DEVELOPMENT n'est pas un bureau, c'est ce bâtiment).",
+      "purpose": "Montrer l'avancement d'une application étage par étage : une fiche par étage, un lot par pièce.",
+      "description": "Un étage par fiche, la plus ancienne en bas (etages de GDC, ADR 0013). Chaque étage suit son stade : plot (rien de construit ; les gabarits sont survey-poles, posés par GDC) jusqu'au feu vert ; excavation puis foundations pendant la préparation, au sol la fouille avec la pelle puis les semelles, en étage la toiture déposée et la dalle à nu puis les attentes d'armatures ; structure (poteaux, dalle, échafaudage de l'étage ; chaque pièce, une travée par lot, se ferme quand son lot est fini), envelope (murs fermés, échafaudage encore là), finishing (fenêtres posées, échafaudage déposé) pendant la construction ; inspection à la réception ; completed à la remise des clés. Six étages visibles au plus : le rez regroupe les fiches livrées les plus anciennes, et s'il reste encore trop d'étages, les plus anciens s'y fondent aussi ; le rez prend alors l'aspect du moins avancé d'entre eux (src/etages.js, la même règle que floor-selector). Un bâtiment habité qui reçoit une fiche est surélevé : il gagne un étage en haut, sa toiture monte d'un niveau, le bas reste habité, et seul l'étage du haut est en chantier, avec un petit échafaudage et deux ou trois cônes de balisage groupés au pied (sans badge : le défaut reste un cône seul avec son badge, docs/signaletique.md). L'état alteration n'existe pas (décision de Pierre-Alain du 21 octobre 2026). Les huit états restent ceux que GDC envoie : sans data.floors, l'état donne un bâtiment d'un étage à ce stade ; avec data.floors, l'étage est le niveau de vérité. Fiche validée par Pierre-Alain le 21 octobre 2026.",
       "params": {
-        "type": "house | block | hall, défaut block",
-        "floors": "nombre, 1 à 6, défaut 3",
-        "wings": "nombre de fiches, 1 à 8, défaut 3"
+        "type": "house | block | hall, défaut block"
       },
       "states": [
         "plot",
@@ -691,76 +689,37 @@
         "label",
         "badge",
         "progress",
-        "door"
+        "door",
+        "floor:*",
+        "room:*"
       ],
       "budget": {
         "triangles": 20000,
         "materials": 10
       },
       "acceptance": [
-        "Chaque état reconnaissable sans légende",
-        "data.progress fait monter la structure sans saut",
+        "Chaque stade se reconnaît sans légende sur un étage, au sol comme en étage",
+        "Six étages à des stades différents restent lisibles (planche AuditApp à trois applications)",
+        "fixtures/projet-type et fixtures/trois-applications se rejouent sans saut : l'étage nouveau monte, la toiture remonte ; reducedMotion : l'état final directement",
+        "Ancres floor:n pour chaque étage visible et room:<étage>-<pièce> pour chaque pièce",
+        "Les vitres de chaque étage sont nommées, pour que l'assemblage les éclaire la nuit (day-night)",
+        "Les cônes de balisage ne se confondent pas avec defect-sign sur une planche côte à côte",
         "En qualité low, moins de 6000 triangles",
-        "Clic sur le bâtiment : GDC ouvre la vue intérieure (building-interior)"
+        "Brief validé par Pierre-Alain avant la fabrication ; ligne au journal des versions"
       ],
-      "status": "livré",
+      "status": "à faire",
       "data": {
-        "progress": "0 à 1, avancement dans l'état courant (fait monter la structure)"
+        "floors": "du bas vers le haut, une entrée par fiche : { id, stage : un des huit états, rooms : [{ id, done }] (un lot par pièce), occupied : un agent travaille à cet étage (les fenêtres la nuit) }"
       },
       "production": "mixte",
       "kit": "building-kit",
       "assets": [
-        "BLD_SITEWORK_A_v001.glb",
+        "BLD_SITEWORK_A_v002.glb",
         "kit:building-kit/BLD_KIT_A_v003.glb",
         "machine:excavator/VEH_EXCAVATOR_A_v001.glb"
       ],
-      "next": {
-        "version": "2.0.0",
-        "lot": "G8",
-        "order": 2,
-        "status": "à faire",
-        "role": "modeleur",
-        "purpose": "Montrer l'avancement d'une application étage par étage : une fiche par étage, un lot par pièce.",
-        "description": "Un étage par fiche, la plus ancienne en bas (etages de GDC, ADR 0013). Chaque étage suit son stade : plot (rien de construit ; les gabarits sont survey-poles, posés par GDC) jusqu'au feu vert ; excavation puis foundations pendant la préparation, au sol la fouille avec la pelle puis les semelles, en étage la toiture déposée et la dalle à nu puis les attentes d'armatures ; structure (poteaux, dalle, échafaudage de l'étage ; chaque pièce, une travée par lot, se ferme quand son lot est fini), envelope (murs fermés, échafaudage encore là), finishing (fenêtres posées, échafaudage déposé) pendant la construction ; inspection à la réception ; completed à la remise des clés. Six étages visibles au plus : le rez regroupe les fiches livrées les plus anciennes, et s'il reste encore trop d'étages, les plus anciens s'y fondent aussi ; le rez prend alors l'aspect du moins avancé d'entre eux (src/etages.js, la même règle que floor-selector). Un bâtiment habité qui reçoit une fiche est surélevé : il gagne un étage en haut, sa toiture monte d'un niveau, le bas reste habité, et seul l'étage du haut est en chantier, avec un petit échafaudage et deux ou trois cônes de balisage groupés au pied (sans badge : le défaut reste un cône seul avec son badge, docs/signaletique.md). L'état alteration n'existe pas (décision de Pierre-Alain du 21 octobre 2026). Les huit états restent ceux que GDC envoie : sans data.floors, l'état donne un bâtiment d'un étage à ce stade ; avec data.floors, l'étage est le niveau de vérité. Fiche validée par Pierre-Alain le 21 octobre 2026.",
-        "params": {
-          "type": "house | block | hall, défaut block"
-        },
-        "states": [
-          "plot",
-          "excavation",
-          "foundations",
-          "structure",
-          "envelope",
-          "finishing",
-          "completed",
-          "inspection"
-        ],
-        "anchors": [
-          "label",
-          "badge",
-          "progress",
-          "door",
-          "floor:*",
-          "room:*"
-        ],
-        "budget": {
-          "triangles": 20000,
-          "materials": 10
-        },
-        "data": {
-          "floors": "du bas vers le haut, une entrée par fiche : { id, stage : un des huit états, rooms : [{ id, done }] (un lot par pièce), occupied : un agent travaille à cet étage (les fenêtres la nuit) }"
-        },
-        "acceptance": [
-          "Chaque stade se reconnaît sans légende sur un étage, au sol comme en étage",
-          "Six étages à des stades différents restent lisibles (planche AuditApp à trois applications)",
-          "fixtures/projet-type et fixtures/trois-applications se rejouent sans saut : l'étage nouveau monte, la toiture remonte ; reducedMotion : l'état final directement",
-          "Ancres floor:n pour chaque étage visible et room:<étage>-<pièce> pour chaque pièce",
-          "Les vitres de chaque étage sont nommées, pour que l'assemblage les éclaire la nuit (day-night)",
-          "Les cônes de balisage ne se confondent pas avec defect-sign sur une planche côte à côte",
-          "En qualité low, moins de 6000 triangles",
-          "Brief validé par Pierre-Alain avant la fabrication ; ligne au journal des versions"
-        ]
-      }
+      "role": "modeleur",
+      "version": "2.0.0"
     },
     {
       "id": "survey-poles",

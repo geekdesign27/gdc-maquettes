@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-53 éléments : 44 livré, 7 à faire, 2 exemple ; 6 nouvelle(s) version(s) prévue(s).
+53 éléments : 43 livré, 8 à faire, 2 exemple ; 5 nouvelle(s) version(s) prévue(s).
 
 ## G0 : La ligne graphique
 
@@ -299,7 +299,6 @@ Montrer l'avancement d'une application par l'état de son bâtiment.
 | Ordre | Identifiant | Nom | Nature | But | Statut |
 |---|---|---|---|---|---|
 | 1 | `building-kit` | Le kit de bâtiment | Bibliothèque de modèles 3D produite par un script Blender (blender/assets/<id>.py) et réutilisée par plusieurs composants : components/kit/<id>/ | Les pièces modulaires communes à tous les bâtiments, aux mêmes dimensions d'assemblage. | livré |
-| 2 | `building` | Le bâtiment (une application) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer l'avancement d'une application par l'état de son bâtiment. | livré |
 | 3 | `survey-poles` | Les gabarits | Composant 3D Three.js, conforme à docs/contrat-composant.md | Une fiche à l'étude : les perches qui montrent le volume futur, comme pendant la mise à l'enquête. | livré |
 | 4 | `shared-basement` | Le sous-sol commun | Composant 3D Three.js, conforme à docs/contrat-composant.md | Les ouvrages communs : base de données ou composants partagés par plusieurs applications. | livré |
 
@@ -315,26 +314,6 @@ Sols, fondations, poteaux, poutres, dalles, murs, portes, fenêtres, toitures, e
   - Toutes les pièces partagent la même trame et la même hauteur d'étage
   - Chaque pièce est un nœud nommé BLD_KIT_A_<PIECE>
   - Un bâtiment de démonstration s'assemble sans retouche
-
-### Le bâtiment (une application) (`building`)
-
-Assemblé par le code à partir du kit de bâtiment, selon le type et la taille. États : plot (terrain préparé), excavation (fouille avec la pelleteuse), foundations (fondations coulées), structure (poteaux, dalles et échafaudage ; data.progress de 0 à 1), envelope (murs et toiture fermés), finishing (second œuvre : fenêtres posées, ouvriers visibles), completed (habité : fenêtres éclairées), inspection (réception en cours). Un défaut ne change pas l'état : GDC pose defect-sign sur la façade. Familles de la bible : le bâtiment d'une application relève du chantier (BLD_DEVELOPMENT n'est pas un bureau, c'est ce bâtiment).
-
-- Fichier : `components/building/building/index.js`
-- Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `building-kit`
-- Modèles : `BLD_SITEWORK_A_v001.glb`, `kit:building-kit/BLD_KIT_A_v003.glb`, `machine:excavator/VEH_EXCAVATOR_A_v001.glb`
-- Paramètres : `type` (house | block | hall, défaut block) ; `floors` (nombre, 1 à 6, défaut 3) ; `wings` (nombre de fiches, 1 à 8, défaut 3)
-- États : `plot`, `excavation`, `foundations`, `structure`, `envelope`, `finishing`, `completed`, `inspection`
-- Ancres : `label`, `badge`, `progress`, `door`
-- Données reçues par setState : `progress` (0 à 1, avancement dans l'état courant (fait monter la structure))
-- Budget : 20000 triangles, 10 matériaux
-- Critères d'acceptation :
-  - Chaque état reconnaissable sans légende
-  - data.progress fait monter la structure sans saut
-  - En qualité low, moins de 6000 triangles
-  - Clic sur le bâtiment : GDC ouvre la vue intérieure (building-interior)
-
-Nouvelle version prévue : 2.0.0, au lot G8 (à faire).
 
 ### Les gabarits (`survey-poles`)
 
@@ -757,7 +736,7 @@ Faire de la carte la visualisation du harnais : relier au survol la carte, le fi
 | Ordre | Identifiant | Nom | Nature | But | Statut |
 |---|---|---|---|---|---|
 | 1 | `hover-link` | Le survol partagé | Document de référence, pas de code | Relier au survol, dans les deux sens, la carte, le fil des déclencheurs à gauche et l'arbre des fiches à droite. | livré |
-| 2 | `building` | Le bâtiment (une application) (version 2.0.0) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer l'avancement d'une application étage par étage : une fiche par étage, un lot par pièce. | à faire |
+| 2 | `building` | Le bâtiment (une application) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer l'avancement d'une application étage par étage : une fiche par étage, un lot par pièce. | à faire |
 | 3 | `floor-selector` | Le sélecteur d'étages | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Choisir l'étage d'un bâtiment, c'est-à-dire la fiche à regarder ; la vue en coupe s'ouvre sur cet étage. | à faire |
 | 4 | `building-interior` | L'intérieur d'un bâtiment (version 2.0.0) | Composant 3D Three.js, conforme à docs/contrat-composant.md | La vue micro : un étage ouvert, c'est-à-dire une fiche, avec une pièce par lot, l'étape où en est chaque lot et les experts au travail. | à faire |
 | 5 | `trigger-feed` | Le fil des déclencheurs | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Lire à gauche ce que le harnais vient de faire, action par action, dans l'ordre. | à faire |
@@ -782,6 +761,29 @@ Un événement commun et une entrée commune pour tous les éléments qui montre
   - La mise en évidence est un fond teinté et un trait d'encre, plus léger que selected, sans couleur d'état et sans faire sauter la liste
   - Le contrôle vérifie que tout élément qui émet gdc-hover lit aussi highlight
   - La page /interface.html relie le fil, la navigation et le sélecteur d'étages
+
+### Le bâtiment (une application) (`building`)
+
+Un étage par fiche, la plus ancienne en bas (etages de GDC, ADR 0013). Chaque étage suit son stade : plot (rien de construit ; les gabarits sont survey-poles, posés par GDC) jusqu'au feu vert ; excavation puis foundations pendant la préparation, au sol la fouille avec la pelle puis les semelles, en étage la toiture déposée et la dalle à nu puis les attentes d'armatures ; structure (poteaux, dalle, échafaudage de l'étage ; chaque pièce, une travée par lot, se ferme quand son lot est fini), envelope (murs fermés, échafaudage encore là), finishing (fenêtres posées, échafaudage déposé) pendant la construction ; inspection à la réception ; completed à la remise des clés. Six étages visibles au plus : le rez regroupe les fiches livrées les plus anciennes, et s'il reste encore trop d'étages, les plus anciens s'y fondent aussi ; le rez prend alors l'aspect du moins avancé d'entre eux (src/etages.js, la même règle que floor-selector). Un bâtiment habité qui reçoit une fiche est surélevé : il gagne un étage en haut, sa toiture monte d'un niveau, le bas reste habité, et seul l'étage du haut est en chantier, avec un petit échafaudage et deux ou trois cônes de balisage groupés au pied (sans badge : le défaut reste un cône seul avec son badge, docs/signaletique.md). L'état alteration n'existe pas (décision de Pierre-Alain du 21 octobre 2026). Les huit états restent ceux que GDC envoie : sans data.floors, l'état donne un bâtiment d'un étage à ce stade ; avec data.floors, l'étage est le niveau de vérité. Fiche validée par Pierre-Alain le 21 octobre 2026.
+
+- Fichier : `components/building/building/index.js`
+- Fabriqué par : modeleur
+- Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `building-kit`
+- Modèles : `BLD_SITEWORK_A_v002.glb`, `kit:building-kit/BLD_KIT_A_v003.glb`, `machine:excavator/VEH_EXCAVATOR_A_v001.glb`
+- Paramètres : `type` (house | block | hall, défaut block)
+- États : `plot`, `excavation`, `foundations`, `structure`, `envelope`, `finishing`, `completed`, `inspection`
+- Ancres : `label`, `badge`, `progress`, `door`, `floor:*`, `room:*`
+- Données reçues par setState : `floors` (du bas vers le haut, une entrée par fiche : { id, stage : un des huit états, rooms : [{ id, done }] (un lot par pièce), occupied : un agent travaille à cet étage (les fenêtres la nuit) })
+- Budget : 20000 triangles, 10 matériaux
+- Critères d'acceptation :
+  - Chaque stade se reconnaît sans légende sur un étage, au sol comme en étage
+  - Six étages à des stades différents restent lisibles (planche AuditApp à trois applications)
+  - fixtures/projet-type et fixtures/trois-applications se rejouent sans saut : l'étage nouveau monte, la toiture remonte ; reducedMotion : l'état final directement
+  - Ancres floor:n pour chaque étage visible et room:<étage>-<pièce> pour chaque pièce
+  - Les vitres de chaque étage sont nommées, pour que l'assemblage les éclaire la nuit (day-night)
+  - Les cônes de balisage ne se confondent pas avec defect-sign sur une planche côte à côte
+  - En qualité low, moins de 6000 triangles
+  - Brief validé par Pierre-Alain avant la fabrication ; ligne au journal des versions
 
 ### Le sélecteur d'étages (`floor-selector`)
 
@@ -900,28 +902,6 @@ Le portail ferme (docs/vie-du-chantier.md, section 7) : default reste le portail
   - Le passage de default à closed, et retour, est une rotation douce d'environ 1,5 seconde, une fois ; l'état final directement si reducedMotion
   - Sans gate, closed ne change rien
   - Ligne au journal des versions
-
-### Le bâtiment (une application) (`building`), version 2.0.0
-
-Un étage par fiche, la plus ancienne en bas (etages de GDC, ADR 0013). Chaque étage suit son stade : plot (rien de construit ; les gabarits sont survey-poles, posés par GDC) jusqu'au feu vert ; excavation puis foundations pendant la préparation, au sol la fouille avec la pelle puis les semelles, en étage la toiture déposée et la dalle à nu puis les attentes d'armatures ; structure (poteaux, dalle, échafaudage de l'étage ; chaque pièce, une travée par lot, se ferme quand son lot est fini), envelope (murs fermés, échafaudage encore là), finishing (fenêtres posées, échafaudage déposé) pendant la construction ; inspection à la réception ; completed à la remise des clés. Six étages visibles au plus : le rez regroupe les fiches livrées les plus anciennes, et s'il reste encore trop d'étages, les plus anciens s'y fondent aussi ; le rez prend alors l'aspect du moins avancé d'entre eux (src/etages.js, la même règle que floor-selector). Un bâtiment habité qui reçoit une fiche est surélevé : il gagne un étage en haut, sa toiture monte d'un niveau, le bas reste habité, et seul l'étage du haut est en chantier, avec un petit échafaudage et deux ou trois cônes de balisage groupés au pied (sans badge : le défaut reste un cône seul avec son badge, docs/signaletique.md). L'état alteration n'existe pas (décision de Pierre-Alain du 21 octobre 2026). Les huit états restent ceux que GDC envoie : sans data.floors, l'état donne un bâtiment d'un étage à ce stade ; avec data.floors, l'étage est le niveau de vérité. Fiche validée par Pierre-Alain le 21 octobre 2026.
-
-- Fichier : `components/building/building/index.js`
-- Fabriqué par : modeleur
-- Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `building-kit`
-- Paramètres : `type` (house | block | hall, défaut block)
-- États : `plot`, `excavation`, `foundations`, `structure`, `envelope`, `finishing`, `completed`, `inspection`
-- Ancres : `label`, `badge`, `progress`, `door`, `floor:*`, `room:*`
-- Données reçues par setState : `floors` (du bas vers le haut, une entrée par fiche : { id, stage : un des huit états, rooms : [{ id, done }] (un lot par pièce), occupied : un agent travaille à cet étage (les fenêtres la nuit) })
-- Budget : 20000 triangles, 10 matériaux
-- Critères d'acceptation :
-  - Chaque stade se reconnaît sans légende sur un étage, au sol comme en étage
-  - Six étages à des stades différents restent lisibles (planche AuditApp à trois applications)
-  - fixtures/projet-type et fixtures/trois-applications se rejouent sans saut : l'étage nouveau monte, la toiture remonte ; reducedMotion : l'état final directement
-  - Ancres floor:n pour chaque étage visible et room:<étage>-<pièce> pour chaque pièce
-  - Les vitres de chaque étage sont nommées, pour que l'assemblage les éclaire la nuit (day-night)
-  - Les cônes de balisage ne se confondent pas avec defect-sign sur une planche côte à côte
-  - En qualité low, moins de 6000 triangles
-  - Brief validé par Pierre-Alain avant la fabrication ; ligne au journal des versions
 
 ### Le personnage maître et son équipe (`character-kit`), version v003
 

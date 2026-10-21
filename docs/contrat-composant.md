@@ -48,6 +48,7 @@ Un composant ne sort jamais d'événement : le clic, le survol et la sélection 
   - `ctx.quality` : `'low'` ou `'high'` ; en `'low'`, moins de détails, aucune ombre ;
   - `ctx.reducedMotion` : `true` si l'utilisateur demande moins d'animations ; le composant montre alors un état fixe, lisible.
   - `ctx.assets` : la copie, pour cette instance, des modèles 3D déclarés dans `meta.assets` (voir « Les modèles 3D »).
+  - `ctx.groupFloors(floors, fallback)` : la règle des six étages (`src/etages.js`, lot G8), injectée comme Three.js : un composant n'importe rien hors de son dossier. Elle rend les étages visibles d'un bâtiment, du bas vers le haut (`index` depuis 1, `ids`, `stage`, `rooms`, `occupied`, `grouped`) : au-delà de six fiches, le rez prend juste assez de fiches, les livrées les plus anciennes d'abord, et l'aspect de la moins avancée (décisions de Pierre-Alain du 21 octobre 2026). Le sélecteur d'étages la reprend, pour montrer les mêmes étages ; `refOf` et `anchorFor` du même fichier servent à l'assemblage pour le survol de la carte.
 
 `create` renvoie une instance :
 
@@ -89,7 +90,7 @@ Un composant peut s'appuyer sur un ou plusieurs modèles produits par un script 
 ## Ce que vérifie `npm run check`
 
 - `meta` complet et conforme à la fiche du catalogue (identifiant, catégorie, états, ancres) ;
-- `create` fonctionne avec les paramètres par défaut, `setState` accepte chaque état, `update` renvoie un booléen, `anchor` renvoie un point pour chaque ancre ;
+- `create` fonctionne avec les paramètres par défaut, `setState` accepte chaque état, `update` renvoie un booléen, `anchor` renvoie un point pour chaque ancre (une ancre numérotée est essayée au numéro 1 : `desk:1` ; à côté d'étages `floor:*`, une pièce est numérotée dans son étage : `room:1-1`) ;
 - triangles et matériaux sous le budget, dans chaque état ;
 - `dispose` libère ce qu'il a créé ;
 - aucun accès extérieur ni HTML injecté dans le code du composant ;
@@ -152,6 +153,8 @@ Survoler un travail quelque part l'allume partout : sur la carte, dans le fil de
 - un `highlight` reçu pose l'anneau de sélection (`selection-ring`, état `hover`) sur ce qui correspond le plus précisément : la pièce (ancre `room:*`) pour un lot, l'étage (`floor:*`) pour une fiche, le bâtiment pour une application ; un élément déjà choisi garde son anneau `selected` ;
 - survoler un bâtiment, un étage ou une pièce émet `gdc-hover` avec sa référence (`{ application }`, `{ application, fiche }`, `{ application, fiche, lot }`), selon les mêmes règles : un seul événement par changement, `null` à la sortie.
 Les ancres d'étage et de pièce viennent avec `building` 2.0.0 : le branchement de la carte se fait avec lui (décision de Pierre-Alain du 21 octobre 2026).
+
+`building` 2.0.0 donne à l'assemblage ce qu'il lui faut, sans rien interpréter : les ancres `floor:n` (l'étage visible n, 1 pour le rez, sur sa dalle) et `room:n-m` (la pièce m de l'étage n) ; un groupe `FLOOR_n` par étage (`userData.floor = { index, ids, grouped }`) et `ROOM_n_m` par pièce dont la travée est fermée (`userData.room = { floor, index, floorId, id }`), avec les identifiants reçus de GDC. En remontant depuis l'objet touché, l'assemblage trouve la pièce, sinon l'étage, sinon le bâtiment, et en tire la référence par `refOf` (`src/etages.js`) : un rez regroupé et une fiche sans identifiant valent leur application. Pour un `highlight` reçu, `anchorFor` donne l'ancre la plus précise (`room:n-m`, `floor:n`, ou `null` pour le bâtiment).
 
 **Le contrôle** (`npm run check`) : la règle `correspond` sur des exemples ; toute fiche qui émet `gdc-hover` lit `highlight` (y compris les fiches à faire et les prochaines versions, `next`) ; un élément qui appelle `ctx.hoverLink` a `gdc-hover` dans sa fiche ; un élément qui lit `highlight` le définit en propriété (`set highlight`). Le comportement (pointeur, clavier, aucune rafale, les deux thèmes) se vérifie sur `/interface.html`, section « Le survol partagé », dont le relais fait ce que fera GDC.
 
