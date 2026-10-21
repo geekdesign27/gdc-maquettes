@@ -3,3 +3,7 @@
 // les composants.
 export { ETAPES, ZONES, implantation, zoneDe } from './implantation.js';
 export { creeChemins, positionSur, mesure, duree, VITESSE, MARCHE_MAX } from './chemins.js';
+export { lisScene, instants, phaseDe } from './scene-gdc.js';
+export { equipes, usagers, tache, EFFECTIFS, PLAFONDS } from './vie.js';
+export { personneDe, parametresDe } from './equipe.js';
+export { creeCarte, REMPLACANTS } from './carte.js';
