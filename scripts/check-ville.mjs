@@ -61,6 +61,19 @@ for (let apps = 1; apps <= 4; apps++) {
   verifie(chemins.chemin('bureau-client', 'baraque', { client: true }) === null, `${apps} app. : le client a un chemin vers la baraque`);
 }
 
+// les parcelles prennent la largeur de leur socle : aucun chevauchement, toutes dans le chantier
+for (const types of [['house'], ['block', 'block', 'block'], ['hall', 'hall', 'hall', 'hall'], ['house', 'hall', 'block']]) {
+  const imp = implantation(types.length, types);
+  const largeur = { house: 12, block: 15, hall: 18 };
+  imp.parcelles.forEach((p, k) => {
+    const [g, d] = [p.position[0] - largeur[types[k]] / 2, p.position[0] + largeur[types[k]] / 2];
+    verifie(g > imp.chantier.x[0] && d < imp.chantier.x[1], `${types} : la parcelle ${k + 1} sort du chantier`);
+    if (k) verifie(g >= imp.parcelles[k - 1].position[0] + largeur[types[k - 1]] / 2, `${types} : les parcelles ${k} et ${k + 1} se chevauchent`);
+    verifie(g > 40.6, `${types} : la parcelle ${k + 1} empiète sur le chemin des experts`);
+  });
+  verifie(creeChemins(imp.voies).chemin('baraque', `allee:${types.length}`), `${types} : la dernière parcelle n'est pas desservie`);
+}
+
 // --- Les sequences de GDC (fixtures/) : lecture et vie, sans Three.js
 const sequences = {};
 for (const dossier of await readdir(join(ROOT, 'fixtures'), { withFileTypes: true })) {

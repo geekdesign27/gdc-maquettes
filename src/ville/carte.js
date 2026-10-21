@@ -203,14 +203,17 @@ export async function creeCarte(THREE, options) {
   let fixes = [];
   const peintures = [];
   const cube = new THREE.BoxGeometry(1, 1, 1);
-  async function coucheFixe(apps) {
-    if (imp && imp.apps === Math.min(Math.max(apps, 1), 4)) return;
+  // types : le type de chaque parcelle (house, block, hall) ; la couche se refait quand ils changent
+  async function coucheFixe(types) {
+    const cle = types.slice(0, 4).join(",");
+    if (imp && imp.types === cle) return;
     for (const cle of fixes) retire(cle);
     for (const b of peintures.splice(0)) {
       b.removeFromParent();
       b.material.dispose();
     }
-    imp = implantation(apps);
+    imp = implantation(types.length, types);
+    imp.types = cle;
     chemins = creeChemins(imp.voies);
     fixes = [];
     const T = imp.terrain;
@@ -1015,7 +1018,7 @@ export async function creeCarte(THREE, options) {
       if (file.length) termine();
       const suivante = lisScene(scene, connus);
       for (const m of suivante.inconnus) signale(m);
-      await coucheFixe(suivante.applications);
+      await coucheFixe(suivante.types);
       lu = suivante;
       await prepare(lu);
       await prepareVie(lu);
@@ -1407,6 +1410,6 @@ export async function creeCarte(THREE, options) {
   }
 
   // la carte commence vide (le terrain, chantier ferme), jusqu'a la premiere scene
-  await coucheFixe(1);
+  await coucheFixe(["block"]);
   return carte;
 }

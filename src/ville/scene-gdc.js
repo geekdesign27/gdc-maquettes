@@ -60,6 +60,12 @@ export function lisScene(scene, connus) {
   const batiments = gardes.filter((e) => e.element === "building");
   for (const b of batiments) if (!ordre.includes(b.id)) ordre.push(b.id);
   const parcelle = new Map(ordre.map((id, k) => [id, k]));
+  // le type de chaque parcelle : celui du batiment, sinon celui du plan
+  const types = ordre.map((id) => {
+    const b = batiments.find((x) => x.id === id);
+    const p = (scene?.plan?.parcelles || []).find((x) => x.batiment === id);
+    return TYPES[b?.type || p?.type] || "block";
+  });
   const personnages = gardes
     .filter((e) => e.element === "character")
     .map((e) => ({ ...e, ...lisLieu(e.lieu) }));
@@ -73,6 +79,7 @@ export function lisScene(scene, connus) {
     regime: REGIMES.includes(chantier.regime) ? chantier.regime : "ferme",
     zones,
     applications: Math.max(ordre.length, 1),
+    types: types.length ? types : ["block"],
     parcelle,
     elements: new Map(gardes.map((e) => [e.id, e])),
     batiments: batiments.map((b) => ({

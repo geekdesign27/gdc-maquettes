@@ -52,6 +52,10 @@ export const ZONES = {
 };
 export const BORDURE = { largeur: 0.4, epaisseur: 0.03, dessus: 0.07 }; // au-dessus du beton (0,05) et de l'enrobe (0,04)
 export const PAS_PARCELLE = 14; // socle de 12 m (une fiche) et 2 m entre deux parcelles
+// La largeur du socle de building 2.0.0 selon son type (en X), et l'ecart entre deux socles.
+export const SOCLES = { house: 12, block: 15, hall: 18 };
+const ECART_SOCLES = 2;
+const BORD_PARCELLES = 43; // le bord gauche de la premiere parcelle, a droite du chemin des experts
 export const MAX_APPLICATIONS = 4;
 const Z_PARCELLE = 37;
 const Z_ALLEE = 44.8; // l'allee du chantier, entre les batiments et les bennes
@@ -171,14 +175,24 @@ function cloture(enceinte, cle, bord, [a, b], gate = false) {
 }
 
 // L'implantation pour un nombre d'applications (1 a 4) : terrain, chantier, cadres des zones, dalles du sol, clotures,
-// lieux fixes, decor du chantier, parcelles, points de la vie du chantier et voies.
-export function implantation(applications = 1) {
+// lieux fixes, decor du chantier, parcelles, points de la vie du chantier et voies. types : le type de chaque batiment
+// (house, block, hall), dans l'ordre des parcelles ; chaque parcelle prend alors la largeur de son socle. Sans types,
+// les parcelles sont au pas de 14 m (la scene de reference).
+export function implantation(applications = 1, types = null) {
   const apps = Math.min(
-    Math.max(Math.round(Number(applications)) || 1, 1),
+    Math.max(Math.round(Number(types ? types.length : applications)) || 1, 1),
     MAX_APPLICATIONS,
   );
+  const centres = [];
+  let finParcelles = 0;
+  for (let k = 0, bord = BORD_PARCELLES; k < apps; k++) {
+    const largeur = types ? SOCLES[types[k]] || SOCLES.block : PAS_PARCELLE - ECART_SOCLES;
+    centres.push(types ? bord + largeur / 2 : 49 + PAS_PARCELLE * k);
+    finParcelles = centres[k] + largeur / 2;
+    bord = finParcelles + ECART_SOCLES;
+  }
   const CHANTIER = {
-    x: [29.5, 56.5 + PAS_PARCELLE * (apps - 1)],
+    x: [29.5, finParcelles + 1.5],
     z: [28.5, 54.5],
   };
   const TERRAIN = { x: [0, Math.max(CHANTIER.x[1] + 1.5, 60)], z: [7, 56] };
@@ -237,7 +251,7 @@ export function implantation(applications = 1) {
   // la place du camion de livraison et sa porte sur l'allee.
   const parcelles = [];
   for (let k = 0; k < apps; k++) {
-    const x = 49 + PAS_PARCELLE * k;
+    const x = centres[k];
     parcelles.push({
       index: k,
       position: [x, 0, Z_PARCELLE],
