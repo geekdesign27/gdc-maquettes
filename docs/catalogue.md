@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-46 éléments : 41 livré, 3 à faire, 2 exemple.
+46 éléments : 44 livré, 2 exemple.
 
 ## G0 : La ligne graphique
 
@@ -13,7 +13,7 @@ Fixer le style avant de produire : mood board, bible WORKSITE, bibliothèque de 
 | 1 | `moodboard` | Le mood board | Document de référence, pas de code | Réunir les images qui donnent le ton, avant toute production. | livré |
 | 2 | `bible` | La bible graphique | Document de référence, pas de code | La règle de production : univers, palette, matériaux, personnages, bâtiments, engins, caméra, conventions Blender, budgets, contrôles. | livré |
 | 3 | `material-library` | La bibliothèque de matériaux | Document de référence, pas de code | Des matériaux MAT_ partagés par tous les modèles, définis une seule fois. | livré |
-| 4 | `reference-scene` | La scène de référence | Document de référence, pas de code | Servir d'étalon : chaque nouveau composant est posé à côté pour vérifier qu'il appartient au même monde. | à faire |
+| 4 | `reference-scene` | La scène de référence | Document de référence, pas de code | Servir d'étalon : chaque nouveau composant est posé à côté pour vérifier qu'il appartient au même monde. | livré |
 
 ### Le mood board (`moodboard`)
 
@@ -43,7 +43,7 @@ src/palette.json, section materiaux : 30 matériaux et plus (bible, 18.4), chacu
 
 ### La scène de référence (`reference-scene`)
 
-Un assemblage dans la galerie, même caméra et même lumière : terrain, grue, un bureau, un bâtiment dans quatre états, un personnage, l'anneau de sélection, un panneau. La planche comparative (bible, section 14) pose chaque nouvel asset à côté de deux modèles maîtres validés.
+Un assemblage dans la galerie, même caméra et même lumière : terrain, grue, un bureau, un bâtiment dans quatre états, un personnage, l'anneau de sélection, un panneau. La planche comparative (bible, section 14) pose chaque nouvel asset à côté de deux modèles maîtres validés. Réalisée dans la galerie (`src/scene-reference.js`) : un chantier clôturé sur le terrain de chantier ; planche entre le bâtiment terminé et le personnage maître (choix de Pierre-Alain du 21 octobre 2026).
 
 - Critères d'acceptation :
   - Lisible en clair et en sombre
@@ -69,8 +69,8 @@ Poser le plan du chantier dans l'ordre du parcours : bureau d'architecte, bureau
 | 9 | `reception-area` | La zone de réception | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu des essais et de la visite, avant la remise des clés. | livré |
 | 10 | `site-fence` | La clôture de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Cloisonner le chantier, comme tout chantier romand. | livré |
 | 11 | `waste-skip` | La benne de tri | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le tri des déchets de chantier, obligatoire (OLED, art. 17). | livré |
-| 12 | `material-storage` | Le stockage de matériaux | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer l'approvisionnement du chantier : les matériaux qui attendent d'être posés. | à faire |
-| 13 | `site-ground` | Le terrain de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le sol du chantier clôturé : de la terre d'abord, puis du béton et des voies à mesure que le chantier avance. | à faire |
+| 12 | `material-storage` | Le stockage de matériaux | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer l'approvisionnement du chantier : les matériaux qui attendent d'être posés. | livré |
+| 13 | `site-ground` | Le terrain de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le sol du chantier clôturé : de la terre d'abord, puis du béton et des voies à mesure que le chantier avance. | livré |
 
 ### Le terrain (`ground`)
 

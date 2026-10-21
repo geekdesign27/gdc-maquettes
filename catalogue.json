@@ -105,14 +105,14 @@
       "category": "style",
       "name": "La scène de référence",
       "purpose": "Servir d'étalon : chaque nouveau composant est posé à côté pour vérifier qu'il appartient au même monde.",
-      "description": "Un assemblage dans la galerie, même caméra et même lumière : terrain, grue, un bureau, un bâtiment dans quatre états, un personnage, l'anneau de sélection, un panneau. La planche comparative (bible, section 14) pose chaque nouvel asset à côté de deux modèles maîtres validés.",
+      "description": "Un assemblage dans la galerie, même caméra et même lumière : terrain, grue, un bureau, un bâtiment dans quatre états, un personnage, l'anneau de sélection, un panneau. La planche comparative (bible, section 14) pose chaque nouvel asset à côté de deux modèles maîtres validés. Réalisée dans la galerie (`src/scene-reference.js`) : un chantier clôturé sur le terrain de chantier ; planche entre le bâtiment terminé et le personnage maître (choix de Pierre-Alain du 21 octobre 2026).",
       "acceptance": [
         "Lisible en clair et en sombre",
         "Fluide sur un ordinateur portable ordinaire",
         "Planche comparative disponible pour chaque composant",
         "Validée ensemble"
       ],
-      "status": "à faire"
+      "status": "livré"
     },
     {
       "id": "ground",
@@ -575,7 +575,7 @@
         "Les lots se distinguent par leur forme en niveaux de gris",
         "Aucune couleur d'état, aucun orange"
       ],
-      "status": "à faire",
+      "status": "livré",
       "data": {},
       "production": "blender",
       "blender": "PRP_MATERIAL_STORAGE_A_v001",
@@ -611,7 +611,7 @@
         "Le béton et l'enrobé se distinguent de la terre en niveaux de gris",
         "Les zones se redessinent quand data.zones change"
       ],
-      "status": "à faire",
+      "status": "livré",
       "data": {
         "zones": "liste de { x, z, width, depth, surface: concrete | asphalt }, en mètres, origine au centre du plateau"
       },
