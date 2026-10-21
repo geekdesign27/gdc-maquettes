@@ -74,7 +74,45 @@ Le placement exact (plan, espacements, caméra) est celui de la scène de réfé
 
 ## Les interdits
 
-- Aucun mouvement de décor sans action de GDC ; aucune animation d'ambiance qui suggère une activité.
-  Amendement voulu par Pierre-Alain le 21 octobre 2026 : une vie d'ambiance qui naît de l'état envoyé par GDC (`docs/vie-du-chantier.md`, section 1).
+- Aucun mouvement de décor sans action de GDC. **La vie du chantier naît de l'état envoyé par GDC et s'éteint avec lui** : le régime du chantier, la phase de chaque bâtiment, les agents présents sur chaque parcelle. Elle n'ajoute aucun fait. Elle ne porte aucune couleur d'état, aucun badge, et ne s'ouvre pas au clic. Sans projet en cours, rien ne bouge. (Amendement voulu par Pierre-Alain le 21 octobre 2026, `docs/vie-du-chantier.md`, section 1 ; reporté ici avec la carte vivante.)
 - Aucune couleur d'état dans la scène (bible 17.3) ; un état se lit par la forme et l'animation, la couleur reste dans l'interface.
 - Une action dont l'élément est inconnu du catalogue est ignorée et signalée, jamais inventée.
+
+## La carte vivante, livrée à GDC (`src/ville/`, fiche `city-map`)
+
+La bibliothèque (`npm run build`) exporte `ville`. Three.js, le chargeur des modèles et les composants sont injectés, comme pour un composant ; rien n'est chargé d'ailleurs.
+
+```js
+import * as THREE from 'three';
+import { components, chargeur, ville } from './maquettes.js';
+const carte = await ville.creeCarte(THREE, {
+  components,                                   // les composants 3D de la bibliothèque, par identifiant
+  chargeur: chargeur({ GLTFLoader, SkeletonUtils }),
+  theme: 'light', quality: 'high', reducedMotion: false,
+  graine: 'gdc',                                // la même scène donne toujours les mêmes ouvriers
+});
+scene.add(carte.root);
+await carte.applique(sceneDeGdc);               // gdc scene --avant : plan, elements, actions
+// à chaque image : if (carte.update(dt)) redessiner
+```
+
+| Méthode | Ce qu'elle fait |
+|---|---|
+| `applique(scene, { actions })` | La première scène se pose telle quelle. Les suivantes jouent leurs actions par instant (même `ts`), dans l'ordre, puis l'état reçu a le dernier mot. Une scène qui arrive pendant la lecture de la précédente la termine net. `actions: false` pose la scène sans jouer ses actions (un saut). |
+| `update(dt)` | Avance les marches, la vie, les fondus ; rend `true` s'il faut redessiner. |
+| `reperes()`, `anchor(nom)`, `repere(nom)` | Les repères HTML : `etape:1` à `etape:10` (sauf 5 et 6, portés par les bâtiments), `passage:continue`, `passage:feu-vert`, `batiment:<id>`. `repere` dit le numéro, le titre, l'icône, la zone, `pastille`, `passage`, et `attenue` (sa zone n'a jamais été activée). |
+| `cadres()` | Les quatre zones au sol, leurs coins, leur couleur d'interface et `activee`. |
+| `cible(objet)` | L'élément de GDC sous un objet touché (`{ element, id, ref }`), pour le clic ; `null` pour le décor, les ouvriers et les usagers. |
+| `refSous(objet)`, `surligne(ref)` | Le survol partagé côté carte : la référence du bâtiment, de l'étage ou de la pièce survolée ; l'anneau `selection-ring` (`hover`) sur ce qui correspond à une référence reçue. |
+| `ouvreCoupe(id)`, `fermeCoupe()` | La vue en coupe d'un bâtiment (`building-interior` 1.0 : une pièce par fiche, ses agents à leur pièce) ; le bâtiment et ses engins s'effacent le temps de la vue. |
+| `signalements` | Ce que la carte a ignoré : élément ou action hors catalogue, lieu inconnu, personne inconnue d'`equipe.json`. |
+| `compte()`, `regime`, `applications` | Ce que la carte montre, pour un compte rendu. |
+
+`ville.creeChemins(implantation(n).voies).chemin(de, vers, { client })` rend le chemin de porte à porte (`points`, `longueur`, `duree`), sans Three.js : un lieu de GDC, un point des voies (`allee:2`, la porte de la deuxième parcelle) ou un point du sol. La marche va à 1,4 m/s, plafonnée à 5 s.
+
+**Ce que la carte fait des actions** : `apparait` (un agent sort de la porte de son lieu ; un objet arrive d'une impulsion), `deplace` (de porte à porte par les voies, puis son poste et son état), `change`, `quantite`, `disparait` (l'agent rentre par sa porte ; l'objet s'efface), `ouverture`, `pause`, `fermeture` (le régime). Les actions proposées à GDC (`consulte`, `controle`, `question`, `reunion`, `remise`, `demande`, `docs/demandes-a-gdc.md`) sont lues si elles arrivent : les agents nommés (`id`, `participants`) vont au lieu (`vers`, `lieu`, `aupres`, `batiment` ; la cabane des clés pour `remise`).
+
+**Les postes des agents** : à un bureau, le poste `desk:n` (puis `crew:n` à la baraque), dans l'ordre de la scène ; à une cabane, devant son entrée ; à un panneau, en arc devant lui ; sur une parcelle, la pièce de son lot ou l'étage de sa fiche (`building` 2.0.0), sinon au pied du bâtiment.
+
+**Les remplaçants, en attendant leurs fiches** : l'ouvrier est la tenue du chef d'équipe recolorée par la carte (casque gris #8E959C, gilet jaune fluo #D7EC23), l'usager la tenue de ville du client recolorée en trois coloris provisoires (`ville.REMPLACANTS`), jusqu'à `character` 1.2.0 ; le portail reste ouvert jusqu'à `site-fence` 1.1.0 ; en pause, les ouvriers se rassemblent près de la baraque, là où viendra le cabanon `party-shed` ; aucune voiture avant `city-car`.
+

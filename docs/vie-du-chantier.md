@@ -37,7 +37,7 @@ GDC donne un régime à tout le chantier (demande 8.1). La maquette en tire tout
 | **Fermé** | Aucun projet en cours, rien ne tourne | Portails fermés, personne dehors, engins à l'arrêt, rien ne bouge. Les bâtiments gardent leur état (un bâtiment habité garde ses fenêtres éclairées) |
 | **Ouverture** (passage) | Un projet démarre ou reprend | Le portail s'ouvre une fois ; les ouvriers sortent du conteneur-vestiaire et rejoignent leur parcelle |
 | **Ouvert** | Au moins un agent travaille | La vie de chaque bâtiment selon sa phase (section 4) |
-| **En pause** | Le harnais attend une décision de Pierre-Alain et plus personne ne peut avancer | Les ouvriers posent leurs outils et attendent sur place (`waiting`) ; aucun trajet. On voit que le chantier t'attend, sans couleur dans la scène : le badge rouge reste dans l'interface |
+| **En pause** | Le harnais attend une décision de Pierre-Alain et plus personne ne peut avancer | Le chantier s'arrête : les ouvriers quittent leur poste et se rassemblent près de la baraque, où viendra le cabanon de la fête (`party-shed`) ; ils y parlent et attendent (`talk`, `idle`, jamais `celebrate`). Le badge rouge reste dans l'interface. Choix de Pierre-Alain du 21 octobre 2026, avec les fiches du lot G8 ; il remplace « ils attendent sur place » |
 | **Fermeture** (passage) | Le projet se termine ou s'arrête | Les ouvriers rentrent au vestiaire par le portail, puis le portail se ferme |
 
 Un lot bloqué (la barrière `blocked-sign`) ne change pas le régime : seule l'équipe de ce bâtiment s'arrête et attend près de la barrière.
