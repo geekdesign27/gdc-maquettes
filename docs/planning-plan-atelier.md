@@ -85,6 +85,18 @@ Deux pistes. Chaque élément est fabriqué dans sa propre session, avec le cont
 | D-4 | `site-fence` 1.1.0, `party-shed`, `city-car` | Ensuite | Le portail fermé, le cabanon de la fête, les voitures |
 | D-5 | La mesure du rejeu | Avant la seconde version | La reconstruction complète de la scène d'AuditApp chronométrée, et l'option `instant` prévue composant par composant |
 
+### Piste ville (demande de Pierre-Alain du 22 octobre 2026)
+
+« La map doit être bien plus grande, avec des routes et une fausse ville fictive qui vit un peu comme dans SimCity, des gens et des voitures qui roulent aléatoirement, mais pas trop, et que la ville soit belle : villas, immeubles, herbe, routes, béton. » Pierre-Alain veut aussi plus de projecteurs, y compris autour des baraquements, sans excès.
+
+| # | Élément | Quand | Ce qui est fini |
+|---|---|---|---|
+| V-1 | Les fiches du lot G9, la ville fictive | Maintenant (session « Lot G9 ») | Validées par Pierre-Alain, au catalogue, « à faire » : grand terrain, routes, villas et immeubles de Suisse romande, végétation, circulation rare, nuit, qualité basse ; un budget chiffré par fiche |
+| V-2 | Plus de projecteurs, autour des baraquements aussi | Après les corrections de D-1c (piste 3D) | Deux ou trois densités proposées sur planche de nuit, Pierre-Alain choisit ; contrôle de place et d'allumage ; mesure avant et après |
+| V-3 | La fabrication du lot G9 | Après V-1, dans l'ordre des fiches | Chaque élément mesuré : la ville reste une ambiance, aucun fait du harnais |
+
+Le constat de D-1c rassure sur le processeur (60 images/s une fois la carte lancée) ; le risque reste la carte graphique d'un portable de 13 pouces Retina. La ville doit donc prévoir dès ses fiches les instances, les niveaux de détail et une qualité basse sobre.
+
 ### Seconde version
 
 Le rejeu de la carte (`gdc scene --a <date>`), avec l'option `instant` partout et les cibles déjà arrêtées : moins de 100 ms par pas, moins d'une seconde pour une reconstruction complète.
