@@ -4,6 +4,22 @@
   "ciel": { "couleur": "#FFFFFF", "sol": "#8A8678", "intensite": 1.95 },
   "soleil": { "couleur": "#FFFFFF", "intensite": 1.58, "position": [-5.4, 18, 14.8] },
   "ombre": { "commentaire": "Galerie seulement : decale la lecture de la carte d'ombre le long de la normale (en metres), contre l'acne d'ombre (rayures sur les grandes faces planes). Sans effet sur les faces eclairees.", "normalBias": 0.02 },
+  "heure": {
+    "commentaire": "L'heure reelle (fiche day-night, src/ville/heure.js) : le soleil de Fribourg sur l'heure du poste, sans reseau. Le haut de ce fichier est la recette du jour, inchangee ; l'aube vaut le milieu des deux transitions (lever et coucher), qui durent chacune transition minutes, centrees sur le lever et le coucher du soleil. Entre deux recettes, couleurs et intensites se melangent. La lune tient la place du soleil, dans la meme direction : les faces gardent leur ordre de valeurs. Recette, fond de nuit teinte et fenetres valides par Pierre-Alain le 22 octobre 2026, sur planche.",
+    "lieu": { "nom": "Fribourg", "latitude": 46.8065, "longitude": 7.1619 },
+    "transition": 30
+  },
+  "aube": {
+    "ciel": { "couleur": "#E9DCD6", "sol": "#7A6A62", "intensite": 1.6 },
+    "soleil": { "couleur": "#FFCFA0", "intensite": 1.45 }
+  },
+  "nuit": {
+    "ciel": { "couleur": "#A6B8DC", "sol": "#2E3546", "intensite": 1.3 },
+    "lune": { "couleur": "#CBD7EF", "intensite": 0.75 },
+    "fond": { "commentaire": "Le fond de la scene la nuit, par theme de l'interface ; le jour, c'est le fond de l'interface (palette.json).", "light": "#DDE2EA", "dark": "#171C24" }
+  },
+  "fenetres": { "commentaire": "Les vitres eclairees la nuit, sur des copies des materiaux de vitre : faiblement sur tout batiment habite et tout bureau, franchement la ou un agent travaille. Blanc chaud, jamais une couleur d'etat. Intensites : la part emissive, de 0 a 1.", "couleur": "#FFE4B5", "faible": 0.4, "franche": 1.0 },
+  "projecteurs": { "commentaire": "La lumiere des projecteurs de chantier (floodlight) : blanche, un peu plus froide que les fenetres.", "couleur": "#EEF2F6" },
   "cibles": {
     "commentaire": "Le cube etalon en MAT_CONCRETE : valeur de chaque face rapportee a celle du dessus ; le dessus vaut la couleur de palette a 3 % pres.",
     "tolerance": 0.03,
