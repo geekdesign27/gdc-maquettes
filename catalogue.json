@@ -1766,7 +1766,7 @@
         "Devient une rangée sur téléphone",
         "Lisible en clair et en sombre"
       ],
-      "status": "à faire",
+      "status": "livré",
       "role": "intégrateur d'interface",
       "inputs": {
         "building": "{ id, name } : le bâtiment",
