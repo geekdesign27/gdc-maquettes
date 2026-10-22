@@ -1,0 +1,257 @@
+{
+  "schema": 1,
+  "maintenant": "2026-10-27T14:12:17.894Z",
+  "fuseau": "UTC",
+  "debut": "2026-10-22T14:12:09.697Z",
+  "depuis": "evt:projet/61752b17",
+  "complet": false,
+  "lignes": [
+    {
+      "id": "etape:4",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 4,
+      "nom": "Les plans d'exécution",
+      "zone": "chantier",
+      "etat": "en_cours",
+      "barres": [
+        {
+          "debut": "2026-10-27T14:12:17.540Z",
+          "fin": null
+        }
+      ]
+    },
+    {
+      "id": "application:bureau@4",
+      "niveau": "application",
+      "parent": "etape:4",
+      "nom": "Application de bureau",
+      "ref": {
+        "application": "bureau"
+      },
+      "etat": "en_cours"
+    },
+    {
+      "id": "fiche:001-cloturer-un-audit@4",
+      "niveau": "fiche",
+      "parent": "application:bureau@4",
+      "nom": "Clôturer un audit",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-27T14:12:17.540Z",
+          "fin": null,
+          "commence_par": "evt:001-cloturer-un-audit/c61bbc31",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "application:bureau@5",
+      "niveau": "application",
+      "parent": "etape:5",
+      "nom": "Application de bureau",
+      "ref": {
+        "application": "bureau"
+      },
+      "etat": "a_venir"
+    },
+    {
+      "id": "fiche:001-cloturer-un-audit@5",
+      "niveau": "fiche",
+      "parent": "application:bureau@5",
+      "nom": "Clôturer un audit",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "application:bureau@6",
+      "niveau": "application",
+      "parent": "etape:6",
+      "nom": "Application de bureau",
+      "ref": {
+        "application": "bureau"
+      },
+      "etat": "a_venir"
+    },
+    {
+      "id": "fiche:001-cloturer-un-audit@6",
+      "niveau": "fiche",
+      "parent": "application:bureau@6",
+      "nom": "Clôturer un audit",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "application:bureau@7",
+      "niveau": "application",
+      "parent": "etape:7",
+      "nom": "Application de bureau",
+      "ref": {
+        "application": "bureau"
+      },
+      "etat": "a_venir"
+    },
+    {
+      "id": "fiche:001-cloturer-un-audit@7",
+      "niveau": "fiche",
+      "parent": "application:bureau@7",
+      "nom": "Clôturer un audit",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "application:bureau@8",
+      "niveau": "application",
+      "parent": "etape:8",
+      "nom": "Application de bureau",
+      "ref": {
+        "application": "bureau"
+      },
+      "etat": "a_venir"
+    },
+    {
+      "id": "fiche:001-cloturer-un-audit@8",
+      "niveau": "fiche",
+      "parent": "application:bureau@8",
+      "nom": "Clôturer un audit",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "etat": "a_venir",
+      "barres": []
+    }
+  ],
+  "retirees": [],
+  "jalons": [],
+  "jours": [
+    {
+      "date": "2026-10-27",
+      "evenements": 4,
+      "actif": true
+    }
+  ],
+  "evenements": [
+    {
+      "id": "evt:001-cloturer-un-audit/809ee55c",
+      "ts": "2026-10-27T14:12:17.540Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Clôturer un audit »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:001-cloturer-un-audit/c61bbc31",
+      "ts": "2026-10-27T14:12:17.540Z",
+      "kind": "run",
+      "phrase": "La fiche « Clôturer un audit » est ouverte",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:001-cloturer-un-audit/e9f934c8",
+      "ts": "2026-10-27T14:12:17.758Z",
+      "kind": "critere",
+      "phrase": "Un critère d'acceptation est noté pour « Clôturer un audit »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "trait": false
+    }
+  ],
+  "regime": [
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:09.697Z",
+      "a": "2026-10-22T14:42:12.549Z"
+    },
+    {
+      "valeur": "ferme",
+      "de": "2026-10-22T14:42:12.549Z",
+      "a": "2026-10-24T14:12:13.774Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-24T14:12:13.774Z",
+      "a": "2026-10-24T14:42:15.330Z"
+    },
+    {
+      "valeur": "ferme",
+      "de": "2026-10-24T14:42:15.330Z",
+      "a": "2026-10-27T14:12:16.633Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-27T14:12:16.633Z",
+      "a": null
+    }
+  ],
+  "a_venir": [
+    {
+      "ligne": "fiche:001-cloturer-un-audit@5",
+      "etape": 5,
+      "apres": "fiche:001-cloturer-un-audit@4"
+    },
+    {
+      "ligne": "fiche:001-cloturer-un-audit@6",
+      "etape": 6,
+      "apres": "fiche:001-cloturer-un-audit@5"
+    },
+    {
+      "ligne": "fiche:001-cloturer-un-audit@7",
+      "etape": 7,
+      "apres": "fiche:001-cloturer-un-audit@6"
+    },
+    {
+      "ligne": "fiche:001-cloturer-un-audit@8",
+      "etape": 8,
+      "apres": "fiche:001-cloturer-un-audit@7"
+    },
+    {
+      "ligne": "etape:5",
+      "etape": 5,
+      "apres": "etape:4"
+    },
+    {
+      "ligne": "etape:6",
+      "etape": 6,
+      "apres": "etape:5"
+    },
+    {
+      "ligne": "etape:7",
+      "etape": 7,
+      "apres": "etape:6"
+    },
+    {
+      "ligne": "etape:8",
+      "etape": 8,
+      "apres": "etape:7"
+    }
+  ]
+}

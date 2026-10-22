@@ -58,7 +58,7 @@
   ],
   "chantier": {
     "regime": "ouvert",
-    "depuis": "2026-10-21T15:53:34.074Z",
+    "depuis": "2026-10-22T14:13:15.790Z",
     "raison": "des agents travaillent"
   },
   "plan": {
@@ -93,7 +93,7 @@
             "nom": "Le panneau du permis"
           }
         ],
-        "activee": "2026-10-21T15:53:34.440Z",
+        "activee": "2026-10-22T14:13:16.170Z",
         "par_ce_projet": true
       },
       {
@@ -126,7 +126,7 @@
             "nom": "Le chantier, une parcelle par application"
           }
         ],
-        "activee": "2026-10-21T15:53:34.440Z",
+        "activee": "2026-10-22T14:13:16.170Z",
         "par_ce_projet": true
       },
       {
@@ -154,7 +154,7 @@
             "nom": "La cabane de la garantie"
           }
         ],
-        "activee": "2026-10-21T15:53:34.440Z",
+        "activee": "2026-10-22T14:13:16.170Z",
         "par_ce_projet": true
       },
       {
@@ -175,7 +175,7 @@
             "nom": "Le carnet des demandes"
           }
         ],
-        "activee": "2026-10-21T15:53:34.440Z",
+        "activee": "2026-10-22T14:13:16.170Z",
         "par_ce_projet": true
       }
     ],
@@ -192,11 +192,35 @@
               {
                 "lot": "L1",
                 "nom": "L'écran de clôture"
+              },
+              {
+                "lot": "L2",
+                "nom": "L'export Excel"
               }
             ]
           },
           {
-            "fiche": "004-exporter-un-audit-en-pdf",
+            "fiche": "002-signer-un-rapport",
+            "nom": "Signer un rapport",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Signer un rapport"
+              }
+            ]
+          },
+          {
+            "fiche": "003-reparer-la-signature-du-rapport",
+            "nom": "Réparer la signature du rapport",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Réparer la signature du rapport"
+              }
+            ]
+          },
+          {
+            "fiche": "006-exporter-un-audit-en-pdf",
             "nom": "Exporter un audit en PDF",
             "lots": []
           }
@@ -208,7 +232,7 @@
         "type": "maison",
         "fiches": [
           {
-            "fiche": "002-saisir-un-constat-hors-ligne",
+            "fiche": "004-saisir-un-constat-hors-ligne",
             "nom": "Saisir un constat hors ligne",
             "lots": [
               {
@@ -225,7 +249,7 @@
         "type": "maison",
         "fiches": [
           {
-            "fiche": "003-gerer-les-droits-des-auditeurs",
+            "fiche": "005-gerer-les-droits-des-auditeurs",
             "nom": "Gérer les droits des auditeurs",
             "lots": []
           }
@@ -271,11 +295,48 @@
               "nom": "L'écran de clôture",
               "statut": "fini",
               "phase": null
+            },
+            {
+              "lot": "L2",
+              "nom": "L'export Excel",
+              "statut": "abandonne",
+              "phase": null
             }
           ]
         },
         {
-          "fiche": "004-exporter-un-audit-en-pdf",
+          "fiche": "002-signer-un-rapport",
+          "nom": "Signer un rapport",
+          "stade": "inspection",
+          "etape": 7,
+          "suppose": true,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Signer un rapport",
+              "statut": "fini",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "003-reparer-la-signature-du-rapport",
+          "nom": "Réparer la signature du rapport",
+          "stade": "completed",
+          "etape": 8,
+          "livre": true,
+          "suppose": true,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Réparer la signature du rapport",
+              "statut": "fini",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "006-exporter-un-audit-en-pdf",
           "nom": "Exporter un audit en PDF",
           "stade": "plot",
           "etape": 4,
@@ -288,7 +349,9 @@
       },
       "source": [
         "001-cloturer-un-audit",
-        "004-exporter-un-audit-en-pdf"
+        "002-signer-un-rapport",
+        "003-reparer-la-signature-du-rapport",
+        "006-exporter-un-audit-en-pdf"
       ]
     },
     {
@@ -317,17 +380,41 @@
       "source": "001-cloturer-un-audit"
     },
     {
+      "element": "crane",
+      "id": "grue-002-signer-un-rapport",
+      "ancre": "bureau",
+      "nom": "La grue de la fiche « Signer un rapport » (entrée dans dev)",
+      "etat": "lifting",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "source": "002-signer-un-rapport"
+    },
+    {
+      "element": "crane",
+      "id": "grue-003-reparer-la-signature-du-rapport",
+      "ancre": "bureau",
+      "nom": "La grue de la fiche « Réparer la signature du rapport » (entrée dans dev)",
+      "etat": "lifting",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "source": "003-reparer-la-signature-du-rapport"
+    },
+    {
       "element": "survey-poles",
-      "id": "gabarits-004-exporter-un-audit-en-pdf",
+      "id": "gabarits-006-exporter-un-audit-en-pdf",
       "ancre": "bureau",
       "nom": "Les gabarits de la fiche « Exporter un audit en PDF »",
       "pluriel": true,
       "etat": "default",
       "ref": {
         "application": "bureau",
-        "fiche": "004-exporter-un-audit-en-pdf"
+        "fiche": "006-exporter-un-audit-en-pdf"
       },
-      "source": "004-exporter-un-audit-en-pdf"
+      "source": "006-exporter-un-audit-en-pdf"
     },
     {
       "element": "building",
@@ -342,7 +429,7 @@
       },
       "etages": [
         {
-          "fiche": "002-saisir-un-constat-hors-ligne",
+          "fiche": "004-saisir-un-constat-hors-ligne",
           "nom": "Saisir un constat hors ligne",
           "stade": "structure",
           "etape": 6,
@@ -360,7 +447,7 @@
         "application": "terrain"
       },
       "source": [
-        "002-saisir-un-constat-hors-ligne"
+        "004-saisir-un-constat-hors-ligne"
       ]
     },
     {
@@ -382,7 +469,7 @@
           "pieces": []
         },
         {
-          "fiche": "003-gerer-les-droits-des-auditeurs",
+          "fiche": "005-gerer-les-droits-des-auditeurs",
           "nom": "Gérer les droits des auditeurs",
           "stade": "excavation",
           "etape": 5,
@@ -394,7 +481,7 @@
         "application": "admin"
       },
       "source": [
-        "003-gerer-les-droits-des-auditeurs"
+        "005-gerer-les-droits-des-auditeurs"
       ]
     },
     {
@@ -456,7 +543,7 @@
       "ancre": "panneau-permis",
       "nom": "Le permis de construire (périmé : Le cahier des besoins (PRD), Le profil du projet a changé)",
       "etat": "expired",
-      "source": "décision du projet du 2026-10-21T15:53:16.021Z"
+      "source": "décision du projet du 2026-10-22T14:12:15.330Z"
     },
     {
       "element": "parking",
@@ -474,10 +561,10 @@
       "nom": "Claire, l'architecte",
       "etat": "waiting",
       "lieu": "bureau-client",
-      "source": "activité de la fiche 003-gerer-les-droits-des-auditeurs, 2026-10-21T15:53:31.401Z",
+      "source": "activité de la fiche 005-gerer-les-droits-des-auditeurs, 2026-10-22T14:13:09.169Z",
       "ref": {
         "application": "admin",
-        "fiche": "003-gerer-les-droits-des-auditeurs"
+        "fiche": "005-gerer-les-droits-des-auditeurs"
       },
       "motif": "decision",
       "decision": "decision-on-continue"
@@ -489,7 +576,7 @@
       "nom": "Lina, le designer UX/UI",
       "etat": "celebrate",
       "lieu": "bureau-etudes",
-      "source": "activité du projet, 2026-10-21T15:53:15.795Z"
+      "source": "activité du projet, 2026-10-22T14:12:14.601Z"
     },
     {
       "element": "character",
@@ -498,7 +585,7 @@
       "nom": "Emma, la développeuse interface",
       "etat": "celebrate",
       "lieu": "baraque",
-      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-21T15:53:20.276Z",
+      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-22T14:12:25.979Z",
       "ref": {
         "application": "bureau",
         "fiche": "001-cloturer-un-audit"
@@ -511,7 +598,7 @@
       "nom": "Olivier, le surveillant de chantier",
       "etat": "celebrate",
       "lieu": "baraque",
-      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-21T15:53:21.091Z",
+      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-22T14:12:28.044Z",
       "ref": {
         "application": "bureau",
         "fiche": "001-cloturer-un-audit"
@@ -524,13 +611,13 @@
       "nom": "Julie, la développeuse base de données",
       "etat": "typing",
       "lieu": "batiment:terrain",
-      "source": "activité de la fiche 002-saisir-un-constat-hors-ligne, 2026-10-21T15:53:32.964Z",
+      "source": "activité de la fiche 004-saisir-un-constat-hors-ligne, 2026-10-22T14:13:13.253Z",
       "ref": {
         "application": "terrain",
-        "fiche": "002-saisir-un-constat-hors-ligne",
+        "fiche": "004-saisir-un-constat-hors-ligne",
         "lot": "L1"
       },
-      "etage": "002-saisir-un-constat-hors-ligne",
+      "etage": "004-saisir-un-constat-hors-ligne",
       "piece": "L1"
     },
     {
@@ -540,17 +627,17 @@
       "nom": "Sarah, l'expert sécurité",
       "etat": "thinking",
       "lieu": "batiment:terrain",
-      "source": "activité de la fiche 002-saisir-un-constat-hors-ligne, 2026-10-21T15:53:30.888Z",
+      "source": "activité de la fiche 004-saisir-un-constat-hors-ligne, 2026-10-22T14:13:07.492Z",
       "ref": {
         "application": "terrain",
-        "fiche": "002-saisir-un-constat-hors-ligne"
+        "fiche": "004-saisir-un-constat-hors-ligne"
       },
       "motif": "mission",
       "avec": [
         "architecte"
       ],
       "mission": "Vérifier que la saisie hors ligne ne garde aucune donnée sensible en clair",
-      "etage": "002-saisir-un-constat-hors-ligne"
+      "etage": "004-saisir-un-constat-hors-ligne"
     },
     {
       "element": "character",
@@ -560,55 +647,44 @@
       "etat": "inspect",
       "lieu": "batiment:terrain",
       "programme": true,
-      "source": "contrôle ou preuve de moins de deux minutes sur 002-saisir-un-constat-hors-ligne",
-      "etage": "002-saisir-un-constat-hors-ligne",
+      "source": "contrôle ou preuve de moins de deux minutes sur 004-saisir-un-constat-hors-ligne",
+      "etage": "004-saisir-un-constat-hors-ligne",
       "motif": "controle",
       "ref": {
         "application": "terrain",
-        "fiche": "002-saisir-un-constat-hors-ligne"
+        "fiche": "004-saisir-un-constat-hors-ligne"
       }
     }
   ],
   "actions": [
     {
-      "ts": "2026-10-21T15:53:34.440Z",
-      "action": "change",
-      "element": "building",
-      "id": "bureau",
-      "nom": "Application de bureau",
-      "de": "completed",
-      "vers": "finishing",
-      "phrase": "Application de bureau : completed → finishing",
-      "ref": {
-        "application": "bureau"
-      }
-    },
-    {
-      "ts": "2026-10-21T15:53:34.440Z",
+      "ts": "2026-10-22T14:13:16.170Z",
       "action": "apparait",
       "element": "survey-poles",
-      "id": "gabarits-004-exporter-un-audit-en-pdf",
+      "id": "gabarits-006-exporter-un-audit-en-pdf",
       "nom": "Les gabarits de la fiche « Exporter un audit en PDF »",
       "etat": "default",
       "lieu": "bureau",
       "phrase": "Les gabarits de la fiche « Exporter un audit en PDF » apparaissent (le bâtiment « Application de bureau »)",
       "ref": {
         "application": "bureau",
-        "fiche": "004-exporter-un-audit-en-pdf"
-      }
+        "fiche": "006-exporter-un-audit-en-pdf"
+      },
+      "cause": "evt:006-exporter-un-audit-en-pdf/13b7aa8f"
     },
     {
-      "ts": "2026-10-21T15:53:34.440Z",
+      "ts": "2026-10-22T14:13:16.170Z",
       "action": "quantite",
       "element": "client-office",
       "id": "bureau-client",
       "nom": "Le bureau du client",
       "de": 2,
       "vers": 1,
-      "phrase": "Le bureau du client : 1"
+      "phrase": "Le bureau du client : 1",
+      "cause": "evt:005-gerer-les-droits-des-auditeurs/c140f7f0"
     },
     {
-      "ts": "2026-10-21T15:53:34.440Z",
+      "ts": "2026-10-22T14:13:16.170Z",
       "action": "deplace",
       "element": "character",
       "id": "architecte",
@@ -619,32 +695,35 @@
       "phrase": "Claire, l'architecte va du panneau du feu vert au bureau du client : ta décision l'attend",
       "ref": {
         "application": "admin",
-        "fiche": "003-gerer-les-droits-des-auditeurs"
-      }
+        "fiche": "005-gerer-les-droits-des-auditeurs"
+      },
+      "cause": "evt:005-gerer-les-droits-des-auditeurs/c140f7f0"
     },
     {
-      "ts": "2026-10-21T15:53:34.440Z",
+      "ts": "2026-10-22T14:13:16.170Z",
       "action": "disparait",
       "element": "survey-poles",
-      "id": "gabarits-003-gerer-les-droits-des-auditeurs",
+      "id": "gabarits-005-gerer-les-droits-des-auditeurs",
       "nom": "Les gabarits de la fiche « Gérer les droits des auditeurs »",
       "phrase": "Les gabarits de la fiche « Gérer les droits des auditeurs » disparaissent",
       "ref": {
         "application": "admin",
-        "fiche": "003-gerer-les-droits-des-auditeurs"
-      }
+        "fiche": "005-gerer-les-droits-des-auditeurs"
+      },
+      "cause": "evt:005-gerer-les-droits-des-auditeurs/c140f7f0"
     },
     {
-      "ts": "2026-10-21T15:53:34.440Z",
+      "ts": "2026-10-22T14:13:16.170Z",
       "action": "disparait",
       "element": "decision-sign",
-      "id": "decision-003-gerer-les-droits-des-auditeurs-plan",
+      "id": "decision-005-gerer-les-droits-des-auditeurs-plan",
       "nom": "Ta décision « le feu vert » pour « Gérer les droits des auditeurs »",
       "phrase": "Ta décision « le feu vert » pour « Gérer les droits des auditeurs » disparaît",
       "ref": {
         "application": "admin",
-        "fiche": "003-gerer-les-droits-des-auditeurs"
-      }
+        "fiche": "005-gerer-les-droits-des-auditeurs"
+      },
+      "cause": "evt:005-gerer-les-droits-des-auditeurs/c140f7f0"
     }
   ]
 }

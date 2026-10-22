@@ -1,0 +1,3198 @@
+{
+  "etape": "l'idée",
+  "titre": "100 fiches",
+  "explication": "Huit applications et 100 fiches à des stades variés : gabarits, feu vert attendu, préparation, construction, enveloppe fermée, second œuvre.",
+  "schema": 3,
+  "projet": "Volume",
+  "etapes": [
+    {
+      "id": "idee",
+      "numero": 1,
+      "titre": "L'idée"
+    },
+    {
+      "id": "plans",
+      "numero": 2,
+      "titre": "Les plans"
+    },
+    {
+      "id": "permis",
+      "numero": 3,
+      "titre": "Le permis de construire"
+    },
+    {
+      "id": "plans-execution",
+      "numero": 4,
+      "titre": "Les plans d'exécution"
+    },
+    {
+      "id": "preparation",
+      "numero": 5,
+      "titre": "La préparation"
+    },
+    {
+      "id": "construction",
+      "numero": 6,
+      "titre": "La construction"
+    },
+    {
+      "id": "reception",
+      "numero": 7,
+      "titre": "La réception"
+    },
+    {
+      "id": "remise-des-cles",
+      "numero": 8,
+      "titre": "La remise des clés"
+    },
+    {
+      "id": "garantie",
+      "numero": 9,
+      "titre": "La garantie"
+    },
+    {
+      "id": "transformations",
+      "numero": 10,
+      "titre": "Les transformations"
+    }
+  ],
+  "chantier": {
+    "regime": "pause",
+    "depuis": "2026-10-22T14:15:10.589Z",
+    "raison": "personne n'avance et 17 décisions t'attendent"
+  },
+  "plan": {
+    "zones": [
+      {
+        "id": "bureaux",
+        "nom": "Les bureaux",
+        "etapes": [
+          1,
+          2,
+          3
+        ],
+        "lieux": [
+          {
+            "id": "bureau-architecte",
+            "element": "architect-office",
+            "nom": "Le bureau d'architecte"
+          },
+          {
+            "id": "bureau-client",
+            "element": "client-office",
+            "nom": "Le bureau du client"
+          },
+          {
+            "id": "bureau-etudes",
+            "element": "design-office",
+            "nom": "Le bureau d'études"
+          },
+          {
+            "id": "panneau-permis",
+            "element": "permit-board",
+            "nom": "Le panneau du permis"
+          }
+        ],
+        "activee": "2026-10-22T14:15:13.238Z",
+        "par_ce_projet": true
+      },
+      {
+        "id": "chantier",
+        "nom": "Le chantier",
+        "etapes": [
+          4,
+          5,
+          6
+        ],
+        "lieux": [
+          {
+            "id": "baraque",
+            "element": "site-office",
+            "nom": "La baraque du conducteur de travaux"
+          },
+          {
+            "id": "bureau-controle",
+            "element": "control-office",
+            "nom": "Le bureau de contrôle"
+          },
+          {
+            "id": "panneau-feu-vert",
+            "element": "decision-sign",
+            "nom": "Le panneau du feu vert"
+          },
+          {
+            "id": "chantier",
+            "element": "site-fence",
+            "nom": "Le chantier, une parcelle par application"
+          }
+        ],
+        "activee": "2026-10-22T14:15:13.238Z",
+        "par_ce_projet": true
+      },
+      {
+        "id": "remise",
+        "nom": "La réception, la remise des clés et la garantie",
+        "etapes": [
+          7,
+          8,
+          9
+        ],
+        "lieux": [
+          {
+            "id": "aire-reception",
+            "element": "reception-area",
+            "nom": "L'aire de réception"
+          },
+          {
+            "id": "cabane-cles",
+            "element": "site-container",
+            "nom": "La cabane de la remise des clés"
+          },
+          {
+            "id": "cabane-garantie",
+            "element": "site-container",
+            "nom": "La cabane de la garantie"
+          }
+        ],
+        "activee": null
+      },
+      {
+        "id": "transformations",
+        "nom": "Les transformations",
+        "etapes": [
+          10
+        ],
+        "lieux": [
+          {
+            "id": "cabane-transformations",
+            "element": "site-container",
+            "nom": "La cabane des transformations"
+          },
+          {
+            "id": "parking",
+            "element": "parking",
+            "nom": "Le carnet des demandes"
+          }
+        ],
+        "activee": null
+      }
+    ],
+    "parcelles": [
+      {
+        "batiment": "bureau",
+        "nom": "Application de bureau",
+        "type": "immeuble",
+        "fiches": [
+          {
+            "fiche": "001-fonction-1-de-application-de-bureau",
+            "nom": "Fonction 1 de « Application de bureau »",
+            "lots": []
+          },
+          {
+            "fiche": "009-fonction-9-de-application-de-bureau",
+            "nom": "Fonction 9 de « Application de bureau »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 9"
+              }
+            ]
+          },
+          {
+            "fiche": "017-fonction-17-de-application-de-bureau",
+            "nom": "Fonction 17 de « Application de bureau »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 17"
+              }
+            ]
+          },
+          {
+            "fiche": "025-fonction-25-de-application-de-bureau",
+            "nom": "Fonction 25 de « Application de bureau »",
+            "lots": []
+          },
+          {
+            "fiche": "033-fonction-33-de-application-de-bureau",
+            "nom": "Fonction 33 de « Application de bureau »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 33"
+              }
+            ]
+          },
+          {
+            "fiche": "041-fonction-41-de-application-de-bureau",
+            "nom": "Fonction 41 de « Application de bureau »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 41"
+              }
+            ]
+          },
+          {
+            "fiche": "049-fonction-49-de-application-de-bureau",
+            "nom": "Fonction 49 de « Application de bureau »",
+            "lots": []
+          },
+          {
+            "fiche": "057-fonction-57-de-application-de-bureau",
+            "nom": "Fonction 57 de « Application de bureau »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 57"
+              }
+            ]
+          },
+          {
+            "fiche": "065-fonction-65-de-application-de-bureau",
+            "nom": "Fonction 65 de « Application de bureau »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 65"
+              }
+            ]
+          },
+          {
+            "fiche": "073-fonction-73-de-application-de-bureau",
+            "nom": "Fonction 73 de « Application de bureau »",
+            "lots": []
+          },
+          {
+            "fiche": "081-fonction-81-de-application-de-bureau",
+            "nom": "Fonction 81 de « Application de bureau »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 81"
+              }
+            ]
+          },
+          {
+            "fiche": "089-fonction-89-de-application-de-bureau",
+            "nom": "Fonction 89 de « Application de bureau »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 89"
+              }
+            ]
+          },
+          {
+            "fiche": "097-fonction-97-de-application-de-bureau",
+            "nom": "Fonction 97 de « Application de bureau »",
+            "lots": []
+          }
+        ]
+      },
+      {
+        "batiment": "terrain",
+        "nom": "Application terrain",
+        "type": "maison",
+        "fiches": [
+          {
+            "fiche": "002-fonction-2-de-application-terrain",
+            "nom": "Fonction 2 de « Application terrain »",
+            "lots": []
+          },
+          {
+            "fiche": "010-fonction-10-de-application-terrain",
+            "nom": "Fonction 10 de « Application terrain »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 10"
+              }
+            ]
+          },
+          {
+            "fiche": "018-fonction-18-de-application-terrain",
+            "nom": "Fonction 18 de « Application terrain »",
+            "lots": []
+          },
+          {
+            "fiche": "026-fonction-26-de-application-terrain",
+            "nom": "Fonction 26 de « Application terrain »",
+            "lots": []
+          },
+          {
+            "fiche": "034-fonction-34-de-application-terrain",
+            "nom": "Fonction 34 de « Application terrain »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 34"
+              }
+            ]
+          },
+          {
+            "fiche": "042-fonction-42-de-application-terrain",
+            "nom": "Fonction 42 de « Application terrain »",
+            "lots": []
+          },
+          {
+            "fiche": "050-fonction-50-de-application-terrain",
+            "nom": "Fonction 50 de « Application terrain »",
+            "lots": []
+          },
+          {
+            "fiche": "058-fonction-58-de-application-terrain",
+            "nom": "Fonction 58 de « Application terrain »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 58"
+              }
+            ]
+          },
+          {
+            "fiche": "066-fonction-66-de-application-terrain",
+            "nom": "Fonction 66 de « Application terrain »",
+            "lots": []
+          },
+          {
+            "fiche": "074-fonction-74-de-application-terrain",
+            "nom": "Fonction 74 de « Application terrain »",
+            "lots": []
+          },
+          {
+            "fiche": "082-fonction-82-de-application-terrain",
+            "nom": "Fonction 82 de « Application terrain »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 82"
+              }
+            ]
+          },
+          {
+            "fiche": "090-fonction-90-de-application-terrain",
+            "nom": "Fonction 90 de « Application terrain »",
+            "lots": []
+          },
+          {
+            "fiche": "098-fonction-98-de-application-terrain",
+            "nom": "Fonction 98 de « Application terrain »",
+            "lots": []
+          }
+        ]
+      },
+      {
+        "batiment": "admin",
+        "nom": "Administration",
+        "type": "immeuble",
+        "fiches": [
+          {
+            "fiche": "003-fonction-3-de-administration",
+            "nom": "Fonction 3 de « Administration »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 3"
+              }
+            ]
+          },
+          {
+            "fiche": "011-fonction-11-de-administration",
+            "nom": "Fonction 11 de « Administration »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 11"
+              }
+            ]
+          },
+          {
+            "fiche": "019-fonction-19-de-administration",
+            "nom": "Fonction 19 de « Administration »",
+            "lots": []
+          },
+          {
+            "fiche": "027-fonction-27-de-administration",
+            "nom": "Fonction 27 de « Administration »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 27"
+              }
+            ]
+          },
+          {
+            "fiche": "035-fonction-35-de-administration",
+            "nom": "Fonction 35 de « Administration »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 35"
+              }
+            ]
+          },
+          {
+            "fiche": "043-fonction-43-de-administration",
+            "nom": "Fonction 43 de « Administration »",
+            "lots": []
+          },
+          {
+            "fiche": "051-fonction-51-de-administration",
+            "nom": "Fonction 51 de « Administration »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 51"
+              }
+            ]
+          },
+          {
+            "fiche": "059-fonction-59-de-administration",
+            "nom": "Fonction 59 de « Administration »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 59"
+              }
+            ]
+          },
+          {
+            "fiche": "067-fonction-67-de-administration",
+            "nom": "Fonction 67 de « Administration »",
+            "lots": []
+          },
+          {
+            "fiche": "075-fonction-75-de-administration",
+            "nom": "Fonction 75 de « Administration »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 75"
+              }
+            ]
+          },
+          {
+            "fiche": "083-fonction-83-de-administration",
+            "nom": "Fonction 83 de « Administration »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 83"
+              }
+            ]
+          },
+          {
+            "fiche": "091-fonction-91-de-administration",
+            "nom": "Fonction 91 de « Administration »",
+            "lots": []
+          },
+          {
+            "fiche": "099-fonction-99-de-administration",
+            "nom": "Fonction 99 de « Administration »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 99"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "batiment": "portail",
+        "nom": "Portail client",
+        "type": "maison",
+        "fiches": [
+          {
+            "fiche": "004-fonction-4-de-portail-client",
+            "nom": "Fonction 4 de « Portail client »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 4"
+              }
+            ]
+          },
+          {
+            "fiche": "012-fonction-12-de-portail-client",
+            "nom": "Fonction 12 de « Portail client »",
+            "lots": []
+          },
+          {
+            "fiche": "020-fonction-20-de-portail-client",
+            "nom": "Fonction 20 de « Portail client »",
+            "lots": []
+          },
+          {
+            "fiche": "028-fonction-28-de-portail-client",
+            "nom": "Fonction 28 de « Portail client »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 28"
+              }
+            ]
+          },
+          {
+            "fiche": "036-fonction-36-de-portail-client",
+            "nom": "Fonction 36 de « Portail client »",
+            "lots": []
+          },
+          {
+            "fiche": "044-fonction-44-de-portail-client",
+            "nom": "Fonction 44 de « Portail client »",
+            "lots": []
+          },
+          {
+            "fiche": "052-fonction-52-de-portail-client",
+            "nom": "Fonction 52 de « Portail client »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 52"
+              }
+            ]
+          },
+          {
+            "fiche": "060-fonction-60-de-portail-client",
+            "nom": "Fonction 60 de « Portail client »",
+            "lots": []
+          },
+          {
+            "fiche": "068-fonction-68-de-portail-client",
+            "nom": "Fonction 68 de « Portail client »",
+            "lots": []
+          },
+          {
+            "fiche": "076-fonction-76-de-portail-client",
+            "nom": "Fonction 76 de « Portail client »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 76"
+              }
+            ]
+          },
+          {
+            "fiche": "084-fonction-84-de-portail-client",
+            "nom": "Fonction 84 de « Portail client »",
+            "lots": []
+          },
+          {
+            "fiche": "092-fonction-92-de-portail-client",
+            "nom": "Fonction 92 de « Portail client »",
+            "lots": []
+          },
+          {
+            "fiche": "100-fonction-100-de-portail-client",
+            "nom": "Fonction 100 de « Portail client »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 100"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "batiment": "facturation",
+        "nom": "Facturation",
+        "type": "immeuble",
+        "fiches": [
+          {
+            "fiche": "005-fonction-5-de-facturation",
+            "nom": "Fonction 5 de « Facturation »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 5"
+              }
+            ]
+          },
+          {
+            "fiche": "013-fonction-13-de-facturation",
+            "nom": "Fonction 13 de « Facturation »",
+            "lots": []
+          },
+          {
+            "fiche": "021-fonction-21-de-facturation",
+            "nom": "Fonction 21 de « Facturation »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 21"
+              }
+            ]
+          },
+          {
+            "fiche": "029-fonction-29-de-facturation",
+            "nom": "Fonction 29 de « Facturation »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 29"
+              }
+            ]
+          },
+          {
+            "fiche": "037-fonction-37-de-facturation",
+            "nom": "Fonction 37 de « Facturation »",
+            "lots": []
+          },
+          {
+            "fiche": "045-fonction-45-de-facturation",
+            "nom": "Fonction 45 de « Facturation »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 45"
+              }
+            ]
+          },
+          {
+            "fiche": "053-fonction-53-de-facturation",
+            "nom": "Fonction 53 de « Facturation »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 53"
+              }
+            ]
+          },
+          {
+            "fiche": "061-fonction-61-de-facturation",
+            "nom": "Fonction 61 de « Facturation »",
+            "lots": []
+          },
+          {
+            "fiche": "069-fonction-69-de-facturation",
+            "nom": "Fonction 69 de « Facturation »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 69"
+              }
+            ]
+          },
+          {
+            "fiche": "077-fonction-77-de-facturation",
+            "nom": "Fonction 77 de « Facturation »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 77"
+              }
+            ]
+          },
+          {
+            "fiche": "085-fonction-85-de-facturation",
+            "nom": "Fonction 85 de « Facturation »",
+            "lots": []
+          },
+          {
+            "fiche": "093-fonction-93-de-facturation",
+            "nom": "Fonction 93 de « Facturation »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 93"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "batiment": "rapports",
+        "nom": "Rapports",
+        "type": "maison",
+        "fiches": [
+          {
+            "fiche": "006-fonction-6-de-rapports",
+            "nom": "Fonction 6 de « Rapports »",
+            "lots": []
+          },
+          {
+            "fiche": "014-fonction-14-de-rapports",
+            "nom": "Fonction 14 de « Rapports »",
+            "lots": []
+          },
+          {
+            "fiche": "022-fonction-22-de-rapports",
+            "nom": "Fonction 22 de « Rapports »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 22"
+              }
+            ]
+          },
+          {
+            "fiche": "030-fonction-30-de-rapports",
+            "nom": "Fonction 30 de « Rapports »",
+            "lots": []
+          },
+          {
+            "fiche": "038-fonction-38-de-rapports",
+            "nom": "Fonction 38 de « Rapports »",
+            "lots": []
+          },
+          {
+            "fiche": "046-fonction-46-de-rapports",
+            "nom": "Fonction 46 de « Rapports »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 46"
+              }
+            ]
+          },
+          {
+            "fiche": "054-fonction-54-de-rapports",
+            "nom": "Fonction 54 de « Rapports »",
+            "lots": []
+          },
+          {
+            "fiche": "062-fonction-62-de-rapports",
+            "nom": "Fonction 62 de « Rapports »",
+            "lots": []
+          },
+          {
+            "fiche": "070-fonction-70-de-rapports",
+            "nom": "Fonction 70 de « Rapports »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 70"
+              }
+            ]
+          },
+          {
+            "fiche": "078-fonction-78-de-rapports",
+            "nom": "Fonction 78 de « Rapports »",
+            "lots": []
+          },
+          {
+            "fiche": "086-fonction-86-de-rapports",
+            "nom": "Fonction 86 de « Rapports »",
+            "lots": []
+          },
+          {
+            "fiche": "094-fonction-94-de-rapports",
+            "nom": "Fonction 94 de « Rapports »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 94"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "batiment": "synchro",
+        "nom": "Synchronisation",
+        "type": "immeuble",
+        "fiches": [
+          {
+            "fiche": "007-fonction-7-de-synchronisation",
+            "nom": "Fonction 7 de « Synchronisation »",
+            "lots": []
+          },
+          {
+            "fiche": "015-fonction-15-de-synchronisation",
+            "nom": "Fonction 15 de « Synchronisation »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 15"
+              }
+            ]
+          },
+          {
+            "fiche": "023-fonction-23-de-synchronisation",
+            "nom": "Fonction 23 de « Synchronisation »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 23"
+              }
+            ]
+          },
+          {
+            "fiche": "031-fonction-31-de-synchronisation",
+            "nom": "Fonction 31 de « Synchronisation »",
+            "lots": []
+          },
+          {
+            "fiche": "039-fonction-39-de-synchronisation",
+            "nom": "Fonction 39 de « Synchronisation »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 39"
+              }
+            ]
+          },
+          {
+            "fiche": "047-fonction-47-de-synchronisation",
+            "nom": "Fonction 47 de « Synchronisation »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 47"
+              }
+            ]
+          },
+          {
+            "fiche": "055-fonction-55-de-synchronisation",
+            "nom": "Fonction 55 de « Synchronisation »",
+            "lots": []
+          },
+          {
+            "fiche": "063-fonction-63-de-synchronisation",
+            "nom": "Fonction 63 de « Synchronisation »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 63"
+              }
+            ]
+          },
+          {
+            "fiche": "071-fonction-71-de-synchronisation",
+            "nom": "Fonction 71 de « Synchronisation »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 71"
+              }
+            ]
+          },
+          {
+            "fiche": "079-fonction-79-de-synchronisation",
+            "nom": "Fonction 79 de « Synchronisation »",
+            "lots": []
+          },
+          {
+            "fiche": "087-fonction-87-de-synchronisation",
+            "nom": "Fonction 87 de « Synchronisation »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 87"
+              }
+            ]
+          },
+          {
+            "fiche": "095-fonction-95-de-synchronisation",
+            "nom": "Fonction 95 de « Synchronisation »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 95"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "batiment": "site",
+        "nom": "Site public",
+        "type": "maison",
+        "fiches": [
+          {
+            "fiche": "008-fonction-8-de-site-public",
+            "nom": "Fonction 8 de « Site public »",
+            "lots": []
+          },
+          {
+            "fiche": "016-fonction-16-de-site-public",
+            "nom": "Fonction 16 de « Site public »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 16"
+              }
+            ]
+          },
+          {
+            "fiche": "024-fonction-24-de-site-public",
+            "nom": "Fonction 24 de « Site public »",
+            "lots": []
+          },
+          {
+            "fiche": "032-fonction-32-de-site-public",
+            "nom": "Fonction 32 de « Site public »",
+            "lots": []
+          },
+          {
+            "fiche": "040-fonction-40-de-site-public",
+            "nom": "Fonction 40 de « Site public »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 40"
+              }
+            ]
+          },
+          {
+            "fiche": "048-fonction-48-de-site-public",
+            "nom": "Fonction 48 de « Site public »",
+            "lots": []
+          },
+          {
+            "fiche": "056-fonction-56-de-site-public",
+            "nom": "Fonction 56 de « Site public »",
+            "lots": []
+          },
+          {
+            "fiche": "064-fonction-64-de-site-public",
+            "nom": "Fonction 64 de « Site public »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 64"
+              }
+            ]
+          },
+          {
+            "fiche": "072-fonction-72-de-site-public",
+            "nom": "Fonction 72 de « Site public »",
+            "lots": []
+          },
+          {
+            "fiche": "080-fonction-80-de-site-public",
+            "nom": "Fonction 80 de « Site public »",
+            "lots": []
+          },
+          {
+            "fiche": "088-fonction-88-de-site-public",
+            "nom": "Fonction 88 de « Site public »",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Le lot de la fonction 88"
+              }
+            ]
+          },
+          {
+            "fiche": "096-fonction-96-de-site-public",
+            "nom": "Fonction 96 de « Site public »",
+            "lots": []
+          }
+        ]
+      }
+    ]
+  },
+  "indicateurs": [
+    {
+      "id": "dossier",
+      "nom": "Le dossier du projet",
+      "valeur": 2,
+      "total": 15,
+      "regle": "2 pièces complètes sur 15"
+    }
+  ],
+  "elements": [
+    {
+      "element": "ground",
+      "id": "terrain",
+      "nom": "Le terrain",
+      "etat": "default",
+      "source": "toujours"
+    },
+    {
+      "element": "building",
+      "id": "bureau",
+      "nom": "Application de bureau",
+      "type": "immeuble",
+      "etat": "finishing",
+      "etape": 6,
+      "etages": [
+        {
+          "fiche": "001-fonction-1-de-application-de-bureau",
+          "nom": "Fonction 1 de « Application de bureau »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "009-fonction-9-de-application-de-bureau",
+          "nom": "Fonction 9 de « Application de bureau »",
+          "stade": "foundations",
+          "etape": 5,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 9",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "017-fonction-17-de-application-de-bureau",
+          "nom": "Fonction 17 de « Application de bureau »",
+          "stade": "finishing",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 17",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "025-fonction-25-de-application-de-bureau",
+          "nom": "Fonction 25 de « Application de bureau »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "033-fonction-33-de-application-de-bureau",
+          "nom": "Fonction 33 de « Application de bureau »",
+          "stade": "foundations",
+          "etape": 5,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 33",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "041-fonction-41-de-application-de-bureau",
+          "nom": "Fonction 41 de « Application de bureau »",
+          "stade": "finishing",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 41",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "049-fonction-49-de-application-de-bureau",
+          "nom": "Fonction 49 de « Application de bureau »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "057-fonction-57-de-application-de-bureau",
+          "nom": "Fonction 57 de « Application de bureau »",
+          "stade": "foundations",
+          "etape": 5,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 57",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "065-fonction-65-de-application-de-bureau",
+          "nom": "Fonction 65 de « Application de bureau »",
+          "stade": "finishing",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 65",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "073-fonction-73-de-application-de-bureau",
+          "nom": "Fonction 73 de « Application de bureau »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "081-fonction-81-de-application-de-bureau",
+          "nom": "Fonction 81 de « Application de bureau »",
+          "stade": "foundations",
+          "etape": 5,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 81",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "089-fonction-89-de-application-de-bureau",
+          "nom": "Fonction 89 de « Application de bureau »",
+          "stade": "finishing",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 89",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "097-fonction-97-de-application-de-bureau",
+          "nom": "Fonction 97 de « Application de bureau »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        }
+      ],
+      "ref": {
+        "application": "bureau"
+      },
+      "source": [
+        "001-fonction-1-de-application-de-bureau",
+        "009-fonction-9-de-application-de-bureau",
+        "017-fonction-17-de-application-de-bureau",
+        "025-fonction-25-de-application-de-bureau",
+        "033-fonction-33-de-application-de-bureau",
+        "041-fonction-41-de-application-de-bureau",
+        "049-fonction-49-de-application-de-bureau",
+        "057-fonction-57-de-application-de-bureau",
+        "065-fonction-65-de-application-de-bureau",
+        "073-fonction-73-de-application-de-bureau",
+        "081-fonction-81-de-application-de-bureau",
+        "089-fonction-89-de-application-de-bureau",
+        "097-fonction-97-de-application-de-bureau"
+      ]
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-001-fonction-1-de-application-de-bureau",
+      "ancre": "bureau",
+      "nom": "Les gabarits de la fiche « Fonction 1 de « Application de bureau » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-fonction-1-de-application-de-bureau"
+      },
+      "source": "001-fonction-1-de-application-de-bureau"
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-025-fonction-25-de-application-de-bureau",
+      "ancre": "bureau",
+      "nom": "Les gabarits de la fiche « Fonction 25 de « Application de bureau » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "bureau",
+        "fiche": "025-fonction-25-de-application-de-bureau"
+      },
+      "source": "025-fonction-25-de-application-de-bureau"
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-049-fonction-49-de-application-de-bureau",
+      "ancre": "bureau",
+      "nom": "Les gabarits de la fiche « Fonction 49 de « Application de bureau » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "bureau",
+        "fiche": "049-fonction-49-de-application-de-bureau"
+      },
+      "source": "049-fonction-49-de-application-de-bureau"
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-073-fonction-73-de-application-de-bureau",
+      "ancre": "bureau",
+      "nom": "Les gabarits de la fiche « Fonction 73 de « Application de bureau » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "bureau",
+        "fiche": "073-fonction-73-de-application-de-bureau"
+      },
+      "source": "073-fonction-73-de-application-de-bureau"
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-097-fonction-97-de-application-de-bureau",
+      "ancre": "bureau",
+      "nom": "Les gabarits de la fiche « Fonction 97 de « Application de bureau » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "bureau",
+        "fiche": "097-fonction-97-de-application-de-bureau"
+      },
+      "source": "097-fonction-97-de-application-de-bureau"
+    },
+    {
+      "element": "building",
+      "id": "terrain",
+      "nom": "Application terrain",
+      "type": "maison",
+      "etat": "envelope",
+      "etape": 6,
+      "etages": [
+        {
+          "fiche": "002-fonction-2-de-application-terrain",
+          "nom": "Fonction 2 de « Application terrain »",
+          "stade": "excavation",
+          "etape": 5,
+          "pieces": []
+        },
+        {
+          "fiche": "010-fonction-10-de-application-terrain",
+          "nom": "Fonction 10 de « Application terrain »",
+          "stade": "envelope",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 10",
+              "statut": "fini",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "018-fonction-18-de-application-terrain",
+          "nom": "Fonction 18 de « Application terrain »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "026-fonction-26-de-application-terrain",
+          "nom": "Fonction 26 de « Application terrain »",
+          "stade": "excavation",
+          "etape": 5,
+          "pieces": []
+        },
+        {
+          "fiche": "034-fonction-34-de-application-terrain",
+          "nom": "Fonction 34 de « Application terrain »",
+          "stade": "envelope",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 34",
+              "statut": "fini",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "042-fonction-42-de-application-terrain",
+          "nom": "Fonction 42 de « Application terrain »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "050-fonction-50-de-application-terrain",
+          "nom": "Fonction 50 de « Application terrain »",
+          "stade": "excavation",
+          "etape": 5,
+          "pieces": []
+        },
+        {
+          "fiche": "058-fonction-58-de-application-terrain",
+          "nom": "Fonction 58 de « Application terrain »",
+          "stade": "envelope",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 58",
+              "statut": "fini",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "066-fonction-66-de-application-terrain",
+          "nom": "Fonction 66 de « Application terrain »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "074-fonction-74-de-application-terrain",
+          "nom": "Fonction 74 de « Application terrain »",
+          "stade": "excavation",
+          "etape": 5,
+          "pieces": []
+        },
+        {
+          "fiche": "082-fonction-82-de-application-terrain",
+          "nom": "Fonction 82 de « Application terrain »",
+          "stade": "envelope",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 82",
+              "statut": "fini",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "090-fonction-90-de-application-terrain",
+          "nom": "Fonction 90 de « Application terrain »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "098-fonction-98-de-application-terrain",
+          "nom": "Fonction 98 de « Application terrain »",
+          "stade": "excavation",
+          "etape": 5,
+          "pieces": []
+        }
+      ],
+      "ref": {
+        "application": "terrain"
+      },
+      "source": [
+        "002-fonction-2-de-application-terrain",
+        "010-fonction-10-de-application-terrain",
+        "018-fonction-18-de-application-terrain",
+        "026-fonction-26-de-application-terrain",
+        "034-fonction-34-de-application-terrain",
+        "042-fonction-42-de-application-terrain",
+        "050-fonction-50-de-application-terrain",
+        "058-fonction-58-de-application-terrain",
+        "066-fonction-66-de-application-terrain",
+        "074-fonction-74-de-application-terrain",
+        "082-fonction-82-de-application-terrain",
+        "090-fonction-90-de-application-terrain",
+        "098-fonction-98-de-application-terrain"
+      ]
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-018-fonction-18-de-application-terrain",
+      "ancre": "terrain",
+      "nom": "Les gabarits de la fiche « Fonction 18 de « Application terrain » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "terrain",
+        "fiche": "018-fonction-18-de-application-terrain"
+      },
+      "source": "018-fonction-18-de-application-terrain"
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-042-fonction-42-de-application-terrain",
+      "ancre": "terrain",
+      "nom": "Les gabarits de la fiche « Fonction 42 de « Application terrain » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "terrain",
+        "fiche": "042-fonction-42-de-application-terrain"
+      },
+      "source": "042-fonction-42-de-application-terrain"
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-066-fonction-66-de-application-terrain",
+      "ancre": "terrain",
+      "nom": "Les gabarits de la fiche « Fonction 66 de « Application terrain » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "terrain",
+        "fiche": "066-fonction-66-de-application-terrain"
+      },
+      "source": "066-fonction-66-de-application-terrain"
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-090-fonction-90-de-application-terrain",
+      "ancre": "terrain",
+      "nom": "Les gabarits de la fiche « Fonction 90 de « Application terrain » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "terrain",
+        "fiche": "090-fonction-90-de-application-terrain"
+      },
+      "source": "090-fonction-90-de-application-terrain"
+    },
+    {
+      "element": "building",
+      "id": "admin",
+      "nom": "Administration",
+      "type": "immeuble",
+      "etat": "finishing",
+      "etape": 6,
+      "etages": [
+        {
+          "fiche": "003-fonction-3-de-administration",
+          "nom": "Fonction 3 de « Administration »",
+          "stade": "foundations",
+          "etape": 5,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 3",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "011-fonction-11-de-administration",
+          "nom": "Fonction 11 de « Administration »",
+          "stade": "finishing",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 11",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "019-fonction-19-de-administration",
+          "nom": "Fonction 19 de « Administration »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "027-fonction-27-de-administration",
+          "nom": "Fonction 27 de « Administration »",
+          "stade": "foundations",
+          "etape": 5,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 27",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "035-fonction-35-de-administration",
+          "nom": "Fonction 35 de « Administration »",
+          "stade": "finishing",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 35",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "043-fonction-43-de-administration",
+          "nom": "Fonction 43 de « Administration »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "051-fonction-51-de-administration",
+          "nom": "Fonction 51 de « Administration »",
+          "stade": "foundations",
+          "etape": 5,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 51",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "059-fonction-59-de-administration",
+          "nom": "Fonction 59 de « Administration »",
+          "stade": "finishing",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 59",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "067-fonction-67-de-administration",
+          "nom": "Fonction 67 de « Administration »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "075-fonction-75-de-administration",
+          "nom": "Fonction 75 de « Administration »",
+          "stade": "foundations",
+          "etape": 5,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 75",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "083-fonction-83-de-administration",
+          "nom": "Fonction 83 de « Administration »",
+          "stade": "finishing",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 83",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "091-fonction-91-de-administration",
+          "nom": "Fonction 91 de « Administration »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "099-fonction-99-de-administration",
+          "nom": "Fonction 99 de « Administration »",
+          "stade": "foundations",
+          "etape": 5,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 99",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        }
+      ],
+      "ref": {
+        "application": "admin"
+      },
+      "source": [
+        "003-fonction-3-de-administration",
+        "011-fonction-11-de-administration",
+        "019-fonction-19-de-administration",
+        "027-fonction-27-de-administration",
+        "035-fonction-35-de-administration",
+        "043-fonction-43-de-administration",
+        "051-fonction-51-de-administration",
+        "059-fonction-59-de-administration",
+        "067-fonction-67-de-administration",
+        "075-fonction-75-de-administration",
+        "083-fonction-83-de-administration",
+        "091-fonction-91-de-administration",
+        "099-fonction-99-de-administration"
+      ]
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-019-fonction-19-de-administration",
+      "ancre": "admin",
+      "nom": "Les gabarits de la fiche « Fonction 19 de « Administration » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "admin",
+        "fiche": "019-fonction-19-de-administration"
+      },
+      "source": "019-fonction-19-de-administration"
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-043-fonction-43-de-administration",
+      "ancre": "admin",
+      "nom": "Les gabarits de la fiche « Fonction 43 de « Administration » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "admin",
+        "fiche": "043-fonction-43-de-administration"
+      },
+      "source": "043-fonction-43-de-administration"
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-067-fonction-67-de-administration",
+      "ancre": "admin",
+      "nom": "Les gabarits de la fiche « Fonction 67 de « Administration » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "admin",
+        "fiche": "067-fonction-67-de-administration"
+      },
+      "source": "067-fonction-67-de-administration"
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-091-fonction-91-de-administration",
+      "ancre": "admin",
+      "nom": "Les gabarits de la fiche « Fonction 91 de « Administration » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "admin",
+        "fiche": "091-fonction-91-de-administration"
+      },
+      "source": "091-fonction-91-de-administration"
+    },
+    {
+      "element": "building",
+      "id": "portail",
+      "nom": "Portail client",
+      "type": "maison",
+      "etat": "envelope",
+      "etape": 6,
+      "etages": [
+        {
+          "fiche": "004-fonction-4-de-portail-client",
+          "nom": "Fonction 4 de « Portail client »",
+          "stade": "envelope",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 4",
+              "statut": "fini",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "012-fonction-12-de-portail-client",
+          "nom": "Fonction 12 de « Portail client »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "020-fonction-20-de-portail-client",
+          "nom": "Fonction 20 de « Portail client »",
+          "stade": "excavation",
+          "etape": 5,
+          "pieces": []
+        },
+        {
+          "fiche": "028-fonction-28-de-portail-client",
+          "nom": "Fonction 28 de « Portail client »",
+          "stade": "envelope",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 28",
+              "statut": "fini",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "036-fonction-36-de-portail-client",
+          "nom": "Fonction 36 de « Portail client »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "044-fonction-44-de-portail-client",
+          "nom": "Fonction 44 de « Portail client »",
+          "stade": "excavation",
+          "etape": 5,
+          "pieces": []
+        },
+        {
+          "fiche": "052-fonction-52-de-portail-client",
+          "nom": "Fonction 52 de « Portail client »",
+          "stade": "envelope",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 52",
+              "statut": "fini",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "060-fonction-60-de-portail-client",
+          "nom": "Fonction 60 de « Portail client »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "068-fonction-68-de-portail-client",
+          "nom": "Fonction 68 de « Portail client »",
+          "stade": "excavation",
+          "etape": 5,
+          "pieces": []
+        },
+        {
+          "fiche": "076-fonction-76-de-portail-client",
+          "nom": "Fonction 76 de « Portail client »",
+          "stade": "envelope",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 76",
+              "statut": "fini",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "084-fonction-84-de-portail-client",
+          "nom": "Fonction 84 de « Portail client »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "092-fonction-92-de-portail-client",
+          "nom": "Fonction 92 de « Portail client »",
+          "stade": "excavation",
+          "etape": 5,
+          "pieces": []
+        },
+        {
+          "fiche": "100-fonction-100-de-portail-client",
+          "nom": "Fonction 100 de « Portail client »",
+          "stade": "envelope",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 100",
+              "statut": "fini",
+              "phase": null
+            }
+          ]
+        }
+      ],
+      "ref": {
+        "application": "portail"
+      },
+      "source": [
+        "004-fonction-4-de-portail-client",
+        "012-fonction-12-de-portail-client",
+        "020-fonction-20-de-portail-client",
+        "028-fonction-28-de-portail-client",
+        "036-fonction-36-de-portail-client",
+        "044-fonction-44-de-portail-client",
+        "052-fonction-52-de-portail-client",
+        "060-fonction-60-de-portail-client",
+        "068-fonction-68-de-portail-client",
+        "076-fonction-76-de-portail-client",
+        "084-fonction-84-de-portail-client",
+        "092-fonction-92-de-portail-client",
+        "100-fonction-100-de-portail-client"
+      ]
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-012-fonction-12-de-portail-client",
+      "ancre": "portail",
+      "nom": "Les gabarits de la fiche « Fonction 12 de « Portail client » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "portail",
+        "fiche": "012-fonction-12-de-portail-client"
+      },
+      "source": "012-fonction-12-de-portail-client"
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-036-fonction-36-de-portail-client",
+      "ancre": "portail",
+      "nom": "Les gabarits de la fiche « Fonction 36 de « Portail client » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "portail",
+        "fiche": "036-fonction-36-de-portail-client"
+      },
+      "source": "036-fonction-36-de-portail-client"
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-060-fonction-60-de-portail-client",
+      "ancre": "portail",
+      "nom": "Les gabarits de la fiche « Fonction 60 de « Portail client » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "portail",
+        "fiche": "060-fonction-60-de-portail-client"
+      },
+      "source": "060-fonction-60-de-portail-client"
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-084-fonction-84-de-portail-client",
+      "ancre": "portail",
+      "nom": "Les gabarits de la fiche « Fonction 84 de « Portail client » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "portail",
+        "fiche": "084-fonction-84-de-portail-client"
+      },
+      "source": "084-fonction-84-de-portail-client"
+    },
+    {
+      "element": "building",
+      "id": "facturation",
+      "nom": "Facturation",
+      "type": "immeuble",
+      "etat": "finishing",
+      "etape": 6,
+      "etages": [
+        {
+          "fiche": "005-fonction-5-de-facturation",
+          "nom": "Fonction 5 de « Facturation »",
+          "stade": "finishing",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 5",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "013-fonction-13-de-facturation",
+          "nom": "Fonction 13 de « Facturation »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "021-fonction-21-de-facturation",
+          "nom": "Fonction 21 de « Facturation »",
+          "stade": "foundations",
+          "etape": 5,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 21",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "029-fonction-29-de-facturation",
+          "nom": "Fonction 29 de « Facturation »",
+          "stade": "finishing",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 29",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "037-fonction-37-de-facturation",
+          "nom": "Fonction 37 de « Facturation »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "045-fonction-45-de-facturation",
+          "nom": "Fonction 45 de « Facturation »",
+          "stade": "foundations",
+          "etape": 5,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 45",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "053-fonction-53-de-facturation",
+          "nom": "Fonction 53 de « Facturation »",
+          "stade": "finishing",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 53",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "061-fonction-61-de-facturation",
+          "nom": "Fonction 61 de « Facturation »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "069-fonction-69-de-facturation",
+          "nom": "Fonction 69 de « Facturation »",
+          "stade": "foundations",
+          "etape": 5,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 69",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "077-fonction-77-de-facturation",
+          "nom": "Fonction 77 de « Facturation »",
+          "stade": "finishing",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 77",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "085-fonction-85-de-facturation",
+          "nom": "Fonction 85 de « Facturation »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "093-fonction-93-de-facturation",
+          "nom": "Fonction 93 de « Facturation »",
+          "stade": "foundations",
+          "etape": 5,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 93",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        }
+      ],
+      "ref": {
+        "application": "facturation"
+      },
+      "source": [
+        "005-fonction-5-de-facturation",
+        "013-fonction-13-de-facturation",
+        "021-fonction-21-de-facturation",
+        "029-fonction-29-de-facturation",
+        "037-fonction-37-de-facturation",
+        "045-fonction-45-de-facturation",
+        "053-fonction-53-de-facturation",
+        "061-fonction-61-de-facturation",
+        "069-fonction-69-de-facturation",
+        "077-fonction-77-de-facturation",
+        "085-fonction-85-de-facturation",
+        "093-fonction-93-de-facturation"
+      ]
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-013-fonction-13-de-facturation",
+      "ancre": "facturation",
+      "nom": "Les gabarits de la fiche « Fonction 13 de « Facturation » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "facturation",
+        "fiche": "013-fonction-13-de-facturation"
+      },
+      "source": "013-fonction-13-de-facturation"
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-037-fonction-37-de-facturation",
+      "ancre": "facturation",
+      "nom": "Les gabarits de la fiche « Fonction 37 de « Facturation » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "facturation",
+        "fiche": "037-fonction-37-de-facturation"
+      },
+      "source": "037-fonction-37-de-facturation"
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-061-fonction-61-de-facturation",
+      "ancre": "facturation",
+      "nom": "Les gabarits de la fiche « Fonction 61 de « Facturation » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "facturation",
+        "fiche": "061-fonction-61-de-facturation"
+      },
+      "source": "061-fonction-61-de-facturation"
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-085-fonction-85-de-facturation",
+      "ancre": "facturation",
+      "nom": "Les gabarits de la fiche « Fonction 85 de « Facturation » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "facturation",
+        "fiche": "085-fonction-85-de-facturation"
+      },
+      "source": "085-fonction-85-de-facturation"
+    },
+    {
+      "element": "building",
+      "id": "rapports",
+      "nom": "Rapports",
+      "type": "maison",
+      "etat": "envelope",
+      "etape": 6,
+      "etages": [
+        {
+          "fiche": "006-fonction-6-de-rapports",
+          "nom": "Fonction 6 de « Rapports »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "014-fonction-14-de-rapports",
+          "nom": "Fonction 14 de « Rapports »",
+          "stade": "excavation",
+          "etape": 5,
+          "pieces": []
+        },
+        {
+          "fiche": "022-fonction-22-de-rapports",
+          "nom": "Fonction 22 de « Rapports »",
+          "stade": "envelope",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 22",
+              "statut": "fini",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "030-fonction-30-de-rapports",
+          "nom": "Fonction 30 de « Rapports »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "038-fonction-38-de-rapports",
+          "nom": "Fonction 38 de « Rapports »",
+          "stade": "excavation",
+          "etape": 5,
+          "pieces": []
+        },
+        {
+          "fiche": "046-fonction-46-de-rapports",
+          "nom": "Fonction 46 de « Rapports »",
+          "stade": "envelope",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 46",
+              "statut": "fini",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "054-fonction-54-de-rapports",
+          "nom": "Fonction 54 de « Rapports »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "062-fonction-62-de-rapports",
+          "nom": "Fonction 62 de « Rapports »",
+          "stade": "excavation",
+          "etape": 5,
+          "pieces": []
+        },
+        {
+          "fiche": "070-fonction-70-de-rapports",
+          "nom": "Fonction 70 de « Rapports »",
+          "stade": "envelope",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 70",
+              "statut": "fini",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "078-fonction-78-de-rapports",
+          "nom": "Fonction 78 de « Rapports »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "086-fonction-86-de-rapports",
+          "nom": "Fonction 86 de « Rapports »",
+          "stade": "excavation",
+          "etape": 5,
+          "pieces": []
+        },
+        {
+          "fiche": "094-fonction-94-de-rapports",
+          "nom": "Fonction 94 de « Rapports »",
+          "stade": "envelope",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 94",
+              "statut": "fini",
+              "phase": null
+            }
+          ]
+        }
+      ],
+      "ref": {
+        "application": "rapports"
+      },
+      "source": [
+        "006-fonction-6-de-rapports",
+        "014-fonction-14-de-rapports",
+        "022-fonction-22-de-rapports",
+        "030-fonction-30-de-rapports",
+        "038-fonction-38-de-rapports",
+        "046-fonction-46-de-rapports",
+        "054-fonction-54-de-rapports",
+        "062-fonction-62-de-rapports",
+        "070-fonction-70-de-rapports",
+        "078-fonction-78-de-rapports",
+        "086-fonction-86-de-rapports",
+        "094-fonction-94-de-rapports"
+      ]
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-006-fonction-6-de-rapports",
+      "ancre": "rapports",
+      "nom": "Les gabarits de la fiche « Fonction 6 de « Rapports » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "rapports",
+        "fiche": "006-fonction-6-de-rapports"
+      },
+      "source": "006-fonction-6-de-rapports"
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-030-fonction-30-de-rapports",
+      "ancre": "rapports",
+      "nom": "Les gabarits de la fiche « Fonction 30 de « Rapports » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "rapports",
+        "fiche": "030-fonction-30-de-rapports"
+      },
+      "source": "030-fonction-30-de-rapports"
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-054-fonction-54-de-rapports",
+      "ancre": "rapports",
+      "nom": "Les gabarits de la fiche « Fonction 54 de « Rapports » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "rapports",
+        "fiche": "054-fonction-54-de-rapports"
+      },
+      "source": "054-fonction-54-de-rapports"
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-078-fonction-78-de-rapports",
+      "ancre": "rapports",
+      "nom": "Les gabarits de la fiche « Fonction 78 de « Rapports » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "rapports",
+        "fiche": "078-fonction-78-de-rapports"
+      },
+      "source": "078-fonction-78-de-rapports"
+    },
+    {
+      "element": "building",
+      "id": "synchro",
+      "nom": "Synchronisation",
+      "type": "immeuble",
+      "etat": "finishing",
+      "etape": 6,
+      "etages": [
+        {
+          "fiche": "007-fonction-7-de-synchronisation",
+          "nom": "Fonction 7 de « Synchronisation »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "015-fonction-15-de-synchronisation",
+          "nom": "Fonction 15 de « Synchronisation »",
+          "stade": "foundations",
+          "etape": 5,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 15",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "023-fonction-23-de-synchronisation",
+          "nom": "Fonction 23 de « Synchronisation »",
+          "stade": "finishing",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 23",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "031-fonction-31-de-synchronisation",
+          "nom": "Fonction 31 de « Synchronisation »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "039-fonction-39-de-synchronisation",
+          "nom": "Fonction 39 de « Synchronisation »",
+          "stade": "foundations",
+          "etape": 5,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 39",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "047-fonction-47-de-synchronisation",
+          "nom": "Fonction 47 de « Synchronisation »",
+          "stade": "finishing",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 47",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "055-fonction-55-de-synchronisation",
+          "nom": "Fonction 55 de « Synchronisation »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "063-fonction-63-de-synchronisation",
+          "nom": "Fonction 63 de « Synchronisation »",
+          "stade": "foundations",
+          "etape": 5,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 63",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "071-fonction-71-de-synchronisation",
+          "nom": "Fonction 71 de « Synchronisation »",
+          "stade": "finishing",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 71",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "079-fonction-79-de-synchronisation",
+          "nom": "Fonction 79 de « Synchronisation »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "087-fonction-87-de-synchronisation",
+          "nom": "Fonction 87 de « Synchronisation »",
+          "stade": "foundations",
+          "etape": 5,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 87",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "095-fonction-95-de-synchronisation",
+          "nom": "Fonction 95 de « Synchronisation »",
+          "stade": "finishing",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 95",
+              "statut": "en_cours",
+              "phase": null
+            }
+          ]
+        }
+      ],
+      "ref": {
+        "application": "synchro"
+      },
+      "source": [
+        "007-fonction-7-de-synchronisation",
+        "015-fonction-15-de-synchronisation",
+        "023-fonction-23-de-synchronisation",
+        "031-fonction-31-de-synchronisation",
+        "039-fonction-39-de-synchronisation",
+        "047-fonction-47-de-synchronisation",
+        "055-fonction-55-de-synchronisation",
+        "063-fonction-63-de-synchronisation",
+        "071-fonction-71-de-synchronisation",
+        "079-fonction-79-de-synchronisation",
+        "087-fonction-87-de-synchronisation",
+        "095-fonction-95-de-synchronisation"
+      ]
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-007-fonction-7-de-synchronisation",
+      "ancre": "synchro",
+      "nom": "Les gabarits de la fiche « Fonction 7 de « Synchronisation » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "synchro",
+        "fiche": "007-fonction-7-de-synchronisation"
+      },
+      "source": "007-fonction-7-de-synchronisation"
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-031-fonction-31-de-synchronisation",
+      "ancre": "synchro",
+      "nom": "Les gabarits de la fiche « Fonction 31 de « Synchronisation » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "synchro",
+        "fiche": "031-fonction-31-de-synchronisation"
+      },
+      "source": "031-fonction-31-de-synchronisation"
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-055-fonction-55-de-synchronisation",
+      "ancre": "synchro",
+      "nom": "Les gabarits de la fiche « Fonction 55 de « Synchronisation » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "synchro",
+        "fiche": "055-fonction-55-de-synchronisation"
+      },
+      "source": "055-fonction-55-de-synchronisation"
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-079-fonction-79-de-synchronisation",
+      "ancre": "synchro",
+      "nom": "Les gabarits de la fiche « Fonction 79 de « Synchronisation » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "synchro",
+        "fiche": "079-fonction-79-de-synchronisation"
+      },
+      "source": "079-fonction-79-de-synchronisation"
+    },
+    {
+      "element": "building",
+      "id": "site",
+      "nom": "Site public",
+      "type": "maison",
+      "etat": "envelope",
+      "etape": 6,
+      "etages": [
+        {
+          "fiche": "008-fonction-8-de-site-public",
+          "nom": "Fonction 8 de « Site public »",
+          "stade": "excavation",
+          "etape": 5,
+          "pieces": []
+        },
+        {
+          "fiche": "016-fonction-16-de-site-public",
+          "nom": "Fonction 16 de « Site public »",
+          "stade": "envelope",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 16",
+              "statut": "fini",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "024-fonction-24-de-site-public",
+          "nom": "Fonction 24 de « Site public »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "032-fonction-32-de-site-public",
+          "nom": "Fonction 32 de « Site public »",
+          "stade": "excavation",
+          "etape": 5,
+          "pieces": []
+        },
+        {
+          "fiche": "040-fonction-40-de-site-public",
+          "nom": "Fonction 40 de « Site public »",
+          "stade": "envelope",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 40",
+              "statut": "fini",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "048-fonction-48-de-site-public",
+          "nom": "Fonction 48 de « Site public »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "056-fonction-56-de-site-public",
+          "nom": "Fonction 56 de « Site public »",
+          "stade": "excavation",
+          "etape": 5,
+          "pieces": []
+        },
+        {
+          "fiche": "064-fonction-64-de-site-public",
+          "nom": "Fonction 64 de « Site public »",
+          "stade": "envelope",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 64",
+              "statut": "fini",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "072-fonction-72-de-site-public",
+          "nom": "Fonction 72 de « Site public »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        },
+        {
+          "fiche": "080-fonction-80-de-site-public",
+          "nom": "Fonction 80 de « Site public »",
+          "stade": "excavation",
+          "etape": 5,
+          "pieces": []
+        },
+        {
+          "fiche": "088-fonction-88-de-site-public",
+          "nom": "Fonction 88 de « Site public »",
+          "stade": "envelope",
+          "etape": 6,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Le lot de la fonction 88",
+              "statut": "fini",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "096-fonction-96-de-site-public",
+          "nom": "Fonction 96 de « Site public »",
+          "stade": "plot",
+          "etape": 4,
+          "pieces": []
+        }
+      ],
+      "ref": {
+        "application": "site"
+      },
+      "source": [
+        "008-fonction-8-de-site-public",
+        "016-fonction-16-de-site-public",
+        "024-fonction-24-de-site-public",
+        "032-fonction-32-de-site-public",
+        "040-fonction-40-de-site-public",
+        "048-fonction-48-de-site-public",
+        "056-fonction-56-de-site-public",
+        "064-fonction-64-de-site-public",
+        "072-fonction-72-de-site-public",
+        "080-fonction-80-de-site-public",
+        "088-fonction-88-de-site-public",
+        "096-fonction-96-de-site-public"
+      ]
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-024-fonction-24-de-site-public",
+      "ancre": "site",
+      "nom": "Les gabarits de la fiche « Fonction 24 de « Site public » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "site",
+        "fiche": "024-fonction-24-de-site-public"
+      },
+      "source": "024-fonction-24-de-site-public"
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-048-fonction-48-de-site-public",
+      "ancre": "site",
+      "nom": "Les gabarits de la fiche « Fonction 48 de « Site public » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "site",
+        "fiche": "048-fonction-48-de-site-public"
+      },
+      "source": "048-fonction-48-de-site-public"
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-072-fonction-72-de-site-public",
+      "ancre": "site",
+      "nom": "Les gabarits de la fiche « Fonction 72 de « Site public » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "site",
+        "fiche": "072-fonction-72-de-site-public"
+      },
+      "source": "072-fonction-72-de-site-public"
+    },
+    {
+      "element": "survey-poles",
+      "id": "gabarits-096-fonction-96-de-site-public",
+      "ancre": "site",
+      "nom": "Les gabarits de la fiche « Fonction 96 de « Site public » »",
+      "pluriel": true,
+      "etat": "default",
+      "ref": {
+        "application": "site",
+        "fiche": "096-fonction-96-de-site-public"
+      },
+      "source": "096-fonction-96-de-site-public"
+    },
+    {
+      "element": "architect-office",
+      "id": "bureau-architecte",
+      "nom": "Le bureau d'architecte",
+      "etat": "idle",
+      "source": "personne n'y travaille"
+    },
+    {
+      "element": "design-office",
+      "id": "bureau-etudes",
+      "nom": "Le bureau d'études",
+      "etat": "idle",
+      "source": "personne n'y travaille"
+    },
+    {
+      "element": "client-office",
+      "id": "bureau-client",
+      "nom": "Le bureau du client",
+      "etat": "waiting",
+      "quantite": 17,
+      "source": [
+        "001-fonction-1-de-application-de-bureau",
+        "007-fonction-7-de-synchronisation",
+        "013-fonction-13-de-facturation",
+        "019-fonction-19-de-administration",
+        "025-fonction-25-de-application-de-bureau",
+        "031-fonction-31-de-synchronisation",
+        "037-fonction-37-de-facturation",
+        "043-fonction-43-de-administration",
+        "049-fonction-49-de-application-de-bureau",
+        "055-fonction-55-de-synchronisation",
+        "061-fonction-61-de-facturation",
+        "067-fonction-67-de-administration",
+        "073-fonction-73-de-application-de-bureau",
+        "079-fonction-79-de-synchronisation",
+        "085-fonction-85-de-facturation",
+        "091-fonction-91-de-administration",
+        "097-fonction-97-de-application-de-bureau"
+      ]
+    },
+    {
+      "element": "decision-sign",
+      "id": "decision-001-fonction-1-de-application-de-bureau-plan",
+      "ancre": "panneau-feu-vert",
+      "nom": "Ta décision « le feu vert » pour « Fonction 1 de « Application de bureau » »",
+      "etat": "default",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-fonction-1-de-application-de-bureau"
+      },
+      "source": "001-fonction-1-de-application-de-bureau"
+    },
+    {
+      "element": "decision-sign",
+      "id": "decision-007-fonction-7-de-synchronisation-plan",
+      "ancre": "panneau-feu-vert",
+      "nom": "Ta décision « le feu vert » pour « Fonction 7 de « Synchronisation » »",
+      "etat": "default",
+      "ref": {
+        "application": "synchro",
+        "fiche": "007-fonction-7-de-synchronisation"
+      },
+      "source": "007-fonction-7-de-synchronisation"
+    },
+    {
+      "element": "decision-sign",
+      "id": "decision-013-fonction-13-de-facturation-plan",
+      "ancre": "panneau-feu-vert",
+      "nom": "Ta décision « le feu vert » pour « Fonction 13 de « Facturation » »",
+      "etat": "default",
+      "ref": {
+        "application": "facturation",
+        "fiche": "013-fonction-13-de-facturation"
+      },
+      "source": "013-fonction-13-de-facturation"
+    },
+    {
+      "element": "decision-sign",
+      "id": "decision-019-fonction-19-de-administration-plan",
+      "ancre": "panneau-feu-vert",
+      "nom": "Ta décision « le feu vert » pour « Fonction 19 de « Administration » »",
+      "etat": "default",
+      "ref": {
+        "application": "admin",
+        "fiche": "019-fonction-19-de-administration"
+      },
+      "source": "019-fonction-19-de-administration"
+    },
+    {
+      "element": "decision-sign",
+      "id": "decision-025-fonction-25-de-application-de-bureau-plan",
+      "ancre": "panneau-feu-vert",
+      "nom": "Ta décision « le feu vert » pour « Fonction 25 de « Application de bureau » »",
+      "etat": "default",
+      "ref": {
+        "application": "bureau",
+        "fiche": "025-fonction-25-de-application-de-bureau"
+      },
+      "source": "025-fonction-25-de-application-de-bureau"
+    },
+    {
+      "element": "decision-sign",
+      "id": "decision-031-fonction-31-de-synchronisation-plan",
+      "ancre": "panneau-feu-vert",
+      "nom": "Ta décision « le feu vert » pour « Fonction 31 de « Synchronisation » »",
+      "etat": "default",
+      "ref": {
+        "application": "synchro",
+        "fiche": "031-fonction-31-de-synchronisation"
+      },
+      "source": "031-fonction-31-de-synchronisation"
+    },
+    {
+      "element": "decision-sign",
+      "id": "decision-037-fonction-37-de-facturation-plan",
+      "ancre": "panneau-feu-vert",
+      "nom": "Ta décision « le feu vert » pour « Fonction 37 de « Facturation » »",
+      "etat": "default",
+      "ref": {
+        "application": "facturation",
+        "fiche": "037-fonction-37-de-facturation"
+      },
+      "source": "037-fonction-37-de-facturation"
+    },
+    {
+      "element": "decision-sign",
+      "id": "decision-043-fonction-43-de-administration-plan",
+      "ancre": "panneau-feu-vert",
+      "nom": "Ta décision « le feu vert » pour « Fonction 43 de « Administration » »",
+      "etat": "default",
+      "ref": {
+        "application": "admin",
+        "fiche": "043-fonction-43-de-administration"
+      },
+      "source": "043-fonction-43-de-administration"
+    },
+    {
+      "element": "decision-sign",
+      "id": "decision-049-fonction-49-de-application-de-bureau-plan",
+      "ancre": "panneau-feu-vert",
+      "nom": "Ta décision « le feu vert » pour « Fonction 49 de « Application de bureau » »",
+      "etat": "default",
+      "ref": {
+        "application": "bureau",
+        "fiche": "049-fonction-49-de-application-de-bureau"
+      },
+      "source": "049-fonction-49-de-application-de-bureau"
+    },
+    {
+      "element": "decision-sign",
+      "id": "decision-055-fonction-55-de-synchronisation-plan",
+      "ancre": "panneau-feu-vert",
+      "nom": "Ta décision « le feu vert » pour « Fonction 55 de « Synchronisation » »",
+      "etat": "default",
+      "ref": {
+        "application": "synchro",
+        "fiche": "055-fonction-55-de-synchronisation"
+      },
+      "source": "055-fonction-55-de-synchronisation"
+    },
+    {
+      "element": "decision-sign",
+      "id": "decision-061-fonction-61-de-facturation-plan",
+      "ancre": "panneau-feu-vert",
+      "nom": "Ta décision « le feu vert » pour « Fonction 61 de « Facturation » »",
+      "etat": "default",
+      "ref": {
+        "application": "facturation",
+        "fiche": "061-fonction-61-de-facturation"
+      },
+      "source": "061-fonction-61-de-facturation"
+    },
+    {
+      "element": "decision-sign",
+      "id": "decision-067-fonction-67-de-administration-plan",
+      "ancre": "panneau-feu-vert",
+      "nom": "Ta décision « le feu vert » pour « Fonction 67 de « Administration » »",
+      "etat": "default",
+      "ref": {
+        "application": "admin",
+        "fiche": "067-fonction-67-de-administration"
+      },
+      "source": "067-fonction-67-de-administration"
+    },
+    {
+      "element": "decision-sign",
+      "id": "decision-073-fonction-73-de-application-de-bureau-plan",
+      "ancre": "panneau-feu-vert",
+      "nom": "Ta décision « le feu vert » pour « Fonction 73 de « Application de bureau » »",
+      "etat": "default",
+      "ref": {
+        "application": "bureau",
+        "fiche": "073-fonction-73-de-application-de-bureau"
+      },
+      "source": "073-fonction-73-de-application-de-bureau"
+    },
+    {
+      "element": "decision-sign",
+      "id": "decision-079-fonction-79-de-synchronisation-plan",
+      "ancre": "panneau-feu-vert",
+      "nom": "Ta décision « le feu vert » pour « Fonction 79 de « Synchronisation » »",
+      "etat": "default",
+      "ref": {
+        "application": "synchro",
+        "fiche": "079-fonction-79-de-synchronisation"
+      },
+      "source": "079-fonction-79-de-synchronisation"
+    },
+    {
+      "element": "decision-sign",
+      "id": "decision-085-fonction-85-de-facturation-plan",
+      "ancre": "panneau-feu-vert",
+      "nom": "Ta décision « le feu vert » pour « Fonction 85 de « Facturation » »",
+      "etat": "default",
+      "ref": {
+        "application": "facturation",
+        "fiche": "085-fonction-85-de-facturation"
+      },
+      "source": "085-fonction-85-de-facturation"
+    },
+    {
+      "element": "decision-sign",
+      "id": "decision-091-fonction-91-de-administration-plan",
+      "ancre": "panneau-feu-vert",
+      "nom": "Ta décision « le feu vert » pour « Fonction 91 de « Administration » »",
+      "etat": "default",
+      "ref": {
+        "application": "admin",
+        "fiche": "091-fonction-91-de-administration"
+      },
+      "source": "091-fonction-91-de-administration"
+    },
+    {
+      "element": "decision-sign",
+      "id": "decision-097-fonction-97-de-application-de-bureau-plan",
+      "ancre": "panneau-feu-vert",
+      "nom": "Ta décision « le feu vert » pour « Fonction 97 de « Application de bureau » »",
+      "etat": "default",
+      "ref": {
+        "application": "bureau",
+        "fiche": "097-fonction-97-de-application-de-bureau"
+      },
+      "source": "097-fonction-97-de-application-de-bureau"
+    },
+    {
+      "element": "control-office",
+      "id": "bureau-controle",
+      "nom": "Le bureau de contrôle (Hélène)",
+      "etat": "idle",
+      "source": "aucun contrôle"
+    },
+    {
+      "element": "site-office",
+      "id": "baraque",
+      "nom": "La baraque du conducteur de travaux",
+      "etat": "idle",
+      "source": "personne n'y travaille"
+    },
+    {
+      "element": "reception-area",
+      "id": "aire-reception",
+      "nom": "L'aire de réception",
+      "etat": "idle",
+      "source": "personne n'y travaille"
+    },
+    {
+      "element": "parking",
+      "id": "parking",
+      "nom": "Le carnet des demandes",
+      "etat": "default",
+      "quantite": 0,
+      "regle": "0 demande à trier",
+      "source": "dossier/plans/carnet-des-demandes.md"
+    },
+    {
+      "element": "character",
+      "id": "architecte",
+      "role": "architecte",
+      "nom": "Claire, l'architecte",
+      "etat": "waiting",
+      "lieu": "panneau-feu-vert",
+      "source": "activité de la fiche 100-fonction-100-de-portail-client, 2026-10-22T14:15:09.380Z",
+      "ref": {
+        "application": "portail",
+        "fiche": "100-fonction-100-de-portail-client"
+      },
+      "motif": "decision",
+      "decision": "decision-001-fonction-1-de-application-de-bureau-plan"
+    },
+    {
+      "element": "character",
+      "id": "helene",
+      "role": "gdc",
+      "nom": "Hélène, le bureau de contrôle",
+      "etat": "idle",
+      "lieu": "bureau-controle",
+      "programme": true,
+      "source": "aucune mesure récente"
+    }
+  ],
+  "actions": [
+    {
+      "ts": "2026-10-22T14:15:13.238Z",
+      "action": "apparait",
+      "element": "survey-poles",
+      "id": "gabarits-097-fonction-97-de-application-de-bureau",
+      "nom": "Les gabarits de la fiche « Fonction 97 de « Application de bureau » »",
+      "etat": "default",
+      "lieu": "bureau",
+      "phrase": "Les gabarits de la fiche « Fonction 97 de « Application de bureau » » apparaissent (le bâtiment « Application de bureau »)",
+      "ref": {
+        "application": "bureau",
+        "fiche": "097-fonction-97-de-application-de-bureau"
+      },
+      "cause": "evt:097-fonction-97-de-application-de-bureau/98a08ff1"
+    },
+    {
+      "ts": "2026-10-22T14:15:13.238Z",
+      "action": "apparait",
+      "element": "survey-poles",
+      "id": "gabarits-090-fonction-90-de-application-terrain",
+      "nom": "Les gabarits de la fiche « Fonction 90 de « Application terrain » »",
+      "etat": "default",
+      "lieu": "terrain",
+      "phrase": "Les gabarits de la fiche « Fonction 90 de « Application terrain » » apparaissent (le bâtiment « Application terrain »)",
+      "ref": {
+        "application": "terrain",
+        "fiche": "090-fonction-90-de-application-terrain"
+      },
+      "cause": "evt:090-fonction-90-de-application-terrain/10385612"
+    },
+    {
+      "ts": "2026-10-22T14:15:13.238Z",
+      "action": "apparait",
+      "element": "survey-poles",
+      "id": "gabarits-091-fonction-91-de-administration",
+      "nom": "Les gabarits de la fiche « Fonction 91 de « Administration » »",
+      "etat": "default",
+      "lieu": "admin",
+      "phrase": "Les gabarits de la fiche « Fonction 91 de « Administration » » apparaissent (le bâtiment « Administration »)",
+      "ref": {
+        "application": "admin",
+        "fiche": "091-fonction-91-de-administration"
+      },
+      "cause": "evt:091-fonction-91-de-administration/18abf292"
+    },
+    {
+      "ts": "2026-10-22T14:15:13.238Z",
+      "action": "apparait",
+      "element": "survey-poles",
+      "id": "gabarits-084-fonction-84-de-portail-client",
+      "nom": "Les gabarits de la fiche « Fonction 84 de « Portail client » »",
+      "etat": "default",
+      "lieu": "portail",
+      "phrase": "Les gabarits de la fiche « Fonction 84 de « Portail client » » apparaissent (le bâtiment « Portail client »)",
+      "ref": {
+        "application": "portail",
+        "fiche": "084-fonction-84-de-portail-client"
+      },
+      "cause": "evt:084-fonction-84-de-portail-client/1e06cf1d"
+    },
+    {
+      "ts": "2026-10-22T14:15:13.238Z",
+      "action": "apparait",
+      "element": "survey-poles",
+      "id": "gabarits-085-fonction-85-de-facturation",
+      "nom": "Les gabarits de la fiche « Fonction 85 de « Facturation » »",
+      "etat": "default",
+      "lieu": "facturation",
+      "phrase": "Les gabarits de la fiche « Fonction 85 de « Facturation » » apparaissent (le bâtiment « Facturation »)",
+      "ref": {
+        "application": "facturation",
+        "fiche": "085-fonction-85-de-facturation"
+      },
+      "cause": "evt:085-fonction-85-de-facturation/b73debb2"
+    },
+    {
+      "ts": "2026-10-22T14:15:13.238Z",
+      "action": "apparait",
+      "element": "survey-poles",
+      "id": "gabarits-078-fonction-78-de-rapports",
+      "nom": "Les gabarits de la fiche « Fonction 78 de « Rapports » »",
+      "etat": "default",
+      "lieu": "rapports",
+      "phrase": "Les gabarits de la fiche « Fonction 78 de « Rapports » » apparaissent (le bâtiment « Rapports »)",
+      "ref": {
+        "application": "rapports",
+        "fiche": "078-fonction-78-de-rapports"
+      },
+      "cause": "evt:078-fonction-78-de-rapports/62cf8632"
+    },
+    {
+      "ts": "2026-10-22T14:15:13.238Z",
+      "action": "apparait",
+      "element": "survey-poles",
+      "id": "gabarits-079-fonction-79-de-synchronisation",
+      "nom": "Les gabarits de la fiche « Fonction 79 de « Synchronisation » »",
+      "etat": "default",
+      "lieu": "synchro",
+      "phrase": "Les gabarits de la fiche « Fonction 79 de « Synchronisation » » apparaissent (le bâtiment « Synchronisation »)",
+      "ref": {
+        "application": "synchro",
+        "fiche": "079-fonction-79-de-synchronisation"
+      },
+      "cause": "evt:079-fonction-79-de-synchronisation/f6ecb972"
+    },
+    {
+      "ts": "2026-10-22T14:15:13.238Z",
+      "action": "apparait",
+      "element": "survey-poles",
+      "id": "gabarits-096-fonction-96-de-site-public",
+      "nom": "Les gabarits de la fiche « Fonction 96 de « Site public » »",
+      "etat": "default",
+      "lieu": "site",
+      "phrase": "Les gabarits de la fiche « Fonction 96 de « Site public » » apparaissent (le bâtiment « Site public »)",
+      "ref": {
+        "application": "site",
+        "fiche": "096-fonction-96-de-site-public"
+      },
+      "cause": "evt:096-fonction-96-de-site-public/c34c7598"
+    },
+    {
+      "ts": "2026-10-22T14:15:13.238Z",
+      "action": "quantite",
+      "element": "client-office",
+      "id": "bureau-client",
+      "nom": "Le bureau du client",
+      "de": 13,
+      "vers": 17,
+      "phrase": "Le bureau du client : 17",
+      "cause": "evt:097-fonction-97-de-application-de-bureau/98a08ff1"
+    },
+    {
+      "ts": "2026-10-22T14:15:13.238Z",
+      "action": "apparait",
+      "element": "decision-sign",
+      "id": "decision-079-fonction-79-de-synchronisation-plan",
+      "nom": "Ta décision « le feu vert » pour « Fonction 79 de « Synchronisation » »",
+      "etat": "default",
+      "lieu": "panneau-feu-vert",
+      "phrase": "Ta décision « le feu vert » pour « Fonction 79 de « Synchronisation » » apparaît (Le panneau du feu vert)",
+      "ref": {
+        "application": "synchro",
+        "fiche": "079-fonction-79-de-synchronisation"
+      },
+      "cause": "evt:079-fonction-79-de-synchronisation/f6ecb972"
+    },
+    {
+      "ts": "2026-10-22T14:15:13.238Z",
+      "action": "apparait",
+      "element": "decision-sign",
+      "id": "decision-085-fonction-85-de-facturation-plan",
+      "nom": "Ta décision « le feu vert » pour « Fonction 85 de « Facturation » »",
+      "etat": "default",
+      "lieu": "panneau-feu-vert",
+      "phrase": "Ta décision « le feu vert » pour « Fonction 85 de « Facturation » » apparaît (Le panneau du feu vert)",
+      "ref": {
+        "application": "facturation",
+        "fiche": "085-fonction-85-de-facturation"
+      },
+      "cause": "evt:085-fonction-85-de-facturation/b73debb2"
+    },
+    {
+      "ts": "2026-10-22T14:15:13.238Z",
+      "action": "apparait",
+      "element": "decision-sign",
+      "id": "decision-091-fonction-91-de-administration-plan",
+      "nom": "Ta décision « le feu vert » pour « Fonction 91 de « Administration » »",
+      "etat": "default",
+      "lieu": "panneau-feu-vert",
+      "phrase": "Ta décision « le feu vert » pour « Fonction 91 de « Administration » » apparaît (Le panneau du feu vert)",
+      "ref": {
+        "application": "admin",
+        "fiche": "091-fonction-91-de-administration"
+      },
+      "cause": "evt:091-fonction-91-de-administration/18abf292"
+    },
+    {
+      "ts": "2026-10-22T14:15:13.238Z",
+      "action": "apparait",
+      "element": "decision-sign",
+      "id": "decision-097-fonction-97-de-application-de-bureau-plan",
+      "nom": "Ta décision « le feu vert » pour « Fonction 97 de « Application de bureau » »",
+      "etat": "default",
+      "lieu": "panneau-feu-vert",
+      "phrase": "Ta décision « le feu vert » pour « Fonction 97 de « Application de bureau » » apparaît (Le panneau du feu vert)",
+      "ref": {
+        "application": "bureau",
+        "fiche": "097-fonction-97-de-application-de-bureau"
+      },
+      "cause": "evt:097-fonction-97-de-application-de-bureau/98a08ff1"
+    }
+  ]
+}

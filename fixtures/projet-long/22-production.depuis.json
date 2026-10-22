@@ -1,0 +1,269 @@
+{
+  "schema": 1,
+  "maintenant": "2026-11-11T14:12:37.218Z",
+  "fuseau": "UTC",
+  "debut": "2026-10-22T14:12:09.697Z",
+  "depuis": "evt:001-cloturer-un-audit/6204d74d",
+  "complet": false,
+  "lignes": [
+    {
+      "id": "etape:8",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 8,
+      "nom": "La remise des clés",
+      "zone": "remise",
+      "etat": "faite",
+      "barres": []
+    },
+    {
+      "id": "application:bureau@8",
+      "niveau": "application",
+      "parent": "etape:8",
+      "nom": "Application de bureau",
+      "ref": {
+        "application": "bureau"
+      },
+      "etat": "faite"
+    },
+    {
+      "id": "fiche:001-cloturer-un-audit@8",
+      "niveau": "fiche",
+      "parent": "application:bureau@8",
+      "nom": "Clôturer un audit",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "etat": "livree",
+      "barres": [],
+      "livree": {
+        "date": "2026-11-11T14:12:37.001Z",
+        "par": "evt:001-cloturer-un-audit/59f037c9"
+      }
+    }
+  ],
+  "retirees": [],
+  "jalons": [
+    {
+      "id": "jalon:001-cloturer-un-audit/deploie/1",
+      "ligne": "fiche:001-cloturer-un-audit@8",
+      "decision": "deploie",
+      "nom": "Ta remise des clés",
+      "etat": "accordee",
+      "demandee": "2026-11-11T14:12:32.183Z",
+      "demandee_par": "evt:001-cloturer-un-audit/4c390d58",
+      "demandee_source": "journal",
+      "prise": "2026-11-11T14:12:32.296Z",
+      "prise_par": "evt:001-cloturer-un-audit/c3c74fc1"
+    }
+  ],
+  "jours": [
+    {
+      "date": "2026-11-11",
+      "evenements": 15,
+      "actif": true
+    }
+  ],
+  "evenements": [
+    {
+      "id": "evt:001-cloturer-un-audit/4c390d58",
+      "ts": "2026-11-11T14:12:32.183Z",
+      "kind": "gate",
+      "phrase": "Ta décision « la remise des clés » est attendue pour « Clôturer un audit »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:001-cloturer-un-audit/c3c74fc1",
+      "ts": "2026-11-11T14:12:32.296Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « la remise des clés » pour « Clôturer un audit »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:001-cloturer-un-audit/cd2e2902",
+      "ts": "2026-11-11T14:12:33.375Z",
+      "kind": "controle",
+      "phrase": "Le contrôle « sante » passe sur « Clôturer un audit »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:001-cloturer-un-audit/530092eb",
+      "ts": "2026-11-11T14:12:33.834Z",
+      "kind": "controle",
+      "phrase": "Le contrôle « apres-deploiement » passe sur « Clôturer un audit »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:001-cloturer-un-audit/a814e122",
+      "ts": "2026-11-11T14:12:33.884Z",
+      "kind": "constat",
+      "phrase": "Une réserve est ouverte sur « Clôturer un audit »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:001-cloturer-un-audit/fd808995",
+      "ts": "2026-11-11T14:12:34.467Z",
+      "kind": "controle",
+      "phrase": "Le contrôle « pipeline » passe sur « Clôturer un audit »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:001-cloturer-un-audit/d2836e82",
+      "ts": "2026-11-11T14:12:34.621Z",
+      "kind": "promotion",
+      "phrase": "La mise en production de « Clôturer un audit » avance",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:001-cloturer-un-audit/283773aa",
+      "ts": "2026-11-11T14:12:36.067Z",
+      "kind": "promotion",
+      "phrase": "La mise en production de « Clôturer un audit » avance",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:001-cloturer-un-audit/90511d71",
+      "ts": "2026-11-11T14:12:36.602Z",
+      "kind": "controle",
+      "phrase": "Le contrôle « apres-deploiement » passe sur « Clôturer un audit »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:001-cloturer-un-audit/63935858",
+      "ts": "2026-11-11T14:12:36.935Z",
+      "kind": "controle",
+      "phrase": "Le contrôle « sante » passe sur « Clôturer un audit »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:001-cloturer-un-audit/59f037c9",
+      "ts": "2026-11-11T14:12:37.001Z",
+      "kind": "promotion",
+      "phrase": "« Clôturer un audit » est en production, vérifiée : la remise des clés",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "trait": false
+    }
+  ],
+  "regime": [
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:09.697Z",
+      "a": "2026-10-22T14:42:12.549Z"
+    },
+    {
+      "valeur": "ferme",
+      "de": "2026-10-22T14:42:12.549Z",
+      "a": "2026-10-24T14:12:13.774Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-24T14:12:13.774Z",
+      "a": "2026-10-24T14:42:15.330Z"
+    },
+    {
+      "valeur": "ferme",
+      "de": "2026-10-24T14:42:15.330Z",
+      "a": "2026-10-27T14:12:16.633Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-27T14:12:16.633Z",
+      "a": "2026-10-27T14:12:18.726Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-27T14:12:18.726Z",
+      "a": "2026-10-27T14:12:19.720Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-27T14:12:19.720Z",
+      "a": "2026-10-27T14:42:19.720Z"
+    },
+    {
+      "valeur": "ferme",
+      "de": "2026-10-27T14:42:19.720Z",
+      "a": "2026-10-28T14:12:21.248Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-28T14:12:21.248Z",
+      "a": "2026-10-28T14:42:22.697Z"
+    },
+    {
+      "valeur": "ferme",
+      "de": "2026-10-28T14:42:22.697Z",
+      "a": "2026-11-09T14:12:23.956Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-11-09T14:12:23.956Z",
+      "a": "2026-11-09T14:12:28.117Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-11-09T14:12:28.117Z",
+      "a": "2026-11-11T14:12:29.041Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-11-11T14:12:29.041Z",
+      "a": "2026-11-11T14:12:32.183Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-11-11T14:12:32.183Z",
+      "a": "2026-11-11T14:12:32.296Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-11-11T14:12:32.296Z",
+      "a": null
+    }
+  ],
+  "a_venir": []
+}

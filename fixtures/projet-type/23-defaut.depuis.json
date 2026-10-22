@@ -1,0 +1,675 @@
+{
+  "schema": 1,
+  "maintenant": "2026-10-22T14:12:47.809Z",
+  "fuseau": "UTC",
+  "debut": "2026-10-22T14:12:09.697Z",
+  "depuis": "evt:001-cloturer-un-audit/59f037c9",
+  "complet": false,
+  "lignes": [
+    {
+      "id": "etape:4",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 4,
+      "nom": "Les plans d'exécution",
+      "zone": "chantier",
+      "etat": "faite",
+      "barres": [
+        {
+          "debut": "2026-10-22T14:12:17.540Z",
+          "fin": "2026-10-22T14:12:38.868Z"
+        }
+      ]
+    },
+    {
+      "id": "fiche:002-signer-un-rapport@4",
+      "niveau": "fiche",
+      "parent": "application:bureau@4",
+      "nom": "Signer un rapport",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:12:38.288Z",
+          "fin": "2026-10-22T14:12:38.868Z",
+          "commence_par": "evt:002-signer-un-rapport/d23e6d2d",
+          "finit_par": "evt:002-signer-un-rapport/d4e05055",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "etape:5",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 5,
+      "nom": "La préparation",
+      "zone": "chantier",
+      "etat": "faite",
+      "barres": [
+        {
+          "debut": "2026-10-22T14:12:19.720Z",
+          "fin": "2026-10-22T14:12:39.998Z"
+        }
+      ]
+    },
+    {
+      "id": "fiche:002-signer-un-rapport@5",
+      "niveau": "fiche",
+      "parent": "application:bureau@5",
+      "nom": "Signer un rapport",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "excavation",
+          "debut": "2026-10-22T14:12:38.868Z",
+          "fin": "2026-10-22T14:12:39.628Z",
+          "commence_par": "evt:002-signer-un-rapport/d4e05055",
+          "finit_par": "evt:002-signer-un-rapport/2f2ca02c",
+          "fin_type": "normale"
+        },
+        {
+          "stade": "foundations",
+          "debut": "2026-10-22T14:12:39.628Z",
+          "fin": "2026-10-22T14:12:39.998Z",
+          "commence_par": "evt:002-signer-un-rapport/2f2ca02c",
+          "finit_par": "evt:002-signer-un-rapport/20a743e2",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "lot:002-signer-un-rapport/L1@5",
+      "niveau": "lot",
+      "parent": "fiche:002-signer-un-rapport@5",
+      "nom": "Signer un rapport",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport",
+        "lot": "L1"
+      },
+      "etat": "prevu",
+      "prevu_le": "2026-10-22T14:12:39.628Z",
+      "prevu_par": "evt:002-signer-un-rapport/2f2ca02c"
+    },
+    {
+      "id": "etape:6",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 6,
+      "nom": "La construction",
+      "zone": "chantier",
+      "etat": "faite",
+      "barres": [
+        {
+          "debut": "2026-10-22T14:12:21.533Z",
+          "fin": "2026-10-22T14:12:40.546Z"
+        }
+      ]
+    },
+    {
+      "id": "fiche:002-signer-un-rapport@6",
+      "niveau": "fiche",
+      "parent": "application:bureau@6",
+      "nom": "Signer un rapport",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "structure",
+          "debut": "2026-10-22T14:12:39.998Z",
+          "fin": "2026-10-22T14:12:40.362Z",
+          "commence_par": "evt:002-signer-un-rapport/20a743e2",
+          "finit_par": "evt:002-signer-un-rapport/33832f9c",
+          "fin_type": "normale"
+        },
+        {
+          "stade": "envelope",
+          "debut": "2026-10-22T14:12:40.362Z",
+          "fin": "2026-10-22T14:12:40.546Z",
+          "commence_par": "evt:002-signer-un-rapport/33832f9c",
+          "finit_par": "evt:002-signer-un-rapport/de420641",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "lot:002-signer-un-rapport/L1@6",
+      "niveau": "lot",
+      "parent": "fiche:002-signer-un-rapport@6",
+      "nom": "Signer un rapport",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport",
+        "lot": "L1"
+      },
+      "etat": "fini",
+      "barres": [
+        {
+          "statut": "fini",
+          "debut": "2026-10-22T14:12:39.801Z",
+          "fin": "2026-10-22T14:12:40.362Z",
+          "commence_par": "evt:002-signer-un-rapport/a7ada7b0",
+          "finit_par": "evt:002-signer-un-rapport/33832f9c",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "etape:7",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 7,
+      "nom": "La réception",
+      "zone": "remise",
+      "etat": "faite",
+      "barres": [
+        {
+          "debut": "2026-10-22T14:12:28.117Z",
+          "fin": "2026-10-22T14:12:43.013Z"
+        }
+      ]
+    },
+    {
+      "id": "fiche:002-signer-un-rapport@7",
+      "niveau": "fiche",
+      "parent": "application:bureau@7",
+      "nom": "Signer un rapport",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "inspection",
+          "debut": "2026-10-22T14:12:40.546Z",
+          "fin": "2026-10-22T14:12:43.013Z",
+          "commence_par": "evt:002-signer-un-rapport/de420641",
+          "finit_par": "evt:002-signer-un-rapport/a6ca9a34",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "etape:8",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 8,
+      "nom": "La remise des clés",
+      "zone": "remise",
+      "etat": "en_cours",
+      "barres": []
+    },
+    {
+      "id": "application:bureau@8",
+      "niveau": "application",
+      "parent": "etape:8",
+      "nom": "Application de bureau",
+      "ref": {
+        "application": "bureau"
+      },
+      "etat": "en_cours"
+    },
+    {
+      "id": "fiche:002-signer-un-rapport@8",
+      "niveau": "fiche",
+      "parent": "application:bureau@8",
+      "nom": "Signer un rapport",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "etat": "en_cours",
+      "barres": []
+    },
+    {
+      "id": "etape:9",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 9,
+      "nom": "La garantie",
+      "zone": "remise",
+      "etat": "en_cours",
+      "barres": [
+        {
+          "debut": "2026-10-22T14:12:47.137Z",
+          "fin": null
+        }
+      ]
+    },
+    {
+      "id": "defaut:002-signer-un-rapport/f15959cb@9",
+      "niveau": "defaut",
+      "parent": "etape:9",
+      "nom": "Un défaut après la mise en production de « Signer un rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "etat": "ouvert",
+      "barres": [
+        {
+          "debut": "2026-10-22T14:12:47.137Z",
+          "fin": null,
+          "commence_par": "evt:002-signer-un-rapport/f15959cb",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "application:bureau@10",
+      "niveau": "application",
+      "parent": "etape:10",
+      "nom": "Application de bureau",
+      "ref": {
+        "application": "bureau"
+      },
+      "etat": "en_cours"
+    },
+    {
+      "id": "fiche:002-signer-un-rapport@10",
+      "niveau": "fiche",
+      "parent": "application:bureau@10",
+      "nom": "Signer un rapport",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "debut": "2026-10-22T14:12:38.288Z",
+          "fin": null,
+          "commence_par": "evt:002-signer-un-rapport/d23e6d2d",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    }
+  ],
+  "retirees": [],
+  "jalons": [
+    {
+      "id": "jalon:002-signer-un-rapport/plan/1",
+      "ligne": "fiche:002-signer-un-rapport@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:12:38.724Z",
+      "demandee_par": "evt:002-signer-un-rapport/047003a5",
+      "demandee_source": "journal",
+      "prise": "2026-10-22T14:12:38.868Z",
+      "prise_par": "evt:002-signer-un-rapport/d4e05055"
+    },
+    {
+      "id": "jalon:002-signer-un-rapport/livre/1",
+      "ligne": "fiche:002-signer-un-rapport@7",
+      "decision": "livre",
+      "nom": "Ta réception",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:12:40.546Z",
+      "demandee_par": "evt:002-signer-un-rapport/de420641",
+      "demandee_source": "journal",
+      "prise": "2026-10-22T14:12:40.686Z",
+      "prise_par": "evt:002-signer-un-rapport/c4e2a4a6"
+    },
+    {
+      "id": "jalon:002-signer-un-rapport/deploie/1",
+      "ligne": "fiche:002-signer-un-rapport@8",
+      "decision": "deploie",
+      "nom": "Ta remise des clés",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:12:43.149Z",
+      "demandee_par": "evt:002-signer-un-rapport/d81571d6",
+      "demandee_source": "journal",
+      "prise": "2026-10-22T14:12:43.296Z",
+      "prise_par": "evt:002-signer-un-rapport/0dc2b9ea"
+    }
+  ],
+  "jours": [
+    {
+      "date": "2026-10-22",
+      "evenements": 76,
+      "actif": true
+    }
+  ],
+  "evenements": [
+    {
+      "id": "evt:002-signer-un-rapport/d23e6d2d",
+      "ts": "2026-10-22T14:12:38.288Z",
+      "kind": "run",
+      "phrase": "La fiche « Signer un rapport » est ouverte",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:002-signer-un-rapport/13cbd72b",
+      "ts": "2026-10-22T14:12:38.289Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Signer un rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:002-signer-un-rapport/7d5b9e59",
+      "ts": "2026-10-22T14:12:38.551Z",
+      "kind": "critere",
+      "phrase": "Un critère d'acceptation est noté pour « Signer un rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:002-signer-un-rapport/047003a5",
+      "ts": "2026-10-22T14:12:38.724Z",
+      "kind": "gate",
+      "phrase": "Ta décision « le feu vert » est attendue pour « Signer un rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:002-signer-un-rapport/d4e05055",
+      "ts": "2026-10-22T14:12:38.868Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « le feu vert » pour « Signer un rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:002-signer-un-rapport/2f2ca02c",
+      "ts": "2026-10-22T14:12:39.628Z",
+      "kind": "lot",
+      "phrase": "Le lot « Signer un rapport » est prévu dans « Signer un rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:002-signer-un-rapport/a7ada7b0",
+      "ts": "2026-10-22T14:12:39.801Z",
+      "kind": "lot_etat",
+      "phrase": "Le lot « Signer un rapport » commence",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:002-signer-un-rapport/20a743e2",
+      "ts": "2026-10-22T14:12:39.998Z",
+      "kind": "preuve",
+      "phrase": "L'essai qui échoue d'abord est enregistré pour « Signer un rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:002-signer-un-rapport/2a3b29c2",
+      "ts": "2026-10-22T14:12:40.180Z",
+      "kind": "preuve",
+      "phrase": "Une preuve est enregistrée pour « Signer un rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:002-signer-un-rapport/33832f9c",
+      "ts": "2026-10-22T14:12:40.362Z",
+      "kind": "lot_etat",
+      "phrase": "Le lot « Signer un rapport » est fini",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:002-signer-un-rapport/de420641",
+      "ts": "2026-10-22T14:12:40.546Z",
+      "kind": "gate",
+      "phrase": "Ta décision « la réception » est attendue pour « Signer un rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:002-signer-un-rapport/c4e2a4a6",
+      "ts": "2026-10-22T14:12:40.686Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « la réception » pour « Signer un rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:002-signer-un-rapport/8f65103d",
+      "ts": "2026-10-22T14:12:41.625Z",
+      "kind": "publication",
+      "phrase": "La proposition de modification de « Signer un rapport » est ouverte",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:002-signer-un-rapport/a6ca9a34",
+      "ts": "2026-10-22T14:12:43.013Z",
+      "kind": "fusion",
+      "phrase": "« Signer un rapport » entre dans dev",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:002-signer-un-rapport/d81571d6",
+      "ts": "2026-10-22T14:12:43.149Z",
+      "kind": "gate",
+      "phrase": "Ta décision « la remise des clés » est attendue pour « Signer un rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:002-signer-un-rapport/0dc2b9ea",
+      "ts": "2026-10-22T14:12:43.296Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « la remise des clés » pour « Signer un rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:002-signer-un-rapport/d2dae871",
+      "ts": "2026-10-22T14:12:44.381Z",
+      "kind": "controle",
+      "phrase": "Le contrôle « sante » passe sur « Signer un rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:002-signer-un-rapport/ece61a49",
+      "ts": "2026-10-22T14:12:44.820Z",
+      "kind": "controle",
+      "phrase": "Le contrôle « apres-deploiement » passe sur « Signer un rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:002-signer-un-rapport/e88ce7ce",
+      "ts": "2026-10-22T14:12:44.867Z",
+      "kind": "constat",
+      "phrase": "Une réserve est ouverte sur « Signer un rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:002-signer-un-rapport/5d473e70",
+      "ts": "2026-10-22T14:12:45.425Z",
+      "kind": "controle",
+      "phrase": "Le contrôle « pipeline » passe sur « Signer un rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:002-signer-un-rapport/4610abb9",
+      "ts": "2026-10-22T14:12:45.546Z",
+      "kind": "promotion",
+      "phrase": "La mise en production de « Signer un rapport » avance",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:002-signer-un-rapport/91a1adbb",
+      "ts": "2026-10-22T14:12:46.958Z",
+      "kind": "promotion",
+      "phrase": "La mise en production de « Signer un rapport » avance",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:002-signer-un-rapport/f15959cb",
+      "ts": "2026-10-22T14:12:47.137Z",
+      "kind": "incident",
+      "phrase": "Un défaut après la mise en production de « Signer un rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "trait": false
+    }
+  ],
+  "regime": [
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:09.697Z",
+      "a": "2026-10-22T14:12:18.726Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:18.726Z",
+      "a": "2026-10-22T14:12:19.720Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:19.720Z",
+      "a": "2026-10-22T14:12:28.117Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:28.117Z",
+      "a": "2026-10-22T14:12:29.041Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:29.041Z",
+      "a": "2026-10-22T14:12:32.183Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:32.183Z",
+      "a": "2026-10-22T14:12:32.296Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:32.296Z",
+      "a": "2026-10-22T14:12:38.724Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:38.724Z",
+      "a": "2026-10-22T14:12:38.868Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:38.868Z",
+      "a": "2026-10-22T14:12:40.546Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:40.546Z",
+      "a": "2026-10-22T14:12:40.686Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:40.686Z",
+      "a": "2026-10-22T14:12:43.149Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:43.149Z",
+      "a": "2026-10-22T14:12:43.296Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:43.296Z",
+      "a": null
+    }
+  ],
+  "a_venir": []
+}

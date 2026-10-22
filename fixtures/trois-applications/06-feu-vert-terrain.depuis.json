@@ -1,0 +1,308 @@
+{
+  "schema": 1,
+  "maintenant": "2026-10-22T14:13:12.245Z",
+  "fuseau": "UTC",
+  "debut": "2026-10-22T14:12:09.697Z",
+  "depuis": "evt:005-gerer-les-droits-des-auditeurs/f0cf4049",
+  "complet": false,
+  "lignes": [
+    {
+      "id": "application:terrain@4",
+      "niveau": "application",
+      "parent": "etape:4",
+      "nom": "Application terrain",
+      "ref": {
+        "application": "terrain"
+      },
+      "etat": "faite"
+    },
+    {
+      "id": "fiche:004-saisir-un-constat-hors-ligne@4",
+      "niveau": "fiche",
+      "parent": "application:terrain@4",
+      "nom": "Saisir un constat hors ligne",
+      "ref": {
+        "application": "terrain",
+        "fiche": "004-saisir-un-constat-hors-ligne"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:13:04.586Z",
+          "fin": "2026-10-22T14:13:10.725Z",
+          "commence_par": "evt:004-saisir-un-constat-hors-ligne/d5e42650",
+          "finit_par": "evt:004-saisir-un-constat-hors-ligne/de40e60e",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "etape:5",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 5,
+      "nom": "La préparation",
+      "zone": "chantier",
+      "etat": "en_cours",
+      "barres": [
+        {
+          "debut": "2026-10-22T14:12:19.720Z",
+          "fin": null
+        }
+      ]
+    },
+    {
+      "id": "application:terrain@5",
+      "niveau": "application",
+      "parent": "etape:5",
+      "nom": "Application terrain",
+      "ref": {
+        "application": "terrain"
+      },
+      "etat": "en_cours"
+    },
+    {
+      "id": "fiche:004-saisir-un-constat-hors-ligne@5",
+      "niveau": "fiche",
+      "parent": "application:terrain@5",
+      "nom": "Saisir un constat hors ligne",
+      "ref": {
+        "application": "terrain",
+        "fiche": "004-saisir-un-constat-hors-ligne"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "excavation",
+          "debut": "2026-10-22T14:13:10.725Z",
+          "fin": null,
+          "commence_par": "evt:004-saisir-un-constat-hors-ligne/de40e60e",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    }
+  ],
+  "retirees": [],
+  "jalons": [
+    {
+      "id": "jalon:projet/on-continue/2",
+      "ligne": "etape:1",
+      "decision": "on-continue",
+      "nom": "On continue",
+      "etat": "perimee",
+      "demandee": null,
+      "demandee_par": null,
+      "demandee_source": null,
+      "prise": "2026-10-22T14:12:12.549Z",
+      "prise_par": "evt:projet/f95df430",
+      "perimee_depuis": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git",
+        "pieces": [
+          "prd",
+          "profil"
+        ]
+      }
+    },
+    {
+      "id": "jalon:projet/permis-de-construire/1",
+      "ligne": "etape:3",
+      "decision": "permis-de-construire",
+      "nom": "Le permis de construire",
+      "etat": "perimee",
+      "demandee": null,
+      "demandee_par": null,
+      "demandee_source": null,
+      "prise": "2026-10-22T14:12:15.330Z",
+      "prise_par": "evt:projet/1c835438",
+      "perimee_depuis": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git",
+        "pieces": [
+          "prd",
+          "profil"
+        ]
+      }
+    },
+    {
+      "id": "jalon:projet/on-continue/3",
+      "ligne": "etape:1",
+      "decision": "on-continue",
+      "nom": "On continue",
+      "etat": "attendue",
+      "demandee": "2026-10-22T14:12:31.000Z",
+      "demandee_par": null,
+      "demandee_source": "git",
+      "prise": null,
+      "prise_par": null
+    },
+    {
+      "id": "jalon:004-saisir-un-constat-hors-ligne/plan/1",
+      "ligne": "fiche:004-saisir-un-constat-hors-ligne@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:13:09.031Z",
+      "demandee_par": "evt:004-saisir-un-constat-hors-ligne/1632e54d",
+      "demandee_source": "journal",
+      "prise": "2026-10-22T14:13:10.725Z",
+      "prise_par": "evt:004-saisir-un-constat-hors-ligne/de40e60e"
+    }
+  ],
+  "jours": [
+    {
+      "date": "2026-10-22",
+      "evenements": 115,
+      "actif": true
+    }
+  ],
+  "evenements": [
+    {
+      "id": "evt:004-saisir-un-constat-hors-ligne/de40e60e",
+      "ts": "2026-10-22T14:13:10.725Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « le feu vert » pour « Saisir un constat hors ligne »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "004-saisir-un-constat-hors-ligne"
+      },
+      "trait": false
+    }
+  ],
+  "regime": [
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:09.697Z",
+      "a": "2026-10-22T14:12:18.726Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:18.726Z",
+      "a": "2026-10-22T14:12:19.720Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:19.720Z",
+      "a": "2026-10-22T14:12:28.117Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:28.117Z",
+      "a": "2026-10-22T14:12:29.041Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:29.041Z",
+      "a": "2026-10-22T14:12:32.183Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:32.183Z",
+      "a": "2026-10-22T14:12:32.296Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:32.296Z",
+      "a": "2026-10-22T14:12:38.724Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:38.724Z",
+      "a": "2026-10-22T14:12:38.868Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:38.868Z",
+      "a": "2026-10-22T14:12:40.546Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:40.546Z",
+      "a": "2026-10-22T14:12:40.686Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:40.686Z",
+      "a": "2026-10-22T14:12:43.149Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:43.149Z",
+      "a": "2026-10-22T14:12:43.296Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:43.296Z",
+      "a": "2026-10-22T14:12:48.782Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:48.782Z",
+      "a": "2026-10-22T14:12:48.907Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:48.907Z",
+      "a": "2026-10-22T14:12:50.540Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:50.540Z",
+      "a": "2026-10-22T14:12:50.669Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:50.669Z",
+      "a": "2026-10-22T14:12:53.158Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:53.158Z",
+      "a": "2026-10-22T14:12:53.289Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:53.289Z",
+      "a": null
+    }
+  ],
+  "a_venir": [
+    {
+      "ligne": "fiche:004-saisir-un-constat-hors-ligne@6",
+      "etape": 6,
+      "apres": "fiche:004-saisir-un-constat-hors-ligne@5"
+    },
+    {
+      "ligne": "fiche:004-saisir-un-constat-hors-ligne@7",
+      "etape": 7,
+      "apres": "fiche:004-saisir-un-constat-hors-ligne@6"
+    },
+    {
+      "ligne": "fiche:004-saisir-un-constat-hors-ligne@8",
+      "etape": 8,
+      "apres": "fiche:004-saisir-un-constat-hors-ligne@7"
+    },
+    {
+      "ligne": "fiche:005-gerer-les-droits-des-auditeurs@5",
+      "etape": 5,
+      "apres": "fiche:005-gerer-les-droits-des-auditeurs@4"
+    },
+    {
+      "ligne": "fiche:005-gerer-les-droits-des-auditeurs@6",
+      "etape": 6,
+      "apres": "fiche:005-gerer-les-droits-des-auditeurs@5"
+    },
+    {
+      "ligne": "fiche:005-gerer-les-droits-des-auditeurs@7",
+      "etape": 7,
+      "apres": "fiche:005-gerer-les-droits-des-auditeurs@6"
+    },
+    {
+      "ligne": "fiche:005-gerer-les-droits-des-auditeurs@8",
+      "etape": 8,
+      "apres": "fiche:005-gerer-les-droits-des-auditeurs@7"
+    }
+  ]
+}

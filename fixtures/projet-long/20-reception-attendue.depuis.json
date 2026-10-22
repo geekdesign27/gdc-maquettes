@@ -1,0 +1,227 @@
+{
+  "schema": 1,
+  "maintenant": "2026-11-09T14:12:28.266Z",
+  "fuseau": "UTC",
+  "debut": "2026-10-22T14:12:09.697Z",
+  "depuis": "evt:001-cloturer-un-audit/2d69dd40",
+  "complet": false,
+  "lignes": [
+    {
+      "id": "etape:6",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 6,
+      "nom": "La construction",
+      "zone": "chantier",
+      "etat": "faite",
+      "barres": [
+        {
+          "debut": "2026-10-28T14:12:21.533Z",
+          "fin": "2026-11-09T14:12:28.117Z"
+        }
+      ]
+    },
+    {
+      "id": "application:bureau@6",
+      "niveau": "application",
+      "parent": "etape:6",
+      "nom": "Application de bureau",
+      "ref": {
+        "application": "bureau"
+      },
+      "etat": "faite"
+    },
+    {
+      "id": "fiche:001-cloturer-un-audit@6",
+      "niveau": "fiche",
+      "parent": "application:bureau@6",
+      "nom": "Clôturer un audit",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "structure",
+          "debut": "2026-10-28T14:12:22.697Z",
+          "fin": "2026-11-09T14:12:26.073Z",
+          "commence_par": "evt:001-cloturer-un-audit/9b07a6ea",
+          "finit_par": "evt:001-cloturer-un-audit/c1a18214",
+          "fin_type": "normale"
+        },
+        {
+          "stade": "envelope",
+          "debut": "2026-11-09T14:12:26.073Z",
+          "fin": "2026-11-09T14:12:27.031Z",
+          "commence_par": "evt:001-cloturer-un-audit/c1a18214",
+          "finit_par": "evt:001-cloturer-un-audit/d4441e9e",
+          "fin_type": "normale"
+        },
+        {
+          "stade": "finishing",
+          "debut": "2026-11-09T14:12:27.031Z",
+          "fin": "2026-11-09T14:12:28.117Z",
+          "commence_par": "evt:001-cloturer-un-audit/d4441e9e",
+          "finit_par": "evt:001-cloturer-un-audit/f8e89749",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "etape:7",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 7,
+      "nom": "La réception",
+      "zone": "remise",
+      "etat": "en_cours",
+      "barres": [
+        {
+          "debut": "2026-11-09T14:12:28.117Z",
+          "fin": null
+        }
+      ]
+    },
+    {
+      "id": "application:bureau@7",
+      "niveau": "application",
+      "parent": "etape:7",
+      "nom": "Application de bureau",
+      "ref": {
+        "application": "bureau"
+      },
+      "etat": "en_cours"
+    },
+    {
+      "id": "fiche:001-cloturer-un-audit@7",
+      "niveau": "fiche",
+      "parent": "application:bureau@7",
+      "nom": "Clôturer un audit",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "inspection",
+          "debut": "2026-11-09T14:12:28.117Z",
+          "fin": null,
+          "commence_par": "evt:001-cloturer-un-audit/f8e89749",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    }
+  ],
+  "retirees": [],
+  "jalons": [
+    {
+      "id": "jalon:001-cloturer-un-audit/livre/1",
+      "ligne": "fiche:001-cloturer-un-audit@7",
+      "decision": "livre",
+      "nom": "Ta réception",
+      "etat": "attendue",
+      "demandee": "2026-11-09T14:12:28.117Z",
+      "demandee_par": "evt:001-cloturer-un-audit/f8e89749",
+      "demandee_source": "journal",
+      "prise": null,
+      "prise_par": null
+    }
+  ],
+  "jours": [
+    {
+      "date": "2026-11-09",
+      "evenements": 12,
+      "actif": true
+    }
+  ],
+  "evenements": [
+    {
+      "id": "evt:001-cloturer-un-audit/f8e89749",
+      "ts": "2026-11-09T14:12:28.117Z",
+      "kind": "gate",
+      "phrase": "Ta décision « la réception » est attendue pour « Clôturer un audit »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "trait": false
+    }
+  ],
+  "regime": [
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:09.697Z",
+      "a": "2026-10-22T14:42:12.549Z"
+    },
+    {
+      "valeur": "ferme",
+      "de": "2026-10-22T14:42:12.549Z",
+      "a": "2026-10-24T14:12:13.774Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-24T14:12:13.774Z",
+      "a": "2026-10-24T14:42:15.330Z"
+    },
+    {
+      "valeur": "ferme",
+      "de": "2026-10-24T14:42:15.330Z",
+      "a": "2026-10-27T14:12:16.633Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-27T14:12:16.633Z",
+      "a": "2026-10-27T14:12:18.726Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-27T14:12:18.726Z",
+      "a": "2026-10-27T14:12:19.720Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-27T14:12:19.720Z",
+      "a": "2026-10-27T14:42:19.720Z"
+    },
+    {
+      "valeur": "ferme",
+      "de": "2026-10-27T14:42:19.720Z",
+      "a": "2026-10-28T14:12:21.248Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-28T14:12:21.248Z",
+      "a": "2026-10-28T14:42:22.697Z"
+    },
+    {
+      "valeur": "ferme",
+      "de": "2026-10-28T14:42:22.697Z",
+      "a": "2026-11-09T14:12:23.956Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-11-09T14:12:23.956Z",
+      "a": "2026-11-09T14:12:28.117Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-11-09T14:12:28.117Z",
+      "a": null
+    }
+  ],
+  "a_venir": [
+    {
+      "ligne": "fiche:001-cloturer-un-audit@8",
+      "etape": 8,
+      "apres": "fiche:001-cloturer-un-audit@7"
+    },
+    {
+      "ligne": "etape:8",
+      "etape": 8,
+      "apres": "etape:7"
+    }
+  ]
+}

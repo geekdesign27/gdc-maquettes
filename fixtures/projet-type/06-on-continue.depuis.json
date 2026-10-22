@@ -1,0 +1,110 @@
+{
+  "schema": 1,
+  "maintenant": "2026-10-22T14:12:13.483Z",
+  "fuseau": "UTC",
+  "debut": "2026-10-22T14:12:09.697Z",
+  "depuis": "evt:projet/74393a6f",
+  "complet": false,
+  "lignes": [
+    {
+      "id": "etape:1",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 1,
+      "nom": "L'idée",
+      "zone": "bureaux",
+      "etat": "faite",
+      "barres": [
+        {
+          "debut": "2026-10-22T14:12:09.697Z",
+          "fin": "2026-10-22T14:12:12.549Z"
+        }
+      ]
+    },
+    {
+      "id": "etape:2",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 2,
+      "nom": "Les plans",
+      "zone": "bureaux",
+      "etat": "en_cours",
+      "barres": [
+        {
+          "debut": "2026-10-22T14:12:12.549Z",
+          "fin": null
+        }
+      ]
+    }
+  ],
+  "retirees": [],
+  "jalons": [
+    {
+      "id": "jalon:projet/on-continue/2",
+      "ligne": "etape:1",
+      "decision": "on-continue",
+      "nom": "On continue",
+      "etat": "accordee",
+      "demandee": null,
+      "demandee_par": null,
+      "demandee_source": null,
+      "prise": "2026-10-22T14:12:12.549Z",
+      "prise_par": "evt:projet/f95df430"
+    }
+  ],
+  "jours": [
+    {
+      "date": "2026-10-22",
+      "evenements": 5,
+      "actif": true
+    }
+  ],
+  "evenements": [
+    {
+      "id": "evt:projet/f95df430",
+      "ts": "2026-10-22T14:12:12.549Z",
+      "kind": "decision",
+      "phrase": "Tu accordes « On continue »",
+      "trait": false
+    }
+  ],
+  "regime": [
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:09.697Z",
+      "a": null
+    }
+  ],
+  "a_venir": [
+    {
+      "ligne": "etape:3",
+      "etape": 3,
+      "apres": "etape:2"
+    },
+    {
+      "ligne": "etape:4",
+      "etape": 4,
+      "apres": "etape:3"
+    },
+    {
+      "ligne": "etape:5",
+      "etape": 5,
+      "apres": "etape:4"
+    },
+    {
+      "ligne": "etape:6",
+      "etape": 6,
+      "apres": "etape:5"
+    },
+    {
+      "ligne": "etape:7",
+      "etape": 7,
+      "apres": "etape:6"
+    },
+    {
+      "ligne": "etape:8",
+      "etape": 8,
+      "apres": "etape:7"
+    }
+  ]
+}

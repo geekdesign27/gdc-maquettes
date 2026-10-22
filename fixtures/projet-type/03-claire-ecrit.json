@@ -58,7 +58,7 @@
   ],
   "chantier": {
     "regime": "ouvert",
-    "depuis": "2026-10-21T15:53:14.482Z",
+    "depuis": "2026-10-22T14:12:10.059Z",
     "raison": "des agents travaillent"
   },
   "plan": {
@@ -93,7 +93,7 @@
             "nom": "Le panneau du permis"
           }
         ],
-        "activee": "2026-10-21T15:53:14.613Z",
+        "activee": "2026-10-22T14:12:10.154Z",
         "par_ce_projet": true
       },
       {
@@ -274,7 +274,7 @@
       "nom": "Claire, l'architecte",
       "etat": "typing",
       "lieu": "bureau-architecte",
-      "source": "activité du projet, 2026-10-21T15:53:14.482Z"
+      "source": "activité du projet, 2026-10-22T14:12:10.059Z"
     },
     {
       "element": "character",
@@ -289,24 +289,26 @@
   ],
   "actions": [
     {
-      "ts": "2026-10-21T15:53:14.613Z",
+      "ts": "2026-10-22T14:12:10.154Z",
       "action": "change",
       "element": "architect-office",
       "id": "bureau-architecte",
       "nom": "Le bureau d'architecte",
       "de": "idle",
       "vers": "active",
-      "phrase": "Le bureau d'architecte : idle → active"
+      "phrase": "Le bureau d'architecte : idle → active",
+      "cause": "evt:projet:activite/ca6a71b1"
     },
     {
-      "ts": "2026-10-21T15:53:14.613Z",
+      "ts": "2026-10-22T14:12:10.154Z",
       "action": "apparait",
       "element": "character",
       "id": "architecte",
       "nom": "Claire, l'architecte",
       "etat": "typing",
       "lieu": "bureau-architecte",
-      "phrase": "Claire, l'architecte apparaît (Le bureau d'architecte)"
+      "phrase": "Claire, l'architecte apparaît (Le bureau d'architecte)",
+      "cause": "evt:projet:activite/ca6a71b1"
     }
   ]
 }
