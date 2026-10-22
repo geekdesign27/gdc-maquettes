@@ -758,7 +758,7 @@ Un étage par fiche, la plus ancienne en bas (etages de GDC, ADR 0013). Chaque �
 
 ### Le sélecteur d'étages (`floor-selector`)
 
-Un panneau d'ascenseur, l'étage du haut en haut. Chaque bouton porte le niveau (R, 1, 2…), le nom de la fiche, le numéro de son étape et son signe d'état s'il en a un. Six étages au plus, comme le bâtiment : le rez regroupe les fiches livrées les plus anciennes (« Rez · 4 fiches livrées ») et se déplie pour en choisir une ; s'il reste encore trop d'étages, les plus anciens se fondent aussi dans le rez (« Rez · n fiches »). Fiche validée par Pierre-Alain le 21 octobre 2026. Version 1.1.0 : gdc-select porte aussi la référence de la fiche choisie, { id, ref, building }, pour que le panneau de GDC traite la sélection comme celle du fil et de l'arbre (docs/planning-derniere-passe-de-gdc.md, section 6) ; building reste.
+Un panneau d'ascenseur, l'étage du haut en haut. Chaque bouton porte le niveau (R, 1, 2…), le nom de la fiche, le numéro de son étape et son signe d'état s'il en a un. Six étages au plus, comme le bâtiment : le rez regroupe les fiches livrées les plus anciennes (« Rez · 4 fiches livrées ») et se déplie pour en choisir une ; s'il reste encore trop d'étages, les plus anciens se fondent aussi dans le rez (« Rez · n fiches »). Fiche validée par Pierre-Alain le 21 octobre 2026. Version 1.1.0 : gdc-select porte aussi la référence de la fiche choisie, { id, ref, building }, pour que le panneau de GDC traite la sélection comme celle du fil et de l'arbre (docs/planning-derniere-passe-de-gdc.md, section 6) ; building reste. Version 1.1.0 validée par Pierre-Alain le 22 octobre 2026.
 
 - Fabriqué par : intégrateur d'interface
 - Élément : `<gdc-floor-selector>`
