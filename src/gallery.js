@@ -19,8 +19,16 @@ import { defineElements } from './interface.js';
 import { arbreDe } from './arbre.js';
 // La ville vivante (fiche city-map) : les sequences de GDC (fixtures/), jouees etape par etape dans la galerie
 const VILLE_ID = 'ville';
+// Les sequences se lisent par leur index.json seulement (plan de l'atelier, I-5) : chaque pas y nomme ses fichiers
+// (fichier ; chronologie et depuis a partir de GDC 0.20), rien n'est pris par motif de nom. Les index sont lus au
+// demarrage ; les fichiers d'une sequence, a la demande, quand on l'ouvre : volume (cent fiches) ne pese rien avant.
 const SEQUENCES = Object.fromEntries(Object.entries(import.meta.glob('../fixtures/*/index.json', { eager: true, import: 'default' })).map(([p, index]) => [p.split('/')[2], index]));
-const SCENES_GDC = import.meta.glob('../fixtures/*/[0-9]*.json', { eager: true, import: 'default' });
+const FICHIERS_GDC = import.meta.glob('../fixtures/*/*.json', { import: 'default' });
+function fichierGdc(sequence, fichier) {
+  const charge = FICHIERS_GDC[`../fixtures/${sequence}/${fichier}`];
+  if (!charge) return Promise.reject(new Error(`fixtures/${sequence}/${fichier} : nommé par index.json, mais absent`));
+  return charge();
+}
 
 const charge = chargeur({ GLTFLoader, SkeletonUtils });
 const materiauPartage = charge.materiau(THREE); // ctx.materiau : le registre commun des materiaux (plan D-1)
@@ -352,7 +360,8 @@ async function instanceVille(id, state) {
   const nom = id.slice(VILLE_ID.length + 1);
   const index = SEQUENCES[nom];
   const etapes = index.etapes.map((e) => String(e.numero).padStart(2, '0'));
-  const sceneDe = (s) => SCENES_GDC[`../fixtures/${nom}/${index.etapes[etapes.indexOf(s)].fichier}`];
+  const scenes = await Promise.all(index.etapes.map((e) => fichierGdc(nom, e.fichier)));
+  const sceneDe = (s) => scenes[etapes.indexOf(s)];
   const q = new URLSearchParams(location.search);
   // la carte regle elle-meme la lumiere sur l'heure (l'heure reelle, ou le moment que l'on choisit en bas)
   const lumieres = { ciel, soleil: sun, scene: options.silhouette ? null : scene };

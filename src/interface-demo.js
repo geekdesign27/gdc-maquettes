@@ -14,13 +14,23 @@ const el = (balise, attrs = {}, texte) => {
   return n;
 };
 
+// Les sequences de GDC se lisent par leur index.json seulement (plan de l'atelier, I-5) : chaque pas y nomme son
+// fichier, rien n'est pris par motif de nom ; la page ne charge que les sequences dont elle se sert.
+const indexGdc = import.meta.glob("../fixtures/*/index.json", { eager: true, import: "default" });
+const fichiersGdc = import.meta.glob("../fixtures/*/*.json", { import: "default" });
+const etapesGdc = (sequence) => indexGdc[`../fixtures/${sequence}/index.json`].etapes;
+const scenesGdc = (sequence) =>
+  Promise.all(etapesGdc(sequence).map((e) => fichiersGdc[`../fixtures/${sequence}/${e.fichier}`]()));
+const scenesProjetType = await scenesGdc("projet-type");
+const scenesTroisApplications = await scenesGdc("trois-applications");
+// une etape d'une sequence, par son numero
+const etapeGdc = (sequence, scenes, numero) =>
+  scenes[etapesGdc(sequence).findIndex((e) => e.numero === numero)];
+
 // Le selecteur d'etages (lot G8) : les donnees qu'en tire GDC, depuis un batiment de sa scene (schema 3, etages).
-const troisChantiers = import.meta.glob(
-  "../fixtures/trois-applications/08-trois-chantiers.json",
-  { eager: true, import: "default" },
-);
+const troisChantiers = etapeGdc("trois-applications", scenesTroisApplications, 8);
 const batimentGdc = (id) =>
-  Object.values(troisChantiers)[0].elements.find(
+  troisChantiers.elements.find(
     (e) => e.element === "building" && e.id === id,
   );
 const selecteurDe = (b, selected) => ({
@@ -34,16 +44,8 @@ const selecteurDe = (b, selected) => ({
   selected,
 });
 // Le fil des declencheurs (lot G8) : les actions des sequences de GDC, etape par etape (schema 3, actions).
-const sequence = (glob) =>
-  Object.keys(glob)
-    .sort()
-    .map((k) => glob[k].actions || []);
-const actionsProjetType = sequence(
-  import.meta.glob("../fixtures/projet-type/[0-9]*.json", { eager: true, import: "default" }),
-);
-const actionsTroisApplications = sequence(
-  import.meta.glob("../fixtures/trois-applications/[0-9]*.json", { eager: true, import: "default" }),
-);
+const actionsProjetType = scenesProjetType.map((s) => s.actions || []);
+const actionsTroisApplications = scenesTroisApplications.map((s) => s.actions || []);
 // des cas limites : une phrase qui ressemble a du HTML, une heure illisible, une personne inconnue, sans phrase
 const actionsLimites = [
   { ts: "2026-10-21T15:53:40.000Z", action: "change", element: "building", id: "bureau", nom: "Application de bureau", phrase: "<b>Application de bureau</b> : <img src=x onerror=alert(1)> structure → envelope", ref: { application: "bureau" } },
@@ -77,11 +79,8 @@ const neufFiches = (selected, livrees = 4) => ({
   selected,
 });
 
-const sceneDe = (glob) => Object.values(glob)[0];
-const sceneTrois = sceneDe(troisChantiers);
-const sceneLotFini = sceneDe(
-  import.meta.glob("../fixtures/projet-type/16-lot-fini.json", { eager: true, import: "default" }),
-);
+const sceneTrois = troisChantiers;
+const sceneLotFini = etapeGdc("projet-type", scenesProjetType, 16);
 // neuf fiches dans un batiment : quatre livrees sous « Livrees · 4 », des lots pour deux fiches en cours
 const lotsDe = (fiche, lots) =>
   lots.map(([lot, name, state]) => ({ id: `${fiche}/${lot}`, name: `${lot} · ${name}`, ref: { application: "bureau", fiche, lot }, state }));
@@ -633,10 +632,6 @@ function rendJournal() {
 // Le survol partage (lot G8, hover-link) : un banc d'essai a trois colonnes tire de fixtures/trois-applications : le
 // vrai fil, les vrais selecteurs d'etages, la vraie navigation (l'arbre).
 // Le relais de la page (plus bas) fait ce que fera GDC : chaque gdc-hover revient en highlight a tous.
-const etapesTrois = import.meta.glob("../fixtures/trois-applications/0*.json", {
-  eager: true,
-  import: "default",
-});
 let survols = 0;
 function sectionSurvol(entry) {
   const s = el("section", { id: entry.id });
@@ -649,9 +644,7 @@ function sectionSurvol(entry) {
       "Banc d'essai tiré de fixtures/trois-applications : à gauche, le vrai fil des déclencheurs ; au milieu, le vrai sélecteur d'étages ; à droite, la vraie navigation, l'arbre des fiches et des lots. Survole ou parcours au clavier : ce qui correspond s'allume dans les trois. La carte, le fil et l'arbre se relient dans la galerie (la ville).",
     ),
   );
-  const scenes = Object.keys(etapesTrois)
-    .sort()
-    .map((k) => etapesTrois[k]);
+  const scenes = scenesTroisApplications;
   const batiments = scenes
     .at(-1)
     .elements.filter((e) => e.element === "building");

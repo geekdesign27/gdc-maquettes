@@ -6,6 +6,7 @@ import { lisScene } from '../src/ville/scene-gdc.js';
 import { equipes, usagers, PLAFONDS } from '../src/ville/vie.js';
 import { creeCarte } from '../src/ville/carte.js';
 import { readFile, readdir } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import * as THREE from 'three';
@@ -78,12 +79,17 @@ for (const types of [['house'], ['block', 'block', 'block'], ['hall', 'hall', 'h
   verifie(creeChemins(imp.voies).chemin('baraque', `allee:${types.length}`), `${types} : la dernière parcelle n'est pas desservie`);
 }
 
-// --- Les sequences de GDC (fixtures/) : lecture et vie, sans Three.js
+// --- Les sequences de GDC (fixtures/) : lecture et vie, sans Three.js. Elles se lisent par leur index.json seulement
+// (plan de l'atelier, I-5) : chaque pas y nomme ses fichiers, rien n'est pris par motif de nom.
 const sequences = {};
 for (const dossier of await readdir(join(ROOT, 'fixtures'), { withFileTypes: true })) {
   if (!dossier.isDirectory()) continue;
   const index = JSON.parse(await readFile(join(ROOT, 'fixtures', dossier.name, 'index.json'), 'utf8'));
   sequences[dossier.name] = await Promise.all(index.etapes.map(async (e) => JSON.parse(await readFile(join(ROOT, 'fixtures', dossier.name, e.fichier), 'utf8'))));
+  // la chronologie et la mise a jour d'un pas (GDC 0.20) sont lues a la demande : ici, seulement leur presence
+  for (const e of index.etapes)
+    for (const cle of ['chronologie', 'depuis'])
+      if (e[cle] !== undefined) verifie(existsSync(join(ROOT, 'fixtures', dossier.name, String(e[cle]))), `${dossier.name}, pas ${e.numero} : ${cle} « ${e[cle]} » nommé par index.json, mais absent`);
 }
 const modules = {};
 for (const cat of await readdir(join(ROOT, 'components')))
