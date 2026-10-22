@@ -68,7 +68,7 @@ Deux pistes. Chaque élément est fabriqué dans sa propre session, avec le cont
 | I-2 | `floor-selector` 1.1.0 | Maintenant | `gdc-select` porte `{ id, ref, building }`, avec sa ligne au journal des versions |
 | I-3 | `panel-rail` | Après I-1 | Livré : vertical et horizontal, ouvert et fermé, badges, clavier, téléphone |
 | I-4 | Les panneaux dans la galerie | Après I-3 | L'arbre à gauche, le fil à droite, le planning en bas, sur les séquences réelles ; les vérifications sur `side-nav` et `trigger-feed` (aucun côté supposé, état gardé quand on masque) |
-| I-5 | Le chargement des séquences | Avant ta 0.20 | Les trois motifs séparés, `volume` à la demande (section 3) |
+| I-5 | Le chargement des séquences | Avant ta 0.20 | La galerie et le contrôle chargent par `index.json` seulement (`fichier`, `chronologie`, `depuis`), plus aucun motif de fichier ; `volume` à la demande dans la galerie (section 6) |
 | I-6 | `trigger-feed` 1.1.0 | À ta 0.20 | Il lit `cause`, défile jusqu'à l'`evt` choisi ailleurs et émet `{ id, ref, evt }` |
 | I-7 | `site-schedule` | À ta 0.20 | Construit et contrôlé sur les quatre séquences, dont `volume` : premier affichage sous 200 ms, défilement fluide sur le portable de référence |
 | I-8 | La caméra qui suit la sélection | Avec la livraison de `city-map` | Un saut sans mouvement avec « moins d'animation » ; sinon un déplacement court, interrompu par toute nouvelle sélection |
@@ -77,7 +77,7 @@ Deux pistes. Chaque élément est fabriqué dans sa propre session, avec le cont
 
 | # | Élément | Quand | Ce qui est fini |
 |---|---|---|---|
-| D-1 | Le registre des matériaux et les instances | Maintenant | La mesure avant et après (appels de dessin, matériaux, triangles, images par seconde, processeur ralenti) sur la scène d'AuditApp ; une nouvelle version pour chaque composant livré touché |
+| D-1 | Le registre des matériaux et les instances | Maintenant | La mesure avant et après (appels de dessin, matériaux, triangles, images par seconde, processeur ralenti) sur `trois-applications`, puis sur `volume` dès sa livraison ; une nouvelle version pour chaque composant livré touché |
 | D-2 | `floodlight`, le projecteur | Après D-1 | Livré |
 | D-3 | `character-kit` v003 et `character` 1.2.0 | Après D-1 | L'ouvrier, la tenue de ville, la lampe frontale, l'animation « porter » |
 | D-4 | `site-fence` 1.1.0, `party-shed`, `city-car` | Ensuite | Le portail fermé, le cabanon de la fête, les voitures |
@@ -90,3 +90,18 @@ Le rejeu de la carte (`gdc scene --a <date>`), avec l'option `instant` partout e
 ## 5. Ce que l'atelier attend de GDC
 
 Rien d'autre que ta section 8 : la 0.20 avec ses quatre séquences (`projet-type`, `trois-applications`, `projet-long`, `volume`), chacune avec, à chaque pas, la scène, la chronologie complète et la mise à jour depuis le pas précédent. I-6 et I-7 démarrent à sa livraison ; tout le reste avance d'ici là.
+
+## 6. Les derniers mots de GDC, intégrés
+
+GDC a tout accepté (`docs/planning-derniers-mots-de-gdc.md`, même jour) : `panel-rail` et son périmètre, les sept états ajoutés, `{ id, evt }` sans `ref` dans la table du panneau, les deux pistes et leur ordre. Il ajoute cinq précisions, que l'atelier applique ainsi :
+
+| Précision de GDC | Ce que l'atelier en fait |
+|---|---|
+| **Les séquences suivent `index.json`** : chaque pas nomme `fichier`, `chronologie` et `depuis` ; au premier pas, `depuis` est une chronologie complète (`complet: true`) | I-5 : la galerie et `scripts/check-ville.mjs` ne lisent plus que `index.json`. Le motif `fixtures/*/[0-9]*.json` de `src/gallery.js` disparaît. |
+| **`volume` a quatre pas** (25, 50, 75, 100 fiches), tous le même jour | Elle sert à la liste virtuelle et à la fluidité de `site-schedule`, et à la mesure de D-1. Elle reste dans le contrôle de la carte ; sa durée est mesurée. |
+| **`projet-long` porte `"horloge": "decalee"`** | Elle sert à juger l'allure du planning et les plis des jours vides, jamais une durée ni l'ordre fin de deux événements. La galerie l'affiche avec la phrase de `index.json`. |
+| **Pas de scène d'AuditApp dans l'atelier** | La mesure de référence de D-1 se fait sur `trois-applications` et `volume`. L'entrée « AuditApp » de la galerie ne contient que trois noms d'applications d'exemple (`src/scene-reference.js`), aucune donnée du projet : elle reste. Une mesure sur une vraie scène d'AuditApp ne se fait que si Pierre-Alain passe le fichier, en local, jamais commité. |
+| **Un schéma inconnu** | `site-schedule` passe en « données illisibles » pour tout `schema` autre que 1 ; un champ inconnu du schéma 1 est ignoré, comme la carte le fait déjà. Écrit dans la fiche. |
+
+**Ce qui démarre maintenant** : I-1 à I-5 et D-1 à D-4. **Ce qui attend le dépôt de la 0.20 dans `fixtures/`** : I-6 (`trigger-feed` 1.1.0) et I-7 (`site-schedule`). Si une fiche bute sur le contrat en route, l'atelier l'écrit dans un fichier du même genre, que Pierre-Alain transmet à GDC.
+
