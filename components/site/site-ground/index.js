@@ -4,14 +4,16 @@
 // zero, pour que les socles des lieux poses dessus (dessus a zero) se fondent dans la terre sans scintiller.
 // data.zones dessine des dalles de 0,10 m : c'est GDC qui les choisit (plus de beton quand un batiment avance), le
 // composant ne fait que les dessiner, rognees au plateau.
+// Version 1.1.0 (constat D-2, decision de Pierre-Alain du 22 octobre 2026) : la largeur va jusqu'a 120 m ; a 80 m, le
+// terrain de trois ou quatre applications s'arretait avant le bord droit du chantier, et sa cloture flottait sur le vide.
 
 export const meta = {
   id: "site-ground",
-  version: "1.0.0",
+  version: "1.1.0",
   category: "site",
   states: ["default"],
   params: {
-    width: { type: "number", default: 40, min: 8, max: 80 },
+    width: { type: "number", default: 40, min: 8, max: 120 },
     depth: { type: "number", default: 30, min: 8, max: 80 },
   },
   anchors: ["label"],
