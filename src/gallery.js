@@ -14,12 +14,14 @@ import * as kit from './kit.js';
 import * as personnage from './personnage.js';
 import * as reference from './scene-reference.js';
 import { creeCarte } from './ville/carte.js';
+import { defineElements } from './interface.js';
 // La ville vivante (fiche city-map) : les sequences de GDC (fixtures/), jouees etape par etape dans la galerie
 const VILLE_ID = 'ville';
 const SEQUENCES = Object.fromEntries(Object.entries(import.meta.glob('../fixtures/*/index.json', { eager: true, import: 'default' })).map(([p, index]) => [p.split('/')[2], index]));
 const SCENES_GDC = import.meta.glob('../fixtures/*/[0-9]*.json', { eager: true, import: 'default' });
 
 const charge = chargeur({ GLTFLoader, SkeletonUtils });
+defineElements(); // le fil des declencheurs, a cote de la carte vivante
 const entries = catalogue.items.filter((i) => i.kind === 'component');
 const $ = (id) => document.getElementById(id);
 const stage = $('stage');
@@ -68,6 +70,9 @@ const silhouette = new THREE.MeshBasicMaterial({ color: 0x000000 });
 
 function applyTheme() {
   document.documentElement.dataset.theme = options.theme;
+  // les elements d'interface (le fil de la ville) suivent la bascule : --gdc-motion vaut 0
+  if (options.reducedMotion) document.documentElement.dataset.motion = 'reduced';
+  else delete document.documentElement.dataset.motion;
   const ctx = makeContext(options);
   scene.background = new THREE.Color(options.silhouette ? '#FFFFFF' : ctx.palette.paper);
   // Silhouette : tout en noir sur blanc, sans grille ni etiquettes. Niveaux de gris : les valeurs sans la couleur.
@@ -154,6 +159,33 @@ function buildList() {
 
 // La ville : la carte vivante (src/ville/carte.js) sur une sequence de fixtures/ ; les etats sont les etapes de la
 // sequence. Passer a l'etape suivante joue ses actions, comme GDC le fera ; sauter plus loin pose la scene telle quelle.
+// Le fil des declencheurs (trigger-feed), a gauche de la carte comme dans GDC : les actions des etapes jouees. Passer a
+// l'etape suivante lui donne ses actions, comme GDC a chaque nouvelle scene ; un saut repart d'un fil neuf.
+let filVille = null;
+function poseFil(actions) {
+  retireFil();
+  filVille = document.createElement('gdc-trigger-feed');
+  filVille.className = 'fil-ville';
+  filVille.data = { actions };
+  filVille.addEventListener('gdc-hover', (e) => relaieSurvol('fil', e.detail.ref));
+  stage.append(filVille);
+}
+function retireFil() {
+  filVille?.remove();
+  filVille = null;
+  survolsVille.clear();
+}
+// Le survol partage entre la carte et le fil, comme GDC le fera : chaque source garde sa derniere reference ; le
+// highlight est la plus recente qui n'est pas null, renvoye au fil (l'emetteur compris) et pose sur la carte.
+const survolsVille = new Map();
+function relaieSurvol(source, ref) {
+  survolsVille.delete(source);
+  if (ref) survolsVille.set(source, ref);
+  const h = [...survolsVille.values()].at(-1) ?? null;
+  if (filVille) filVille.highlight = h;
+  current.ville?.carte.surligne(h).then(() => { dirty = true; });
+}
+
 async function instanceVille(id, state) {
   const nom = id.slice(VILLE_ID.length + 1);
   const index = SEQUENCES[nom];
@@ -163,6 +195,8 @@ async function instanceVille(id, state) {
   const carte = await creeCarte(THREE, { components: byId, chargeur: charge, ...options, force: q.get('ouvriers') === 'max' });
   const premier = etapes.includes(state) ? state : etapes[0];
   await carte.applique(sceneDe(premier));
+  const actionsJusqua = (s) => etapes.slice(0, etapes.indexOf(s) + 1).flatMap((x) => sceneDe(x).actions || []);
+  poseFil(actionsJusqua(premier));
   let etape = premier;
   const inst = {
     root: carte.root,
@@ -170,6 +204,8 @@ async function instanceVille(id, state) {
     setState(s) {
       const suite = etapes.indexOf(s) === etapes.indexOf(etape) + 1;
       etape = s;
+      if (suite && filVille) filVille.data = { actions: sceneDe(s).actions || [] };
+      else poseFil(actionsJusqua(s));
       carte.applique(sceneDe(s), { actions: suite }).then(() => {
         if (current.inst !== inst) return;
         current.apps = carte.applications;
@@ -279,7 +315,7 @@ function parametresAdresse(meta) {
     }));
 }
 
-function retire(x) { if (x && x.ville?.lecture) clearInterval(x.ville.lecture); if (x && x.inst) { scene.remove(x.inst.root); x.inst.dispose(); } }
+function retire(x) { if (x && x.ville) retireFil(); if (x && x.ville?.lecture) clearInterval(x.ville.lecture); if (x && x.inst) { scene.remove(x.inst.root); x.inst.dispose(); } }
 
 // Un signal (lot G5) se juge a cote des lieux ou il apparait (signaletique) : ses voisins de planche, poses tout pres
 // (ECART_SIGNAL entre les emprises), et non les deux premiers modeles livres ; « id/etat » pose un voisin dans cet etat.
@@ -447,7 +483,12 @@ renderer.domElement.addEventListener('pointermove', (ev) => {
   const ref = current.ville.carte.refSous(sousPointeur(ev));
   if (JSON.stringify(ref) === survolVille) return;
   survolVille = JSON.stringify(ref);
-  current.ville.carte.surligne(ref).then(() => { dirty = true; });
+  relaieSurvol('carte', ref);
+});
+renderer.domElement.addEventListener('pointerleave', () => {
+  if (!current.ville || survolVille === 'null') return;
+  survolVille = 'null';
+  relaieSurvol('carte', null);
 });
 addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && current.ville) { current.ville.carte.fermeCoupe(); dirty = true; } });
 
