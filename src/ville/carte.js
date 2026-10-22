@@ -358,11 +358,9 @@ export async function creeCarte(THREE, options) {
     fixes.push("site-ground");
     for (const c of [...imp.clotures, ...imp.decor, ...imp.projecteurs]) {
       const inst = await cree(c.id, c.params);
-      etat(
-        pose(c.cle, c.id, inst, c.position, c.rotation || 0),
-        components[c.id].meta.states[0],
-        {},
-      );
+      const m = pose(c.cle, c.id, inst, c.position, c.rotation || 0);
+      if (c.zone) m.zone = c.zone; // un projecteur pose derriere la cloture reste de la zone du chantier
+      etat(m, components[c.id].meta.states[0], {});
       fixes.push(c.cle);
     }
     for (const [id, l] of Object.entries(imp.lieux)) {

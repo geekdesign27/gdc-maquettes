@@ -247,20 +247,26 @@ export function implantation(applications = 1, types = null) {
     })),
   ];
 
-  // Les projecteurs de chantier (floodlight, plan D-2) : aux quatre coins du chantier, a 1,2 m des clotures, tournes
-  // vers son centre (leur avant est +Z). La carte seule les pose et les allume : la scene de reference ne les a pas.
-  const RETRAIT_PROJECTEUR = 1.2;
+  // Les projecteurs de chantier (floodlight, plan D-2) : aux quatre coins du chantier, tournes vers son centre (leur
+  // avant est +Z), de la zone du chantier (gris avec elle). La carte seule les pose et les allume : la scene de reference
+  // ne les a pas. Retrait du mat depuis chacune des deux clotures de son coin : 0,75 m (le lest de 0,80 m, tourne vers
+  // le centre, deborde de 0,57 m au plus : il laisse 0,03 m aux plots), vers l'interieur, ou derriere la cloture (-),
+  // dans la marge de 1,5 m du terrain ou rien ne passe (constat D-2, B1 et B2) : a droite, l'allee longe la cloture a
+  // 1,2 m ; a l'avant, les camions balaient le coin en tournant vers le portail et en reculant hors de leur parcelle.
+  // Au fond a gauche, la route est derriere la cloture : le mat reste dedans.
+  const R = 0.75;
   const projecteurs = [
-    ["fond-gauche", 0, 0],
-    ["fond-droite", 1, 0],
-    ["avant-gauche", 0, 1],
-    ["avant-droite", 1, 1],
-  ].map(([coin, i, j]) => {
-    const x = CHANTIER.x[i] + (i ? -1 : 1) * RETRAIT_PROJECTEUR;
-    const z = CHANTIER.z[j] + (j ? -1 : 1) * RETRAIT_PROJECTEUR;
+    ["fond-gauche", 0, 0, R, R],
+    ["fond-droite", 1, 0, -R, R],
+    ["avant-gauche", 0, 1, R, -R],
+    ["avant-droite", 1, 1, R, -R],
+  ].map(([coin, i, j, rx, rz]) => {
+    const x = CHANTIER.x[i] + (i ? -1 : 1) * rx;
+    const z = CHANTIER.z[j] + (j ? -1 : 1) * rz;
     return {
       cle: `floodlight:${coin}`,
       id: "floodlight",
+      zone: "chantier",
       position: [x, 0, z],
       rotation: Math.atan2(centre(CHANTIER.x) - x, centre(CHANTIER.z) - z),
     };
