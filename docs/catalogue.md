@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-57 éléments : 48 livré, 7 à faire, 2 exemple ; 3 nouvelle(s) version(s) prévue(s).
+58 éléments : 48 livré, 8 à faire, 2 exemple ; 3 nouvelle(s) version(s) prévue(s).
 
 ## G0 : La ligne graphique
 
@@ -717,6 +717,7 @@ Faire de la carte la visualisation du harnais : relier au survol la carte, le fi
 | 13 | `city-car` | La voiture d'ambiance | Composant 3D Three.js, conforme à docs/contrat-composant.md | Faire vivre la ville autour du chantier, sans rien dire du harnais. | à faire |
 | 14 | `city-map` | La carte vivante | Document de référence, pas de code | Assembler et animer la carte du chantier à partir des scènes que GDC envoie : où chaque élément se pose, par où chacun marche, et la vie du chantier qui naît de l'état reçu. | à faire |
 | 15 | `agent-marker` | Le repère d'agent | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Repérer et attraper facilement, sur la carte entière, les agents avec qui on peut ou doit interagir. | à faire |
+| 16 | `panel-rail` | Le rail d'un panneau | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Fermer un panneau du bord (l'arbre, le fil, le planning) en une bande fine qui garde ses badges, le rouvrir et, pour le planning, le redimensionner : une décision qui attend Pierre-Alain reste visible. | à faire |
 | 17 | `site-schedule` | Le planning du chantier | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Lire en bas du panneau l'histoire du chantier en Gantt, de l'étape à l'application, à la fiche et au lot : le passé avec ses vraies dates, le futur à la file, sans date. | à faire |
 
 ### Le survol partagé (`hover-link`)
@@ -937,6 +938,26 @@ Un repère HTML posé au-dessus de la tête de l'agent, sur l'ancre label de cha
   - Une impulsion à l'apparition, puis fixe ; aucun mouvement avec moins d'animations, le portrait compris
   - Chaque repère se prend au clavier (Tab, Entrée) et émet gdc-select
   - Côté carte : un agent se prend à 12 px du pointeur, devant ce qui est derrière lui, sur la séquence fixtures/projet-type (étape 18 : trois agents groupés à la réception)
+
+### Le rail d'un panneau (`panel-rail`)
+
+Le panneau de GDC ne dessine qu'avec les composants de l'atelier : le rail d'un panneau fermé et sa poignée en sont un (docs/planning-derniere-passe-de-gdc.md, sections 6 et 7 ; docs/planning-plan-atelier.md, section 2.1). Un rail autonome : GDC le pose au bord de la zone du panneau, la disposition reste à lui, et il masque lui-même le panneau fermé sans le retirer, pour que le panneau garde son état. Deux aspects. Fermé : une bande fine de 40 px (la cible tactile comprise), verticale à gauche et à droite, horizontale en bas, qui porte l'icône du panneau, son nom accessible et ses badges ; elle se clique en entier. Ouvert : une lisière fine au bord du panneau, avec sa poignée ; un panneau sans redimensionnement (l'arbre, le fil) a donc lui aussi un moyen visible de se replier ; avec resize, la lisière est aussi le séparateur qui redimensionne le planning. Les badges : <gdc-notification-badge>, posé par balise, avec { error, waiting, blocked } (le nombre et l'icône du niveau le plus grave, src/signes.js), masqué à zéro ; pas de done, « Validé » n'a rien à faire sur un rail. Les icônes tree, feed et schedule sont dessinées au trait dans le dossier du rail (un élément n'importe rien d'ailleurs). Le rail ne retient rien : l'état ouvert ou fermé et la taille sont des préférences de l'écran que le panneau de GDC garde ; le rail reçoit open et size, et émet gdc-toggle et gdc-resize. La poignée est un bouton (aria-expanded, Entrée et Espace) dont le nom dit le panneau (« Ouvrir le fil des déclencheurs ») ; aria-controls n'est pas utilisé, il ne traverse pas la frontière du shadow DOM. Le séparateur suit le modèle ARIA du séparateur de fenêtre (role="separator", aria-valuenow, aria-valuemin, aria-valuemax) : flèches pour la taille, Début et Fin pour le minimum et le maximum, Entrée pour replier ou rouvrir, et le glissement à la souris ou au doigt. Sur téléphone (moins de 600 px), le rail fermé devient un onglet : GDC pose les rails en rangée et n'ouvre qu'un panneau à la fois (il reçoit gdc-toggle et ferme les autres). Une ouverture courte, aucune avec moins d'animation ; rien ne clignote. Fiche validée par Pierre-Alain le 22 octobre 2026 : un rail autonome plutôt qu'un cadre autour du panneau, et counts sans done.
+
+- Fabriqué par : intégrateur d'interface
+- Élément : `<gdc-panel-rail>`
+- Entrées (propriété data) : `panel` ({ id, name, icon } : l'identifiant du panneau (repris dans les événements), son nom affiché et accessible, et son icône, tree \| feed \| schedule) ; `side` (left \| right \| bottom : le bord où GDC pose le panneau ; l'orientation s'en déduit (verticale à gauche et à droite, horizontale en bas)) ; `open` (true si le panneau est ouvert ; GDC garde l'état et le renvoie) ; `counts` ({ error, waiting, blocked } : nombres, passés à notification-badge ; absent ou tout à zéro, pas de badge) ; `resize` ({ size, min, max } en pixels : la taille du panneau ouvert et ses bornes ; absent, pas de séparateur (le planning seulement))
+- Sorties (événements) : `gdc-toggle` (detail.id = le panneau, detail.open = l'état demandé ; GDC décide et renvoie open) ; `gdc-resize` (detail.id = le panneau, detail.size = la taille demandée en pixels, bornée par min et max)
+- Critères d'acceptation :
+  - Vertical à gauche et à droite, horizontal en bas ; ouvert et fermé, sur les trois côtés ; aucun côté supposé
+  - Les badges suivent notification-badge et la signalétique (couleur, forme et icône du niveau le plus grave), masqués à zéro
+  - Ouvert, une poignée visible permet de replier chaque panneau, redimensionnable ou non
+  - Utilisable au clavier et à la souris : la poignée (Entrée, Espace) et le séparateur (flèches, Début, Fin, Entrée) ; glissement au doigt sur téléphone
+  - Sur téléphone, le rail fermé est un onglet de la rangée posée par GDC
+  - Aucune mémoire : ni stockage, ni préférence retenue ; gdc-resize au plus une fois par image pendant un glissement
+  - Rien ne bouge avec moins d'animation
+  - Lisible en clair et en sombre
+  - La page /interface.html montre les trois côtés, ouverts et fermés, avec et sans badges, et le séparateur
+  - Ligne au journal des versions
 
 ### Le planning du chantier (`site-schedule`)
 
