@@ -415,6 +415,61 @@ for (const [nom, scenes] of Object.entries(sequences))
   rapports.push(`heure réelle : Fribourg le 22 octobre 2026, lever ${new Date(s.lever).toISOString().slice(11, 16)} et coucher ${new Date(s.coucher).toISOString().slice(11, 16)} UTC ; la nuit, fenêtres faibles et franches vérifiées`);
 }
 
+// --- Les projecteurs (floodlight, plan D-2) : a chaque coin, dans le terrain, hors des voies, des clotures et des
+// parcelles ; allumes la nuit en regime ouvert dans un chantier en couleur, eteints sinon (constat D-2)
+{
+  const LEST = 0.57; // le demi-lest de 0,80 m, en diagonale
+  const auSegment = (x, z, A, B) => {
+    const t = Math.max(0, Math.min(1, ((x - A.x) * (B.x - A.x) + (z - A.z) * (B.z - A.z)) / ((B.x - A.x) ** 2 + (B.z - A.z) ** 2 || 1)));
+    return Math.hypot(A.x + t * (B.x - A.x) - x, A.z + t * (B.z - A.z) - z);
+  };
+  for (const types of [null, ['house'], ['hall'], ['block', 'hall'], ['house', 'house', 'house'], ['hall', 'hall', 'hall', 'house']])
+    for (const apps of types ? [types.length] : [1, 2, 3, 4]) {
+      const imp = implantation(apps, types);
+      const nom = `projecteurs, ${apps} app.${types ? ' ' + types.join(',') : ''}`;
+      verifie(imp.projecteurs.length === 4, `${nom} : ${imp.projecteurs.length} projecteurs`);
+      const T = imp.terrain;
+      for (const p of imp.projecteurs) {
+        const [x, , z] = p.position;
+        verifie(p.zone === 'chantier', `${nom} : ${p.cle} hors de la zone du chantier`);
+        verifie(x - LEST > T.x[0] && x + LEST < T.x[1] && z - LEST > T.z[0] && z + LEST < T.z[1], `${nom} : ${p.cle} déborde du terrain`);
+        for (const [a, b] of imp.voies.segments)
+          verifie(auSegment(x, z, imp.voies.points[a], imp.voies.points[b]) >= 0.7, `${nom} : la voie ${a} → ${b} passe sur ${p.cle}`);
+        // les clotures : leurs plots debordent de 0,15 m de leur ligne
+        for (const c of imp.clotures) {
+          const L = c.params.length / 2;
+          const [A, B] = Math.abs(Math.sin(c.rotation)) > 0.5
+            ? [{ x: c.position[0], z: c.position[2] - L }, { x: c.position[0], z: c.position[2] + L }]
+            : [{ x: c.position[0] - L, z: c.position[2] }, { x: c.position[0] + L, z: c.position[2] }];
+          verifie(auSegment(x, z, A, B) >= LEST + 0.15, `${nom} : ${p.cle} touche la clôture ${c.cle}`);
+        }
+        for (const pa of imp.parcelles)
+          verifie(Math.abs(x - pa.position[0]) > 7.5 + LEST || z + LEST < 31 || z - LEST > 43, `${nom} : ${p.cle} sur la parcelle ${pa.index + 1}`);
+      }
+    }
+  const allumes = (carte) => {
+    let n = 0;
+    carte.root.traverse((o) => { if (o.isMesh && o.material.name === 'FLOODLIGHT_LENS_LIT') n++; });
+    return n;
+  };
+  const s8 = sequences['trois-applications'][7];
+  const nuit = await creeCarte(THREE, { components: modules, chargeur, theme: 'light', quality: 'high', reducedMotion: true, heure: 'nuit' });
+  await nuit.applique(s8);
+  verifie(allumes(nuit) === 4, `projecteurs : la nuit, en régime ouvert, ${allumes(nuit)} allumé(s) sur 4`);
+  nuit.regleHeure('jour');
+  verifie(allumes(nuit) === 0, 'projecteurs : allumés de jour');
+  nuit.regleHeure('nuit');
+  await nuit.applique({ ...s8, chantier: { ...s8.chantier, regime: 'pause' } }, { actions: false });
+  verifie(allumes(nuit) === 0, 'projecteurs : allumés pendant la pause');
+  nuit.dispose();
+  // un chantier encore gris (projet-type 2, ouvert, seuls les bureaux ont servi) : eteints
+  const gris = await creeCarte(THREE, { components: modules, chargeur, theme: 'light', quality: 'low', reducedMotion: true, heure: 'nuit' });
+  await gris.applique(sequences['projet-type'][1]);
+  verifie(allumes(gris) === 0, 'projecteurs : allumés dans un chantier encore gris');
+  gris.dispose();
+  rapports.push('projecteurs : quatre par chantier, hors des voies, des clôtures et des parcelles ; allumés la nuit en régime ouvert seulement');
+}
+
 // --- Le verdict
 if (erreurs.length) {
   console.error(`Carte vivante : ${erreurs.length} erreur(s) sur ${verifies} vérifications`);
