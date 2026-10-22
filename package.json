@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "check": "node scripts/check-components.mjs && node scripts/check-ville.mjs",
+    "check": "node scripts/check-components.mjs && node scripts/check-planning.mjs && node scripts/check-ville.mjs",
     "catalogue": "node scripts/build-catalogue-doc.mjs",
     "build": "vite build",
     "blender": "node scripts/blender.mjs",

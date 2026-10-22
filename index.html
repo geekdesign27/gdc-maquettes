@@ -38,8 +38,8 @@
     #stage .centre-ville > * { pointer-events: auto; }
     #stage .arbre-ville { grid-area: arbre; width: clamp(240px, 24vw, 300px); }
     #stage .fil-ville { grid-area: fil; width: clamp(260px, 26vw, 340px); }
-    #stage .planning-ville { grid-area: planning; height: var(--planning, 120px); display: grid; place-items: center; padding: 12px;
-      background: var(--gdc-surface); color: var(--gdc-muted); font: 13px/1.4 var(--gdc-font-ui, system-ui, sans-serif); text-align: center; }
+    /* le planning du chantier (site-schedule) : la hauteur que garde la galerie, comme GDC ; au demarrage, reduite */
+    #stage .planning-ville { grid-area: planning; height: var(--planning, 158px); }
     #stage .rail-arbre { grid-area: rail-arbre; }
     #stage .rail-fil { grid-area: rail-fil; }
     #stage .rail-planning { grid-area: rail-planning; }
@@ -52,7 +52,7 @@
         grid-template-areas: "centre centre centre" "ouvert ouvert ouvert" "rail-arbre rail-fil rail-planning"; }
       #stage :is(.arbre-ville, .fil-ville, .planning-ville) { grid-area: ouvert; width: auto; max-height: 55vh; }
       #stage .fil-ville { display: flex; flex-direction: column; }
-      #stage .planning-ville { height: 120px; }
+      #stage .planning-ville { height: min(55vh, 360px); }
       #stage .heure-ville { display: none; }
     }
     .anchor { position: absolute; transform: translate(-50%, -100%); background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 4px; padding: 1px 6px; font-size: 12px; white-space: nowrap; }

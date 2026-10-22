@@ -15,7 +15,7 @@ import * as personnage from './personnage.js';
 import * as reference from './scene-reference.js';
 import { creeCarte } from './ville/carte.js';
 import { MOMENTS, recetteDe, regleLumieres, creeVitres, eclaireBatiment, forceDe, ECLAIRABLES } from './ville/heure.js';
-import { defineElements } from './interface.js';
+import { defineElements, elements } from './interface.js';
 import { arbreDe } from './arbre.js';
 import { ombreAlternee } from './ombre.js';
 // La ville vivante (fiche city-map) : les sequences de GDC (fixtures/), jouees etape par etape dans la galerie
@@ -192,9 +192,12 @@ const PANNEAUX = {
   fil: { name: 'Le fil des déclencheurs', icon: 'feed', side: 'right' },
   planning: { name: 'Le planning du chantier', icon: 'schedule', side: 'bottom' },
 };
-const PLANNING = { min: 72, max: 320 }; // la hauteur du planning ouvert, en pixels
+// la hauteur du planning ouvert, en pixels, d'apres les mesures de site-schedule : au demarrage, la hauteur reduite
+// (la barre du titre, l'en-tete des jours et trois lignes) ; au moins une ligne
+const MESURES = elements['site-schedule'].mesures;
+const PLANNING = { min: MESURES.OUTILS + MESURES.TETE + MESURES.LIGNE + 2, max: 480 };
 const ouverts = { arbre: true, fil: true, planning: true };
-let taillePlanning = 120; // la hauteur reduite : l'en-tete des jours et trois lignes, en attendant site-schedule
+let taillePlanning = MESURES.OUTILS + MESURES.TETE + 3 * MESURES.LIGNE + 2;
 let comptesArbre = {};
 const telephone = matchMedia('(max-width: 600px)');
 let disposition = null;
@@ -204,11 +207,12 @@ function poseDisposition() {
   grille.className = 'panneaux-ville';
   const centre = document.createElement('div');
   centre.className = 'centre-ville';
-  // le planning n'existe pas encore (site-schedule, a GDC 0.20) : sa place est reservee, et dite telle
-  const planning = document.createElement('section');
+  // le planning du chantier (site-schedule) : la chronologie de GDC, relie au survol et a la selection
+  const planning = document.createElement('gdc-site-schedule');
   planning.className = 'planning-ville';
-  planning.setAttribute('aria-label', PANNEAUX.planning.name);
-  planning.textContent = 'Place réservée au planning du chantier : il arrive avec GDC 0.20.';
+  planning.addEventListener('gdc-hover', (e) => relaieSurvol('planning', e.detail.ref));
+  planning.addEventListener('gdc-select', (e) => relaieChoix(e.detail));
+  planningVille = planning;
   const rails = {};
   for (const id of Object.keys(PANNEAUX)) {
     const rail = document.createElement('gdc-panel-rail');
@@ -263,6 +267,7 @@ function rendDisposition() {
 function retireDisposition() {
   disposition?.grille.remove();
   disposition = null;
+  planningVille = null;
 }
 // les noeuds de l'arbre qui demandent quelque chose, a tous les niveaux : le badge de son rail
 function comptesDe(groupes) {
@@ -285,12 +290,68 @@ function poseFil(actions) {
   filVille.addEventListener('gdc-select', (e) => relaieChoix(e.detail));
   placePanneau('fil', filVille);
 }
-// La selection, comme GDC le fera (derniere passe de GDC, section 6) : le dernier gdc-select, d'ou qu'il vienne, est
-// renvoye au fil (selected) : un evt y marque les actions de ce fait.
+// La selection, comme GDC le fera (derniere passe de GDC, section 6) : le dernier gdc-select, d'ou qu'il vienne (le fil,
+// l'arbre, le planning, la carte), est renvoye a tous. Le fil et le planning le recoivent tel quel (selected) : un evt
+// marque les actions et le trait de ce fait, une ref ouvre les lignes du planning, etape ouvre l'etape. L'arbre choisit
+// le noeud de la meme reference ; la carte ouvre la coupe de l'etage d'une fiche, comme un clic sur cet etage (la camera
+// qui suit la selection vient avec city-map, plan I-8).
 let choixGdc = null;
-function relaieChoix(detail) {
+function relaieChoix(detail, { depuisCarte = false } = {}) {
   choixGdc = detail ?? null;
   if (filVille) filVille.selected = choixGdc;
+  if (planningVille) planningVille.selected = choixGdc;
+  const ref = choixGdc?.ref;
+  if (arbreVille && ref?.application) {
+    const id = noeudDe(arbreVille.data.groups, ref);
+    if (id) {
+      choixVille = id;
+      arbreVille.data = { ...arbreVille.data, selected: id };
+    }
+  }
+  const carte = current.ville?.carte;
+  if (!carte || depuisCarte || !ref?.application) return;
+  const b = sceneVille?.elements?.find((e) => e.element === 'building' && (e.ref?.application ?? e.id) === ref.application);
+  if (!b) return;
+  if (ref.fiche && carte.coupe !== b.id) carte.ouvreCoupe(b.id, ref.fiche).then(() => { dirty = true; });
+  else if (!ref.fiche && carte.coupe) { carte.fermeCoupe(); dirty = true; }
+}
+// le noeud de l'arbre qui porte exactement une reference (un batiment, une fiche, un lot)
+function noeudDe(groupes, ref) {
+  const meme = (r) => r && ['application', 'fiche', 'lot'].every((k) => (r[k] ?? null) === (ref[k] ?? null));
+  const cherche = (items) => {
+    for (const i of items || []) {
+      if (meme(i.ref)) return i.id;
+      const sous = cherche(i.children);
+      if (sous) return sous;
+    }
+    return null;
+  };
+  for (const g of groupes || []) {
+    const id = cherche(g.items);
+    if (id) return id;
+  }
+  return null;
+}
+
+// Le planning du chantier (site-schedule) : la chronologie complete du premier pas, puis, a l'etape suivante, ce qui a
+// change depuis (gdc chronologie --depuis), comme GDC a chaque nouvel evenement ; un saut lui donne la chronologie
+// complete du pas (complet: true) : le planning garde ce qui est deplie, le defilement et le choix.
+let planningVille = null;
+let sceneVille = null; // la scene du pas joue, pour trouver le batiment d'une reference
+// Les chronologies se lisent l'une apres l'autre, dans l'ordre des pas joues : deux clics rapides n'appliquent jamais
+// deux depuis dans le desordre.
+let filePlanning = Promise.resolve();
+function posePlanning(sequence, pas, suite) {
+  const p = poseDisposition() && planningVille;
+  if (!p || !pas) return filePlanning;
+  const lecture = fichierGdc(sequence, suite ? pas.depuis : pas.chronologie);
+  filePlanning = filePlanning.then(async () => {
+    const timeline = await lecture;
+    if (planningVille !== p) return;
+    p.data = { timeline: suite ? timeline : { ...timeline, complet: true } };
+    p.selected = choixGdc;
+  }).catch((e) => console.error(e));
+  return filePlanning;
 }
 function retireFil() {
   filVille?.remove();
@@ -312,6 +373,7 @@ function poseArbre(scene, sequence) {
     arbreVille.addEventListener('gdc-select', (e) => {
       choixVille = e.detail.id;
       arbreVille.data = { ...arbreVille.data, selected: choixVille };
+      relaieChoix(e.detail);
     });
     placePanneau('arbre', arbreVille);
   }
@@ -366,6 +428,7 @@ function relaieSurvol(source, ref) {
   const h = [...survolsVille.values()].at(-1) ?? null;
   if (filVille) filVille.highlight = h;
   if (arbreVille) arbreVille.highlight = h;
+  if (planningVille) planningVille.highlight = h;
   current.ville?.carte.surligne(h).then(() => { dirty = true; });
 }
 
@@ -385,6 +448,9 @@ async function instanceVille(id, state) {
   const actionsJusqua = (s) => etapes.slice(0, etapes.indexOf(s) + 1).flatMap((x) => sceneDe(x).actions || []);
   poseFil(actionsJusqua(premier));
   poseArbre(sceneDe(premier), nom);
+  sceneVille = sceneDe(premier);
+  const pasDe = (s) => index.etapes[etapes.indexOf(s)];
+  posePlanning(nom, pasDe(premier), false);
   poseHeure(carte);
   let etape = premier;
   const inst = {
@@ -396,6 +462,8 @@ async function instanceVille(id, state) {
       if (suite && filVille) filVille.data = { actions: sceneDe(s).actions || [] };
       else poseFil(actionsJusqua(s));
       poseArbre(sceneDe(s), nom);
+      sceneVille = sceneDe(s);
+      posePlanning(nom, pasDe(s), suite);
       carte.applique(sceneDe(s), { actions: suite }).then(() => {
         if (current.inst !== inst) return;
         current.apps = carte.applications;
@@ -677,8 +745,11 @@ renderer.domElement.addEventListener('pointerup', async (ev) => {
   const gabarits = cible?.element === 'survey-poles' && cible.ancre;
   const batiment = cible?.element === 'building' ? cible.id : gabarits ? cible.ancre : null;
   const fiche = gabarits ? cible.ref?.fiche : carte.refSous(objet)?.fiche;
+  // le clic sur la carte est une selection, relayee au fil, a l'arbre et au planning comme GDC le fera
+  const refChoisie = carte.refSous(objet) ?? (cible?.ref || null);
   if (batiment && carte.coupe !== batiment) await carte.ouvreCoupe(batiment, fiche);
   else carte.fermeCoupe();
+  if (refChoisie) relaieChoix({ id: refChoisie.lot ? `${refChoisie.fiche}/${refChoisie.lot}` : refChoisie.fiche ?? batiment ?? cible.id, ref: refChoisie }, { depuisCarte: true });
   // l'anneau du survol d'avant le clic tombait sur le batiment, cache le temps de la coupe : le survol suivant le repose
   survolVille = 'null';
   await carte.surligne(null);

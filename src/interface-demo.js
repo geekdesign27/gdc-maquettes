@@ -55,6 +55,30 @@ const actionsLimites = [
   { ts: "2026-10-21T15:53:42.000Z", action: "fermeture", element: "chantier", id: "chantier", phrase: "Le chantier ferme", cause: null, deduit: "silence" },
   { ts: "2026-10-21T15:53:43.000Z", action: "change", element: "client-office", id: "bureau-client", phrase: "Une cause illisible : ignorée, la ligne ne se clique pas", cause: "pas-un-evt" },
 ];
+// Le planning (site-schedule, plan I-7) : les chronologies de GDC (gdc chronologie) et ses mises a jour (--depuis), par
+// index.json ; volume a la demande, pour la mesure du budget.
+const chronoGdc = (sequence, numero, sorte = "chronologie") =>
+  fichiersGdc[`../fixtures/${sequence}/${etapesGdc(sequence).find((e) => e.numero === numero)[sorte]}`]();
+const [chronoNonOuvert, chronoProjetType, chronoPause, chronoTrois, chronoFeuxVerts, chronoLong] = await Promise.all([
+  chronoGdc("projet-type", 1),
+  chronoGdc("projet-type", 25),
+  chronoGdc("projet-type", 20),
+  chronoGdc("trois-applications", 9),
+  chronoGdc("trois-applications", 5),
+  chronoGdc("projet-long", 25),
+]);
+const depuisProjetType = await Promise.all(
+  etapesGdc("projet-type").filter((e) => e.numero > 11).map((e) => chronoGdc("projet-type", e.numero, "depuis")),
+);
+const completesTrois = await Promise.all([6, 7, 8].map((n) => chronoGdc("trois-applications", n)));
+// les etats poses apres le rendu, comme GDC les renverrait (survol, choix) ou comme l'utilisateur les ferait (pli, tableau)
+const planningAvec = (apres) => (n) => {
+  requestAnimationFrame(() => requestAnimationFrame(() => apres(n)));
+  return n;
+};
+const clicDans = (n, selecteur) => n.shadowRoot.querySelector(selecteur)?.click();
+const FICHE_TERRAIN = { application: "terrain", fiche: "004-saisir-un-constat-hors-ligne" };
+
 // Le choix relaye comme GDC le fera (derniere passe de GDC, section 6) : un premier choix, puis chaque gdc-select de
 // l'element lui revient en selected.
 const relaieChoix = (n, premier) => {
@@ -345,6 +369,88 @@ export const variantes = {
       data: { actions: actionsLimites },
     },
     { titre: "Sans données", style: "max-width: 380px", data: {} },
+  ],
+  // le planning : chaque etat de la fiche, sur les sequences reelles ; la page relaie chaque gdc-select en selected
+  "site-schedule": [
+    { titre: "Chargement : aucune chronologie encore", style: "height: 120px", data: {} },
+    { titre: "Données illisibles : schéma 2", style: "height: 120px", data: { timeline: { ...chronoTrois, schema: 2 } } },
+    { titre: "Projet non ouvert (projet-type, pas 1) : les dix étapes à venir, à la file", style: "height: 360px", data: { timeline: chronoNonOuvert } },
+    {
+      titre: "Normal, une seule application (projet-type, pas 25) : lignes d'application masquées, étapes en cours dépliées, traits regroupés par jour, défaut fermé, permis périmé",
+      style: "height: 420px",
+      data: { timeline: chronoProjetType },
+      cadre: (n) => relaieChoix(n, null),
+    },
+    { titre: "Une pause en cours (projet-type, pas 20) : ta réception attendue, la bande du régime ouverte jusqu'à maintenant", style: "height: 300px", data: { timeline: chronoPause } },
+    { titre: "Décision attendue (trois-applications, pas 5) : deux feux verts t'attendent, trois applications", style: "height: 380px", data: { timeline: chronoFeuxVerts } },
+    { titre: "Jours repliés (projet-long, horloge décalée) : un jour vide étroit, des plis", style: "height: 300px", data: { timeline: chronoLong } },
+    {
+      titre: "Pli déplié (projet-long) : le premier pli ouvert",
+      style: "height: 300px",
+      data: { timeline: chronoLong },
+      cadre: planningAvec((n) => clicDans(n, "button[data-pli]")),
+    },
+    {
+      titre: "Ligne survolée ailleurs (highlight : la fiche « Saisir un constat hors ligne ») : toutes ses barres s'éclairent, l'escalier les relie",
+      style: "height: 380px",
+      data: { timeline: chronoTrois },
+      cadre: planningAvec((n) => {
+        for (const o of n.shadowRoot.querySelectorAll('.ligne[aria-expanded="false"]'))
+          if (o.dataset.id.startsWith("application:terrain@")) o.querySelector(".ouvre").click();
+        n.highlight = FICHE_TERRAIN;
+      }),
+    },
+    {
+      titre: "Ligne choisie ailleurs ({ id, ref } : la fiche à l'étape 6) : ses lignes s'ouvrent, le planning y défile",
+      style: "height: 300px",
+      data: { timeline: chronoTrois },
+      cadre: (n) => relaieChoix(n, { id: "004-saisir-un-constat-hors-ligne", ref: FICHE_TERRAIN }),
+    },
+    {
+      titre: "Étape choisie ({ id: \"etape:7\", etape: 7 }) : l'étape s'ouvre",
+      style: "height: 300px",
+      data: { timeline: chronoTrois },
+      cadre: (n) => relaieChoix(n, { id: "etape:7", etape: 7 }),
+    },
+    {
+      titre: "Trait choisi ({ id, ref, evt } : l'essai rouge de la fiche terrain, choisi dans le fil) : son trait marqué",
+      style: "height: 300px",
+      data: { timeline: chronoTrois },
+      cadre: (n) => relaieChoix(n, { id: "developpeur-base", ref: { ...FICHE_TERRAIN, lot: "L1" }, evt: "evt:004-saisir-un-constat-hors-ligne/9958f34e" }),
+    },
+    {
+      titre: "Jalon choisi, refusé : « On continue » et son motif (détail en haut)",
+      style: "height: 260px",
+      data: { timeline: chronoTrois },
+      cadre: (n) => relaieChoix(n, { id: "jalon:projet/on-continue/1", evt: "evt:projet/74393a6f" }),
+    },
+    {
+      titre: "Jalon choisi, périmé : le permis de construire et sa date d'après git (repère pointillé)",
+      style: "height: 260px",
+      data: { timeline: chronoTrois },
+      cadre: (n) => relaieChoix(n, { id: "jalon:projet/permis-de-construire/1", evt: "evt:projet/1c835438" }),
+    },
+    {
+      titre: "Vue tableau (projet-type, pas 25) : une ligne par barre, par jalon et par repère, avec la source",
+      style: "height: 360px",
+      data: { timeline: chronoProjetType },
+      cadre: planningAvec((n) => clicDans(n, "button.bascule")),
+    },
+    {
+      titre: "Mise à jour reçue : projet-type depuis le pas 11 ; « Étape suivante » applique le depuis du pas suivant (déplié, défilement et choix gardés)",
+      style: "height: 360px",
+      data: { timeline: await chronoGdc("projet-type", 11) },
+      suite: depuisProjetType.map((timeline) => ({ timeline })),
+      cadre: (n) => relaieChoix(n, null),
+    },
+    {
+      titre: "Chronologie complète reçue à la place (complet: true) : trois-applications, pas 5 puis 6, 7 et 8 entières",
+      style: "height: 360px",
+      data: { timeline: chronoFeuxVerts },
+      suite: completesTrois.map((c) => ({ timeline: { ...c, complet: true } })),
+      cadre: (n) => relaieChoix(n, null),
+    },
+    { titre: "Sur téléphone (fenêtre sous 600 px) : la liste par fiche ; « Moins d'animation » en haut de page : aucun glissement", style: "height: 300px", data: { timeline: chronoTrois } },
   ],
   "copy-button": [
     { titre: "Un nom : copie « Le bureau d'études (bureau-etudes) »", data: { id: "bureau-etudes", text: "Le bureau d'études" } },
