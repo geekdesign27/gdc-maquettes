@@ -91,6 +91,10 @@ export function checkInstance(THREE, mod, entry, ctx, partagees = new Set()) {
   if (inst.root.userData.component !== mod.meta.id) problems.push(`${label} root.userData.component doit valoir « ${mod.meta.id} »`);
   if (problems.length) return problems;
   const seen = new Set();
+  // une ressource que le composant libere en cours de route (a la reconstruction d'un etat) compte comme liberee : on
+  // l'ecoute des qu'elle apparait (building 2.1.0 refait ses geometries fusionnees a chaque etat)
+  const disposed = new Set();
+  const vue = (d) => { if (!seen.has(d)) { seen.add(d); d.addEventListener('dispose', () => disposed.add(d)); } };
   for (const state of mod.meta.states) {
     try { inst.setState(state); } catch (e) { problems.push(`${label} setState(« ${state} ») sans données a échoué : ${e.message}`); continue; }
     try { inst.setState(state, sampleData(entry)); } catch (e) { problems.push(`${label} setState(« ${state} ») a échoué : ${e.message}`); continue; }
@@ -100,7 +104,7 @@ export function checkInstance(THREE, mod, entry, ctx, partagees = new Set()) {
     const m = measure(inst.root);
     if (m.triangles > mod.meta.budget.triangles) problems.push(`${label} ${m.triangles} triangles dans l'état ${state}, budget ${mod.meta.budget.triangles}`);
     if (m.materials > mod.meta.budget.materials) problems.push(`${label} ${m.materials} matériaux dans l'état ${state}, budget ${mod.meta.budget.materials}`);
-    for (const d of collectDisposables(inst.root)) seen.add(d);
+    for (const d of collectDisposables(inst.root)) vue(d);
   }
   try { inst.setState('__inconnu__', {}); problems.push(`${label} setState accepte un état absent du catalogue`); } catch { /* attendu */ }
   for (const a of mod.meta.anchors) {
@@ -109,8 +113,6 @@ export function checkInstance(THREE, mod, entry, ctx, partagees = new Set()) {
     const name = a === 'room:*' && mod.meta.anchors.includes('floor:*') ? 'room:1-1' : a.replace('*', '1');
     try { const v = inst.anchor(name); if (!v || !v.isVector3) problems.push(`${label} anchor(« ${name} ») ne renvoie pas un point`); } catch (e) { problems.push(`${label} anchor(« ${name} ») a échoué : ${e.message}`); }
   }
-  const disposed = new Set();
-  for (const d of seen) d.addEventListener('dispose', () => disposed.add(d));
   inst.dispose();
   const left = [...seen].filter((d) => !disposed.has(d) && !partagees.has(d));
   if (left.length) problems.push(`${label} dispose() laisse ${left.length} géométrie(s), matériau(x), texture(s) ou instance(s)`);
