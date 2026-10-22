@@ -92,9 +92,16 @@ export function checkInstance(THREE, mod, entry, ctx, partagees = new Set()) {
   if (problems.length) return problems;
   const seen = new Set();
   // une ressource que le composant libere en cours de route (a la reconstruction d'un etat) compte comme liberee : on
-  // l'ecoute des qu'elle apparait (building 2.1.0 refait ses geometries fusionnees a chaque etat)
+  // l'ecoute des qu'elle apparait (building 2.1.0 refait ses geometries fusionnees a chaque etat). Deux gardes, pour que
+  // cela n'ouvre pas de fuite : une ressource revue dans l'arbre apres sa liberation est encore en usage (Three.js la
+  // recharge sur la carte graphique) ; et un second passage dans les etats ne doit rien garder de plus que le premier.
   const disposed = new Set();
-  const vue = (d) => { if (!seen.has(d)) { seen.add(d); d.addEventListener('dispose', () => disposed.add(d)); } };
+  const reutilisees = new Set();
+  const vue = (d) => {
+    if (!seen.has(d)) { seen.add(d); d.addEventListener('dispose', () => disposed.add(d)); }
+    else if (disposed.has(d)) { disposed.delete(d); reutilisees.add(d); }
+  };
+  const vivantes = () => [...seen].filter((d) => !disposed.has(d) && !partagees.has(d)).length;
   for (const state of mod.meta.states) {
     try { inst.setState(state); } catch (e) { problems.push(`${label} setState(« ${state} ») sans données a échoué : ${e.message}`); continue; }
     try { inst.setState(state, sampleData(entry)); } catch (e) { problems.push(`${label} setState(« ${state} ») a échoué : ${e.message}`); continue; }
@@ -106,6 +113,13 @@ export function checkInstance(THREE, mod, entry, ctx, partagees = new Set()) {
     if (m.materials > mod.meta.budget.materials) problems.push(`${label} ${m.materials} matériaux dans l'état ${state}, budget ${mod.meta.budget.materials}`);
     for (const d of collectDisposables(inst.root)) vue(d);
   }
+  const apresPremierPassage = vivantes();
+  for (const state of mod.meta.states) {
+    try { inst.setState(state); inst.setState(state, sampleData(entry)); inst.update(0.016); } catch { continue; } // deja signale
+    for (const d of collectDisposables(inst.root)) vue(d);
+  }
+  if (vivantes() > apresPremierPassage) problems.push(`${label} garde ${vivantes() - apresPremierPassage} ressource(s) de plus à chaque passage dans les états : ce qu'une reconstruction remplace n'est pas libéré`);
+  if (reutilisees.size) problems.push(`${label} ${reutilisees.size} ressource(s) libérée(s) puis encore affichée(s) : Three.js les recharge, et plus rien ne les libère`);
   try { inst.setState('__inconnu__', {}); problems.push(`${label} setState accepte un état absent du catalogue`); } catch { /* attendu */ }
   for (const a of mod.meta.anchors) {
     // les ancres numerotees comptent depuis 1 (desk:1, le premier poste) ; a cote d'etages (floor:*), une piece est
