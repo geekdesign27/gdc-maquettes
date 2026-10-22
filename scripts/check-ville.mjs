@@ -164,6 +164,31 @@ for (const [nom, scenes] of Object.entries(sequences))
     }
   }
 
+// --- Le camion de livraison : il roule benne baissee, la leve une fois gare, et repart (projet-type 15 -> 16 -> 15)
+{
+  const [s15, s16] = [sequences['projet-type'][14], sequences['projet-type'][15]];
+  const carte = await creeCarte(THREE, { components: modules, chargeur, theme: 'light', quality: 'high', reducedMotion: false });
+  await carte.applique(s15);
+  await carte.applique(s16);
+  let vu = false;
+  for (let t = 0; t < 20 * 30; t++) {
+    carte.update(1 / 30);
+    for (const c of carte.compte().camions) {
+      if (c.roule) vu = true;
+      verifie(!c.roule || c.state !== 'arriving', `camion : il vide sa benne en roulant (t = ${(t / 30).toFixed(1)} s)`);
+    }
+  }
+  verifie(vu, 'camion : il ne roule pas pour arriver');
+  verifie(carte.compte().camions.length === 1 && carte.compte().camions[0].state === 'arriving', 'camion : garé, il ne lève pas sa benne');
+  await carte.applique({ ...s15, actions: [{ ts: 'z', action: 'disparait', element: 'delivery-truck', id: 'camion-001-cloturer-un-audit' }] });
+  for (let t = 0; t < 20 * 30; t++) {
+    carte.update(1 / 30);
+    for (const c of carte.compte().camions) verifie(!c.roule || c.state === 'idle', `camion : il repart benne levée (t = ${(t / 30).toFixed(1)} s)`);
+  }
+  verifie(carte.compte().camions.length === 0, 'camion : il ne repart pas');
+  carte.dispose();
+}
+
 // --- Le verdict
 if (erreurs.length) {
   console.error(`Carte vivante : ${erreurs.length} erreur(s) sur ${verifies} vérifications`);

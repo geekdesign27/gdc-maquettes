@@ -50,6 +50,9 @@ const IMPULSION = 0.4; // s, un element qui apparait ou s'efface
 const MONTAGE_GRUE = 1.5; // s, la grue qui se monte ou se demonte
 const VITESSE_CAMION = 6; // m/s
 const ROULE_MAX = 6; // s, le plafond d'un trajet de camion
+const RAYON_VIRAGE = 2.5; // m, le camion arrondit les angles des voies
+const RECUL_CAMION = 5; // m, il recule hors de sa place avant de repartir
+const BRAQUAGE = 6; // 1/s, la vitesse a laquelle son cap rejoint celui de la voie
 const ECART_PERSONNES = 0.75; // m, deux personnes ne se posent jamais plus pres
 // Les phases du gros oeuvre, ou la grue est montee sur la parcelle (docs/ville.md : la structure et ses echafaudages,
 // la grue) ; GDC la fait lever (lifting) a la fusion vers dev, et la pose meme hors de ces phases.
@@ -777,7 +780,9 @@ export async function creeCarte(THREE, options) {
       e.m.inst.root.scale.setScalar(1);
       e.fin?.();
     }
-    for (const r of roulages.splice(0)) {
+    while (roulages.length) {
+      // une fin peut lancer un autre trajet (le camion qui recule, puis repart) : on les finit tous
+      const r = roulages.shift();
       if (r.rotation !== undefined) r.m.inst.root.rotation.y = r.rotation;
       r.fin?.();
     }
@@ -898,8 +903,35 @@ export async function creeCarte(THREE, options) {
   }
 
   // --- le camion de livraison : il arrive par la voie et le portail jusqu'a sa place sur la parcelle, et repart par le
-  // meme chemin (retour de Pierre-Alain du 22 octobre 2026 : il apparaissait « comme par miracle »)
-  let roulages = []; // { m, chemin, duree, t, fin, rotation }
+  // meme chemin (retours de Pierre-Alain du 22 octobre 2026 : il apparaissait « comme par miracle », puis vidait sa
+  // benne en roulant et tournait « tres carre »). Il roule benne baissee (idle) et ne la leve (arriving) qu'a l'arret ;
+  // il prend les angles en arc, accelere au depart et ralentit avant l'arret ; il recule hors de sa place pour repartir.
+  let roulages = []; // { m, chemin, duree, t, fin, rotation, recul }
+  // Les angles d'un chemin arrondis : un arc (une courbe de Bezier) de rayon au plus r, sans depasser la moitie des
+  // segments voisins.
+  function arrondit(points, r = RAYON_VIRAGE) {
+    if (points.length < 3) return points;
+    const sortie = [points[0]];
+    for (let i = 1; i < points.length - 1; i++) {
+      const [a, b, c] = [points[i - 1], points[i], points[i + 1]];
+      const k = Math.min(r, dist(a, b) / 2, dist(b, c) / 2);
+      if (k < 0.05) {
+        sortie.push(b);
+        continue;
+      }
+      const vers = (p, q, d) => [q[0] + ((p[0] - q[0]) * d) / dist(p, q), q[1] + ((p[1] - q[1]) * d) / dist(p, q)];
+      const [p0, p2] = [vers(a, b, k), vers(c, b, k)];
+      for (let n = 0; n <= 6; n++) {
+        const t = n / 6;
+        sortie.push([
+          (1 - t) ** 2 * p0[0] + 2 * (1 - t) * t * b[0] + t ** 2 * p2[0],
+          (1 - t) ** 2 * p0[1] + 2 * (1 - t) * t * b[1] + t ** 2 * p2[1],
+        ]);
+      }
+    }
+    sortie.push(points[points.length - 1]);
+    return sortie.filter((p, i) => i === 0 || dist(sortie[i - 1], p) > 1e-6);
+  }
   function trajetCamion(m) {
     const pa = parcelleDe(m.el?.ancre);
     if (!pa) return null;
@@ -909,23 +941,39 @@ export async function creeCarte(THREE, options) {
     const c = chemins.chemin(dehors, `allee:${pa.index + 1}`);
     return [dehors, ...(c ? c.points.slice(1) : []), [x - 6, z - 3.4], [x - 4, z], [x, z]];
   }
-  function roule(m, points, fin, rotationFinale) {
+  // rouler le long de points ; recul : en marche arriere (le cap reste celui de l'avant)
+  // aligne : il part deja dans l'axe de la voie (il arrive de hors de la carte)
+  function roule(m, points, fin, { rotation, recul = false, aligne = false } = {}) {
     if (!points || !anime) {
       fin?.();
       return 0;
     }
-    const chemin = mesure(points);
+    const chemin = mesure(recul ? points : arrondit(points));
     const duree = Math.min(Math.max(chemin.longueur / VITESSE_CAMION, 1.5), ROULE_MAX);
     m.inst.root.visible = true;
     m.inst.root.position.set(points[0][0], 0, points[0][1]);
-    roulages.push({ m, chemin, duree, t: 0, fin, rotation: rotationFinale });
+    if (aligne) m.inst.root.rotation.y = positionSur(chemin, 0)[2];
+    m.roule = true;
+    roulages.push({ m, chemin, duree, t: 0, fin, rotation, recul });
     return duree;
   }
+  const benneBaissee = (m) => etat(m, "idle", {}); // il roule benne baissee
   function arriveCamion(m) {
     const pa = parcelleDe(m.el?.ancre);
-    return roule(m, trajetCamion(m), () => {
-      if (pa) m.inst.root.position.set(...pa.camion.position);
-    }, pa?.camion.rotation);
+    benneBaissee(m);
+    return roule(
+      m,
+      trajetCamion(m),
+      () => {
+        m.roule = false;
+        if (pa) {
+          m.inst.root.position.set(...pa.camion.position);
+          m.inst.root.rotation.y = pa.camion.rotation;
+        }
+        if (m.el) etat(m, etatValide(m.el), donneesDe(m.el)); // garé : la benne se leve
+      },
+      { rotation: pa?.camion.rotation, aligne: true },
+    );
   }
   function repartCamion(m) {
     m.part = true;
@@ -934,7 +982,13 @@ export async function creeCarte(THREE, options) {
       retire(m.cle);
       return 0;
     }
-    return roule(m, t.reverse(), () => retire(m.cle));
+    benneBaissee(m);
+    // il recule en biais hors de sa place, vers l'allee, puis repart en avant par la voie
+    const [x, z] = t[t.length - 1];
+    const recule = [x - RECUL_CAMION, z - 3.5];
+    const aller = [recule, ...t.slice(0, -3).reverse()];
+    const d1 = roule(m, [[x, z], recule], () => roule(m, aller, () => retire(m.cle)), { recul: true });
+    return d1 + Math.min(Math.max(mesure(aller).longueur / VITESSE_CAMION, 1.5), ROULE_MAX);
   }
 
   // l'etat recu : chaque element a sa place et son etat ; ce qui n'est plus dans la scene s'en va
@@ -963,7 +1017,7 @@ export async function creeCarte(THREE, options) {
         if (m.id === "delivery-truck" && doucement && anime) arriveCamion(m);
         else if (doucement && anime) impulsion(m, 0, 1);
       }
-      etat(m, etatValide(el), donneesDe(el));
+      if (!m.roule) etat(m, etatValide(el), donneesDe(el)); // un camion qui roule garde sa benne baissee
     }
     for (const c of [...places.keys()]) if (c.startsWith("gdc:")) places.delete(c); // les postes des agents sont refaits
     for (const [m, id] of agents)
@@ -1091,8 +1145,8 @@ export async function creeCarte(THREE, options) {
     if (a.action === "apparait") {
       if (!m.inst.root.visible) {
         m.inst.root.visible = true;
-        if (el) etat(m, etatValide(el), donneesDe(el));
         if (m.id === "delivery-truck") return arriveCamion(m);
+        if (el) etat(m, etatValide(el), donneesDe(el));
         if (anime) impulsion(m, 0, 1);
       }
       return IMPULSION;
@@ -1219,11 +1273,15 @@ export async function creeCarte(THREE, options) {
         encore = true;
         r.t += dt;
         const f = Math.min(r.t / r.duree, 1);
+        // il accelere au depart et ralentit avant l'arret ; son cap rejoint celui de la voie sans a-coup
         const [x, z, cap] = positionSur(r.chemin, f * f * (3 - 2 * f));
         r.m.inst.root.position.set(x, 0, z);
-        r.m.inst.root.rotation.y = f >= 1 && r.rotation !== undefined ? r.rotation : cap;
+        const vise = r.recul ? cap + Math.PI : cap;
+        const ecart = Math.atan2(Math.sin(vise - r.m.inst.root.rotation.y), Math.cos(vise - r.m.inst.root.rotation.y));
+        r.m.inst.root.rotation.y += ecart * Math.min(1, dt * BRAQUAGE);
         if (f >= 1) {
           roulages.splice(roulages.indexOf(r), 1);
+          if (r.rotation !== undefined) r.m.inst.root.rotation.y = r.rotation;
           r.fin?.();
         }
       }
@@ -1410,6 +1468,8 @@ export async function creeCarte(THREE, options) {
         usagers: gens,
         agents: [...membres.values()].filter((m) => m.acteur && !m.vie).length,
         personnes: [...membres.values()].filter((m) => m.id === "character").length, // tous ceux qui sont poses
+        // les camions de livraison : leur etat et s'ils roulent
+        camions: [...membres.values()].filter((m) => m.id === "delivery-truck").map((m) => ({ state: m.state, roule: Boolean(m.roule) })),
         // les grues montees, par batiment
         grues: [...membres.values()].filter((m) => m.batiment && m.id === "crane" && m.inst.root.visible).map((m) => m.batiment),
         // les paires de personnes arretees trop pres l'une de l'autre (au meme niveau)
