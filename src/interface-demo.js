@@ -12,6 +12,50 @@ const el = (balise, attrs = {}, texte) => {
   return n;
 };
 
+// Le selecteur d'etages (lot G8) : les donnees qu'en tire GDC, depuis un batiment de sa scene (schema 3, etages).
+const troisChantiers = import.meta.glob(
+  "../fixtures/trois-applications/08-trois-chantiers.json",
+  { eager: true, import: "default" },
+);
+const batimentGdc = (id) =>
+  Object.values(troisChantiers)[0].elements.find(
+    (e) => e.element === "building" && e.id === id,
+  );
+const selecteurDe = (b, selected) => ({
+  building: { id: b.id, name: b.nom },
+  floors: b.etages.map((e) => ({
+    id: e.fiche,
+    name: e.nom,
+    etape: e.etape,
+    delivered: Boolean(e.livre),
+  })),
+  selected,
+});
+// neuf fiches, pour voir le rez regroupe : les plus anciennes livrees, puis le chantier en cours
+const neufFiches = (selected, livrees = 4) => ({
+  building: { id: "bureau", name: "Application de bureau" },
+  floors: [
+    ["001-cloturer-un-audit", "Clôturer un audit"],
+    ["002-signer-le-rapport", "Signer le rapport"],
+    ["005-planifier-les-audits", "Planifier les audits de l'année"],
+    ["006-joindre-des-photos", "Joindre des photos au constat"],
+    ["007-relancer-un-auditeur", "Relancer un auditeur en retard"],
+    ["008-archiver-un-audit", "Archiver un audit clôturé"],
+    ["009-exporter-un-audit-en-pdf", "Exporter un audit en PDF"],
+    ["010-tableau-de-bord", "Le tableau de bord des non-conformités"],
+    ["011-mode-hors-ligne", "Travailler hors ligne sur le chantier"],
+  ].map(([id, name], i) => ({
+    id,
+    name,
+    etape: i < livrees ? 9 : [8, 7, 6, 6, 5, 4, 3, 2][i - livrees],
+    delivered: i < livrees,
+    state: i < livrees
+      ? "done"
+      : ["done", "waiting", "active", "blocked", "error", "unknown", undefined, "active"][i - livrees],
+  })),
+  selected,
+});
+
 // Les variantes montrees pour chaque element : { titre, data }. Les donnees suivent la fiche du catalogue.
 const minutes = (n) => new Date(Date.now() - n * 60000).toISOString();
 export const variantes = {
@@ -110,6 +154,35 @@ export const variantes = {
       },
     },
     { titre: "Sans données", style: "height: 160px; max-width: 300px", data: {} },
+  ],
+  // le selecteur d'etages : les batiments de fixtures/trois-applications (etape 8), puis neuf fiches pour le rez
+  "floor-selector": [
+    {
+      titre: "Application de bureau : une fiche livrée, une surélévation (trois-applications, étape 8)",
+      style: "max-width: 340px",
+      data: selecteurDe(batimentGdc("bureau"), "004-exporter-un-audit-en-pdf"),
+    },
+    {
+      titre: "Administration : l'application existante au rez, pas choisissable",
+      style: "max-width: 340px",
+      data: selecteurDe(batimentGdc("admin"), "003-gerer-les-droits-des-auditeurs"),
+    },
+    {
+      titre: "Neuf fiches : le rez regroupe les quatre livrées, les six états",
+      style: "max-width: 340px",
+      data: neufFiches("010-tableau-de-bord"),
+    },
+    {
+      titre: "Neuf fiches, deux livrées : le rez prend aussi les plus anciennes ; la choisie y est, il est déplié",
+      style: "max-width: 340px",
+      data: neufFiches("005-planifier-les-audits", 2),
+    },
+    {
+      titre: "Avant la première fiche (trois-applications, étape 1)",
+      style: "max-width: 340px",
+      data: { building: { id: "terrain", name: "Application terrain" }, floors: [] },
+    },
+    { titre: "Sans données", style: "max-width: 340px", data: {} },
   ],
   "copy-button": [
     { titre: "Un nom : copie « Le bureau d'études (bureau-etudes) »", data: { id: "bureau-etudes", text: "Le bureau d'études" } },
@@ -406,7 +479,7 @@ function sectionSurvol(entry) {
     el(
       "p",
       {},
-      "Banc d'essai : trois listes simples, tirées de fixtures/trois-applications, branchées par ctx.hoverLink comme le seront le fil des déclencheurs, le sélecteur d'étages et la navigation 2.0.0. Survole ou parcours au clavier : ce qui correspond s'allume dans les trois. La carte se branche avec building 2.0.0.",
+      "Banc d'essai tiré de fixtures/trois-applications : le fil et l'arbre sont deux listes simples branchées par ctx.hoverLink, comme le seront le fil des déclencheurs et la navigation 2.0.0 ; au milieu, le vrai sélecteur d'étages. Survole ou parcours au clavier : ce qui correspond s'allume dans les trois. La carte se branche avec building 2.0.0.",
     ),
   );
   const scenes = Object.keys(etapesTrois)
@@ -445,15 +518,16 @@ function sectionSurvol(entry) {
     actions.append(item(bouton(a.phrase, a.ref)));
   fil.append(actions);
   // les etages : le panneau d'ascenseur de chaque batiment, l'etage du haut en haut
-  const etages = colonne("Les étages");
+  // les etages : le vrai selecteur d'etages (floor-selector), un par batiment ; il emet gdc-hover et lit highlight
+  // lui-meme, par le relais de la page
+  const etages = colonne("Le sélecteur d'étages");
   const refEtage = (b, e) =>
     e.fiche ? { ...b.ref, fiche: e.fiche } : b.ref;
   for (const b of batiments) {
-    const ul = el("ul");
-    b.etages.forEach((e, i) =>
-      ul.prepend(item(bouton(`${i ? i : "R"} · ${e.nom}`, refEtage(b, e)))),
-    );
-    etages.append(el("h4", {}, b.nom), ul);
+    const selecteur = document.createElement("gdc-floor-selector");
+    selecteur.data = selecteurDe(b, null);
+    selecteur.style.marginBottom = "8px";
+    etages.append(selecteur);
   }
   // l'arbre : application, fiches, lots
   const arbre = colonne("L'arbre, à droite");
@@ -471,6 +545,8 @@ function sectionSurvol(entry) {
   arbre.append(racine);
   const grille = el("div", { class: "banc" });
   for (const c of [fil, etages, arbre]) {
+    grille.append(c);
+    if (c === etages) continue;
     interfaceContext.hoverLink(c, (n) => refs.get(n) || null);
     recepteurs.add((ref) => {
       for (const b of c.querySelectorAll("button"))
@@ -479,7 +555,6 @@ function sectionSurvol(entry) {
           interfaceContext.correspond(ref, refs.get(b)),
         );
     });
-    grille.append(c);
   }
   // le compteur : un seul evenement par changement de reference, null a la sortie
   const compteur = el("p", { class: "banc-journal" }, "Aucun gdc-hover encore.");
