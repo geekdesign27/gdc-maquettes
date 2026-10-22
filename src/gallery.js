@@ -15,13 +15,14 @@ import * as personnage from './personnage.js';
 import * as reference from './scene-reference.js';
 import { creeCarte } from './ville/carte.js';
 import { defineElements } from './interface.js';
+import { arbreDe } from './arbre.js';
 // La ville vivante (fiche city-map) : les sequences de GDC (fixtures/), jouees etape par etape dans la galerie
 const VILLE_ID = 'ville';
 const SEQUENCES = Object.fromEntries(Object.entries(import.meta.glob('../fixtures/*/index.json', { eager: true, import: 'default' })).map(([p, index]) => [p.split('/')[2], index]));
 const SCENES_GDC = import.meta.glob('../fixtures/*/[0-9]*.json', { eager: true, import: 'default' });
 
 const charge = chargeur({ GLTFLoader, SkeletonUtils });
-defineElements(); // le fil des declencheurs, a cote de la carte vivante
+defineElements(); // le fil des declencheurs et l'arbre, de part et d'autre de la carte vivante
 const entries = catalogue.items.filter((i) => i.kind === 'component');
 const $ = (id) => document.getElementById(id);
 const stage = $('stage');
@@ -175,14 +176,39 @@ function retireFil() {
   filVille = null;
   survolsVille.clear();
 }
-// Le survol partage entre la carte et le fil, comme GDC le fera : chaque source garde sa derniere reference ; le
-// highlight est la plus recente qui n'est pas null, renvoye au fil (l'emetteur compris) et pose sur la carte.
+// L'arbre des fiches et des lots (side-nav 2.0.0), a droite de la carte comme dans GDC : tire de la scene de chaque
+// etape (src/arbre.js) ; les batiments se deplient a leur arrivee ; un choix est confirme comme GDC le ferait.
+let arbreVille = null;
+let choixVille = null;
+function poseArbre(scene) {
+  if (!arbreVille) {
+    arbreVille = document.createElement('gdc-side-nav');
+    arbreVille.className = 'arbre-ville';
+    arbreVille.addEventListener('gdc-hover', (e) => relaieSurvol('arbre', e.detail.ref));
+    arbreVille.addEventListener('gdc-select', (e) => {
+      choixVille = e.detail.id;
+      arbreVille.data = { ...arbreVille.data, selected: choixVille };
+    });
+    stage.append(arbreVille);
+  }
+  const batiments = (scene.elements || []).filter((e) => e.element === 'building').map((e) => e.id);
+  arbreVille.data = arbreDe(scene, { selected: choixVille, expanded: batiments });
+}
+function retireArbre() {
+  arbreVille?.remove();
+  arbreVille = null;
+  choixVille = null;
+}
+// Le survol partage entre la carte, le fil et l'arbre, comme GDC le fera : chaque source garde sa derniere reference ;
+// le highlight est la plus recente qui n'est pas null, renvoye au fil et a l'arbre (l'emetteur compris) et pose sur la
+// carte.
 const survolsVille = new Map();
 function relaieSurvol(source, ref) {
   survolsVille.delete(source);
   if (ref) survolsVille.set(source, ref);
   const h = [...survolsVille.values()].at(-1) ?? null;
   if (filVille) filVille.highlight = h;
+  if (arbreVille) arbreVille.highlight = h;
   current.ville?.carte.surligne(h).then(() => { dirty = true; });
 }
 
@@ -197,6 +223,7 @@ async function instanceVille(id, state) {
   await carte.applique(sceneDe(premier));
   const actionsJusqua = (s) => etapes.slice(0, etapes.indexOf(s) + 1).flatMap((x) => sceneDe(x).actions || []);
   poseFil(actionsJusqua(premier));
+  poseArbre(sceneDe(premier));
   let etape = premier;
   const inst = {
     root: carte.root,
@@ -206,6 +233,7 @@ async function instanceVille(id, state) {
       etape = s;
       if (suite && filVille) filVille.data = { actions: sceneDe(s).actions || [] };
       else poseFil(actionsJusqua(s));
+      poseArbre(sceneDe(s));
       carte.applique(sceneDe(s), { actions: suite }).then(() => {
         if (current.inst !== inst) return;
         current.apps = carte.applications;
@@ -315,7 +343,7 @@ function parametresAdresse(meta) {
     }));
 }
 
-function retire(x) { if (x && x.ville) retireFil(); if (x && x.ville?.lecture) clearInterval(x.ville.lecture); if (x && x.inst) { scene.remove(x.inst.root); x.inst.dispose(); } }
+function retire(x) { if (x && x.ville) { retireFil(); retireArbre(); } if (x && x.ville?.lecture) clearInterval(x.ville.lecture); if (x && x.inst) { scene.remove(x.inst.root); x.inst.dispose(); } }
 
 // Un signal (lot G5) se juge a cote des lieux ou il apparait (signaletique) : ses voisins de planche, poses tout pres
 // (ECART_SIGNAL entre les emprises), et non les deux premiers modeles livres ; « id/etat » pose un voisin dans cet etat.
