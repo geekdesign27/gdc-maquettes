@@ -110,6 +110,11 @@ export function define(registry, ctx) {
         if (b) this.#press(b);
       });
       liste.addEventListener("keydown", (ev) => this.#move(ev));
+      // l'arret de tabulation suit le focus, d'ou qu'il vienne (fleches, clic, y compris sur l'existant)
+      liste.addEventListener("focusin", (ev) => {
+        const b = ev.target.closest("button");
+        if (b) for (const x of liste.querySelectorAll("button")) x.tabIndex = x === b ? 0 : -1;
+      });
       ctx.hoverLink(this, (n) => this.#refs.get(n) ?? null);
     }
 
@@ -180,8 +185,9 @@ export function define(registry, ctx) {
       liste.replaceChildren(ul);
       vide.hidden = visibles.length > 0;
       liste.hidden = !visibles.length;
-      this.#mark();
+      // le focus d'abord : #mark garde l'arret de tabulation sur le bouton qui l'a
       if (focusKey) this.#button(focusKey)?.focus({ preventScroll: true });
+      this.#mark();
       this.#reveal();
     }
 
