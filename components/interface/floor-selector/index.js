@@ -7,10 +7,12 @@
 //   22 octobre 2026) ; survole, il vaut son application, comme le rez regroupe (src/etages.js, refOf).
 // - Les boutons sont dans l'ordre du batiment, du rez vers le haut ; l'affichage les retourne (column-reverse). Un
 //   seul arret de tabulation (tabindex mobile) ; les fleches suivent ce qu'on voit.
+// - 1.1.0 : gdc-select porte aussi la reference de la fiche choisie, { id, ref, building } (derniere passe de GDC,
+//   section 6) ; building reste pour que GDC ne casse pas.
 
 export const meta = {
   id: "floor-selector",
-  version: "1.0.0",
+  version: "1.1.0",
   category: "interface",
   tag: "gdc-floor-selector",
   inputs: ["building", "floors", "selected", "highlight"],
@@ -274,9 +276,14 @@ export function define(registry, ctx) {
       // marque tout de suite ; GDC confirme en renvoyant selected
       this.#selected = id;
       this.#mark();
+      // la reference est celle du survol : { application, fiche }, ou null sans identifiant de batiment
       this.dispatchEvent(
         new CustomEvent("gdc-select", {
-          detail: { id, building: this.#data.building?.id ?? null },
+          detail: {
+            id,
+            ref: this.#refs.get(b) ?? null,
+            building: this.#data.building?.id ?? null,
+          },
           bubbles: true,
           composed: true,
         }),

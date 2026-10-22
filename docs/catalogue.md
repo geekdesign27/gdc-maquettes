@@ -758,18 +758,19 @@ Un étage par fiche, la plus ancienne en bas (etages de GDC, ADR 0013). Chaque �
 
 ### Le sélecteur d'étages (`floor-selector`)
 
-Un panneau d'ascenseur, l'étage du haut en haut. Chaque bouton porte le niveau (R, 1, 2…), le nom de la fiche, le numéro de son étape et son signe d'état s'il en a un. Six étages au plus, comme le bâtiment : le rez regroupe les fiches livrées les plus anciennes (« Rez · 4 fiches livrées ») et se déplie pour en choisir une ; s'il reste encore trop d'étages, les plus anciens se fondent aussi dans le rez (« Rez · n fiches »). Fiche validée par Pierre-Alain le 21 octobre 2026.
+Un panneau d'ascenseur, l'étage du haut en haut. Chaque bouton porte le niveau (R, 1, 2…), le nom de la fiche, le numéro de son étape et son signe d'état s'il en a un. Six étages au plus, comme le bâtiment : le rez regroupe les fiches livrées les plus anciennes (« Rez · 4 fiches livrées ») et se déplie pour en choisir une ; s'il reste encore trop d'étages, les plus anciens se fondent aussi dans le rez (« Rez · n fiches »). Fiche validée par Pierre-Alain le 21 octobre 2026. Version 1.1.0 : gdc-select porte aussi la référence de la fiche choisie, { id, ref, building }, pour que le panneau de GDC traite la sélection comme celle du fil et de l'arbre (docs/planning-derniere-passe-de-gdc.md, section 6) ; building reste.
 
 - Fabriqué par : intégrateur d'interface
 - Élément : `<gdc-floor-selector>`
 - Entrées (propriété data) : `building` ({ id, name } : le bâtiment) ; `floors` (du bas vers le haut, une entrée par fiche : { id, name, etape, state?, delivered? } ; state est l'un des six états de la signalétique) ; `selected` (identifiant de la fiche choisie) ; `highlight` (référence survolée ailleurs ({ application, fiche?, lot? } ou null))
-- Sorties (événements) : `gdc-select` (detail.id = fiche choisie, detail.building = bâtiment) ; `gdc-hover` (detail.ref = { application, fiche } survolée, ou null)
+- Sorties (événements) : `gdc-select` (detail.id = fiche choisie, detail.ref = sa référence { application, fiche } (l'application est building.id ; null sans bâtiment identifié), detail.building = bâtiment) ; `gdc-hover` (detail.ref = { application, fiche } survolée, ou null)
 - Critères d'acceptation :
   - Utilisable au clavier : flèches haut et bas, Début, Fin, Entrée
   - La règle de regroupement est écrite une seule fois (src/etages.js) et sert au bâtiment comme au sélecteur : ils montrent toujours les mêmes étages
   - Émet gdc-hover et lit highlight (le survol partagé)
   - Devient une rangée sur téléphone
   - Lisible en clair et en sombre
+  - Ligne au journal des versions
 
 ### L'intérieur d'un bâtiment (`building-interior`)
 
