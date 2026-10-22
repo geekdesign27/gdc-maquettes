@@ -1,0 +1,424 @@
+{
+  "etape": "le chantier est ouvert",
+  "titre": "Remise des clés : la fiche est en production",
+  "explication": "L'étage est fini et habité : la zone de la remise des clés s'éclaire.",
+  "schema": 3,
+  "projet": "AuditApp",
+  "etapes": [
+    {
+      "id": "idee",
+      "numero": 1,
+      "titre": "L'idée"
+    },
+    {
+      "id": "plans",
+      "numero": 2,
+      "titre": "Les plans"
+    },
+    {
+      "id": "permis",
+      "numero": 3,
+      "titre": "Le permis de construire"
+    },
+    {
+      "id": "plans-execution",
+      "numero": 4,
+      "titre": "Les plans d'exécution"
+    },
+    {
+      "id": "preparation",
+      "numero": 5,
+      "titre": "La préparation"
+    },
+    {
+      "id": "construction",
+      "numero": 6,
+      "titre": "La construction"
+    },
+    {
+      "id": "reception",
+      "numero": 7,
+      "titre": "La réception"
+    },
+    {
+      "id": "remise-des-cles",
+      "numero": 8,
+      "titre": "La remise des clés"
+    },
+    {
+      "id": "garantie",
+      "numero": 9,
+      "titre": "La garantie"
+    },
+    {
+      "id": "transformations",
+      "numero": 10,
+      "titre": "Les transformations"
+    }
+  ],
+  "chantier": {
+    "regime": "ouvert",
+    "depuis": "2026-10-22T14:12:37.001Z",
+    "raison": "activité de moins de trente minutes"
+  },
+  "plan": {
+    "zones": [
+      {
+        "id": "bureaux",
+        "nom": "Les bureaux",
+        "etapes": [
+          1,
+          2,
+          3
+        ],
+        "lieux": [
+          {
+            "id": "bureau-architecte",
+            "element": "architect-office",
+            "nom": "Le bureau d'architecte"
+          },
+          {
+            "id": "bureau-client",
+            "element": "client-office",
+            "nom": "Le bureau du client"
+          },
+          {
+            "id": "bureau-etudes",
+            "element": "design-office",
+            "nom": "Le bureau d'études"
+          },
+          {
+            "id": "panneau-permis",
+            "element": "permit-board",
+            "nom": "Le panneau du permis"
+          }
+        ],
+        "activee": "2026-10-22T14:12:37.218Z",
+        "par_ce_projet": true
+      },
+      {
+        "id": "chantier",
+        "nom": "Le chantier",
+        "etapes": [
+          4,
+          5,
+          6
+        ],
+        "lieux": [
+          {
+            "id": "baraque",
+            "element": "site-office",
+            "nom": "La baraque du conducteur de travaux"
+          },
+          {
+            "id": "bureau-controle",
+            "element": "control-office",
+            "nom": "Le bureau de contrôle"
+          },
+          {
+            "id": "panneau-feu-vert",
+            "element": "decision-sign",
+            "nom": "Le panneau du feu vert"
+          },
+          {
+            "id": "chantier",
+            "element": "site-fence",
+            "nom": "Le chantier, une parcelle par application"
+          }
+        ],
+        "activee": "2026-10-22T14:12:37.218Z",
+        "par_ce_projet": true
+      },
+      {
+        "id": "remise",
+        "nom": "La réception, la remise des clés et la garantie",
+        "etapes": [
+          7,
+          8,
+          9
+        ],
+        "lieux": [
+          {
+            "id": "aire-reception",
+            "element": "reception-area",
+            "nom": "L'aire de réception"
+          },
+          {
+            "id": "cabane-cles",
+            "element": "site-container",
+            "nom": "La cabane de la remise des clés"
+          },
+          {
+            "id": "cabane-garantie",
+            "element": "site-container",
+            "nom": "La cabane de la garantie"
+          }
+        ],
+        "activee": "2026-10-22T14:12:37.218Z",
+        "par_ce_projet": true
+      },
+      {
+        "id": "transformations",
+        "nom": "Les transformations",
+        "etapes": [
+          10
+        ],
+        "lieux": [
+          {
+            "id": "cabane-transformations",
+            "element": "site-container",
+            "nom": "La cabane des transformations"
+          },
+          {
+            "id": "parking",
+            "element": "parking",
+            "nom": "Le carnet des demandes"
+          }
+        ],
+        "activee": null
+      }
+    ],
+    "parcelles": [
+      {
+        "batiment": "bureau",
+        "nom": "Application de bureau",
+        "type": "immeuble",
+        "fiches": [
+          {
+            "fiche": "001-cloturer-un-audit",
+            "nom": "Clôturer un audit",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "L'écran de clôture"
+              },
+              {
+                "lot": "L2",
+                "nom": "L'export Excel"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "indicateurs": [
+    {
+      "id": "dossier",
+      "nom": "Le dossier du projet",
+      "valeur": 15,
+      "total": 15,
+      "regle": "15 pièces complètes sur 15"
+    }
+  ],
+  "elements": [
+    {
+      "element": "ground",
+      "id": "terrain",
+      "nom": "Le terrain",
+      "etat": "default",
+      "source": "toujours"
+    },
+    {
+      "element": "building",
+      "id": "bureau",
+      "nom": "Application de bureau",
+      "type": "immeuble",
+      "etat": "completed",
+      "etape": 8,
+      "etages": [
+        {
+          "fiche": "001-cloturer-un-audit",
+          "nom": "Clôturer un audit",
+          "stade": "completed",
+          "etape": 8,
+          "livre": true,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "L'écran de clôture",
+              "statut": "fini",
+              "phase": null
+            },
+            {
+              "lot": "L2",
+              "nom": "L'export Excel",
+              "statut": "abandonne",
+              "phase": null
+            }
+          ]
+        }
+      ],
+      "ref": {
+        "application": "bureau"
+      },
+      "source": [
+        "001-cloturer-un-audit"
+      ]
+    },
+    {
+      "element": "crane",
+      "id": "grue-001-cloturer-un-audit",
+      "ancre": "bureau",
+      "nom": "La grue de la fiche « Clôturer un audit » (entrée dans dev)",
+      "etat": "lifting",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "source": "001-cloturer-un-audit"
+    },
+    {
+      "element": "delivery-truck",
+      "id": "camion-001-cloturer-un-audit",
+      "ancre": "bureau",
+      "nom": "Une nouvelle dépendance pour « Clôturer un audit » : jspdf",
+      "etat": "arriving",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit",
+        "lot": "L1"
+      },
+      "source": "001-cloturer-un-audit"
+    },
+    {
+      "element": "architect-office",
+      "id": "bureau-architecte",
+      "nom": "Le bureau d'architecte",
+      "etat": "idle",
+      "source": "personne n'y travaille"
+    },
+    {
+      "element": "design-office",
+      "id": "bureau-etudes",
+      "nom": "Le bureau d'études",
+      "etat": "idle",
+      "source": "personne n'y travaille"
+    },
+    {
+      "element": "client-office",
+      "id": "bureau-client",
+      "nom": "Le bureau du client",
+      "etat": "idle",
+      "source": "aucune décision attendue"
+    },
+    {
+      "element": "control-office",
+      "id": "bureau-controle",
+      "nom": "Le bureau de contrôle (Hélène)",
+      "etat": "active",
+      "source": "mesure de moins de deux minutes"
+    },
+    {
+      "element": "site-office",
+      "id": "baraque",
+      "nom": "La baraque du conducteur de travaux",
+      "etat": "idle",
+      "source": "personne n'y travaille"
+    },
+    {
+      "element": "reception-area",
+      "id": "aire-reception",
+      "nom": "L'aire de réception",
+      "etat": "idle",
+      "source": "personne n'y travaille"
+    },
+    {
+      "element": "permit-board",
+      "id": "panneau-permis",
+      "ancre": "panneau-permis",
+      "nom": "Le permis de construire",
+      "etat": "granted",
+      "source": "décision du projet du 2026-10-22T14:12:15.330Z"
+    },
+    {
+      "element": "parking",
+      "id": "parking",
+      "nom": "Le carnet des demandes",
+      "etat": "default",
+      "quantite": 1,
+      "regle": "1 demande à trier",
+      "source": "dossier/plans/carnet-des-demandes.md"
+    },
+    {
+      "element": "character",
+      "id": "architecte",
+      "role": "architecte",
+      "nom": "Claire, l'architecte",
+      "etat": "waiting",
+      "lieu": "bureau-architecte",
+      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-22T14:12:32.185Z",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      }
+    },
+    {
+      "element": "character",
+      "id": "designer",
+      "role": "designer",
+      "nom": "Lina, le designer UX/UI",
+      "etat": "celebrate",
+      "lieu": "bureau-etudes",
+      "source": "activité du projet, 2026-10-22T14:12:14.601Z"
+    },
+    {
+      "element": "character",
+      "id": "developpeur-interface",
+      "role": "developpeur-interface",
+      "nom": "Emma, la développeuse interface",
+      "etat": "celebrate",
+      "lieu": "baraque",
+      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-22T14:12:25.979Z",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      }
+    },
+    {
+      "element": "character",
+      "id": "surveillant",
+      "role": "surveillant",
+      "nom": "Olivier, le surveillant de chantier",
+      "etat": "celebrate",
+      "lieu": "baraque",
+      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-22T14:12:28.044Z",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      }
+    },
+    {
+      "element": "character",
+      "id": "helene",
+      "role": "gdc",
+      "nom": "Hélène, le bureau de contrôle",
+      "etat": "inspect",
+      "lieu": "batiment:bureau",
+      "programme": true,
+      "source": "contrôle ou preuve de moins de deux minutes sur 001-cloturer-un-audit",
+      "etage": "001-cloturer-un-audit",
+      "motif": "controle",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      }
+    }
+  ],
+  "actions": [
+    {
+      "ts": "2026-11-11T14:12:37.218Z",
+      "action": "change",
+      "element": "building",
+      "id": "bureau",
+      "nom": "Application de bureau",
+      "de": "inspection",
+      "vers": "completed",
+      "phrase": "Application de bureau : inspection → completed",
+      "ref": {
+        "application": "bureau"
+      },
+      "cause": "evt:001-cloturer-un-audit/59f037c9"
+    }
+  ]
+}

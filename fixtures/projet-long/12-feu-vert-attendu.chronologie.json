@@ -1,0 +1,666 @@
+{
+  "schema": 1,
+  "maintenant": "2026-10-27T14:12:18.872Z",
+  "fuseau": "UTC",
+  "debut": "2026-10-22T14:12:09.697Z",
+  "jours": [
+    {
+      "date": "2026-10-22",
+      "evenements": 5,
+      "actif": true
+    },
+    {
+      "date": "2026-10-23",
+      "evenements": 0,
+      "actif": false
+    },
+    {
+      "date": "2026-10-24",
+      "evenements": 4,
+      "actif": true
+    },
+    {
+      "date": "2026-10-25",
+      "evenements": 0,
+      "actif": false
+    },
+    {
+      "date": "2026-10-26",
+      "evenements": 0,
+      "actif": false
+    },
+    {
+      "date": "2026-10-27",
+      "evenements": 6,
+      "actif": true
+    }
+  ],
+  "regime": [
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:09.697Z",
+      "a": "2026-10-22T14:42:12.549Z"
+    },
+    {
+      "valeur": "ferme",
+      "de": "2026-10-22T14:42:12.549Z",
+      "a": "2026-10-24T14:12:13.774Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-24T14:12:13.774Z",
+      "a": "2026-10-24T14:42:15.330Z"
+    },
+    {
+      "valeur": "ferme",
+      "de": "2026-10-24T14:42:15.330Z",
+      "a": "2026-10-27T14:12:16.633Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-27T14:12:16.633Z",
+      "a": "2026-10-27T14:12:18.726Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-27T14:12:18.726Z",
+      "a": null
+    }
+  ],
+  "lignes": [
+    {
+      "id": "etape:1",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 1,
+      "nom": "L'idée",
+      "zone": "bureaux",
+      "etat": "faite",
+      "barres": [
+        {
+          "debut": "2026-10-22T14:12:09.697Z",
+          "fin": "2026-10-22T14:12:12.549Z"
+        }
+      ]
+    },
+    {
+      "id": "piece:compte-rendu-idee",
+      "niveau": "piece",
+      "parent": "etape:1",
+      "nom": "Le compte rendu de l'idée",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "piece:prd",
+      "niveau": "piece",
+      "parent": "etape:1",
+      "nom": "Le cahier des besoins (PRD)",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "piece:profil",
+      "niveau": "piece",
+      "parent": "etape:1",
+      "nom": "Le profil du projet",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "etape:2",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 2,
+      "nom": "Les plans",
+      "zone": "bureaux",
+      "etat": "faite",
+      "barres": [
+        {
+          "debut": "2026-10-22T14:12:12.549Z",
+          "fin": "2026-10-24T14:12:15.330Z"
+        }
+      ]
+    },
+    {
+      "id": "piece:plan-ouvrage",
+      "niveau": "piece",
+      "parent": "etape:2",
+      "nom": "Le plan d'ouvrage",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "piece:parcours",
+      "niveau": "piece",
+      "parent": "etape:2",
+      "nom": "Les parcours utilisateurs",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "piece:flux-et-etats",
+      "niveau": "piece",
+      "parent": "etape:2",
+      "nom": "Les flux métier et les états",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "piece:plan-gestion-acces",
+      "niveau": "piece",
+      "parent": "etape:2",
+      "nom": "Le plan de gestion des accès",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "piece:plan-structure",
+      "niveau": "piece",
+      "parent": "etape:2",
+      "nom": "La structure porteuse",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "piece:descriptif-technique",
+      "niveau": "piece",
+      "parent": "etape:2",
+      "nom": "Le descriptif technique (TRD)",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "piece:identite-visuelle",
+      "niveau": "piece",
+      "parent": "etape:2",
+      "nom": "L'identité visuelle",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "piece:reglement",
+      "niveau": "piece",
+      "parent": "etape:2",
+      "nom": "Le règlement du projet",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "piece:catalogue",
+      "niveau": "piece",
+      "parent": "etape:2",
+      "nom": "Le catalogue des composants",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "piece:fonctionnalites",
+      "niveau": "piece",
+      "parent": "etape:2",
+      "nom": "La liste des fonctionnalités",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "piece:carnet-des-demandes",
+      "niveau": "piece",
+      "parent": "etape:2",
+      "nom": "Le carnet des demandes",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "etape:3",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 3,
+      "nom": "Le permis de construire",
+      "zone": "bureaux",
+      "etat": "faite",
+      "barres": []
+    },
+    {
+      "id": "piece:recapitulatif-permis",
+      "niveau": "piece",
+      "parent": "etape:3",
+      "nom": "Le récapitulatif du permis",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "etape:4",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 4,
+      "nom": "Les plans d'exécution",
+      "zone": "chantier",
+      "etat": "en_cours",
+      "barres": [
+        {
+          "debut": "2026-10-27T14:12:17.540Z",
+          "fin": null
+        }
+      ]
+    },
+    {
+      "id": "application:bureau@4",
+      "niveau": "application",
+      "parent": "etape:4",
+      "nom": "Application de bureau",
+      "ref": {
+        "application": "bureau"
+      },
+      "etat": "en_cours"
+    },
+    {
+      "id": "fiche:001-cloturer-un-audit@4",
+      "niveau": "fiche",
+      "parent": "application:bureau@4",
+      "nom": "Clôturer un audit",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-27T14:12:17.540Z",
+          "fin": null,
+          "commence_par": "evt:001-cloturer-un-audit/c61bbc31",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "etape:5",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 5,
+      "nom": "La préparation",
+      "zone": "chantier",
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "application:bureau@5",
+      "niveau": "application",
+      "parent": "etape:5",
+      "nom": "Application de bureau",
+      "ref": {
+        "application": "bureau"
+      },
+      "etat": "a_venir"
+    },
+    {
+      "id": "fiche:001-cloturer-un-audit@5",
+      "niveau": "fiche",
+      "parent": "application:bureau@5",
+      "nom": "Clôturer un audit",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "etape:6",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 6,
+      "nom": "La construction",
+      "zone": "chantier",
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "application:bureau@6",
+      "niveau": "application",
+      "parent": "etape:6",
+      "nom": "Application de bureau",
+      "ref": {
+        "application": "bureau"
+      },
+      "etat": "a_venir"
+    },
+    {
+      "id": "fiche:001-cloturer-un-audit@6",
+      "niveau": "fiche",
+      "parent": "application:bureau@6",
+      "nom": "Clôturer un audit",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "etape:7",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 7,
+      "nom": "La réception",
+      "zone": "remise",
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "application:bureau@7",
+      "niveau": "application",
+      "parent": "etape:7",
+      "nom": "Application de bureau",
+      "ref": {
+        "application": "bureau"
+      },
+      "etat": "a_venir"
+    },
+    {
+      "id": "fiche:001-cloturer-un-audit@7",
+      "niveau": "fiche",
+      "parent": "application:bureau@7",
+      "nom": "Clôturer un audit",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "etape:8",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 8,
+      "nom": "La remise des clés",
+      "zone": "remise",
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "application:bureau@8",
+      "niveau": "application",
+      "parent": "etape:8",
+      "nom": "Application de bureau",
+      "ref": {
+        "application": "bureau"
+      },
+      "etat": "a_venir"
+    },
+    {
+      "id": "fiche:001-cloturer-un-audit@8",
+      "niveau": "fiche",
+      "parent": "application:bureau@8",
+      "nom": "Clôturer un audit",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "etape:9",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 9,
+      "nom": "La garantie",
+      "zone": "remise",
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "etape:10",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 10,
+      "nom": "Les transformations",
+      "zone": "transformations",
+      "etat": "en_cours",
+      "barres": [
+        {
+          "debut": "2026-10-27T14:12:16.633Z",
+          "fin": null
+        }
+      ]
+    },
+    {
+      "id": "demande:projet/61752b17@10",
+      "niveau": "demande",
+      "parent": "etape:10",
+      "nom": "Exporter un audit en PDF",
+      "etat": "deposee",
+      "barres": [
+        {
+          "debut": "2026-10-27T14:12:16.633Z",
+          "fin": null,
+          "commence_par": "evt:projet/61752b17",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    }
+  ],
+  "jalons": [
+    {
+      "id": "jalon:projet/on-continue/1",
+      "ligne": "etape:1",
+      "decision": "on-continue",
+      "nom": "On continue",
+      "etat": "refusee",
+      "demandee": null,
+      "demandee_par": null,
+      "demandee_source": null,
+      "prise": "2026-10-22T14:12:11.365Z",
+      "prise_par": "evt:projet/74393a6f",
+      "motif": "Il manque les rôles des auditeurs"
+    },
+    {
+      "id": "jalon:projet/on-continue/2",
+      "ligne": "etape:1",
+      "decision": "on-continue",
+      "nom": "On continue",
+      "etat": "accordee",
+      "demandee": null,
+      "demandee_par": null,
+      "demandee_source": null,
+      "prise": "2026-10-22T14:12:12.549Z",
+      "prise_par": "evt:projet/f95df430"
+    },
+    {
+      "id": "jalon:projet/permis-de-construire/1",
+      "ligne": "etape:3",
+      "decision": "permis-de-construire",
+      "nom": "Le permis de construire",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:12:31.000Z",
+      "demandee_par": null,
+      "demandee_source": "git",
+      "prise": "2026-10-24T14:12:15.330Z",
+      "prise_par": "evt:projet/1c835438"
+    },
+    {
+      "id": "jalon:001-cloturer-un-audit/plan/1",
+      "ligne": "fiche:001-cloturer-un-audit@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "attendue",
+      "demandee": "2026-10-27T14:12:18.726Z",
+      "demandee_par": "evt:001-cloturer-un-audit/e7c01356",
+      "demandee_source": "journal",
+      "prise": null,
+      "prise_par": null
+    }
+  ],
+  "a_venir": [
+    {
+      "ligne": "fiche:001-cloturer-un-audit@5",
+      "etape": 5,
+      "apres": "fiche:001-cloturer-un-audit@4"
+    },
+    {
+      "ligne": "fiche:001-cloturer-un-audit@6",
+      "etape": 6,
+      "apres": "fiche:001-cloturer-un-audit@5"
+    },
+    {
+      "ligne": "fiche:001-cloturer-un-audit@7",
+      "etape": 7,
+      "apres": "fiche:001-cloturer-un-audit@6"
+    },
+    {
+      "ligne": "fiche:001-cloturer-un-audit@8",
+      "etape": 8,
+      "apres": "fiche:001-cloturer-un-audit@7"
+    },
+    {
+      "ligne": "etape:5",
+      "etape": 5,
+      "apres": "etape:4"
+    },
+    {
+      "ligne": "etape:6",
+      "etape": 6,
+      "apres": "etape:5"
+    },
+    {
+      "ligne": "etape:7",
+      "etape": 7,
+      "apres": "etape:6"
+    },
+    {
+      "ligne": "etape:8",
+      "etape": 8,
+      "apres": "etape:7"
+    }
+  ],
+  "evenements": [
+    {
+      "id": "evt:projet/39dae671",
+      "ts": "2026-10-22T14:12:09.697Z",
+      "kind": "projet-ouvert",
+      "phrase": "Le projet « AuditApp » est ouvert",
+      "trait": false
+    },
+    {
+      "id": "evt:projet/74393a6f",
+      "ts": "2026-10-22T14:12:11.365Z",
+      "kind": "decision",
+      "phrase": "Tu refuses « On continue » : Il manque les rôles des auditeurs",
+      "trait": false
+    },
+    {
+      "id": "evt:projet/f95df430",
+      "ts": "2026-10-22T14:12:12.549Z",
+      "kind": "decision",
+      "phrase": "Tu accordes « On continue »",
+      "trait": false
+    },
+    {
+      "id": "evt:projet/1c835438",
+      "ts": "2026-10-24T14:12:15.330Z",
+      "kind": "decision",
+      "phrase": "Tu accordes « Le permis de construire »",
+      "trait": false
+    },
+    {
+      "id": "evt:projet/61752b17",
+      "ts": "2026-10-27T14:12:16.633Z",
+      "kind": "demande",
+      "phrase": "Une demande arrive au carnet : « Exporter un audit en PDF »",
+      "trait": false
+    },
+    {
+      "id": "evt:001-cloturer-un-audit/809ee55c",
+      "ts": "2026-10-27T14:12:17.540Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Clôturer un audit »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:001-cloturer-un-audit/c61bbc31",
+      "ts": "2026-10-27T14:12:17.540Z",
+      "kind": "run",
+      "phrase": "La fiche « Clôturer un audit » est ouverte",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:001-cloturer-un-audit/e9f934c8",
+      "ts": "2026-10-27T14:12:17.758Z",
+      "kind": "critere",
+      "phrase": "Un critère d'acceptation est noté pour « Clôturer un audit »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:001-cloturer-un-audit/e7c01356",
+      "ts": "2026-10-27T14:12:18.726Z",
+      "kind": "gate",
+      "phrase": "Ta décision « le feu vert » est attendue pour « Clôturer un audit »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "trait": false
+    }
+  ]
+}

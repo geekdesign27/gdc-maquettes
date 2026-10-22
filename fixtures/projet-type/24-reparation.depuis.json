@@ -1,0 +1,701 @@
+{
+  "schema": 1,
+  "maintenant": "2026-10-22T14:12:58.385Z",
+  "fuseau": "UTC",
+  "debut": "2026-10-22T14:12:09.697Z",
+  "depuis": "evt:002-signer-un-rapport/f15959cb",
+  "complet": false,
+  "lignes": [
+    {
+      "id": "etape:4",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 4,
+      "nom": "Les plans d'exécution",
+      "zone": "chantier",
+      "etat": "faite",
+      "barres": [
+        {
+          "debut": "2026-10-22T14:12:17.540Z",
+          "fin": "2026-10-22T14:12:48.907Z"
+        }
+      ]
+    },
+    {
+      "id": "fiche:003-reparer-la-signature-du-rapport@4",
+      "niveau": "fiche",
+      "parent": "application:bureau@4",
+      "nom": "Réparer la signature du rapport",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:12:48.457Z",
+          "fin": "2026-10-22T14:12:48.907Z",
+          "commence_par": "evt:003-reparer-la-signature-du-rapport/9f1a624d",
+          "finit_par": "evt:003-reparer-la-signature-du-rapport/88fe0673",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "etape:5",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 5,
+      "nom": "La préparation",
+      "zone": "chantier",
+      "etat": "faite",
+      "barres": [
+        {
+          "debut": "2026-10-22T14:12:19.720Z",
+          "fin": "2026-10-22T14:12:49.956Z"
+        }
+      ]
+    },
+    {
+      "id": "fiche:003-reparer-la-signature-du-rapport@5",
+      "niveau": "fiche",
+      "parent": "application:bureau@5",
+      "nom": "Réparer la signature du rapport",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "excavation",
+          "debut": "2026-10-22T14:12:48.907Z",
+          "fin": "2026-10-22T14:12:49.619Z",
+          "commence_par": "evt:003-reparer-la-signature-du-rapport/88fe0673",
+          "finit_par": "evt:003-reparer-la-signature-du-rapport/09ae6adc",
+          "fin_type": "normale"
+        },
+        {
+          "stade": "foundations",
+          "debut": "2026-10-22T14:12:49.619Z",
+          "fin": "2026-10-22T14:12:49.956Z",
+          "commence_par": "evt:003-reparer-la-signature-du-rapport/09ae6adc",
+          "finit_par": "evt:003-reparer-la-signature-du-rapport/e6da55f9",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "lot:003-reparer-la-signature-du-rapport/L1@5",
+      "niveau": "lot",
+      "parent": "fiche:003-reparer-la-signature-du-rapport@5",
+      "nom": "Réparer la signature du rapport",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport",
+        "lot": "L1"
+      },
+      "etat": "prevu",
+      "prevu_le": "2026-10-22T14:12:49.619Z",
+      "prevu_par": "evt:003-reparer-la-signature-du-rapport/09ae6adc"
+    },
+    {
+      "id": "etape:6",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 6,
+      "nom": "La construction",
+      "zone": "chantier",
+      "etat": "faite",
+      "barres": [
+        {
+          "debut": "2026-10-22T14:12:21.533Z",
+          "fin": "2026-10-22T14:12:50.540Z"
+        }
+      ]
+    },
+    {
+      "id": "fiche:003-reparer-la-signature-du-rapport@6",
+      "niveau": "fiche",
+      "parent": "application:bureau@6",
+      "nom": "Réparer la signature du rapport",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "structure",
+          "debut": "2026-10-22T14:12:49.956Z",
+          "fin": "2026-10-22T14:12:50.365Z",
+          "commence_par": "evt:003-reparer-la-signature-du-rapport/e6da55f9",
+          "finit_par": "evt:003-reparer-la-signature-du-rapport/a6cbca76",
+          "fin_type": "normale"
+        },
+        {
+          "stade": "envelope",
+          "debut": "2026-10-22T14:12:50.365Z",
+          "fin": "2026-10-22T14:12:50.540Z",
+          "commence_par": "evt:003-reparer-la-signature-du-rapport/a6cbca76",
+          "finit_par": "evt:003-reparer-la-signature-du-rapport/e02ca138",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "lot:003-reparer-la-signature-du-rapport/L1@6",
+      "niveau": "lot",
+      "parent": "fiche:003-reparer-la-signature-du-rapport@6",
+      "nom": "Réparer la signature du rapport",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport",
+        "lot": "L1"
+      },
+      "etat": "fini",
+      "barres": [
+        {
+          "statut": "fini",
+          "debut": "2026-10-22T14:12:49.766Z",
+          "fin": "2026-10-22T14:12:50.365Z",
+          "commence_par": "evt:003-reparer-la-signature-du-rapport/a1485f4b",
+          "finit_par": "evt:003-reparer-la-signature-du-rapport/a6cbca76",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "etape:7",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 7,
+      "nom": "La réception",
+      "zone": "remise",
+      "etat": "faite",
+      "barres": [
+        {
+          "debut": "2026-10-22T14:12:28.117Z",
+          "fin": "2026-10-22T14:12:53.023Z"
+        }
+      ]
+    },
+    {
+      "id": "fiche:003-reparer-la-signature-du-rapport@7",
+      "niveau": "fiche",
+      "parent": "application:bureau@7",
+      "nom": "Réparer la signature du rapport",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "inspection",
+          "debut": "2026-10-22T14:12:50.540Z",
+          "fin": "2026-10-22T14:12:53.023Z",
+          "commence_par": "evt:003-reparer-la-signature-du-rapport/e02ca138",
+          "finit_par": "evt:003-reparer-la-signature-du-rapport/d7697564",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "fiche:003-reparer-la-signature-du-rapport@8",
+      "niveau": "fiche",
+      "parent": "application:bureau@8",
+      "nom": "Réparer la signature du rapport",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "etat": "livree",
+      "barres": [],
+      "livree": {
+        "date": "2026-10-22T14:12:57.722Z",
+        "par": "evt:003-reparer-la-signature-du-rapport/7d862f77"
+      }
+    },
+    {
+      "id": "etape:9",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 9,
+      "nom": "La garantie",
+      "zone": "remise",
+      "etat": "faite",
+      "barres": [
+        {
+          "debut": "2026-10-22T14:12:47.137Z",
+          "fin": "2026-10-22T14:12:57.722Z"
+        }
+      ]
+    },
+    {
+      "id": "defaut:002-signer-un-rapport/f15959cb@9",
+      "niveau": "defaut",
+      "parent": "etape:9",
+      "nom": "Un défaut après la mise en production de « Signer un rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "etat": "ferme",
+      "barres": [
+        {
+          "debut": "2026-10-22T14:12:47.137Z",
+          "fin": "2026-10-22T14:12:57.722Z",
+          "commence_par": "evt:002-signer-un-rapport/f15959cb",
+          "finit_par": "evt:003-reparer-la-signature-du-rapport/7d862f77",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "fiche:003-reparer-la-signature-du-rapport@10",
+      "niveau": "fiche",
+      "parent": "application:bureau@10",
+      "nom": "Réparer la signature du rapport",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "debut": "2026-10-22T14:12:48.457Z",
+          "fin": "2026-10-22T14:12:57.722Z",
+          "commence_par": "evt:003-reparer-la-signature-du-rapport/9f1a624d",
+          "finit_par": "evt:003-reparer-la-signature-du-rapport/7d862f77",
+          "fin_type": "normale"
+        }
+      ]
+    }
+  ],
+  "retirees": [],
+  "jalons": [
+    {
+      "id": "jalon:003-reparer-la-signature-du-rapport/plan/1",
+      "ligne": "fiche:003-reparer-la-signature-du-rapport@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:12:48.782Z",
+      "demandee_par": "evt:003-reparer-la-signature-du-rapport/34cacbf8",
+      "demandee_source": "journal",
+      "prise": "2026-10-22T14:12:48.907Z",
+      "prise_par": "evt:003-reparer-la-signature-du-rapport/88fe0673"
+    },
+    {
+      "id": "jalon:003-reparer-la-signature-du-rapport/livre/1",
+      "ligne": "fiche:003-reparer-la-signature-du-rapport@7",
+      "decision": "livre",
+      "nom": "Ta réception",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:12:50.540Z",
+      "demandee_par": "evt:003-reparer-la-signature-du-rapport/e02ca138",
+      "demandee_source": "journal",
+      "prise": "2026-10-22T14:12:50.669Z",
+      "prise_par": "evt:003-reparer-la-signature-du-rapport/bdf1145a"
+    },
+    {
+      "id": "jalon:003-reparer-la-signature-du-rapport/deploie/1",
+      "ligne": "fiche:003-reparer-la-signature-du-rapport@8",
+      "decision": "deploie",
+      "nom": "Ta remise des clés",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:12:53.158Z",
+      "demandee_par": "evt:003-reparer-la-signature-du-rapport/bf385112",
+      "demandee_source": "journal",
+      "prise": "2026-10-22T14:12:53.289Z",
+      "prise_par": "evt:003-reparer-la-signature-du-rapport/18b0b23b"
+    }
+  ],
+  "jours": [
+    {
+      "date": "2026-10-22",
+      "evenements": 104,
+      "actif": true
+    }
+  ],
+  "evenements": [
+    {
+      "id": "evt:003-reparer-la-signature-du-rapport/9f1a624d",
+      "ts": "2026-10-22T14:12:48.457Z",
+      "kind": "run",
+      "phrase": "La fiche « Réparer la signature du rapport » est ouverte, pour réparer « Signer un rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:003-reparer-la-signature-du-rapport/8e48c3f3",
+      "ts": "2026-10-22T14:12:48.458Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Réparer la signature du rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:003-reparer-la-signature-du-rapport/e7c53320",
+      "ts": "2026-10-22T14:12:48.661Z",
+      "kind": "critere",
+      "phrase": "Un critère d'acceptation est noté pour « Réparer la signature du rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:003-reparer-la-signature-du-rapport/34cacbf8",
+      "ts": "2026-10-22T14:12:48.782Z",
+      "kind": "gate",
+      "phrase": "Ta décision « le feu vert » est attendue pour « Réparer la signature du rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:003-reparer-la-signature-du-rapport/88fe0673",
+      "ts": "2026-10-22T14:12:48.907Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « le feu vert » pour « Réparer la signature du rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:003-reparer-la-signature-du-rapport/09ae6adc",
+      "ts": "2026-10-22T14:12:49.619Z",
+      "kind": "lot",
+      "phrase": "Le lot « Réparer la signature du rapport » est prévu dans « Réparer la signature du rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:003-reparer-la-signature-du-rapport/a1485f4b",
+      "ts": "2026-10-22T14:12:49.766Z",
+      "kind": "lot_etat",
+      "phrase": "Le lot « Réparer la signature du rapport » commence",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:003-reparer-la-signature-du-rapport/e6da55f9",
+      "ts": "2026-10-22T14:12:49.956Z",
+      "kind": "preuve",
+      "phrase": "L'essai qui échoue d'abord est enregistré pour « Réparer la signature du rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:003-reparer-la-signature-du-rapport/560f2030",
+      "ts": "2026-10-22T14:12:50.146Z",
+      "kind": "preuve",
+      "phrase": "Une preuve est enregistrée pour « Réparer la signature du rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:003-reparer-la-signature-du-rapport/a6cbca76",
+      "ts": "2026-10-22T14:12:50.365Z",
+      "kind": "lot_etat",
+      "phrase": "Le lot « Réparer la signature du rapport » est fini",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:003-reparer-la-signature-du-rapport/e02ca138",
+      "ts": "2026-10-22T14:12:50.540Z",
+      "kind": "gate",
+      "phrase": "Ta décision « la réception » est attendue pour « Réparer la signature du rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:003-reparer-la-signature-du-rapport/bdf1145a",
+      "ts": "2026-10-22T14:12:50.669Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « la réception » pour « Réparer la signature du rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:003-reparer-la-signature-du-rapport/e2600fb3",
+      "ts": "2026-10-22T14:12:51.635Z",
+      "kind": "publication",
+      "phrase": "La proposition de modification de « Réparer la signature du rapport » est ouverte",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:003-reparer-la-signature-du-rapport/d7697564",
+      "ts": "2026-10-22T14:12:53.023Z",
+      "kind": "fusion",
+      "phrase": "« Réparer la signature du rapport » entre dans dev",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:003-reparer-la-signature-du-rapport/bf385112",
+      "ts": "2026-10-22T14:12:53.158Z",
+      "kind": "gate",
+      "phrase": "Ta décision « la remise des clés » est attendue pour « Réparer la signature du rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:003-reparer-la-signature-du-rapport/18b0b23b",
+      "ts": "2026-10-22T14:12:53.289Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « la remise des clés » pour « Réparer la signature du rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:003-reparer-la-signature-du-rapport/e7add379",
+      "ts": "2026-10-22T14:12:54.320Z",
+      "kind": "controle",
+      "phrase": "Le contrôle « sante » passe sur « Réparer la signature du rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:003-reparer-la-signature-du-rapport/f237cbab",
+      "ts": "2026-10-22T14:12:54.767Z",
+      "kind": "controle",
+      "phrase": "Le contrôle « apres-deploiement » passe sur « Réparer la signature du rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:003-reparer-la-signature-du-rapport/9580d9b5",
+      "ts": "2026-10-22T14:12:54.824Z",
+      "kind": "constat",
+      "phrase": "Une réserve est ouverte sur « Réparer la signature du rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:003-reparer-la-signature-du-rapport/9c3ea54f",
+      "ts": "2026-10-22T14:12:55.358Z",
+      "kind": "controle",
+      "phrase": "Le contrôle « pipeline » passe sur « Réparer la signature du rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:003-reparer-la-signature-du-rapport/cc03d901",
+      "ts": "2026-10-22T14:12:55.523Z",
+      "kind": "promotion",
+      "phrase": "La mise en production de « Réparer la signature du rapport » avance",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:003-reparer-la-signature-du-rapport/ad057ef5",
+      "ts": "2026-10-22T14:12:56.913Z",
+      "kind": "promotion",
+      "phrase": "La mise en production de « Réparer la signature du rapport » avance",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:003-reparer-la-signature-du-rapport/f9ca1073",
+      "ts": "2026-10-22T14:12:57.400Z",
+      "kind": "controle",
+      "phrase": "Le contrôle « apres-deploiement » passe sur « Réparer la signature du rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:003-reparer-la-signature-du-rapport/9f324aae",
+      "ts": "2026-10-22T14:12:57.670Z",
+      "kind": "controle",
+      "phrase": "Le contrôle « sante » passe sur « Réparer la signature du rapport »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:003-reparer-la-signature-du-rapport/7d862f77",
+      "ts": "2026-10-22T14:12:57.722Z",
+      "kind": "promotion",
+      "phrase": "« Réparer la signature du rapport » est en production, vérifiée : la remise des clés",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "trait": false
+    }
+  ],
+  "regime": [
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:09.697Z",
+      "a": "2026-10-22T14:12:18.726Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:18.726Z",
+      "a": "2026-10-22T14:12:19.720Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:19.720Z",
+      "a": "2026-10-22T14:12:28.117Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:28.117Z",
+      "a": "2026-10-22T14:12:29.041Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:29.041Z",
+      "a": "2026-10-22T14:12:32.183Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:32.183Z",
+      "a": "2026-10-22T14:12:32.296Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:32.296Z",
+      "a": "2026-10-22T14:12:38.724Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:38.724Z",
+      "a": "2026-10-22T14:12:38.868Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:38.868Z",
+      "a": "2026-10-22T14:12:40.546Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:40.546Z",
+      "a": "2026-10-22T14:12:40.686Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:40.686Z",
+      "a": "2026-10-22T14:12:43.149Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:43.149Z",
+      "a": "2026-10-22T14:12:43.296Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:43.296Z",
+      "a": "2026-10-22T14:12:48.782Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:48.782Z",
+      "a": "2026-10-22T14:12:48.907Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:48.907Z",
+      "a": "2026-10-22T14:12:50.540Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:50.540Z",
+      "a": "2026-10-22T14:12:50.669Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:50.669Z",
+      "a": "2026-10-22T14:12:53.158Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:53.158Z",
+      "a": "2026-10-22T14:12:53.289Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:53.289Z",
+      "a": null
+    }
+  ],
+  "a_venir": []
+}

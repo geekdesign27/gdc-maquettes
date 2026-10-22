@@ -1,0 +1,339 @@
+{
+  "schema": 1,
+  "maintenant": "2026-10-22T14:12:10.154Z",
+  "fuseau": "UTC",
+  "debut": "2026-10-22T14:12:09.697Z",
+  "jours": [
+    {
+      "date": "2026-10-22",
+      "evenements": 2,
+      "actif": true
+    }
+  ],
+  "regime": [
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:09.697Z",
+      "a": null
+    }
+  ],
+  "lignes": [
+    {
+      "id": "etape:1",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 1,
+      "nom": "L'idée",
+      "zone": "bureaux",
+      "etat": "en_cours",
+      "barres": [
+        {
+          "debut": "2026-10-22T14:12:09.697Z",
+          "fin": null
+        }
+      ]
+    },
+    {
+      "id": "piece:compte-rendu-idee",
+      "niveau": "piece",
+      "parent": "etape:1",
+      "nom": "Le compte rendu de l'idée",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "piece:prd",
+      "niveau": "piece",
+      "parent": "etape:1",
+      "nom": "Le cahier des besoins (PRD)",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "piece:profil",
+      "niveau": "piece",
+      "parent": "etape:1",
+      "nom": "Le profil du projet",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "etape:2",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 2,
+      "nom": "Les plans",
+      "zone": "bureaux",
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "piece:plan-ouvrage",
+      "niveau": "piece",
+      "parent": "etape:2",
+      "nom": "Le plan d'ouvrage",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "piece:parcours",
+      "niveau": "piece",
+      "parent": "etape:2",
+      "nom": "Les parcours utilisateurs",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "piece:flux-et-etats",
+      "niveau": "piece",
+      "parent": "etape:2",
+      "nom": "Les flux métier et les états",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "piece:plan-gestion-acces",
+      "niveau": "piece",
+      "parent": "etape:2",
+      "nom": "Le plan de gestion des accès",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "piece:plan-structure",
+      "niveau": "piece",
+      "parent": "etape:2",
+      "nom": "La structure porteuse",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "piece:descriptif-technique",
+      "niveau": "piece",
+      "parent": "etape:2",
+      "nom": "Le descriptif technique (TRD)",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "piece:identite-visuelle",
+      "niveau": "piece",
+      "parent": "etape:2",
+      "nom": "L'identité visuelle",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "piece:reglement",
+      "niveau": "piece",
+      "parent": "etape:2",
+      "nom": "Le règlement du projet",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "piece:catalogue",
+      "niveau": "piece",
+      "parent": "etape:2",
+      "nom": "Le catalogue des composants",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "piece:fonctionnalites",
+      "niveau": "piece",
+      "parent": "etape:2",
+      "nom": "La liste des fonctionnalités",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "piece:carnet-des-demandes",
+      "niveau": "piece",
+      "parent": "etape:2",
+      "nom": "Le carnet des demandes",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "etape:3",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 3,
+      "nom": "Le permis de construire",
+      "zone": "bureaux",
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "piece:recapitulatif-permis",
+      "niveau": "piece",
+      "parent": "etape:3",
+      "nom": "Le récapitulatif du permis",
+      "etat": "remplie",
+      "repere": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git"
+      }
+    },
+    {
+      "id": "etape:4",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 4,
+      "nom": "Les plans d'exécution",
+      "zone": "chantier",
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "etape:5",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 5,
+      "nom": "La préparation",
+      "zone": "chantier",
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "etape:6",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 6,
+      "nom": "La construction",
+      "zone": "chantier",
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "etape:7",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 7,
+      "nom": "La réception",
+      "zone": "remise",
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "etape:8",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 8,
+      "nom": "La remise des clés",
+      "zone": "remise",
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "etape:9",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 9,
+      "nom": "La garantie",
+      "zone": "remise",
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "etape:10",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 10,
+      "nom": "Les transformations",
+      "zone": "transformations",
+      "etat": "a_venir",
+      "barres": []
+    }
+  ],
+  "jalons": [],
+  "a_venir": [
+    {
+      "ligne": "etape:2",
+      "etape": 2,
+      "apres": "etape:1"
+    },
+    {
+      "ligne": "etape:3",
+      "etape": 3,
+      "apres": "etape:2"
+    },
+    {
+      "ligne": "etape:4",
+      "etape": 4,
+      "apres": "etape:3"
+    },
+    {
+      "ligne": "etape:5",
+      "etape": 5,
+      "apres": "etape:4"
+    },
+    {
+      "ligne": "etape:6",
+      "etape": 6,
+      "apres": "etape:5"
+    },
+    {
+      "ligne": "etape:7",
+      "etape": 7,
+      "apres": "etape:6"
+    },
+    {
+      "ligne": "etape:8",
+      "etape": 8,
+      "apres": "etape:7"
+    }
+  ],
+  "evenements": [
+    {
+      "id": "evt:projet/39dae671",
+      "ts": "2026-10-22T14:12:09.697Z",
+      "kind": "projet-ouvert",
+      "phrase": "Le projet « AuditApp » est ouvert",
+      "trait": false
+    }
+  ]
+}

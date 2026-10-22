@@ -1,0 +1,186 @@
+{
+  "schema": 1,
+  "maintenant": "2026-10-22T14:12:20.799Z",
+  "fuseau": "UTC",
+  "debut": "2026-10-22T14:12:09.697Z",
+  "depuis": "evt:001-cloturer-un-audit/e7c01356",
+  "complet": false,
+  "lignes": [
+    {
+      "id": "etape:4",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 4,
+      "nom": "Les plans d'exécution",
+      "zone": "chantier",
+      "etat": "faite",
+      "barres": [
+        {
+          "debut": "2026-10-22T14:12:17.540Z",
+          "fin": "2026-10-22T14:12:19.720Z"
+        }
+      ]
+    },
+    {
+      "id": "application:bureau@4",
+      "niveau": "application",
+      "parent": "etape:4",
+      "nom": "Application de bureau",
+      "ref": {
+        "application": "bureau"
+      },
+      "etat": "faite"
+    },
+    {
+      "id": "fiche:001-cloturer-un-audit@4",
+      "niveau": "fiche",
+      "parent": "application:bureau@4",
+      "nom": "Clôturer un audit",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:12:17.540Z",
+          "fin": "2026-10-22T14:12:19.720Z",
+          "commence_par": "evt:001-cloturer-un-audit/c61bbc31",
+          "finit_par": "evt:001-cloturer-un-audit/ad2f4cb7",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "etape:5",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 5,
+      "nom": "La préparation",
+      "zone": "chantier",
+      "etat": "en_cours",
+      "barres": [
+        {
+          "debut": "2026-10-22T14:12:19.720Z",
+          "fin": null
+        }
+      ]
+    },
+    {
+      "id": "application:bureau@5",
+      "niveau": "application",
+      "parent": "etape:5",
+      "nom": "Application de bureau",
+      "ref": {
+        "application": "bureau"
+      },
+      "etat": "en_cours"
+    },
+    {
+      "id": "fiche:001-cloturer-un-audit@5",
+      "niveau": "fiche",
+      "parent": "application:bureau@5",
+      "nom": "Clôturer un audit",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "excavation",
+          "debut": "2026-10-22T14:12:19.720Z",
+          "fin": null,
+          "commence_par": "evt:001-cloturer-un-audit/ad2f4cb7",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    }
+  ],
+  "retirees": [],
+  "jalons": [
+    {
+      "id": "jalon:001-cloturer-un-audit/plan/1",
+      "ligne": "fiche:001-cloturer-un-audit@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:12:18.726Z",
+      "demandee_par": "evt:001-cloturer-un-audit/e7c01356",
+      "demandee_source": "journal",
+      "prise": "2026-10-22T14:12:19.720Z",
+      "prise_par": "evt:001-cloturer-un-audit/ad2f4cb7"
+    }
+  ],
+  "jours": [
+    {
+      "date": "2026-10-22",
+      "evenements": 16,
+      "actif": true
+    }
+  ],
+  "evenements": [
+    {
+      "id": "evt:001-cloturer-un-audit/ad2f4cb7",
+      "ts": "2026-10-22T14:12:19.720Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « le feu vert » pour « Clôturer un audit »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "trait": false
+    }
+  ],
+  "regime": [
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:09.697Z",
+      "a": "2026-10-22T14:12:18.726Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:18.726Z",
+      "a": "2026-10-22T14:12:19.720Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:19.720Z",
+      "a": null
+    }
+  ],
+  "a_venir": [
+    {
+      "ligne": "fiche:001-cloturer-un-audit@6",
+      "etape": 6,
+      "apres": "fiche:001-cloturer-un-audit@5"
+    },
+    {
+      "ligne": "fiche:001-cloturer-un-audit@7",
+      "etape": 7,
+      "apres": "fiche:001-cloturer-un-audit@6"
+    },
+    {
+      "ligne": "fiche:001-cloturer-un-audit@8",
+      "etape": 8,
+      "apres": "fiche:001-cloturer-un-audit@7"
+    },
+    {
+      "ligne": "etape:6",
+      "etape": 6,
+      "apres": "etape:5"
+    },
+    {
+      "ligne": "etape:7",
+      "etape": 7,
+      "apres": "etape:6"
+    },
+    {
+      "ligne": "etape:8",
+      "etape": 8,
+      "apres": "etape:7"
+    }
+  ]
+}

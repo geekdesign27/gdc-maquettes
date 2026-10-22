@@ -1,0 +1,81 @@
+{
+  "sequence": "volume",
+  "description": "Huit applications et cent fiches, jouées avec le vrai binaire en quelques minutes (tout tombe le même jour), pour la liste virtuelle et la fluidité du planning.",
+  "gdc": "0.20.0",
+  "etapes": [
+    {
+      "numero": 1,
+      "titre": "25 fiches",
+      "actions": [],
+      "fichier": "01-fiches-25.json",
+      "chronologie": "01-fiches-25.chronologie.json",
+      "depuis": "01-fiches-25.depuis.json"
+    },
+    {
+      "numero": 2,
+      "titre": "50 fiches",
+      "actions": [
+        "Les gabarits de la fiche « Fonction 49 de « Application de bureau » » apparaissent (le bâtiment « Application de bureau »)",
+        "Les gabarits de la fiche « Fonction 42 de « Application terrain » » apparaissent (le bâtiment « Application terrain »)",
+        "Les gabarits de la fiche « Fonction 43 de « Administration » » apparaissent (le bâtiment « Administration »)",
+        "Les gabarits de la fiche « Fonction 36 de « Portail client » » apparaissent (le bâtiment « Portail client »)",
+        "Les gabarits de la fiche « Fonction 37 de « Facturation » » apparaissent (le bâtiment « Facturation »)",
+        "Les gabarits de la fiche « Fonction 30 de « Rapports » » apparaissent (le bâtiment « Rapports »)",
+        "Les gabarits de la fiche « Fonction 31 de « Synchronisation » » apparaissent (le bâtiment « Synchronisation »)",
+        "Les gabarits de la fiche « Fonction 48 de « Site public » » apparaissent (le bâtiment « Site public »)",
+        "Le bureau du client : 9",
+        "Ta décision « le feu vert » pour « Fonction 31 de « Synchronisation » » apparaît (Le panneau du feu vert)",
+        "Ta décision « le feu vert » pour « Fonction 37 de « Facturation » » apparaît (Le panneau du feu vert)",
+        "Ta décision « le feu vert » pour « Fonction 43 de « Administration » » apparaît (Le panneau du feu vert)",
+        "Ta décision « le feu vert » pour « Fonction 49 de « Application de bureau » » apparaît (Le panneau du feu vert)"
+      ],
+      "fichier": "02-fiches-50.json",
+      "chronologie": "02-fiches-50.chronologie.json",
+      "depuis": "02-fiches-50.depuis.json"
+    },
+    {
+      "numero": 3,
+      "titre": "75 fiches",
+      "actions": [
+        "Les gabarits de la fiche « Fonction 73 de « Application de bureau » » apparaissent (le bâtiment « Application de bureau »)",
+        "Les gabarits de la fiche « Fonction 66 de « Application terrain » » apparaissent (le bâtiment « Application terrain »)",
+        "Les gabarits de la fiche « Fonction 67 de « Administration » » apparaissent (le bâtiment « Administration »)",
+        "Les gabarits de la fiche « Fonction 60 de « Portail client » » apparaissent (le bâtiment « Portail client »)",
+        "Les gabarits de la fiche « Fonction 61 de « Facturation » » apparaissent (le bâtiment « Facturation »)",
+        "Les gabarits de la fiche « Fonction 54 de « Rapports » » apparaissent (le bâtiment « Rapports »)",
+        "Les gabarits de la fiche « Fonction 55 de « Synchronisation » » apparaissent (le bâtiment « Synchronisation »)",
+        "Les gabarits de la fiche « Fonction 72 de « Site public » » apparaissent (le bâtiment « Site public »)",
+        "Le bureau du client : 13",
+        "Ta décision « le feu vert » pour « Fonction 55 de « Synchronisation » » apparaît (Le panneau du feu vert)",
+        "Ta décision « le feu vert » pour « Fonction 61 de « Facturation » » apparaît (Le panneau du feu vert)",
+        "Ta décision « le feu vert » pour « Fonction 67 de « Administration » » apparaît (Le panneau du feu vert)",
+        "Ta décision « le feu vert » pour « Fonction 73 de « Application de bureau » » apparaît (Le panneau du feu vert)"
+      ],
+      "fichier": "03-fiches-75.json",
+      "chronologie": "03-fiches-75.chronologie.json",
+      "depuis": "03-fiches-75.depuis.json"
+    },
+    {
+      "numero": 4,
+      "titre": "100 fiches",
+      "actions": [
+        "Les gabarits de la fiche « Fonction 97 de « Application de bureau » » apparaissent (le bâtiment « Application de bureau »)",
+        "Les gabarits de la fiche « Fonction 90 de « Application terrain » » apparaissent (le bâtiment « Application terrain »)",
+        "Les gabarits de la fiche « Fonction 91 de « Administration » » apparaissent (le bâtiment « Administration »)",
+        "Les gabarits de la fiche « Fonction 84 de « Portail client » » apparaissent (le bâtiment « Portail client »)",
+        "Les gabarits de la fiche « Fonction 85 de « Facturation » » apparaissent (le bâtiment « Facturation »)",
+        "Les gabarits de la fiche « Fonction 78 de « Rapports » » apparaissent (le bâtiment « Rapports »)",
+        "Les gabarits de la fiche « Fonction 79 de « Synchronisation » » apparaissent (le bâtiment « Synchronisation »)",
+        "Les gabarits de la fiche « Fonction 96 de « Site public » » apparaissent (le bâtiment « Site public »)",
+        "Le bureau du client : 17",
+        "Ta décision « le feu vert » pour « Fonction 79 de « Synchronisation » » apparaît (Le panneau du feu vert)",
+        "Ta décision « le feu vert » pour « Fonction 85 de « Facturation » » apparaît (Le panneau du feu vert)",
+        "Ta décision « le feu vert » pour « Fonction 91 de « Administration » » apparaît (Le panneau du feu vert)",
+        "Ta décision « le feu vert » pour « Fonction 97 de « Application de bureau » » apparaît (Le panneau du feu vert)"
+      ],
+      "fichier": "04-fiches-100.json",
+      "chronologie": "04-fiches-100.chronologie.json",
+      "depuis": "04-fiches-100.depuis.json"
+    }
+  ]
+}

@@ -1,0 +1,389 @@
+{
+  "schema": 1,
+  "maintenant": "2026-10-22T14:13:06.793Z",
+  "fuseau": "UTC",
+  "debut": "2026-10-22T14:12:09.697Z",
+  "depuis": "evt:004-saisir-un-constat-hors-ligne/8ba391c7",
+  "complet": false,
+  "lignes": [
+    {
+      "id": "application:admin@4",
+      "niveau": "application",
+      "parent": "etape:4",
+      "nom": "Administration",
+      "ref": {
+        "application": "admin"
+      },
+      "etat": "en_cours"
+    },
+    {
+      "id": "fiche:005-gerer-les-droits-des-auditeurs@4",
+      "niveau": "fiche",
+      "parent": "application:admin@4",
+      "nom": "Gérer les droits des auditeurs",
+      "ref": {
+        "application": "admin",
+        "fiche": "005-gerer-les-droits-des-auditeurs"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:13:05.988Z",
+          "fin": null,
+          "commence_par": "evt:005-gerer-les-droits-des-auditeurs/c750aab8",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "application:admin@5",
+      "niveau": "application",
+      "parent": "etape:5",
+      "nom": "Administration",
+      "ref": {
+        "application": "admin"
+      },
+      "etat": "a_venir"
+    },
+    {
+      "id": "fiche:005-gerer-les-droits-des-auditeurs@5",
+      "niveau": "fiche",
+      "parent": "application:admin@5",
+      "nom": "Gérer les droits des auditeurs",
+      "ref": {
+        "application": "admin",
+        "fiche": "005-gerer-les-droits-des-auditeurs"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "application:admin@6",
+      "niveau": "application",
+      "parent": "etape:6",
+      "nom": "Administration",
+      "ref": {
+        "application": "admin"
+      },
+      "etat": "a_venir"
+    },
+    {
+      "id": "fiche:005-gerer-les-droits-des-auditeurs@6",
+      "niveau": "fiche",
+      "parent": "application:admin@6",
+      "nom": "Gérer les droits des auditeurs",
+      "ref": {
+        "application": "admin",
+        "fiche": "005-gerer-les-droits-des-auditeurs"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "application:admin@7",
+      "niveau": "application",
+      "parent": "etape:7",
+      "nom": "Administration",
+      "ref": {
+        "application": "admin"
+      },
+      "etat": "a_venir"
+    },
+    {
+      "id": "fiche:005-gerer-les-droits-des-auditeurs@7",
+      "niveau": "fiche",
+      "parent": "application:admin@7",
+      "nom": "Gérer les droits des auditeurs",
+      "ref": {
+        "application": "admin",
+        "fiche": "005-gerer-les-droits-des-auditeurs"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "application:admin@8",
+      "niveau": "application",
+      "parent": "etape:8",
+      "nom": "Administration",
+      "ref": {
+        "application": "admin"
+      },
+      "etat": "a_venir"
+    },
+    {
+      "id": "fiche:005-gerer-les-droits-des-auditeurs@8",
+      "niveau": "fiche",
+      "parent": "application:admin@8",
+      "nom": "Gérer les droits des auditeurs",
+      "ref": {
+        "application": "admin",
+        "fiche": "005-gerer-les-droits-des-auditeurs"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "application:admin@10",
+      "niveau": "application",
+      "parent": "etape:10",
+      "nom": "Administration",
+      "ref": {
+        "application": "admin"
+      },
+      "etat": "en_cours"
+    },
+    {
+      "id": "fiche:005-gerer-les-droits-des-auditeurs@10",
+      "niveau": "fiche",
+      "parent": "application:admin@10",
+      "nom": "Gérer les droits des auditeurs",
+      "ref": {
+        "application": "admin",
+        "fiche": "005-gerer-les-droits-des-auditeurs"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "debut": "2026-10-22T14:13:05.988Z",
+          "fin": null,
+          "commence_par": "evt:005-gerer-les-droits-des-auditeurs/c750aab8",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    }
+  ],
+  "retirees": [],
+  "jalons": [
+    {
+      "id": "jalon:projet/on-continue/2",
+      "ligne": "etape:1",
+      "decision": "on-continue",
+      "nom": "On continue",
+      "etat": "perimee",
+      "demandee": null,
+      "demandee_par": null,
+      "demandee_source": null,
+      "prise": "2026-10-22T14:12:12.549Z",
+      "prise_par": "evt:projet/f95df430",
+      "perimee_depuis": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git",
+        "pieces": [
+          "prd",
+          "profil"
+        ]
+      }
+    },
+    {
+      "id": "jalon:projet/permis-de-construire/1",
+      "ligne": "etape:3",
+      "decision": "permis-de-construire",
+      "nom": "Le permis de construire",
+      "etat": "perimee",
+      "demandee": null,
+      "demandee_par": null,
+      "demandee_source": null,
+      "prise": "2026-10-22T14:12:15.330Z",
+      "prise_par": "evt:projet/1c835438",
+      "perimee_depuis": {
+        "date": "2026-10-22T14:12:31.000Z",
+        "source": "git",
+        "pieces": [
+          "prd",
+          "profil"
+        ]
+      }
+    },
+    {
+      "id": "jalon:projet/on-continue/3",
+      "ligne": "etape:1",
+      "decision": "on-continue",
+      "nom": "On continue",
+      "etat": "attendue",
+      "demandee": "2026-10-22T14:12:31.000Z",
+      "demandee_par": null,
+      "demandee_source": "git",
+      "prise": null,
+      "prise_par": null
+    }
+  ],
+  "jours": [
+    {
+      "date": "2026-10-22",
+      "evenements": 108,
+      "actif": true
+    }
+  ],
+  "evenements": [
+    {
+      "id": "evt:005-gerer-les-droits-des-auditeurs/c750aab8",
+      "ts": "2026-10-22T14:13:05.988Z",
+      "kind": "run",
+      "phrase": "La fiche « Gérer les droits des auditeurs » est ouverte",
+      "ref": {
+        "application": "admin",
+        "fiche": "005-gerer-les-droits-des-auditeurs"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:005-gerer-les-droits-des-auditeurs/5c58482a",
+      "ts": "2026-10-22T14:13:05.989Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Gérer les droits des auditeurs »",
+      "ref": {
+        "application": "admin",
+        "fiche": "005-gerer-les-droits-des-auditeurs"
+      },
+      "trait": false
+    }
+  ],
+  "regime": [
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:09.697Z",
+      "a": "2026-10-22T14:12:18.726Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:18.726Z",
+      "a": "2026-10-22T14:12:19.720Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:19.720Z",
+      "a": "2026-10-22T14:12:28.117Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:28.117Z",
+      "a": "2026-10-22T14:12:29.041Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:29.041Z",
+      "a": "2026-10-22T14:12:32.183Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:32.183Z",
+      "a": "2026-10-22T14:12:32.296Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:32.296Z",
+      "a": "2026-10-22T14:12:38.724Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:38.724Z",
+      "a": "2026-10-22T14:12:38.868Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:38.868Z",
+      "a": "2026-10-22T14:12:40.546Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:40.546Z",
+      "a": "2026-10-22T14:12:40.686Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:40.686Z",
+      "a": "2026-10-22T14:12:43.149Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:43.149Z",
+      "a": "2026-10-22T14:12:43.296Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:43.296Z",
+      "a": "2026-10-22T14:12:48.782Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:48.782Z",
+      "a": "2026-10-22T14:12:48.907Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:48.907Z",
+      "a": "2026-10-22T14:12:50.540Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:50.540Z",
+      "a": "2026-10-22T14:12:50.669Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:50.669Z",
+      "a": "2026-10-22T14:12:53.158Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:53.158Z",
+      "a": "2026-10-22T14:12:53.289Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:53.289Z",
+      "a": "2026-10-22T14:13:06.793Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:13:06.793Z",
+      "a": null
+    }
+  ],
+  "a_venir": [
+    {
+      "ligne": "fiche:004-saisir-un-constat-hors-ligne@5",
+      "etape": 5,
+      "apres": "fiche:004-saisir-un-constat-hors-ligne@4"
+    },
+    {
+      "ligne": "fiche:004-saisir-un-constat-hors-ligne@6",
+      "etape": 6,
+      "apres": "fiche:004-saisir-un-constat-hors-ligne@5"
+    },
+    {
+      "ligne": "fiche:004-saisir-un-constat-hors-ligne@7",
+      "etape": 7,
+      "apres": "fiche:004-saisir-un-constat-hors-ligne@6"
+    },
+    {
+      "ligne": "fiche:004-saisir-un-constat-hors-ligne@8",
+      "etape": 8,
+      "apres": "fiche:004-saisir-un-constat-hors-ligne@7"
+    },
+    {
+      "ligne": "fiche:005-gerer-les-droits-des-auditeurs@5",
+      "etape": 5,
+      "apres": "fiche:005-gerer-les-droits-des-auditeurs@4"
+    },
+    {
+      "ligne": "fiche:005-gerer-les-droits-des-auditeurs@6",
+      "etape": 6,
+      "apres": "fiche:005-gerer-les-droits-des-auditeurs@5"
+    },
+    {
+      "ligne": "fiche:005-gerer-les-droits-des-auditeurs@7",
+      "etape": 7,
+      "apres": "fiche:005-gerer-les-droits-des-auditeurs@6"
+    },
+    {
+      "ligne": "fiche:005-gerer-les-droits-des-auditeurs@8",
+      "etape": 8,
+      "apres": "fiche:005-gerer-les-droits-des-auditeurs@7"
+    }
+  ]
+}

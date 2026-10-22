@@ -1,0 +1,123 @@
+{
+  "schema": 1,
+  "maintenant": "2026-10-27T14:12:16.729Z",
+  "fuseau": "UTC",
+  "debut": "2026-10-22T14:12:09.697Z",
+  "depuis": "evt:projet/1c835438",
+  "complet": false,
+  "lignes": [
+    {
+      "id": "etape:10",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 10,
+      "nom": "Les transformations",
+      "zone": "transformations",
+      "etat": "en_cours",
+      "barres": [
+        {
+          "debut": "2026-10-27T14:12:16.633Z",
+          "fin": null
+        }
+      ]
+    },
+    {
+      "id": "demande:projet/61752b17@10",
+      "niveau": "demande",
+      "parent": "etape:10",
+      "nom": "Exporter un audit en PDF",
+      "etat": "deposee",
+      "barres": [
+        {
+          "debut": "2026-10-27T14:12:16.633Z",
+          "fin": null,
+          "commence_par": "evt:projet/61752b17",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    }
+  ],
+  "retirees": [],
+  "jalons": [],
+  "jours": [
+    {
+      "date": "2026-10-25",
+      "evenements": 0,
+      "actif": false
+    },
+    {
+      "date": "2026-10-26",
+      "evenements": 0,
+      "actif": false
+    },
+    {
+      "date": "2026-10-27",
+      "evenements": 1,
+      "actif": true
+    }
+  ],
+  "evenements": [
+    {
+      "id": "evt:projet/61752b17",
+      "ts": "2026-10-27T14:12:16.633Z",
+      "kind": "demande",
+      "phrase": "Une demande arrive au carnet : « Exporter un audit en PDF »",
+      "trait": false
+    }
+  ],
+  "regime": [
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:09.697Z",
+      "a": "2026-10-22T14:42:12.549Z"
+    },
+    {
+      "valeur": "ferme",
+      "de": "2026-10-22T14:42:12.549Z",
+      "a": "2026-10-24T14:12:13.774Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-24T14:12:13.774Z",
+      "a": "2026-10-24T14:42:15.330Z"
+    },
+    {
+      "valeur": "ferme",
+      "de": "2026-10-24T14:42:15.330Z",
+      "a": "2026-10-27T14:12:16.633Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-27T14:12:16.633Z",
+      "a": null
+    }
+  ],
+  "a_venir": [
+    {
+      "ligne": "etape:4",
+      "etape": 4,
+      "apres": "etape:3"
+    },
+    {
+      "ligne": "etape:5",
+      "etape": 5,
+      "apres": "etape:4"
+    },
+    {
+      "ligne": "etape:6",
+      "etape": 6,
+      "apres": "etape:5"
+    },
+    {
+      "ligne": "etape:7",
+      "etape": 7,
+      "apres": "etape:6"
+    },
+    {
+      "ligne": "etape:8",
+      "etape": 8,
+      "apres": "etape:7"
+    }
+  ]
+}

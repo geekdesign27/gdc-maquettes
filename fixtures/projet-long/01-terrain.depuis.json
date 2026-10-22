@@ -1,0 +1,156 @@
+{
+  "schema": 1,
+  "maintenant": "2026-10-22T14:12:09.520Z",
+  "fuseau": "UTC",
+  "debut": null,
+  "jours": [],
+  "regime": [],
+  "lignes": [
+    {
+      "id": "etape:1",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 1,
+      "nom": "L'idée",
+      "zone": "bureaux",
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "etape:2",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 2,
+      "nom": "Les plans",
+      "zone": "bureaux",
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "etape:3",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 3,
+      "nom": "Le permis de construire",
+      "zone": "bureaux",
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "etape:4",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 4,
+      "nom": "Les plans d'exécution",
+      "zone": "chantier",
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "etape:5",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 5,
+      "nom": "La préparation",
+      "zone": "chantier",
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "etape:6",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 6,
+      "nom": "La construction",
+      "zone": "chantier",
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "etape:7",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 7,
+      "nom": "La réception",
+      "zone": "remise",
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "etape:8",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 8,
+      "nom": "La remise des clés",
+      "zone": "remise",
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "etape:9",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 9,
+      "nom": "La garantie",
+      "zone": "remise",
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "etape:10",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 10,
+      "nom": "Les transformations",
+      "zone": "transformations",
+      "etat": "a_venir",
+      "barres": []
+    }
+  ],
+  "jalons": [],
+  "a_venir": [
+    {
+      "ligne": "etape:1",
+      "etape": 1,
+      "apres": null
+    },
+    {
+      "ligne": "etape:2",
+      "etape": 2,
+      "apres": "etape:1"
+    },
+    {
+      "ligne": "etape:3",
+      "etape": 3,
+      "apres": "etape:2"
+    },
+    {
+      "ligne": "etape:4",
+      "etape": 4,
+      "apres": "etape:3"
+    },
+    {
+      "ligne": "etape:5",
+      "etape": 5,
+      "apres": "etape:4"
+    },
+    {
+      "ligne": "etape:6",
+      "etape": 6,
+      "apres": "etape:5"
+    },
+    {
+      "ligne": "etape:7",
+      "etape": 7,
+      "apres": "etape:6"
+    },
+    {
+      "ligne": "etape:8",
+      "etape": 8,
+      "apres": "etape:7"
+    }
+  ],
+  "evenements": [],
+  "depuis": null,
+  "complet": true
+}

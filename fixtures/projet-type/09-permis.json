@@ -1,0 +1,362 @@
+{
+  "etape": "le chantier est ouvert",
+  "titre": "Le permis de construire est accordé",
+  "explication": "Le panneau du permis se pose à l'entrée du chantier.",
+  "schema": 3,
+  "projet": "AuditApp",
+  "etapes": [
+    {
+      "id": "idee",
+      "numero": 1,
+      "titre": "L'idée"
+    },
+    {
+      "id": "plans",
+      "numero": 2,
+      "titre": "Les plans"
+    },
+    {
+      "id": "permis",
+      "numero": 3,
+      "titre": "Le permis de construire"
+    },
+    {
+      "id": "plans-execution",
+      "numero": 4,
+      "titre": "Les plans d'exécution"
+    },
+    {
+      "id": "preparation",
+      "numero": 5,
+      "titre": "La préparation"
+    },
+    {
+      "id": "construction",
+      "numero": 6,
+      "titre": "La construction"
+    },
+    {
+      "id": "reception",
+      "numero": 7,
+      "titre": "La réception"
+    },
+    {
+      "id": "remise-des-cles",
+      "numero": 8,
+      "titre": "La remise des clés"
+    },
+    {
+      "id": "garantie",
+      "numero": 9,
+      "titre": "La garantie"
+    },
+    {
+      "id": "transformations",
+      "numero": 10,
+      "titre": "Les transformations"
+    }
+  ],
+  "chantier": {
+    "regime": "ouvert",
+    "depuis": "2026-10-22T14:12:15.330Z",
+    "raison": "activité de moins de trente minutes"
+  },
+  "plan": {
+    "zones": [
+      {
+        "id": "bureaux",
+        "nom": "Les bureaux",
+        "etapes": [
+          1,
+          2,
+          3
+        ],
+        "lieux": [
+          {
+            "id": "bureau-architecte",
+            "element": "architect-office",
+            "nom": "Le bureau d'architecte"
+          },
+          {
+            "id": "bureau-client",
+            "element": "client-office",
+            "nom": "Le bureau du client"
+          },
+          {
+            "id": "bureau-etudes",
+            "element": "design-office",
+            "nom": "Le bureau d'études"
+          },
+          {
+            "id": "panneau-permis",
+            "element": "permit-board",
+            "nom": "Le panneau du permis"
+          }
+        ],
+        "activee": "2026-10-22T14:12:15.898Z",
+        "par_ce_projet": true
+      },
+      {
+        "id": "chantier",
+        "nom": "Le chantier",
+        "etapes": [
+          4,
+          5,
+          6
+        ],
+        "lieux": [
+          {
+            "id": "baraque",
+            "element": "site-office",
+            "nom": "La baraque du conducteur de travaux"
+          },
+          {
+            "id": "bureau-controle",
+            "element": "control-office",
+            "nom": "Le bureau de contrôle"
+          },
+          {
+            "id": "panneau-feu-vert",
+            "element": "decision-sign",
+            "nom": "Le panneau du feu vert"
+          },
+          {
+            "id": "chantier",
+            "element": "site-fence",
+            "nom": "Le chantier, une parcelle par application"
+          }
+        ],
+        "activee": "2026-10-22T14:12:15.898Z",
+        "par_ce_projet": true
+      },
+      {
+        "id": "remise",
+        "nom": "La réception, la remise des clés et la garantie",
+        "etapes": [
+          7,
+          8,
+          9
+        ],
+        "lieux": [
+          {
+            "id": "aire-reception",
+            "element": "reception-area",
+            "nom": "L'aire de réception"
+          },
+          {
+            "id": "cabane-cles",
+            "element": "site-container",
+            "nom": "La cabane de la remise des clés"
+          },
+          {
+            "id": "cabane-garantie",
+            "element": "site-container",
+            "nom": "La cabane de la garantie"
+          }
+        ],
+        "activee": null
+      },
+      {
+        "id": "transformations",
+        "nom": "Les transformations",
+        "etapes": [
+          10
+        ],
+        "lieux": [
+          {
+            "id": "cabane-transformations",
+            "element": "site-container",
+            "nom": "La cabane des transformations"
+          },
+          {
+            "id": "parking",
+            "element": "parking",
+            "nom": "Le carnet des demandes"
+          }
+        ],
+        "activee": null
+      }
+    ],
+    "parcelles": [
+      {
+        "batiment": "bureau",
+        "nom": "Application de bureau",
+        "type": "immeuble",
+        "fiches": []
+      }
+    ]
+  },
+  "indicateurs": [
+    {
+      "id": "dossier",
+      "nom": "Le dossier du projet",
+      "valeur": 14,
+      "total": 15,
+      "regle": "14 pièces complètes sur 15"
+    }
+  ],
+  "elements": [
+    {
+      "element": "ground",
+      "id": "terrain",
+      "nom": "Le terrain",
+      "etat": "default",
+      "source": "toujours"
+    },
+    {
+      "element": "building",
+      "id": "bureau",
+      "nom": "Application de bureau",
+      "type": "immeuble",
+      "etat": "plot",
+      "etape": 4,
+      "etages": [],
+      "raison": "aucune fiche commencée",
+      "ref": {
+        "application": "bureau"
+      },
+      "source": "dossier/profil.json"
+    },
+    {
+      "element": "architect-office",
+      "id": "bureau-architecte",
+      "nom": "Le bureau d'architecte",
+      "etat": "idle",
+      "source": "personne n'y travaille"
+    },
+    {
+      "element": "design-office",
+      "id": "bureau-etudes",
+      "nom": "Le bureau d'études",
+      "etat": "idle",
+      "source": "personne n'y travaille"
+    },
+    {
+      "element": "client-office",
+      "id": "bureau-client",
+      "nom": "Le bureau du client",
+      "etat": "idle",
+      "source": "aucune décision attendue"
+    },
+    {
+      "element": "control-office",
+      "id": "bureau-controle",
+      "nom": "Le bureau de contrôle (Hélène)",
+      "etat": "idle",
+      "source": "aucun contrôle"
+    },
+    {
+      "element": "site-office",
+      "id": "baraque",
+      "nom": "La baraque du conducteur de travaux",
+      "etat": "idle",
+      "source": "personne n'y travaille"
+    },
+    {
+      "element": "reception-area",
+      "id": "aire-reception",
+      "nom": "L'aire de réception",
+      "etat": "idle",
+      "source": "personne n'y travaille"
+    },
+    {
+      "element": "permit-board",
+      "id": "panneau-permis",
+      "ancre": "panneau-permis",
+      "nom": "Le permis de construire",
+      "etat": "granted",
+      "source": "décision du projet du 2026-10-22T14:12:15.330Z"
+    },
+    {
+      "element": "parking",
+      "id": "parking",
+      "nom": "Le carnet des demandes",
+      "etat": "default",
+      "quantite": 0,
+      "regle": "0 demande à trier",
+      "source": "dossier/plans/carnet-des-demandes.md"
+    },
+    {
+      "element": "character",
+      "id": "architecte",
+      "role": "architecte",
+      "nom": "Claire, l'architecte",
+      "etat": "waiting",
+      "lieu": "bureau-architecte",
+      "source": "activité du projet, 2026-10-22T14:12:10.703Z"
+    },
+    {
+      "element": "character",
+      "id": "designer",
+      "role": "designer",
+      "nom": "Lina, le designer UX/UI",
+      "etat": "celebrate",
+      "lieu": "bureau-etudes",
+      "source": "activité du projet, 2026-10-22T14:12:14.601Z"
+    },
+    {
+      "element": "character",
+      "id": "helene",
+      "role": "gdc",
+      "nom": "Hélène, le bureau de contrôle",
+      "etat": "idle",
+      "lieu": "bureau-controle",
+      "programme": true,
+      "source": "aucune mesure récente"
+    }
+  ],
+  "actions": [
+    {
+      "ts": "2026-10-22T14:12:15.898Z",
+      "action": "ouverture",
+      "element": "chantier",
+      "id": "chantier",
+      "de": "pause",
+      "vers": "ouvert",
+      "phrase": "Le chantier ouvre",
+      "cause": "evt:projet/1c835438"
+    },
+    {
+      "ts": "2026-10-22T14:12:15.898Z",
+      "action": "change",
+      "element": "client-office",
+      "id": "bureau-client",
+      "nom": "Le bureau du client",
+      "de": "waiting",
+      "vers": "idle",
+      "phrase": "Le bureau du client : waiting → idle",
+      "cause": "evt:projet/1c835438"
+    },
+    {
+      "ts": "2026-10-22T14:12:15.898Z",
+      "action": "apparait",
+      "element": "permit-board",
+      "id": "panneau-permis",
+      "nom": "Le permis de construire",
+      "etat": "granted",
+      "lieu": "panneau-permis",
+      "phrase": "Le permis de construire apparaît (Le panneau du permis)",
+      "cause": "evt:projet/1c835438"
+    },
+    {
+      "ts": "2026-10-22T14:12:15.898Z",
+      "action": "deplace",
+      "element": "character",
+      "id": "architecte",
+      "nom": "Claire, l'architecte",
+      "de": "bureau-client",
+      "vers": "bureau-architecte",
+      "phrase": "Claire, l'architecte va du bureau du client au bureau d'architecte",
+      "cause": "evt:projet/1c835438"
+    },
+    {
+      "ts": "2026-10-22T14:12:15.898Z",
+      "action": "disparait",
+      "element": "decision-sign",
+      "id": "decision-permis-de-construire",
+      "nom": "Ta décision « Le permis de construire »",
+      "phrase": "Ta décision « Le permis de construire » disparaît",
+      "cause": "evt:projet/1c835438"
+    }
+  ]
+}

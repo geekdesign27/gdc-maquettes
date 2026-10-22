@@ -1,0 +1,319 @@
+{
+  "sequence": "projet-long",
+  "description": "Le projet type étalé sur plusieurs semaines, avec des jours sans activité, pour juger les plis du planning.",
+  "gdc": "0.20.0",
+  "horloge": "decalee",
+  "horloge_explication": "Les heures des journaux ont été décalées après coup, de 2 jours après « on-continue », 3 jours après « permis », 1 jours après « feu-vert », 12 jours après « essai-rouge », 2 jours après « reception-attendue », 4 jours après « production ». Les scènes sont celles de projet-type ; les dates d'après git (pièces du dossier, demande des décisions du projet) ne sont pas décalées. Cette séquence sert à l'allure du planning, jamais à juger un fait.",
+  "etapes": [
+    {
+      "numero": 1,
+      "titre": "Le terrain, avant l'ouverture du projet",
+      "actions": [],
+      "fichier": "01-terrain.json",
+      "chronologie": "01-terrain.chronologie.json",
+      "depuis": "01-terrain.depuis.json"
+    },
+    {
+      "numero": 2,
+      "titre": "Le projet est ouvert",
+      "actions": [
+        "Le chantier ouvre",
+        "Application de bureau apparaît"
+      ],
+      "fichier": "02-projet-ouvert.json",
+      "chronologie": "02-projet-ouvert.chronologie.json",
+      "depuis": "02-projet-ouvert.depuis.json"
+    },
+    {
+      "numero": 3,
+      "titre": "Claire écrit le cahier des besoins",
+      "actions": [
+        "Le bureau d'architecte : idle → active",
+        "Claire, l'architecte apparaît (Le bureau d'architecte)"
+      ],
+      "fichier": "03-claire-ecrit.json",
+      "chronologie": "03-claire-ecrit.chronologie.json",
+      "depuis": "03-claire-ecrit.depuis.json"
+    },
+    {
+      "numero": 4,
+      "titre": "L'idée est complète : ta décision « On continue » est attendue",
+      "actions": [
+        "Le chantier s'arrête : il attend ta décision",
+        "Le bureau d'architecte : active → idle",
+        "Le bureau du client : idle → waiting",
+        "Le bureau du client : 1",
+        "Ta décision « On continue » apparaît (Le bureau du client)",
+        "Claire, l'architecte va du bureau d'architecte au bureau du client : ta décision l'attend",
+        "Claire, l'architecte : typing → waiting"
+      ],
+      "fichier": "04-on-continue-attendu.json",
+      "chronologie": "04-on-continue-attendu.chronologie.json",
+      "depuis": "04-on-continue-attendu.depuis.json"
+    },
+    {
+      "numero": 5,
+      "titre": "Tu refuses « On continue » : il manque les rôles des auditeurs",
+      "actions": [],
+      "fichier": "05-on-continue-refuse.json",
+      "chronologie": "05-on-continue-refuse.chronologie.json",
+      "depuis": "05-on-continue-refuse.depuis.json"
+    },
+    {
+      "numero": 6,
+      "titre": "Tu as dit « On continue »",
+      "actions": [
+        "Le chantier ouvre",
+        "Le bureau du client : waiting → idle",
+        "Claire, l'architecte va du bureau du client au bureau d'architecte",
+        "Ta décision « On continue » disparaît"
+      ],
+      "fichier": "06-on-continue.json",
+      "chronologie": "06-on-continue.chronologie.json",
+      "depuis": "06-on-continue.depuis.json"
+    },
+    {
+      "numero": 7,
+      "titre": "Lina dessine les parcours au bureau d'études",
+      "actions": [
+        "Le bureau d'études : idle → active",
+        "Lina, le designer UX/UI apparaît (Le bureau d'études)"
+      ],
+      "fichier": "07-lina-etudie.json",
+      "chronologie": "07-lina-etudie.chronologie.json",
+      "depuis": "07-lina-etudie.depuis.json"
+    },
+    {
+      "numero": 8,
+      "titre": "Le dossier est complet : ton permis de construire est attendu",
+      "actions": [
+        "Le chantier s'arrête : il attend ta décision",
+        "Le bureau d'études : active → idle",
+        "Le bureau du client : idle → waiting",
+        "Le bureau du client : 1",
+        "Ta décision « Le permis de construire » apparaît (Le bureau du client)",
+        "Claire, l'architecte va du bureau d'architecte au bureau du client : ta décision l'attend",
+        "Lina, le designer UX/UI : typing → celebrate"
+      ],
+      "fichier": "08-permis-attendu.json",
+      "chronologie": "08-permis-attendu.chronologie.json",
+      "depuis": "08-permis-attendu.depuis.json"
+    },
+    {
+      "numero": 9,
+      "titre": "Le permis de construire est accordé",
+      "actions": [
+        "Le chantier ouvre",
+        "Le bureau du client : waiting → idle",
+        "Le permis de construire apparaît (Le panneau du permis)",
+        "Claire, l'architecte va du bureau du client au bureau d'architecte",
+        "Ta décision « Le permis de construire » disparaît"
+      ],
+      "fichier": "09-permis.json",
+      "chronologie": "09-permis.chronologie.json",
+      "depuis": "09-permis.depuis.json"
+    },
+    {
+      "numero": 10,
+      "titre": "Une demande arrive au carnet",
+      "actions": [
+        "Le carnet des demandes : 1 demande à trier"
+      ],
+      "fichier": "10-demande.json",
+      "chronologie": "10-demande.chronologie.json",
+      "depuis": "10-demande.depuis.json"
+    },
+    {
+      "numero": 11,
+      "titre": "La fiche « Clôturer un audit » est ouverte",
+      "actions": [
+        "Les gabarits de la fiche « Clôturer un audit » apparaissent (le bâtiment « Application de bureau »)"
+      ],
+      "fichier": "11-fiche.json",
+      "chronologie": "11-fiche.chronologie.json",
+      "depuis": "11-fiche.depuis.json"
+    },
+    {
+      "numero": 12,
+      "titre": "Ton feu vert est attendu",
+      "actions": [
+        "Le chantier s'arrête : il attend ta décision",
+        "Le bureau du client : idle → waiting",
+        "Le bureau du client : 1",
+        "Ta décision « le feu vert » pour « Clôturer un audit » apparaît (Le panneau du feu vert)",
+        "Claire, l'architecte va du bureau d'architecte au panneau du feu vert : ta décision l'attend"
+      ],
+      "fichier": "12-feu-vert-attendu.json",
+      "chronologie": "12-feu-vert-attendu.chronologie.json",
+      "depuis": "12-feu-vert-attendu.depuis.json"
+    },
+    {
+      "numero": 13,
+      "titre": "Feu vert : la préparation commence",
+      "actions": [
+        "Le chantier ouvre",
+        "Application de bureau : plot → excavation",
+        "Le bureau du client : waiting → idle",
+        "Claire, l'architecte va du panneau du feu vert au bureau d'architecte",
+        "Les gabarits de la fiche « Clôturer un audit » disparaissent",
+        "Ta décision « le feu vert » pour « Clôturer un audit » disparaît"
+      ],
+      "fichier": "13-feu-vert.json",
+      "chronologie": "13-feu-vert.chronologie.json",
+      "depuis": "13-feu-vert.depuis.json"
+    },
+    {
+      "numero": 14,
+      "titre": "Emma prend le lot de l'écran de clôture",
+      "actions": [
+        "Application de bureau : excavation → foundations",
+        "Emma, la développeuse interface apparaît (le bâtiment « Application de bureau »)"
+      ],
+      "fichier": "14-construction.json",
+      "chronologie": "14-construction.chronologie.json",
+      "depuis": "14-construction.depuis.json"
+    },
+    {
+      "numero": 15,
+      "titre": "Emma écrit d'abord l'essai qui échoue",
+      "actions": [
+        "Application de bureau : foundations → structure",
+        "Le bureau de contrôle (Hélène) : idle → active",
+        "Hélène, le bureau de contrôle va du bureau de contrôle au bâtiment « Application de bureau » pour un contrôle",
+        "Hélène, le bureau de contrôle : idle → inspect"
+      ],
+      "fichier": "15-essai-rouge.json",
+      "chronologie": "15-essai-rouge.chronologie.json",
+      "depuis": "15-essai-rouge.depuis.json"
+    },
+    {
+      "numero": 16,
+      "titre": "Hélène contrôle et prend la preuve",
+      "actions": [],
+      "fichier": "16-controle.json",
+      "chronologie": "16-controle.chronologie.json",
+      "depuis": "16-controle.depuis.json"
+    },
+    {
+      "numero": 17,
+      "titre": "Le lot de l'export Excel est abandonné",
+      "actions": [],
+      "fichier": "17-lot-abandonne.json",
+      "chronologie": "17-lot-abandonne.chronologie.json",
+      "depuis": "17-lot-abandonne.depuis.json"
+    },
+    {
+      "numero": 18,
+      "titre": "Emma a fini son lot",
+      "actions": [
+        "Application de bureau : structure → envelope",
+        "Une nouvelle dépendance pour « Clôturer un audit » : jspdf apparaît (le bâtiment « Application de bureau »)",
+        "Emma, la développeuse interface va du bâtiment « Application de bureau » à la baraque du conducteur de travaux",
+        "Emma, la développeuse interface : typing → celebrate"
+      ],
+      "fichier": "18-lot-fini.json",
+      "chronologie": "18-lot-fini.chronologie.json",
+      "depuis": "18-lot-fini.depuis.json"
+    },
+    {
+      "numero": 19,
+      "titre": "Olivier relit le travail",
+      "actions": [
+        "Application de bureau : envelope → finishing",
+        "Olivier, le surveillant de chantier apparaît (le bâtiment « Application de bureau »)"
+      ],
+      "fichier": "19-relecture.json",
+      "chronologie": "19-relecture.chronologie.json",
+      "depuis": "19-relecture.depuis.json"
+    },
+    {
+      "numero": 20,
+      "titre": "Ta réception est attendue",
+      "actions": [
+        "Le chantier s'arrête : il attend ta décision",
+        "Application de bureau : finishing → inspection",
+        "Le bureau du client : idle → waiting",
+        "Le bureau du client : 1",
+        "Ta décision « la réception » pour « Clôturer un audit » apparaît (L'aire de réception)",
+        "L'aire de réception : idle → waiting",
+        "Claire, l'architecte va du bureau d'architecte à l'aire de réception : ta décision l'attend",
+        "Emma, la développeuse interface va de la baraque du conducteur de travaux à l'aire de réception : ta décision l'attend",
+        "Emma, la développeuse interface : celebrate → waiting",
+        "Olivier, le surveillant de chantier va du bâtiment « Application de bureau » à l'aire de réception : ta décision l'attend",
+        "Olivier, le surveillant de chantier : read → waiting"
+      ],
+      "fichier": "20-reception-attendue.json",
+      "chronologie": "20-reception-attendue.chronologie.json",
+      "depuis": "20-reception-attendue.depuis.json"
+    },
+    {
+      "numero": 21,
+      "titre": "Réception accordée : la fiche entre dans dev",
+      "actions": [
+        "Le chantier ouvre",
+        "La grue de la fiche « Clôturer un audit » (entrée dans dev) apparaît (le bâtiment « Application de bureau »)",
+        "Le bureau du client : waiting → idle",
+        "L'aire de réception : waiting → idle",
+        "Claire, l'architecte va de l'aire de réception au bureau d'architecte",
+        "Emma, la développeuse interface va de l'aire de réception à la baraque du conducteur de travaux",
+        "Emma, la développeuse interface : waiting → celebrate",
+        "Olivier, le surveillant de chantier va de l'aire de réception à la baraque du conducteur de travaux",
+        "Olivier, le surveillant de chantier : waiting → celebrate",
+        "Ta décision « la réception » pour « Clôturer un audit » disparaît"
+      ],
+      "fichier": "21-dev.json",
+      "chronologie": "21-dev.chronologie.json",
+      "depuis": "21-dev.depuis.json"
+    },
+    {
+      "numero": 22,
+      "titre": "Remise des clés : la fiche est en production",
+      "actions": [
+        "Application de bureau : inspection → completed"
+      ],
+      "fichier": "22-production.json",
+      "chronologie": "22-production.chronologie.json",
+      "depuis": "22-production.depuis.json"
+    },
+    {
+      "numero": 23,
+      "titre": "La mise en production de « Signer un rapport » échoue : un défaut",
+      "actions": [
+        "Application de bureau : completed → finishing",
+        "Un défaut après la mise en production de « Signer un rapport » apparaît (le bâtiment « Application de bureau »)",
+        "La grue de la fiche « Signer un rapport » (entrée dans dev) apparaît (le bâtiment « Application de bureau »)",
+        "Hélène, le bureau de contrôle va dans le bâtiment « Application de bureau » pour un contrôle"
+      ],
+      "fichier": "23-defaut.json",
+      "chronologie": "23-defaut.chronologie.json",
+      "depuis": "23-defaut.depuis.json"
+    },
+    {
+      "numero": 24,
+      "titre": "La réparation est en production : le défaut est fermé",
+      "actions": [
+        "La grue de la fiche « Réparer la signature du rapport » (entrée dans dev) apparaît (le bâtiment « Application de bureau »)",
+        "Hélène, le bureau de contrôle va dans le bâtiment « Application de bureau » pour un contrôle",
+        "Un défaut après la mise en production de « Signer un rapport » disparaît"
+      ],
+      "fichier": "24-reparation.json",
+      "chronologie": "24-reparation.chronologie.json",
+      "depuis": "24-reparation.depuis.json"
+    },
+    {
+      "numero": 25,
+      "titre": "Le cahier des besoins a changé : le permis est périmé",
+      "actions": [
+        "Le chantier s'arrête : il attend ta décision",
+        "Le bureau du client : idle → waiting",
+        "Le bureau du client : 1",
+        "Ta décision « On continue » apparaît (Le bureau du client)",
+        "Le permis de construire (périmé : Le cahier des besoins (PRD) a changé) : granted → expired",
+        "Claire, l'architecte va du bureau d'architecte au bureau du client : ta décision l'attend"
+      ],
+      "fichier": "25-permis-perime.json",
+      "chronologie": "25-permis-perime.chronologie.json",
+      "depuis": "25-permis-perime.depuis.json"
+    }
+  ]
+}

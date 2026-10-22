@@ -1,0 +1,4923 @@
+{
+  "schema": 1,
+  "maintenant": "2026-10-22T14:14:12.682Z",
+  "fuseau": "UTC",
+  "debut": "2026-10-22T14:13:19.417Z",
+  "depuis": "evt:025-fonction-25-de-application-de-bureau/5199f222",
+  "complet": false,
+  "lignes": [
+    {
+      "id": "fiche:033-fonction-33-de-application-de-bureau@4",
+      "niveau": "fiche",
+      "parent": "application:bureau@4",
+      "nom": "Fonction 33 de « Application de bureau »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "033-fonction-33-de-application-de-bureau"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:13:52.041Z",
+          "fin": "2026-10-22T14:13:52.371Z",
+          "commence_par": "evt:033-fonction-33-de-application-de-bureau/b32fd20a",
+          "finit_par": "evt:033-fonction-33-de-application-de-bureau/36cab3d7",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "fiche:041-fonction-41-de-application-de-bureau@4",
+      "niveau": "fiche",
+      "parent": "application:bureau@4",
+      "nom": "Fonction 41 de « Application de bureau »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "041-fonction-41-de-application-de-bureau"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:14:01.056Z",
+          "fin": "2026-10-22T14:14:01.379Z",
+          "commence_par": "evt:041-fonction-41-de-application-de-bureau/45977842",
+          "finit_par": "evt:041-fonction-41-de-application-de-bureau/ff14f084",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "fiche:049-fonction-49-de-application-de-bureau@4",
+      "niveau": "fiche",
+      "parent": "application:bureau@4",
+      "nom": "Fonction 49 de « Application de bureau »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "049-fonction-49-de-application-de-bureau"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:14:08.273Z",
+          "fin": null,
+          "commence_par": "evt:049-fonction-49-de-application-de-bureau/73252072",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "fiche:026-fonction-26-de-application-terrain@4",
+      "niveau": "fiche",
+      "parent": "application:terrain@4",
+      "nom": "Fonction 26 de « Application terrain »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "026-fonction-26-de-application-terrain"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:13:45.090Z",
+          "fin": "2026-10-22T14:13:45.396Z",
+          "commence_par": "evt:026-fonction-26-de-application-terrain/2e6d86eb",
+          "finit_par": "evt:026-fonction-26-de-application-terrain/3efce98d",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "fiche:034-fonction-34-de-application-terrain@4",
+      "niveau": "fiche",
+      "parent": "application:terrain@4",
+      "nom": "Fonction 34 de « Application terrain »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "034-fonction-34-de-application-terrain"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:13:53.423Z",
+          "fin": "2026-10-22T14:13:53.752Z",
+          "commence_par": "evt:034-fonction-34-de-application-terrain/7f8b2bd8",
+          "finit_par": "evt:034-fonction-34-de-application-terrain/fee026de",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "fiche:042-fonction-42-de-application-terrain@4",
+      "niveau": "fiche",
+      "parent": "application:terrain@4",
+      "nom": "Fonction 42 de « Application terrain »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "042-fonction-42-de-application-terrain"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:14:02.509Z",
+          "fin": null,
+          "commence_par": "evt:042-fonction-42-de-application-terrain/5e134a5c",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "fiche:050-fonction-50-de-application-terrain@4",
+      "niveau": "fiche",
+      "parent": "application:terrain@4",
+      "nom": "Fonction 50 de « Application terrain »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "050-fonction-50-de-application-terrain"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:14:08.597Z",
+          "fin": "2026-10-22T14:14:08.912Z",
+          "commence_par": "evt:050-fonction-50-de-application-terrain/695b2e77",
+          "finit_par": "evt:050-fonction-50-de-application-terrain/8712627a",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "fiche:027-fonction-27-de-administration@4",
+      "niveau": "fiche",
+      "parent": "application:admin@4",
+      "nom": "Fonction 27 de « Administration »",
+      "ref": {
+        "application": "admin",
+        "fiche": "027-fonction-27-de-administration"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:13:46.117Z",
+          "fin": "2026-10-22T14:13:46.448Z",
+          "commence_par": "evt:027-fonction-27-de-administration/2c328fd2",
+          "finit_par": "evt:027-fonction-27-de-administration/e9adc85d",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "fiche:035-fonction-35-de-administration@4",
+      "niveau": "fiche",
+      "parent": "application:admin@4",
+      "nom": "Fonction 35 de « Administration »",
+      "ref": {
+        "application": "admin",
+        "fiche": "035-fonction-35-de-administration"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:13:55.085Z",
+          "fin": "2026-10-22T14:13:55.434Z",
+          "commence_par": "evt:035-fonction-35-de-administration/3244299f",
+          "finit_par": "evt:035-fonction-35-de-administration/0924fd05",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "fiche:043-fonction-43-de-administration@4",
+      "niveau": "fiche",
+      "parent": "application:admin@4",
+      "nom": "Fonction 43 de « Administration »",
+      "ref": {
+        "application": "admin",
+        "fiche": "043-fonction-43-de-administration"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:14:02.694Z",
+          "fin": null,
+          "commence_par": "evt:043-fonction-43-de-administration/e11c8532",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "fiche:028-fonction-28-de-portail-client@4",
+      "niveau": "fiche",
+      "parent": "application:portail@4",
+      "nom": "Fonction 28 de « Portail client »",
+      "ref": {
+        "application": "portail",
+        "fiche": "028-fonction-28-de-portail-client"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:13:47.524Z",
+          "fin": "2026-10-22T14:13:47.842Z",
+          "commence_par": "evt:028-fonction-28-de-portail-client/21f2da91",
+          "finit_par": "evt:028-fonction-28-de-portail-client/3d473dc3",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "fiche:036-fonction-36-de-portail-client@4",
+      "niveau": "fiche",
+      "parent": "application:portail@4",
+      "nom": "Fonction 36 de « Portail client »",
+      "ref": {
+        "application": "portail",
+        "fiche": "036-fonction-36-de-portail-client"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:13:56.629Z",
+          "fin": null,
+          "commence_par": "evt:036-fonction-36-de-portail-client/83764a8b",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "fiche:044-fonction-44-de-portail-client@4",
+      "niveau": "fiche",
+      "parent": "application:portail@4",
+      "nom": "Fonction 44 de « Portail client »",
+      "ref": {
+        "application": "portail",
+        "fiche": "044-fonction-44-de-portail-client"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:14:03.009Z",
+          "fin": "2026-10-22T14:14:03.306Z",
+          "commence_par": "evt:044-fonction-44-de-portail-client/17489d16",
+          "finit_par": "evt:044-fonction-44-de-portail-client/ec8db39f",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "fiche:029-fonction-29-de-facturation@4",
+      "niveau": "fiche",
+      "parent": "application:facturation@4",
+      "nom": "Fonction 29 de « Facturation »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "029-fonction-29-de-facturation"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:13:49.121Z",
+          "fin": "2026-10-22T14:13:49.454Z",
+          "commence_par": "evt:029-fonction-29-de-facturation/914213de",
+          "finit_par": "evt:029-fonction-29-de-facturation/8004308f",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "fiche:037-fonction-37-de-facturation@4",
+      "niveau": "fiche",
+      "parent": "application:facturation@4",
+      "nom": "Fonction 37 de « Facturation »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "037-fonction-37-de-facturation"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:13:56.841Z",
+          "fin": null,
+          "commence_par": "evt:037-fonction-37-de-facturation/97bd473a",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "fiche:045-fonction-45-de-facturation@4",
+      "niveau": "fiche",
+      "parent": "application:facturation@4",
+      "nom": "Fonction 45 de « Facturation »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "045-fonction-45-de-facturation"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:14:03.923Z",
+          "fin": "2026-10-22T14:14:04.196Z",
+          "commence_par": "evt:045-fonction-45-de-facturation/def4ef5f",
+          "finit_par": "evt:045-fonction-45-de-facturation/99ffd957",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "fiche:030-fonction-30-de-rapports@4",
+      "niveau": "fiche",
+      "parent": "application:rapports@4",
+      "nom": "Fonction 30 de « Rapports »",
+      "ref": {
+        "application": "rapports",
+        "fiche": "030-fonction-30-de-rapports"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:13:50.583Z",
+          "fin": null,
+          "commence_par": "evt:030-fonction-30-de-rapports/14b72ed7",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "fiche:038-fonction-38-de-rapports@4",
+      "niveau": "fiche",
+      "parent": "application:rapports@4",
+      "nom": "Fonction 38 de « Rapports »",
+      "ref": {
+        "application": "rapports",
+        "fiche": "038-fonction-38-de-rapports"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:13:57.171Z",
+          "fin": "2026-10-22T14:13:57.493Z",
+          "commence_par": "evt:038-fonction-38-de-rapports/87697f25",
+          "finit_par": "evt:038-fonction-38-de-rapports/629dd1db",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "fiche:046-fonction-46-de-rapports@4",
+      "niveau": "fiche",
+      "parent": "application:rapports@4",
+      "nom": "Fonction 46 de « Rapports »",
+      "ref": {
+        "application": "rapports",
+        "fiche": "046-fonction-46-de-rapports"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:14:05.230Z",
+          "fin": "2026-10-22T14:14:05.503Z",
+          "commence_par": "evt:046-fonction-46-de-rapports/ec53e0ee",
+          "finit_par": "evt:046-fonction-46-de-rapports/c3b7e911",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "fiche:031-fonction-31-de-synchronisation@4",
+      "niveau": "fiche",
+      "parent": "application:synchro@4",
+      "nom": "Fonction 31 de « Synchronisation »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "031-fonction-31-de-synchronisation"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:13:50.768Z",
+          "fin": null,
+          "commence_par": "evt:031-fonction-31-de-synchronisation/6f7e4d98",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "fiche:039-fonction-39-de-synchronisation@4",
+      "niveau": "fiche",
+      "parent": "application:synchro@4",
+      "nom": "Fonction 39 de « Synchronisation »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "039-fonction-39-de-synchronisation"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:13:58.240Z",
+          "fin": "2026-10-22T14:13:58.587Z",
+          "commence_par": "evt:039-fonction-39-de-synchronisation/f5caeb0d",
+          "finit_par": "evt:039-fonction-39-de-synchronisation/f8d55de0",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "fiche:047-fonction-47-de-synchronisation@4",
+      "niveau": "fiche",
+      "parent": "application:synchro@4",
+      "nom": "Fonction 47 de « Synchronisation »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "047-fonction-47-de-synchronisation"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:14:06.645Z",
+          "fin": "2026-10-22T14:14:06.921Z",
+          "commence_par": "evt:047-fonction-47-de-synchronisation/c42180d2",
+          "finit_par": "evt:047-fonction-47-de-synchronisation/605fbcae",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "fiche:032-fonction-32-de-site-public@4",
+      "niveau": "fiche",
+      "parent": "application:site@4",
+      "nom": "Fonction 32 de « Site public »",
+      "ref": {
+        "application": "site",
+        "fiche": "032-fonction-32-de-site-public"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:13:51.102Z",
+          "fin": "2026-10-22T14:13:51.402Z",
+          "commence_par": "evt:032-fonction-32-de-site-public/b056e989",
+          "finit_par": "evt:032-fonction-32-de-site-public/c21fb62d",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "fiche:040-fonction-40-de-site-public@4",
+      "niveau": "fiche",
+      "parent": "application:site@4",
+      "nom": "Fonction 40 de « Site public »",
+      "ref": {
+        "application": "site",
+        "fiche": "040-fonction-40-de-site-public"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:13:59.567Z",
+          "fin": "2026-10-22T14:13:59.890Z",
+          "commence_par": "evt:040-fonction-40-de-site-public/7b7944fd",
+          "finit_par": "evt:040-fonction-40-de-site-public/494ba9cf",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "fiche:048-fonction-48-de-site-public@4",
+      "niveau": "fiche",
+      "parent": "application:site@4",
+      "nom": "Fonction 48 de « Site public »",
+      "ref": {
+        "application": "site",
+        "fiche": "048-fonction-48-de-site-public"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "plot",
+          "debut": "2026-10-22T14:14:08.101Z",
+          "fin": null,
+          "commence_par": "evt:048-fonction-48-de-site-public/21654a19",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "fiche:033-fonction-33-de-application-de-bureau@5",
+      "niveau": "fiche",
+      "parent": "application:bureau@5",
+      "nom": "Fonction 33 de « Application de bureau »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "033-fonction-33-de-application-de-bureau"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "excavation",
+          "debut": "2026-10-22T14:13:52.371Z",
+          "fin": "2026-10-22T14:13:53.107Z",
+          "commence_par": "evt:033-fonction-33-de-application-de-bureau/36cab3d7",
+          "finit_par": "evt:033-fonction-33-de-application-de-bureau/a165edaa",
+          "fin_type": "normale"
+        },
+        {
+          "stade": "foundations",
+          "debut": "2026-10-22T14:13:53.107Z",
+          "fin": null,
+          "commence_par": "evt:033-fonction-33-de-application-de-bureau/a165edaa",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "lot:033-fonction-33-de-application-de-bureau/L1@5",
+      "niveau": "lot",
+      "parent": "fiche:033-fonction-33-de-application-de-bureau@5",
+      "nom": "Le lot de la fonction 33",
+      "ref": {
+        "application": "bureau",
+        "fiche": "033-fonction-33-de-application-de-bureau",
+        "lot": "L1"
+      },
+      "etat": "prevu",
+      "prevu_le": "2026-10-22T14:13:53.107Z",
+      "prevu_par": "evt:033-fonction-33-de-application-de-bureau/a165edaa"
+    },
+    {
+      "id": "fiche:041-fonction-41-de-application-de-bureau@5",
+      "niveau": "fiche",
+      "parent": "application:bureau@5",
+      "nom": "Fonction 41 de « Application de bureau »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "041-fonction-41-de-application-de-bureau"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "excavation",
+          "debut": "2026-10-22T14:14:01.379Z",
+          "fin": "2026-10-22T14:14:02.087Z",
+          "commence_par": "evt:041-fonction-41-de-application-de-bureau/ff14f084",
+          "finit_par": "evt:041-fonction-41-de-application-de-bureau/1bb9f55a",
+          "fin_type": "normale"
+        },
+        {
+          "stade": "foundations",
+          "debut": "2026-10-22T14:14:02.087Z",
+          "fin": "2026-10-22T14:14:02.350Z",
+          "commence_par": "evt:041-fonction-41-de-application-de-bureau/1bb9f55a",
+          "finit_par": "evt:041-fonction-41-de-application-de-bureau/fde8c2fa",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "lot:041-fonction-41-de-application-de-bureau/L1@5",
+      "niveau": "lot",
+      "parent": "fiche:041-fonction-41-de-application-de-bureau@5",
+      "nom": "Le lot de la fonction 41",
+      "ref": {
+        "application": "bureau",
+        "fiche": "041-fonction-41-de-application-de-bureau",
+        "lot": "L1"
+      },
+      "etat": "prevu",
+      "prevu_le": "2026-10-22T14:14:02.087Z",
+      "prevu_par": "evt:041-fonction-41-de-application-de-bureau/1bb9f55a"
+    },
+    {
+      "id": "fiche:049-fonction-49-de-application-de-bureau@5",
+      "niveau": "fiche",
+      "parent": "application:bureau@5",
+      "nom": "Fonction 49 de « Application de bureau »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "049-fonction-49-de-application-de-bureau"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:026-fonction-26-de-application-terrain@5",
+      "niveau": "fiche",
+      "parent": "application:terrain@5",
+      "nom": "Fonction 26 de « Application terrain »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "026-fonction-26-de-application-terrain"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "excavation",
+          "debut": "2026-10-22T14:13:45.396Z",
+          "fin": null,
+          "commence_par": "evt:026-fonction-26-de-application-terrain/3efce98d",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "fiche:034-fonction-34-de-application-terrain@5",
+      "niveau": "fiche",
+      "parent": "application:terrain@5",
+      "nom": "Fonction 34 de « Application terrain »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "034-fonction-34-de-application-terrain"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "excavation",
+          "debut": "2026-10-22T14:13:53.752Z",
+          "fin": "2026-10-22T14:13:54.513Z",
+          "commence_par": "evt:034-fonction-34-de-application-terrain/fee026de",
+          "finit_par": "evt:034-fonction-34-de-application-terrain/f0c200ac",
+          "fin_type": "normale"
+        },
+        {
+          "stade": "foundations",
+          "debut": "2026-10-22T14:13:54.513Z",
+          "fin": "2026-10-22T14:13:54.907Z",
+          "commence_par": "evt:034-fonction-34-de-application-terrain/f0c200ac",
+          "finit_par": "evt:034-fonction-34-de-application-terrain/b3732326",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "lot:034-fonction-34-de-application-terrain/L1@5",
+      "niveau": "lot",
+      "parent": "fiche:034-fonction-34-de-application-terrain@5",
+      "nom": "Le lot de la fonction 34",
+      "ref": {
+        "application": "terrain",
+        "fiche": "034-fonction-34-de-application-terrain",
+        "lot": "L1"
+      },
+      "etat": "prevu",
+      "prevu_le": "2026-10-22T14:13:54.513Z",
+      "prevu_par": "evt:034-fonction-34-de-application-terrain/f0c200ac"
+    },
+    {
+      "id": "fiche:042-fonction-42-de-application-terrain@5",
+      "niveau": "fiche",
+      "parent": "application:terrain@5",
+      "nom": "Fonction 42 de « Application terrain »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "042-fonction-42-de-application-terrain"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:050-fonction-50-de-application-terrain@5",
+      "niveau": "fiche",
+      "parent": "application:terrain@5",
+      "nom": "Fonction 50 de « Application terrain »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "050-fonction-50-de-application-terrain"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "excavation",
+          "debut": "2026-10-22T14:14:08.912Z",
+          "fin": null,
+          "commence_par": "evt:050-fonction-50-de-application-terrain/8712627a",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "fiche:027-fonction-27-de-administration@5",
+      "niveau": "fiche",
+      "parent": "application:admin@5",
+      "nom": "Fonction 27 de « Administration »",
+      "ref": {
+        "application": "admin",
+        "fiche": "027-fonction-27-de-administration"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "excavation",
+          "debut": "2026-10-22T14:13:46.448Z",
+          "fin": "2026-10-22T14:13:47.188Z",
+          "commence_par": "evt:027-fonction-27-de-administration/e9adc85d",
+          "finit_par": "evt:027-fonction-27-de-administration/64d0cad2",
+          "fin_type": "normale"
+        },
+        {
+          "stade": "foundations",
+          "debut": "2026-10-22T14:13:47.188Z",
+          "fin": null,
+          "commence_par": "evt:027-fonction-27-de-administration/64d0cad2",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "lot:027-fonction-27-de-administration/L1@5",
+      "niveau": "lot",
+      "parent": "fiche:027-fonction-27-de-administration@5",
+      "nom": "Le lot de la fonction 27",
+      "ref": {
+        "application": "admin",
+        "fiche": "027-fonction-27-de-administration",
+        "lot": "L1"
+      },
+      "etat": "prevu",
+      "prevu_le": "2026-10-22T14:13:47.188Z",
+      "prevu_par": "evt:027-fonction-27-de-administration/64d0cad2"
+    },
+    {
+      "id": "fiche:035-fonction-35-de-administration@5",
+      "niveau": "fiche",
+      "parent": "application:admin@5",
+      "nom": "Fonction 35 de « Administration »",
+      "ref": {
+        "application": "admin",
+        "fiche": "035-fonction-35-de-administration"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "excavation",
+          "debut": "2026-10-22T14:13:55.434Z",
+          "fin": "2026-10-22T14:13:56.162Z",
+          "commence_par": "evt:035-fonction-35-de-administration/0924fd05",
+          "finit_par": "evt:035-fonction-35-de-administration/bc447298",
+          "fin_type": "normale"
+        },
+        {
+          "stade": "foundations",
+          "debut": "2026-10-22T14:13:56.162Z",
+          "fin": "2026-10-22T14:13:56.449Z",
+          "commence_par": "evt:035-fonction-35-de-administration/bc447298",
+          "finit_par": "evt:035-fonction-35-de-administration/d2069214",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "lot:035-fonction-35-de-administration/L1@5",
+      "niveau": "lot",
+      "parent": "fiche:035-fonction-35-de-administration@5",
+      "nom": "Le lot de la fonction 35",
+      "ref": {
+        "application": "admin",
+        "fiche": "035-fonction-35-de-administration",
+        "lot": "L1"
+      },
+      "etat": "prevu",
+      "prevu_le": "2026-10-22T14:13:56.162Z",
+      "prevu_par": "evt:035-fonction-35-de-administration/bc447298"
+    },
+    {
+      "id": "fiche:043-fonction-43-de-administration@5",
+      "niveau": "fiche",
+      "parent": "application:admin@5",
+      "nom": "Fonction 43 de « Administration »",
+      "ref": {
+        "application": "admin",
+        "fiche": "043-fonction-43-de-administration"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:028-fonction-28-de-portail-client@5",
+      "niveau": "fiche",
+      "parent": "application:portail@5",
+      "nom": "Fonction 28 de « Portail client »",
+      "ref": {
+        "application": "portail",
+        "fiche": "028-fonction-28-de-portail-client"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "excavation",
+          "debut": "2026-10-22T14:13:47.842Z",
+          "fin": "2026-10-22T14:13:48.581Z",
+          "commence_par": "evt:028-fonction-28-de-portail-client/3d473dc3",
+          "finit_par": "evt:028-fonction-28-de-portail-client/28fb7e57",
+          "fin_type": "normale"
+        },
+        {
+          "stade": "foundations",
+          "debut": "2026-10-22T14:13:48.581Z",
+          "fin": "2026-10-22T14:13:48.930Z",
+          "commence_par": "evt:028-fonction-28-de-portail-client/28fb7e57",
+          "finit_par": "evt:028-fonction-28-de-portail-client/67c42c81",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "lot:028-fonction-28-de-portail-client/L1@5",
+      "niveau": "lot",
+      "parent": "fiche:028-fonction-28-de-portail-client@5",
+      "nom": "Le lot de la fonction 28",
+      "ref": {
+        "application": "portail",
+        "fiche": "028-fonction-28-de-portail-client",
+        "lot": "L1"
+      },
+      "etat": "prevu",
+      "prevu_le": "2026-10-22T14:13:48.581Z",
+      "prevu_par": "evt:028-fonction-28-de-portail-client/28fb7e57"
+    },
+    {
+      "id": "fiche:036-fonction-36-de-portail-client@5",
+      "niveau": "fiche",
+      "parent": "application:portail@5",
+      "nom": "Fonction 36 de « Portail client »",
+      "ref": {
+        "application": "portail",
+        "fiche": "036-fonction-36-de-portail-client"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:044-fonction-44-de-portail-client@5",
+      "niveau": "fiche",
+      "parent": "application:portail@5",
+      "nom": "Fonction 44 de « Portail client »",
+      "ref": {
+        "application": "portail",
+        "fiche": "044-fonction-44-de-portail-client"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "excavation",
+          "debut": "2026-10-22T14:14:03.306Z",
+          "fin": null,
+          "commence_par": "evt:044-fonction-44-de-portail-client/ec8db39f",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "fiche:029-fonction-29-de-facturation@5",
+      "niveau": "fiche",
+      "parent": "application:facturation@5",
+      "nom": "Fonction 29 de « Facturation »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "029-fonction-29-de-facturation"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "excavation",
+          "debut": "2026-10-22T14:13:49.454Z",
+          "fin": "2026-10-22T14:13:50.159Z",
+          "commence_par": "evt:029-fonction-29-de-facturation/8004308f",
+          "finit_par": "evt:029-fonction-29-de-facturation/2e54c36c",
+          "fin_type": "normale"
+        },
+        {
+          "stade": "foundations",
+          "debut": "2026-10-22T14:13:50.159Z",
+          "fin": "2026-10-22T14:13:50.442Z",
+          "commence_par": "evt:029-fonction-29-de-facturation/2e54c36c",
+          "finit_par": "evt:029-fonction-29-de-facturation/fafab5ce",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "lot:029-fonction-29-de-facturation/L1@5",
+      "niveau": "lot",
+      "parent": "fiche:029-fonction-29-de-facturation@5",
+      "nom": "Le lot de la fonction 29",
+      "ref": {
+        "application": "facturation",
+        "fiche": "029-fonction-29-de-facturation",
+        "lot": "L1"
+      },
+      "etat": "prevu",
+      "prevu_le": "2026-10-22T14:13:50.159Z",
+      "prevu_par": "evt:029-fonction-29-de-facturation/2e54c36c"
+    },
+    {
+      "id": "fiche:037-fonction-37-de-facturation@5",
+      "niveau": "fiche",
+      "parent": "application:facturation@5",
+      "nom": "Fonction 37 de « Facturation »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "037-fonction-37-de-facturation"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:045-fonction-45-de-facturation@5",
+      "niveau": "fiche",
+      "parent": "application:facturation@5",
+      "nom": "Fonction 45 de « Facturation »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "045-fonction-45-de-facturation"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "excavation",
+          "debut": "2026-10-22T14:14:04.196Z",
+          "fin": "2026-10-22T14:14:04.921Z",
+          "commence_par": "evt:045-fonction-45-de-facturation/99ffd957",
+          "finit_par": "evt:045-fonction-45-de-facturation/20572d24",
+          "fin_type": "normale"
+        },
+        {
+          "stade": "foundations",
+          "debut": "2026-10-22T14:14:04.921Z",
+          "fin": null,
+          "commence_par": "evt:045-fonction-45-de-facturation/20572d24",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "lot:045-fonction-45-de-facturation/L1@5",
+      "niveau": "lot",
+      "parent": "fiche:045-fonction-45-de-facturation@5",
+      "nom": "Le lot de la fonction 45",
+      "ref": {
+        "application": "facturation",
+        "fiche": "045-fonction-45-de-facturation",
+        "lot": "L1"
+      },
+      "etat": "prevu",
+      "prevu_le": "2026-10-22T14:14:04.921Z",
+      "prevu_par": "evt:045-fonction-45-de-facturation/20572d24"
+    },
+    {
+      "id": "fiche:030-fonction-30-de-rapports@5",
+      "niveau": "fiche",
+      "parent": "application:rapports@5",
+      "nom": "Fonction 30 de « Rapports »",
+      "ref": {
+        "application": "rapports",
+        "fiche": "030-fonction-30-de-rapports"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:038-fonction-38-de-rapports@5",
+      "niveau": "fiche",
+      "parent": "application:rapports@5",
+      "nom": "Fonction 38 de « Rapports »",
+      "ref": {
+        "application": "rapports",
+        "fiche": "038-fonction-38-de-rapports"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "excavation",
+          "debut": "2026-10-22T14:13:57.493Z",
+          "fin": null,
+          "commence_par": "evt:038-fonction-38-de-rapports/629dd1db",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "fiche:046-fonction-46-de-rapports@5",
+      "niveau": "fiche",
+      "parent": "application:rapports@5",
+      "nom": "Fonction 46 de « Rapports »",
+      "ref": {
+        "application": "rapports",
+        "fiche": "046-fonction-46-de-rapports"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "excavation",
+          "debut": "2026-10-22T14:14:05.503Z",
+          "fin": "2026-10-22T14:14:06.199Z",
+          "commence_par": "evt:046-fonction-46-de-rapports/c3b7e911",
+          "finit_par": "evt:046-fonction-46-de-rapports/f5e666d3",
+          "fin_type": "normale"
+        },
+        {
+          "stade": "foundations",
+          "debut": "2026-10-22T14:14:06.199Z",
+          "fin": "2026-10-22T14:14:06.495Z",
+          "commence_par": "evt:046-fonction-46-de-rapports/f5e666d3",
+          "finit_par": "evt:046-fonction-46-de-rapports/24cdde84",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "lot:046-fonction-46-de-rapports/L1@5",
+      "niveau": "lot",
+      "parent": "fiche:046-fonction-46-de-rapports@5",
+      "nom": "Le lot de la fonction 46",
+      "ref": {
+        "application": "rapports",
+        "fiche": "046-fonction-46-de-rapports",
+        "lot": "L1"
+      },
+      "etat": "prevu",
+      "prevu_le": "2026-10-22T14:14:06.199Z",
+      "prevu_par": "evt:046-fonction-46-de-rapports/f5e666d3"
+    },
+    {
+      "id": "fiche:031-fonction-31-de-synchronisation@5",
+      "niveau": "fiche",
+      "parent": "application:synchro@5",
+      "nom": "Fonction 31 de « Synchronisation »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "031-fonction-31-de-synchronisation"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:039-fonction-39-de-synchronisation@5",
+      "niveau": "fiche",
+      "parent": "application:synchro@5",
+      "nom": "Fonction 39 de « Synchronisation »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "039-fonction-39-de-synchronisation"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "excavation",
+          "debut": "2026-10-22T14:13:58.587Z",
+          "fin": "2026-10-22T14:13:59.269Z",
+          "commence_par": "evt:039-fonction-39-de-synchronisation/f8d55de0",
+          "finit_par": "evt:039-fonction-39-de-synchronisation/22f3f95c",
+          "fin_type": "normale"
+        },
+        {
+          "stade": "foundations",
+          "debut": "2026-10-22T14:13:59.269Z",
+          "fin": null,
+          "commence_par": "evt:039-fonction-39-de-synchronisation/22f3f95c",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "lot:039-fonction-39-de-synchronisation/L1@5",
+      "niveau": "lot",
+      "parent": "fiche:039-fonction-39-de-synchronisation@5",
+      "nom": "Le lot de la fonction 39",
+      "ref": {
+        "application": "synchro",
+        "fiche": "039-fonction-39-de-synchronisation",
+        "lot": "L1"
+      },
+      "etat": "prevu",
+      "prevu_le": "2026-10-22T14:13:59.269Z",
+      "prevu_par": "evt:039-fonction-39-de-synchronisation/22f3f95c"
+    },
+    {
+      "id": "fiche:047-fonction-47-de-synchronisation@5",
+      "niveau": "fiche",
+      "parent": "application:synchro@5",
+      "nom": "Fonction 47 de « Synchronisation »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "047-fonction-47-de-synchronisation"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "excavation",
+          "debut": "2026-10-22T14:14:06.921Z",
+          "fin": "2026-10-22T14:14:07.669Z",
+          "commence_par": "evt:047-fonction-47-de-synchronisation/605fbcae",
+          "finit_par": "evt:047-fonction-47-de-synchronisation/f2270753",
+          "fin_type": "normale"
+        },
+        {
+          "stade": "foundations",
+          "debut": "2026-10-22T14:14:07.669Z",
+          "fin": "2026-10-22T14:14:07.951Z",
+          "commence_par": "evt:047-fonction-47-de-synchronisation/f2270753",
+          "finit_par": "evt:047-fonction-47-de-synchronisation/6c565875",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "lot:047-fonction-47-de-synchronisation/L1@5",
+      "niveau": "lot",
+      "parent": "fiche:047-fonction-47-de-synchronisation@5",
+      "nom": "Le lot de la fonction 47",
+      "ref": {
+        "application": "synchro",
+        "fiche": "047-fonction-47-de-synchronisation",
+        "lot": "L1"
+      },
+      "etat": "prevu",
+      "prevu_le": "2026-10-22T14:14:07.669Z",
+      "prevu_par": "evt:047-fonction-47-de-synchronisation/f2270753"
+    },
+    {
+      "id": "fiche:032-fonction-32-de-site-public@5",
+      "niveau": "fiche",
+      "parent": "application:site@5",
+      "nom": "Fonction 32 de « Site public »",
+      "ref": {
+        "application": "site",
+        "fiche": "032-fonction-32-de-site-public"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "excavation",
+          "debut": "2026-10-22T14:13:51.402Z",
+          "fin": null,
+          "commence_par": "evt:032-fonction-32-de-site-public/c21fb62d",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "fiche:040-fonction-40-de-site-public@5",
+      "niveau": "fiche",
+      "parent": "application:site@5",
+      "nom": "Fonction 40 de « Site public »",
+      "ref": {
+        "application": "site",
+        "fiche": "040-fonction-40-de-site-public"
+      },
+      "etat": "faite",
+      "barres": [
+        {
+          "stade": "excavation",
+          "debut": "2026-10-22T14:13:59.890Z",
+          "fin": "2026-10-22T14:14:00.561Z",
+          "commence_par": "evt:040-fonction-40-de-site-public/494ba9cf",
+          "finit_par": "evt:040-fonction-40-de-site-public/6eb3c470",
+          "fin_type": "normale"
+        },
+        {
+          "stade": "foundations",
+          "debut": "2026-10-22T14:14:00.561Z",
+          "fin": "2026-10-22T14:14:00.876Z",
+          "commence_par": "evt:040-fonction-40-de-site-public/6eb3c470",
+          "finit_par": "evt:040-fonction-40-de-site-public/e2bc4e2e",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "lot:040-fonction-40-de-site-public/L1@5",
+      "niveau": "lot",
+      "parent": "fiche:040-fonction-40-de-site-public@5",
+      "nom": "Le lot de la fonction 40",
+      "ref": {
+        "application": "site",
+        "fiche": "040-fonction-40-de-site-public",
+        "lot": "L1"
+      },
+      "etat": "prevu",
+      "prevu_le": "2026-10-22T14:14:00.561Z",
+      "prevu_par": "evt:040-fonction-40-de-site-public/6eb3c470"
+    },
+    {
+      "id": "fiche:048-fonction-48-de-site-public@5",
+      "niveau": "fiche",
+      "parent": "application:site@5",
+      "nom": "Fonction 48 de « Site public »",
+      "ref": {
+        "application": "site",
+        "fiche": "048-fonction-48-de-site-public"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:033-fonction-33-de-application-de-bureau@6",
+      "niveau": "fiche",
+      "parent": "application:bureau@6",
+      "nom": "Fonction 33 de « Application de bureau »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "033-fonction-33-de-application-de-bureau"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "lot:033-fonction-33-de-application-de-bureau/L1@6",
+      "niveau": "lot",
+      "parent": "fiche:033-fonction-33-de-application-de-bureau@6",
+      "nom": "Le lot de la fonction 33",
+      "ref": {
+        "application": "bureau",
+        "fiche": "033-fonction-33-de-application-de-bureau",
+        "lot": "L1"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "statut": "en_cours",
+          "debut": "2026-10-22T14:13:53.262Z",
+          "fin": null,
+          "commence_par": "evt:033-fonction-33-de-application-de-bureau/e0e2436c",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "fiche:041-fonction-41-de-application-de-bureau@6",
+      "niveau": "fiche",
+      "parent": "application:bureau@6",
+      "nom": "Fonction 41 de « Application de bureau »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "041-fonction-41-de-application-de-bureau"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "finishing",
+          "debut": "2026-10-22T14:14:02.350Z",
+          "fin": null,
+          "commence_par": "evt:041-fonction-41-de-application-de-bureau/fde8c2fa",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "lot:041-fonction-41-de-application-de-bureau/L1@6",
+      "niveau": "lot",
+      "parent": "fiche:041-fonction-41-de-application-de-bureau@6",
+      "nom": "Le lot de la fonction 41",
+      "ref": {
+        "application": "bureau",
+        "fiche": "041-fonction-41-de-application-de-bureau",
+        "lot": "L1"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "statut": "en_cours",
+          "debut": "2026-10-22T14:14:02.243Z",
+          "fin": null,
+          "commence_par": "evt:041-fonction-41-de-application-de-bureau/e6538824",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "fiche:049-fonction-49-de-application-de-bureau@6",
+      "niveau": "fiche",
+      "parent": "application:bureau@6",
+      "nom": "Fonction 49 de « Application de bureau »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "049-fonction-49-de-application-de-bureau"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:026-fonction-26-de-application-terrain@6",
+      "niveau": "fiche",
+      "parent": "application:terrain@6",
+      "nom": "Fonction 26 de « Application terrain »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "026-fonction-26-de-application-terrain"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:034-fonction-34-de-application-terrain@6",
+      "niveau": "fiche",
+      "parent": "application:terrain@6",
+      "nom": "Fonction 34 de « Application terrain »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "034-fonction-34-de-application-terrain"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "envelope",
+          "debut": "2026-10-22T14:13:54.907Z",
+          "fin": null,
+          "commence_par": "evt:034-fonction-34-de-application-terrain/b3732326",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "lot:034-fonction-34-de-application-terrain/L1@6",
+      "niveau": "lot",
+      "parent": "fiche:034-fonction-34-de-application-terrain@6",
+      "nom": "Le lot de la fonction 34",
+      "ref": {
+        "application": "terrain",
+        "fiche": "034-fonction-34-de-application-terrain",
+        "lot": "L1"
+      },
+      "etat": "fini",
+      "barres": [
+        {
+          "statut": "fini",
+          "debut": "2026-10-22T14:13:54.732Z",
+          "fin": "2026-10-22T14:13:54.907Z",
+          "commence_par": "evt:034-fonction-34-de-application-terrain/ed0a8290",
+          "finit_par": "evt:034-fonction-34-de-application-terrain/b3732326",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "fiche:042-fonction-42-de-application-terrain@6",
+      "niveau": "fiche",
+      "parent": "application:terrain@6",
+      "nom": "Fonction 42 de « Application terrain »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "042-fonction-42-de-application-terrain"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:050-fonction-50-de-application-terrain@6",
+      "niveau": "fiche",
+      "parent": "application:terrain@6",
+      "nom": "Fonction 50 de « Application terrain »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "050-fonction-50-de-application-terrain"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:027-fonction-27-de-administration@6",
+      "niveau": "fiche",
+      "parent": "application:admin@6",
+      "nom": "Fonction 27 de « Administration »",
+      "ref": {
+        "application": "admin",
+        "fiche": "027-fonction-27-de-administration"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "lot:027-fonction-27-de-administration/L1@6",
+      "niveau": "lot",
+      "parent": "fiche:027-fonction-27-de-administration@6",
+      "nom": "Le lot de la fonction 27",
+      "ref": {
+        "application": "admin",
+        "fiche": "027-fonction-27-de-administration",
+        "lot": "L1"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "statut": "en_cours",
+          "debut": "2026-10-22T14:13:47.365Z",
+          "fin": null,
+          "commence_par": "evt:027-fonction-27-de-administration/898d46a3",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "fiche:035-fonction-35-de-administration@6",
+      "niveau": "fiche",
+      "parent": "application:admin@6",
+      "nom": "Fonction 35 de « Administration »",
+      "ref": {
+        "application": "admin",
+        "fiche": "035-fonction-35-de-administration"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "finishing",
+          "debut": "2026-10-22T14:13:56.449Z",
+          "fin": null,
+          "commence_par": "evt:035-fonction-35-de-administration/d2069214",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "lot:035-fonction-35-de-administration/L1@6",
+      "niveau": "lot",
+      "parent": "fiche:035-fonction-35-de-administration@6",
+      "nom": "Le lot de la fonction 35",
+      "ref": {
+        "application": "admin",
+        "fiche": "035-fonction-35-de-administration",
+        "lot": "L1"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "statut": "en_cours",
+          "debut": "2026-10-22T14:13:56.330Z",
+          "fin": null,
+          "commence_par": "evt:035-fonction-35-de-administration/6bd73689",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "fiche:043-fonction-43-de-administration@6",
+      "niveau": "fiche",
+      "parent": "application:admin@6",
+      "nom": "Fonction 43 de « Administration »",
+      "ref": {
+        "application": "admin",
+        "fiche": "043-fonction-43-de-administration"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:028-fonction-28-de-portail-client@6",
+      "niveau": "fiche",
+      "parent": "application:portail@6",
+      "nom": "Fonction 28 de « Portail client »",
+      "ref": {
+        "application": "portail",
+        "fiche": "028-fonction-28-de-portail-client"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "envelope",
+          "debut": "2026-10-22T14:13:48.930Z",
+          "fin": null,
+          "commence_par": "evt:028-fonction-28-de-portail-client/67c42c81",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "lot:028-fonction-28-de-portail-client/L1@6",
+      "niveau": "lot",
+      "parent": "fiche:028-fonction-28-de-portail-client@6",
+      "nom": "Le lot de la fonction 28",
+      "ref": {
+        "application": "portail",
+        "fiche": "028-fonction-28-de-portail-client",
+        "lot": "L1"
+      },
+      "etat": "fini",
+      "barres": [
+        {
+          "statut": "fini",
+          "debut": "2026-10-22T14:13:48.753Z",
+          "fin": "2026-10-22T14:13:48.930Z",
+          "commence_par": "evt:028-fonction-28-de-portail-client/98e34a59",
+          "finit_par": "evt:028-fonction-28-de-portail-client/67c42c81",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "fiche:036-fonction-36-de-portail-client@6",
+      "niveau": "fiche",
+      "parent": "application:portail@6",
+      "nom": "Fonction 36 de « Portail client »",
+      "ref": {
+        "application": "portail",
+        "fiche": "036-fonction-36-de-portail-client"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:044-fonction-44-de-portail-client@6",
+      "niveau": "fiche",
+      "parent": "application:portail@6",
+      "nom": "Fonction 44 de « Portail client »",
+      "ref": {
+        "application": "portail",
+        "fiche": "044-fonction-44-de-portail-client"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:029-fonction-29-de-facturation@6",
+      "niveau": "fiche",
+      "parent": "application:facturation@6",
+      "nom": "Fonction 29 de « Facturation »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "029-fonction-29-de-facturation"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "finishing",
+          "debut": "2026-10-22T14:13:50.442Z",
+          "fin": null,
+          "commence_par": "evt:029-fonction-29-de-facturation/fafab5ce",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "lot:029-fonction-29-de-facturation/L1@6",
+      "niveau": "lot",
+      "parent": "fiche:029-fonction-29-de-facturation@6",
+      "nom": "Le lot de la fonction 29",
+      "ref": {
+        "application": "facturation",
+        "fiche": "029-fonction-29-de-facturation",
+        "lot": "L1"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "statut": "en_cours",
+          "debut": "2026-10-22T14:13:50.323Z",
+          "fin": null,
+          "commence_par": "evt:029-fonction-29-de-facturation/33242a66",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "fiche:037-fonction-37-de-facturation@6",
+      "niveau": "fiche",
+      "parent": "application:facturation@6",
+      "nom": "Fonction 37 de « Facturation »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "037-fonction-37-de-facturation"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:045-fonction-45-de-facturation@6",
+      "niveau": "fiche",
+      "parent": "application:facturation@6",
+      "nom": "Fonction 45 de « Facturation »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "045-fonction-45-de-facturation"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "lot:045-fonction-45-de-facturation/L1@6",
+      "niveau": "lot",
+      "parent": "fiche:045-fonction-45-de-facturation@6",
+      "nom": "Le lot de la fonction 45",
+      "ref": {
+        "application": "facturation",
+        "fiche": "045-fonction-45-de-facturation",
+        "lot": "L1"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "statut": "en_cours",
+          "debut": "2026-10-22T14:14:05.087Z",
+          "fin": null,
+          "commence_par": "evt:045-fonction-45-de-facturation/58fad28c",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "fiche:030-fonction-30-de-rapports@6",
+      "niveau": "fiche",
+      "parent": "application:rapports@6",
+      "nom": "Fonction 30 de « Rapports »",
+      "ref": {
+        "application": "rapports",
+        "fiche": "030-fonction-30-de-rapports"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:038-fonction-38-de-rapports@6",
+      "niveau": "fiche",
+      "parent": "application:rapports@6",
+      "nom": "Fonction 38 de « Rapports »",
+      "ref": {
+        "application": "rapports",
+        "fiche": "038-fonction-38-de-rapports"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:046-fonction-46-de-rapports@6",
+      "niveau": "fiche",
+      "parent": "application:rapports@6",
+      "nom": "Fonction 46 de « Rapports »",
+      "ref": {
+        "application": "rapports",
+        "fiche": "046-fonction-46-de-rapports"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "envelope",
+          "debut": "2026-10-22T14:14:06.495Z",
+          "fin": null,
+          "commence_par": "evt:046-fonction-46-de-rapports/24cdde84",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "lot:046-fonction-46-de-rapports/L1@6",
+      "niveau": "lot",
+      "parent": "fiche:046-fonction-46-de-rapports@6",
+      "nom": "Le lot de la fonction 46",
+      "ref": {
+        "application": "rapports",
+        "fiche": "046-fonction-46-de-rapports",
+        "lot": "L1"
+      },
+      "etat": "fini",
+      "barres": [
+        {
+          "statut": "fini",
+          "debut": "2026-10-22T14:14:06.345Z",
+          "fin": "2026-10-22T14:14:06.495Z",
+          "commence_par": "evt:046-fonction-46-de-rapports/beca6539",
+          "finit_par": "evt:046-fonction-46-de-rapports/24cdde84",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "fiche:031-fonction-31-de-synchronisation@6",
+      "niveau": "fiche",
+      "parent": "application:synchro@6",
+      "nom": "Fonction 31 de « Synchronisation »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "031-fonction-31-de-synchronisation"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:039-fonction-39-de-synchronisation@6",
+      "niveau": "fiche",
+      "parent": "application:synchro@6",
+      "nom": "Fonction 39 de « Synchronisation »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "039-fonction-39-de-synchronisation"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "lot:039-fonction-39-de-synchronisation/L1@6",
+      "niveau": "lot",
+      "parent": "fiche:039-fonction-39-de-synchronisation@6",
+      "nom": "Le lot de la fonction 39",
+      "ref": {
+        "application": "synchro",
+        "fiche": "039-fonction-39-de-synchronisation",
+        "lot": "L1"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "statut": "en_cours",
+          "debut": "2026-10-22T14:13:59.428Z",
+          "fin": null,
+          "commence_par": "evt:039-fonction-39-de-synchronisation/cfc0bb9b",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "fiche:047-fonction-47-de-synchronisation@6",
+      "niveau": "fiche",
+      "parent": "application:synchro@6",
+      "nom": "Fonction 47 de « Synchronisation »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "047-fonction-47-de-synchronisation"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "finishing",
+          "debut": "2026-10-22T14:14:07.951Z",
+          "fin": null,
+          "commence_par": "evt:047-fonction-47-de-synchronisation/6c565875",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "lot:047-fonction-47-de-synchronisation/L1@6",
+      "niveau": "lot",
+      "parent": "fiche:047-fonction-47-de-synchronisation@6",
+      "nom": "Le lot de la fonction 47",
+      "ref": {
+        "application": "synchro",
+        "fiche": "047-fonction-47-de-synchronisation",
+        "lot": "L1"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "statut": "en_cours",
+          "debut": "2026-10-22T14:14:07.835Z",
+          "fin": null,
+          "commence_par": "evt:047-fonction-47-de-synchronisation/0f35337b",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "fiche:032-fonction-32-de-site-public@6",
+      "niveau": "fiche",
+      "parent": "application:site@6",
+      "nom": "Fonction 32 de « Site public »",
+      "ref": {
+        "application": "site",
+        "fiche": "032-fonction-32-de-site-public"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:040-fonction-40-de-site-public@6",
+      "niveau": "fiche",
+      "parent": "application:site@6",
+      "nom": "Fonction 40 de « Site public »",
+      "ref": {
+        "application": "site",
+        "fiche": "040-fonction-40-de-site-public"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "envelope",
+          "debut": "2026-10-22T14:14:00.876Z",
+          "fin": null,
+          "commence_par": "evt:040-fonction-40-de-site-public/e2bc4e2e",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    },
+    {
+      "id": "lot:040-fonction-40-de-site-public/L1@6",
+      "niveau": "lot",
+      "parent": "fiche:040-fonction-40-de-site-public@6",
+      "nom": "Le lot de la fonction 40",
+      "ref": {
+        "application": "site",
+        "fiche": "040-fonction-40-de-site-public",
+        "lot": "L1"
+      },
+      "etat": "fini",
+      "barres": [
+        {
+          "statut": "fini",
+          "debut": "2026-10-22T14:14:00.721Z",
+          "fin": "2026-10-22T14:14:00.876Z",
+          "commence_par": "evt:040-fonction-40-de-site-public/50f7e4d6",
+          "finit_par": "evt:040-fonction-40-de-site-public/e2bc4e2e",
+          "fin_type": "normale"
+        }
+      ]
+    },
+    {
+      "id": "fiche:048-fonction-48-de-site-public@6",
+      "niveau": "fiche",
+      "parent": "application:site@6",
+      "nom": "Fonction 48 de « Site public »",
+      "ref": {
+        "application": "site",
+        "fiche": "048-fonction-48-de-site-public"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:033-fonction-33-de-application-de-bureau@7",
+      "niveau": "fiche",
+      "parent": "application:bureau@7",
+      "nom": "Fonction 33 de « Application de bureau »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "033-fonction-33-de-application-de-bureau"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:041-fonction-41-de-application-de-bureau@7",
+      "niveau": "fiche",
+      "parent": "application:bureau@7",
+      "nom": "Fonction 41 de « Application de bureau »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "041-fonction-41-de-application-de-bureau"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:049-fonction-49-de-application-de-bureau@7",
+      "niveau": "fiche",
+      "parent": "application:bureau@7",
+      "nom": "Fonction 49 de « Application de bureau »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "049-fonction-49-de-application-de-bureau"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:026-fonction-26-de-application-terrain@7",
+      "niveau": "fiche",
+      "parent": "application:terrain@7",
+      "nom": "Fonction 26 de « Application terrain »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "026-fonction-26-de-application-terrain"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:034-fonction-34-de-application-terrain@7",
+      "niveau": "fiche",
+      "parent": "application:terrain@7",
+      "nom": "Fonction 34 de « Application terrain »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "034-fonction-34-de-application-terrain"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:042-fonction-42-de-application-terrain@7",
+      "niveau": "fiche",
+      "parent": "application:terrain@7",
+      "nom": "Fonction 42 de « Application terrain »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "042-fonction-42-de-application-terrain"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:050-fonction-50-de-application-terrain@7",
+      "niveau": "fiche",
+      "parent": "application:terrain@7",
+      "nom": "Fonction 50 de « Application terrain »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "050-fonction-50-de-application-terrain"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:027-fonction-27-de-administration@7",
+      "niveau": "fiche",
+      "parent": "application:admin@7",
+      "nom": "Fonction 27 de « Administration »",
+      "ref": {
+        "application": "admin",
+        "fiche": "027-fonction-27-de-administration"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:035-fonction-35-de-administration@7",
+      "niveau": "fiche",
+      "parent": "application:admin@7",
+      "nom": "Fonction 35 de « Administration »",
+      "ref": {
+        "application": "admin",
+        "fiche": "035-fonction-35-de-administration"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:043-fonction-43-de-administration@7",
+      "niveau": "fiche",
+      "parent": "application:admin@7",
+      "nom": "Fonction 43 de « Administration »",
+      "ref": {
+        "application": "admin",
+        "fiche": "043-fonction-43-de-administration"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:028-fonction-28-de-portail-client@7",
+      "niveau": "fiche",
+      "parent": "application:portail@7",
+      "nom": "Fonction 28 de « Portail client »",
+      "ref": {
+        "application": "portail",
+        "fiche": "028-fonction-28-de-portail-client"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:036-fonction-36-de-portail-client@7",
+      "niveau": "fiche",
+      "parent": "application:portail@7",
+      "nom": "Fonction 36 de « Portail client »",
+      "ref": {
+        "application": "portail",
+        "fiche": "036-fonction-36-de-portail-client"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:044-fonction-44-de-portail-client@7",
+      "niveau": "fiche",
+      "parent": "application:portail@7",
+      "nom": "Fonction 44 de « Portail client »",
+      "ref": {
+        "application": "portail",
+        "fiche": "044-fonction-44-de-portail-client"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:029-fonction-29-de-facturation@7",
+      "niveau": "fiche",
+      "parent": "application:facturation@7",
+      "nom": "Fonction 29 de « Facturation »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "029-fonction-29-de-facturation"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:037-fonction-37-de-facturation@7",
+      "niveau": "fiche",
+      "parent": "application:facturation@7",
+      "nom": "Fonction 37 de « Facturation »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "037-fonction-37-de-facturation"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:045-fonction-45-de-facturation@7",
+      "niveau": "fiche",
+      "parent": "application:facturation@7",
+      "nom": "Fonction 45 de « Facturation »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "045-fonction-45-de-facturation"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:030-fonction-30-de-rapports@7",
+      "niveau": "fiche",
+      "parent": "application:rapports@7",
+      "nom": "Fonction 30 de « Rapports »",
+      "ref": {
+        "application": "rapports",
+        "fiche": "030-fonction-30-de-rapports"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:038-fonction-38-de-rapports@7",
+      "niveau": "fiche",
+      "parent": "application:rapports@7",
+      "nom": "Fonction 38 de « Rapports »",
+      "ref": {
+        "application": "rapports",
+        "fiche": "038-fonction-38-de-rapports"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:046-fonction-46-de-rapports@7",
+      "niveau": "fiche",
+      "parent": "application:rapports@7",
+      "nom": "Fonction 46 de « Rapports »",
+      "ref": {
+        "application": "rapports",
+        "fiche": "046-fonction-46-de-rapports"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:031-fonction-31-de-synchronisation@7",
+      "niveau": "fiche",
+      "parent": "application:synchro@7",
+      "nom": "Fonction 31 de « Synchronisation »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "031-fonction-31-de-synchronisation"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:039-fonction-39-de-synchronisation@7",
+      "niveau": "fiche",
+      "parent": "application:synchro@7",
+      "nom": "Fonction 39 de « Synchronisation »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "039-fonction-39-de-synchronisation"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:047-fonction-47-de-synchronisation@7",
+      "niveau": "fiche",
+      "parent": "application:synchro@7",
+      "nom": "Fonction 47 de « Synchronisation »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "047-fonction-47-de-synchronisation"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:032-fonction-32-de-site-public@7",
+      "niveau": "fiche",
+      "parent": "application:site@7",
+      "nom": "Fonction 32 de « Site public »",
+      "ref": {
+        "application": "site",
+        "fiche": "032-fonction-32-de-site-public"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:040-fonction-40-de-site-public@7",
+      "niveau": "fiche",
+      "parent": "application:site@7",
+      "nom": "Fonction 40 de « Site public »",
+      "ref": {
+        "application": "site",
+        "fiche": "040-fonction-40-de-site-public"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:048-fonction-48-de-site-public@7",
+      "niveau": "fiche",
+      "parent": "application:site@7",
+      "nom": "Fonction 48 de « Site public »",
+      "ref": {
+        "application": "site",
+        "fiche": "048-fonction-48-de-site-public"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:033-fonction-33-de-application-de-bureau@8",
+      "niveau": "fiche",
+      "parent": "application:bureau@8",
+      "nom": "Fonction 33 de « Application de bureau »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "033-fonction-33-de-application-de-bureau"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:041-fonction-41-de-application-de-bureau@8",
+      "niveau": "fiche",
+      "parent": "application:bureau@8",
+      "nom": "Fonction 41 de « Application de bureau »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "041-fonction-41-de-application-de-bureau"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:049-fonction-49-de-application-de-bureau@8",
+      "niveau": "fiche",
+      "parent": "application:bureau@8",
+      "nom": "Fonction 49 de « Application de bureau »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "049-fonction-49-de-application-de-bureau"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:026-fonction-26-de-application-terrain@8",
+      "niveau": "fiche",
+      "parent": "application:terrain@8",
+      "nom": "Fonction 26 de « Application terrain »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "026-fonction-26-de-application-terrain"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:034-fonction-34-de-application-terrain@8",
+      "niveau": "fiche",
+      "parent": "application:terrain@8",
+      "nom": "Fonction 34 de « Application terrain »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "034-fonction-34-de-application-terrain"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:042-fonction-42-de-application-terrain@8",
+      "niveau": "fiche",
+      "parent": "application:terrain@8",
+      "nom": "Fonction 42 de « Application terrain »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "042-fonction-42-de-application-terrain"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:050-fonction-50-de-application-terrain@8",
+      "niveau": "fiche",
+      "parent": "application:terrain@8",
+      "nom": "Fonction 50 de « Application terrain »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "050-fonction-50-de-application-terrain"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:027-fonction-27-de-administration@8",
+      "niveau": "fiche",
+      "parent": "application:admin@8",
+      "nom": "Fonction 27 de « Administration »",
+      "ref": {
+        "application": "admin",
+        "fiche": "027-fonction-27-de-administration"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:035-fonction-35-de-administration@8",
+      "niveau": "fiche",
+      "parent": "application:admin@8",
+      "nom": "Fonction 35 de « Administration »",
+      "ref": {
+        "application": "admin",
+        "fiche": "035-fonction-35-de-administration"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:043-fonction-43-de-administration@8",
+      "niveau": "fiche",
+      "parent": "application:admin@8",
+      "nom": "Fonction 43 de « Administration »",
+      "ref": {
+        "application": "admin",
+        "fiche": "043-fonction-43-de-administration"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:028-fonction-28-de-portail-client@8",
+      "niveau": "fiche",
+      "parent": "application:portail@8",
+      "nom": "Fonction 28 de « Portail client »",
+      "ref": {
+        "application": "portail",
+        "fiche": "028-fonction-28-de-portail-client"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:036-fonction-36-de-portail-client@8",
+      "niveau": "fiche",
+      "parent": "application:portail@8",
+      "nom": "Fonction 36 de « Portail client »",
+      "ref": {
+        "application": "portail",
+        "fiche": "036-fonction-36-de-portail-client"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:044-fonction-44-de-portail-client@8",
+      "niveau": "fiche",
+      "parent": "application:portail@8",
+      "nom": "Fonction 44 de « Portail client »",
+      "ref": {
+        "application": "portail",
+        "fiche": "044-fonction-44-de-portail-client"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:029-fonction-29-de-facturation@8",
+      "niveau": "fiche",
+      "parent": "application:facturation@8",
+      "nom": "Fonction 29 de « Facturation »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "029-fonction-29-de-facturation"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:037-fonction-37-de-facturation@8",
+      "niveau": "fiche",
+      "parent": "application:facturation@8",
+      "nom": "Fonction 37 de « Facturation »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "037-fonction-37-de-facturation"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:045-fonction-45-de-facturation@8",
+      "niveau": "fiche",
+      "parent": "application:facturation@8",
+      "nom": "Fonction 45 de « Facturation »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "045-fonction-45-de-facturation"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:030-fonction-30-de-rapports@8",
+      "niveau": "fiche",
+      "parent": "application:rapports@8",
+      "nom": "Fonction 30 de « Rapports »",
+      "ref": {
+        "application": "rapports",
+        "fiche": "030-fonction-30-de-rapports"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:038-fonction-38-de-rapports@8",
+      "niveau": "fiche",
+      "parent": "application:rapports@8",
+      "nom": "Fonction 38 de « Rapports »",
+      "ref": {
+        "application": "rapports",
+        "fiche": "038-fonction-38-de-rapports"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:046-fonction-46-de-rapports@8",
+      "niveau": "fiche",
+      "parent": "application:rapports@8",
+      "nom": "Fonction 46 de « Rapports »",
+      "ref": {
+        "application": "rapports",
+        "fiche": "046-fonction-46-de-rapports"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:031-fonction-31-de-synchronisation@8",
+      "niveau": "fiche",
+      "parent": "application:synchro@8",
+      "nom": "Fonction 31 de « Synchronisation »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "031-fonction-31-de-synchronisation"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:039-fonction-39-de-synchronisation@8",
+      "niveau": "fiche",
+      "parent": "application:synchro@8",
+      "nom": "Fonction 39 de « Synchronisation »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "039-fonction-39-de-synchronisation"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:047-fonction-47-de-synchronisation@8",
+      "niveau": "fiche",
+      "parent": "application:synchro@8",
+      "nom": "Fonction 47 de « Synchronisation »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "047-fonction-47-de-synchronisation"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:032-fonction-32-de-site-public@8",
+      "niveau": "fiche",
+      "parent": "application:site@8",
+      "nom": "Fonction 32 de « Site public »",
+      "ref": {
+        "application": "site",
+        "fiche": "032-fonction-32-de-site-public"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:040-fonction-40-de-site-public@8",
+      "niveau": "fiche",
+      "parent": "application:site@8",
+      "nom": "Fonction 40 de « Site public »",
+      "ref": {
+        "application": "site",
+        "fiche": "040-fonction-40-de-site-public"
+      },
+      "etat": "a_venir",
+      "barres": []
+    },
+    {
+      "id": "fiche:048-fonction-48-de-site-public@8",
+      "niveau": "fiche",
+      "parent": "application:site@8",
+      "nom": "Fonction 48 de « Site public »",
+      "ref": {
+        "application": "site",
+        "fiche": "048-fonction-48-de-site-public"
+      },
+      "etat": "a_venir",
+      "barres": []
+    }
+  ],
+  "retirees": [],
+  "jalons": [
+    {
+      "id": "jalon:026-fonction-26-de-application-terrain/plan/1",
+      "ligne": "fiche:026-fonction-26-de-application-terrain@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:13:45.265Z",
+      "demandee_par": "evt:026-fonction-26-de-application-terrain/295f00a7",
+      "demandee_source": "journal",
+      "prise": "2026-10-22T14:13:45.396Z",
+      "prise_par": "evt:026-fonction-26-de-application-terrain/3efce98d"
+    },
+    {
+      "id": "jalon:027-fonction-27-de-administration/plan/1",
+      "ligne": "fiche:027-fonction-27-de-administration@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:13:46.303Z",
+      "demandee_par": "evt:027-fonction-27-de-administration/aedcbce7",
+      "demandee_source": "journal",
+      "prise": "2026-10-22T14:13:46.448Z",
+      "prise_par": "evt:027-fonction-27-de-administration/e9adc85d"
+    },
+    {
+      "id": "jalon:028-fonction-28-de-portail-client/plan/1",
+      "ligne": "fiche:028-fonction-28-de-portail-client@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:13:47.706Z",
+      "demandee_par": "evt:028-fonction-28-de-portail-client/efeeb29c",
+      "demandee_source": "journal",
+      "prise": "2026-10-22T14:13:47.842Z",
+      "prise_par": "evt:028-fonction-28-de-portail-client/3d473dc3"
+    },
+    {
+      "id": "jalon:029-fonction-29-de-facturation/plan/1",
+      "ligne": "fiche:029-fonction-29-de-facturation@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:13:49.334Z",
+      "demandee_par": "evt:029-fonction-29-de-facturation/070fa264",
+      "demandee_source": "journal",
+      "prise": "2026-10-22T14:13:49.454Z",
+      "prise_par": "evt:029-fonction-29-de-facturation/8004308f"
+    },
+    {
+      "id": "jalon:031-fonction-31-de-synchronisation/plan/1",
+      "ligne": "fiche:031-fonction-31-de-synchronisation@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "attendue",
+      "demandee": "2026-10-22T14:13:50.958Z",
+      "demandee_par": "evt:031-fonction-31-de-synchronisation/f6279692",
+      "demandee_source": "journal",
+      "prise": null,
+      "prise_par": null
+    },
+    {
+      "id": "jalon:032-fonction-32-de-site-public/plan/1",
+      "ligne": "fiche:032-fonction-32-de-site-public@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:13:51.294Z",
+      "demandee_par": "evt:032-fonction-32-de-site-public/7638c3c8",
+      "demandee_source": "journal",
+      "prise": "2026-10-22T14:13:51.402Z",
+      "prise_par": "evt:032-fonction-32-de-site-public/c21fb62d"
+    },
+    {
+      "id": "jalon:033-fonction-33-de-application-de-bureau/plan/1",
+      "ligne": "fiche:033-fonction-33-de-application-de-bureau@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:13:52.224Z",
+      "demandee_par": "evt:033-fonction-33-de-application-de-bureau/0194d449",
+      "demandee_source": "journal",
+      "prise": "2026-10-22T14:13:52.371Z",
+      "prise_par": "evt:033-fonction-33-de-application-de-bureau/36cab3d7"
+    },
+    {
+      "id": "jalon:034-fonction-34-de-application-terrain/plan/1",
+      "ligne": "fiche:034-fonction-34-de-application-terrain@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:13:53.621Z",
+      "demandee_par": "evt:034-fonction-34-de-application-terrain/b361d8e6",
+      "demandee_source": "journal",
+      "prise": "2026-10-22T14:13:53.752Z",
+      "prise_par": "evt:034-fonction-34-de-application-terrain/fee026de"
+    },
+    {
+      "id": "jalon:035-fonction-35-de-administration/plan/1",
+      "ligne": "fiche:035-fonction-35-de-administration@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:13:55.284Z",
+      "demandee_par": "evt:035-fonction-35-de-administration/b1ade311",
+      "demandee_source": "journal",
+      "prise": "2026-10-22T14:13:55.434Z",
+      "prise_par": "evt:035-fonction-35-de-administration/0924fd05"
+    },
+    {
+      "id": "jalon:037-fonction-37-de-facturation/plan/1",
+      "ligne": "fiche:037-fonction-37-de-facturation@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "attendue",
+      "demandee": "2026-10-22T14:13:57.020Z",
+      "demandee_par": "evt:037-fonction-37-de-facturation/90aee46f",
+      "demandee_source": "journal",
+      "prise": null,
+      "prise_par": null
+    },
+    {
+      "id": "jalon:038-fonction-38-de-rapports/plan/1",
+      "ligne": "fiche:038-fonction-38-de-rapports@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:13:57.355Z",
+      "demandee_par": "evt:038-fonction-38-de-rapports/6fd3bd7e",
+      "demandee_source": "journal",
+      "prise": "2026-10-22T14:13:57.493Z",
+      "prise_par": "evt:038-fonction-38-de-rapports/629dd1db"
+    },
+    {
+      "id": "jalon:039-fonction-39-de-synchronisation/plan/1",
+      "ligne": "fiche:039-fonction-39-de-synchronisation@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:13:58.440Z",
+      "demandee_par": "evt:039-fonction-39-de-synchronisation/301a6b03",
+      "demandee_source": "journal",
+      "prise": "2026-10-22T14:13:58.587Z",
+      "prise_par": "evt:039-fonction-39-de-synchronisation/f8d55de0"
+    },
+    {
+      "id": "jalon:040-fonction-40-de-site-public/plan/1",
+      "ligne": "fiche:040-fonction-40-de-site-public@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:13:59.751Z",
+      "demandee_par": "evt:040-fonction-40-de-site-public/a10cecde",
+      "demandee_source": "journal",
+      "prise": "2026-10-22T14:13:59.890Z",
+      "prise_par": "evt:040-fonction-40-de-site-public/494ba9cf"
+    },
+    {
+      "id": "jalon:041-fonction-41-de-application-de-bureau/plan/1",
+      "ligne": "fiche:041-fonction-41-de-application-de-bureau@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:14:01.242Z",
+      "demandee_par": "evt:041-fonction-41-de-application-de-bureau/3c8a5022",
+      "demandee_source": "journal",
+      "prise": "2026-10-22T14:14:01.379Z",
+      "prise_par": "evt:041-fonction-41-de-application-de-bureau/ff14f084"
+    },
+    {
+      "id": "jalon:043-fonction-43-de-administration/plan/1",
+      "ligne": "fiche:043-fonction-43-de-administration@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "attendue",
+      "demandee": "2026-10-22T14:14:02.882Z",
+      "demandee_par": "evt:043-fonction-43-de-administration/3bad9613",
+      "demandee_source": "journal",
+      "prise": null,
+      "prise_par": null
+    },
+    {
+      "id": "jalon:044-fonction-44-de-portail-client/plan/1",
+      "ligne": "fiche:044-fonction-44-de-portail-client@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:14:03.190Z",
+      "demandee_par": "evt:044-fonction-44-de-portail-client/45526ba9",
+      "demandee_source": "journal",
+      "prise": "2026-10-22T14:14:03.306Z",
+      "prise_par": "evt:044-fonction-44-de-portail-client/ec8db39f"
+    },
+    {
+      "id": "jalon:045-fonction-45-de-facturation/plan/1",
+      "ligne": "fiche:045-fonction-45-de-facturation@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:14:04.085Z",
+      "demandee_par": "evt:045-fonction-45-de-facturation/2bf438ca",
+      "demandee_source": "journal",
+      "prise": "2026-10-22T14:14:04.196Z",
+      "prise_par": "evt:045-fonction-45-de-facturation/99ffd957"
+    },
+    {
+      "id": "jalon:046-fonction-46-de-rapports/plan/1",
+      "ligne": "fiche:046-fonction-46-de-rapports@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:14:05.390Z",
+      "demandee_par": "evt:046-fonction-46-de-rapports/15d90c1c",
+      "demandee_source": "journal",
+      "prise": "2026-10-22T14:14:05.503Z",
+      "prise_par": "evt:046-fonction-46-de-rapports/c3b7e911"
+    },
+    {
+      "id": "jalon:047-fonction-47-de-synchronisation/plan/1",
+      "ligne": "fiche:047-fonction-47-de-synchronisation@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:14:06.796Z",
+      "demandee_par": "evt:047-fonction-47-de-synchronisation/c0220e56",
+      "demandee_source": "journal",
+      "prise": "2026-10-22T14:14:06.921Z",
+      "prise_par": "evt:047-fonction-47-de-synchronisation/605fbcae"
+    },
+    {
+      "id": "jalon:049-fonction-49-de-application-de-bureau/plan/1",
+      "ligne": "fiche:049-fonction-49-de-application-de-bureau@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "attendue",
+      "demandee": "2026-10-22T14:14:08.456Z",
+      "demandee_par": "evt:049-fonction-49-de-application-de-bureau/70e12ef3",
+      "demandee_source": "journal",
+      "prise": null,
+      "prise_par": null
+    },
+    {
+      "id": "jalon:050-fonction-50-de-application-terrain/plan/1",
+      "ligne": "fiche:050-fonction-50-de-application-terrain@4",
+      "decision": "plan",
+      "nom": "Ton feu vert",
+      "etat": "accordee",
+      "demandee": "2026-10-22T14:14:08.787Z",
+      "demandee_par": "evt:050-fonction-50-de-application-terrain/9c707f42",
+      "demandee_source": "journal",
+      "prise": "2026-10-22T14:14:08.912Z",
+      "prise_par": "evt:050-fonction-50-de-application-terrain/8712627a"
+    }
+  ],
+  "jours": [
+    {
+      "date": "2026-10-22",
+      "evenements": 290,
+      "actif": true
+    }
+  ],
+  "evenements": [
+    {
+      "id": "evt:026-fonction-26-de-application-terrain/2e6d86eb",
+      "ts": "2026-10-22T14:13:45.090Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 26 de « Application terrain » » est ouverte",
+      "ref": {
+        "application": "terrain",
+        "fiche": "026-fonction-26-de-application-terrain"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:026-fonction-26-de-application-terrain/bbc604e1",
+      "ts": "2026-10-22T14:13:45.091Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 26 de « Application terrain » »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "026-fonction-26-de-application-terrain"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:026-fonction-26-de-application-terrain/295f00a7",
+      "ts": "2026-10-22T14:13:45.265Z",
+      "kind": "gate",
+      "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 26 de « Application terrain » »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "026-fonction-26-de-application-terrain"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:026-fonction-26-de-application-terrain/3efce98d",
+      "ts": "2026-10-22T14:13:45.396Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « le feu vert » pour « Fonction 26 de « Application terrain » »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "026-fonction-26-de-application-terrain"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:027-fonction-27-de-administration/2c328fd2",
+      "ts": "2026-10-22T14:13:46.117Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 27 de « Administration » » est ouverte",
+      "ref": {
+        "application": "admin",
+        "fiche": "027-fonction-27-de-administration"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:027-fonction-27-de-administration/90b2388a",
+      "ts": "2026-10-22T14:13:46.118Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 27 de « Administration » »",
+      "ref": {
+        "application": "admin",
+        "fiche": "027-fonction-27-de-administration"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:027-fonction-27-de-administration/aedcbce7",
+      "ts": "2026-10-22T14:13:46.303Z",
+      "kind": "gate",
+      "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 27 de « Administration » »",
+      "ref": {
+        "application": "admin",
+        "fiche": "027-fonction-27-de-administration"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:027-fonction-27-de-administration/e9adc85d",
+      "ts": "2026-10-22T14:13:46.448Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « le feu vert » pour « Fonction 27 de « Administration » »",
+      "ref": {
+        "application": "admin",
+        "fiche": "027-fonction-27-de-administration"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:027-fonction-27-de-administration/64d0cad2",
+      "ts": "2026-10-22T14:13:47.188Z",
+      "kind": "lot",
+      "phrase": "Le lot « Le lot de la fonction 27 » est prévu dans « Fonction 27 de « Administration » »",
+      "ref": {
+        "application": "admin",
+        "fiche": "027-fonction-27-de-administration",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:027-fonction-27-de-administration/898d46a3",
+      "ts": "2026-10-22T14:13:47.365Z",
+      "kind": "lot_etat",
+      "phrase": "Le lot « Le lot de la fonction 27 » commence",
+      "ref": {
+        "application": "admin",
+        "fiche": "027-fonction-27-de-administration",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:028-fonction-28-de-portail-client/21f2da91",
+      "ts": "2026-10-22T14:13:47.524Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 28 de « Portail client » » est ouverte",
+      "ref": {
+        "application": "portail",
+        "fiche": "028-fonction-28-de-portail-client"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:028-fonction-28-de-portail-client/abc7b265",
+      "ts": "2026-10-22T14:13:47.525Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 28 de « Portail client » »",
+      "ref": {
+        "application": "portail",
+        "fiche": "028-fonction-28-de-portail-client"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:028-fonction-28-de-portail-client/efeeb29c",
+      "ts": "2026-10-22T14:13:47.706Z",
+      "kind": "gate",
+      "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 28 de « Portail client » »",
+      "ref": {
+        "application": "portail",
+        "fiche": "028-fonction-28-de-portail-client"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:028-fonction-28-de-portail-client/3d473dc3",
+      "ts": "2026-10-22T14:13:47.842Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « le feu vert » pour « Fonction 28 de « Portail client » »",
+      "ref": {
+        "application": "portail",
+        "fiche": "028-fonction-28-de-portail-client"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:028-fonction-28-de-portail-client/28fb7e57",
+      "ts": "2026-10-22T14:13:48.581Z",
+      "kind": "lot",
+      "phrase": "Le lot « Le lot de la fonction 28 » est prévu dans « Fonction 28 de « Portail client » »",
+      "ref": {
+        "application": "portail",
+        "fiche": "028-fonction-28-de-portail-client",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:028-fonction-28-de-portail-client/98e34a59",
+      "ts": "2026-10-22T14:13:48.753Z",
+      "kind": "lot_etat",
+      "phrase": "Le lot « Le lot de la fonction 28 » commence",
+      "ref": {
+        "application": "portail",
+        "fiche": "028-fonction-28-de-portail-client",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:028-fonction-28-de-portail-client/67c42c81",
+      "ts": "2026-10-22T14:13:48.930Z",
+      "kind": "lot_etat",
+      "phrase": "Le lot « Le lot de la fonction 28 » est fini",
+      "ref": {
+        "application": "portail",
+        "fiche": "028-fonction-28-de-portail-client",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:029-fonction-29-de-facturation/914213de",
+      "ts": "2026-10-22T14:13:49.121Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 29 de « Facturation » » est ouverte",
+      "ref": {
+        "application": "facturation",
+        "fiche": "029-fonction-29-de-facturation"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:029-fonction-29-de-facturation/16ca356f",
+      "ts": "2026-10-22T14:13:49.122Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 29 de « Facturation » »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "029-fonction-29-de-facturation"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:029-fonction-29-de-facturation/070fa264",
+      "ts": "2026-10-22T14:13:49.334Z",
+      "kind": "gate",
+      "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 29 de « Facturation » »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "029-fonction-29-de-facturation"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:029-fonction-29-de-facturation/8004308f",
+      "ts": "2026-10-22T14:13:49.454Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « le feu vert » pour « Fonction 29 de « Facturation » »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "029-fonction-29-de-facturation"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:029-fonction-29-de-facturation/2e54c36c",
+      "ts": "2026-10-22T14:13:50.159Z",
+      "kind": "lot",
+      "phrase": "Le lot « Le lot de la fonction 29 » est prévu dans « Fonction 29 de « Facturation » »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "029-fonction-29-de-facturation",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:029-fonction-29-de-facturation/33242a66",
+      "ts": "2026-10-22T14:13:50.323Z",
+      "kind": "lot_etat",
+      "phrase": "Le lot « Le lot de la fonction 29 » commence",
+      "ref": {
+        "application": "facturation",
+        "fiche": "029-fonction-29-de-facturation",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:029-fonction-29-de-facturation/fafab5ce",
+      "ts": "2026-10-22T14:13:50.442Z",
+      "kind": "note",
+      "phrase": "Une intention est notée sur « Fonction 29 de « Facturation » »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "029-fonction-29-de-facturation"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:029-fonction-29-de-facturation/9e3a2ec6",
+      "ts": "2026-10-22T14:13:50.443Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 29 de « Facturation » »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "029-fonction-29-de-facturation"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:030-fonction-30-de-rapports/14b72ed7",
+      "ts": "2026-10-22T14:13:50.583Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 30 de « Rapports » » est ouverte",
+      "ref": {
+        "application": "rapports",
+        "fiche": "030-fonction-30-de-rapports"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:030-fonction-30-de-rapports/5255cbfb",
+      "ts": "2026-10-22T14:13:50.583Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 30 de « Rapports » »",
+      "ref": {
+        "application": "rapports",
+        "fiche": "030-fonction-30-de-rapports"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:031-fonction-31-de-synchronisation/6f7e4d98",
+      "ts": "2026-10-22T14:13:50.768Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 31 de « Synchronisation » » est ouverte",
+      "ref": {
+        "application": "synchro",
+        "fiche": "031-fonction-31-de-synchronisation"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:031-fonction-31-de-synchronisation/cf39a7f0",
+      "ts": "2026-10-22T14:13:50.769Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 31 de « Synchronisation » »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "031-fonction-31-de-synchronisation"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:031-fonction-31-de-synchronisation/f6279692",
+      "ts": "2026-10-22T14:13:50.958Z",
+      "kind": "gate",
+      "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 31 de « Synchronisation » »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "031-fonction-31-de-synchronisation"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:032-fonction-32-de-site-public/b056e989",
+      "ts": "2026-10-22T14:13:51.102Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 32 de « Site public » » est ouverte",
+      "ref": {
+        "application": "site",
+        "fiche": "032-fonction-32-de-site-public"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:032-fonction-32-de-site-public/e65567c8",
+      "ts": "2026-10-22T14:13:51.103Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 32 de « Site public » »",
+      "ref": {
+        "application": "site",
+        "fiche": "032-fonction-32-de-site-public"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:032-fonction-32-de-site-public/7638c3c8",
+      "ts": "2026-10-22T14:13:51.294Z",
+      "kind": "gate",
+      "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 32 de « Site public » »",
+      "ref": {
+        "application": "site",
+        "fiche": "032-fonction-32-de-site-public"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:032-fonction-32-de-site-public/c21fb62d",
+      "ts": "2026-10-22T14:13:51.402Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « le feu vert » pour « Fonction 32 de « Site public » »",
+      "ref": {
+        "application": "site",
+        "fiche": "032-fonction-32-de-site-public"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:033-fonction-33-de-application-de-bureau/b32fd20a",
+      "ts": "2026-10-22T14:13:52.041Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 33 de « Application de bureau » » est ouverte",
+      "ref": {
+        "application": "bureau",
+        "fiche": "033-fonction-33-de-application-de-bureau"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:033-fonction-33-de-application-de-bureau/a4d45e6f",
+      "ts": "2026-10-22T14:13:52.042Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 33 de « Application de bureau » »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "033-fonction-33-de-application-de-bureau"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:033-fonction-33-de-application-de-bureau/0194d449",
+      "ts": "2026-10-22T14:13:52.224Z",
+      "kind": "gate",
+      "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 33 de « Application de bureau » »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "033-fonction-33-de-application-de-bureau"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:033-fonction-33-de-application-de-bureau/36cab3d7",
+      "ts": "2026-10-22T14:13:52.371Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « le feu vert » pour « Fonction 33 de « Application de bureau » »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "033-fonction-33-de-application-de-bureau"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:033-fonction-33-de-application-de-bureau/a165edaa",
+      "ts": "2026-10-22T14:13:53.107Z",
+      "kind": "lot",
+      "phrase": "Le lot « Le lot de la fonction 33 » est prévu dans « Fonction 33 de « Application de bureau » »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "033-fonction-33-de-application-de-bureau",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:033-fonction-33-de-application-de-bureau/e0e2436c",
+      "ts": "2026-10-22T14:13:53.262Z",
+      "kind": "lot_etat",
+      "phrase": "Le lot « Le lot de la fonction 33 » commence",
+      "ref": {
+        "application": "bureau",
+        "fiche": "033-fonction-33-de-application-de-bureau",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:034-fonction-34-de-application-terrain/7f8b2bd8",
+      "ts": "2026-10-22T14:13:53.423Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 34 de « Application terrain » » est ouverte",
+      "ref": {
+        "application": "terrain",
+        "fiche": "034-fonction-34-de-application-terrain"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:034-fonction-34-de-application-terrain/0a445118",
+      "ts": "2026-10-22T14:13:53.424Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 34 de « Application terrain » »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "034-fonction-34-de-application-terrain"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:034-fonction-34-de-application-terrain/b361d8e6",
+      "ts": "2026-10-22T14:13:53.621Z",
+      "kind": "gate",
+      "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 34 de « Application terrain » »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "034-fonction-34-de-application-terrain"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:034-fonction-34-de-application-terrain/fee026de",
+      "ts": "2026-10-22T14:13:53.752Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « le feu vert » pour « Fonction 34 de « Application terrain » »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "034-fonction-34-de-application-terrain"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:034-fonction-34-de-application-terrain/f0c200ac",
+      "ts": "2026-10-22T14:13:54.513Z",
+      "kind": "lot",
+      "phrase": "Le lot « Le lot de la fonction 34 » est prévu dans « Fonction 34 de « Application terrain » »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "034-fonction-34-de-application-terrain",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:034-fonction-34-de-application-terrain/ed0a8290",
+      "ts": "2026-10-22T14:13:54.732Z",
+      "kind": "lot_etat",
+      "phrase": "Le lot « Le lot de la fonction 34 » commence",
+      "ref": {
+        "application": "terrain",
+        "fiche": "034-fonction-34-de-application-terrain",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:034-fonction-34-de-application-terrain/b3732326",
+      "ts": "2026-10-22T14:13:54.907Z",
+      "kind": "lot_etat",
+      "phrase": "Le lot « Le lot de la fonction 34 » est fini",
+      "ref": {
+        "application": "terrain",
+        "fiche": "034-fonction-34-de-application-terrain",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:035-fonction-35-de-administration/3244299f",
+      "ts": "2026-10-22T14:13:55.085Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 35 de « Administration » » est ouverte",
+      "ref": {
+        "application": "admin",
+        "fiche": "035-fonction-35-de-administration"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:035-fonction-35-de-administration/ec8deb9a",
+      "ts": "2026-10-22T14:13:55.086Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 35 de « Administration » »",
+      "ref": {
+        "application": "admin",
+        "fiche": "035-fonction-35-de-administration"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:035-fonction-35-de-administration/b1ade311",
+      "ts": "2026-10-22T14:13:55.284Z",
+      "kind": "gate",
+      "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 35 de « Administration » »",
+      "ref": {
+        "application": "admin",
+        "fiche": "035-fonction-35-de-administration"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:035-fonction-35-de-administration/0924fd05",
+      "ts": "2026-10-22T14:13:55.434Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « le feu vert » pour « Fonction 35 de « Administration » »",
+      "ref": {
+        "application": "admin",
+        "fiche": "035-fonction-35-de-administration"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:035-fonction-35-de-administration/bc447298",
+      "ts": "2026-10-22T14:13:56.162Z",
+      "kind": "lot",
+      "phrase": "Le lot « Le lot de la fonction 35 » est prévu dans « Fonction 35 de « Administration » »",
+      "ref": {
+        "application": "admin",
+        "fiche": "035-fonction-35-de-administration",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:035-fonction-35-de-administration/6bd73689",
+      "ts": "2026-10-22T14:13:56.330Z",
+      "kind": "lot_etat",
+      "phrase": "Le lot « Le lot de la fonction 35 » commence",
+      "ref": {
+        "application": "admin",
+        "fiche": "035-fonction-35-de-administration",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:035-fonction-35-de-administration/d2069214",
+      "ts": "2026-10-22T14:13:56.449Z",
+      "kind": "note",
+      "phrase": "Une intention est notée sur « Fonction 35 de « Administration » »",
+      "ref": {
+        "application": "admin",
+        "fiche": "035-fonction-35-de-administration"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:035-fonction-35-de-administration/05a09799",
+      "ts": "2026-10-22T14:13:56.450Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 35 de « Administration » »",
+      "ref": {
+        "application": "admin",
+        "fiche": "035-fonction-35-de-administration"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:036-fonction-36-de-portail-client/83764a8b",
+      "ts": "2026-10-22T14:13:56.629Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 36 de « Portail client » » est ouverte",
+      "ref": {
+        "application": "portail",
+        "fiche": "036-fonction-36-de-portail-client"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:036-fonction-36-de-portail-client/22ac89ad",
+      "ts": "2026-10-22T14:13:56.630Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 36 de « Portail client » »",
+      "ref": {
+        "application": "portail",
+        "fiche": "036-fonction-36-de-portail-client"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:037-fonction-37-de-facturation/97bd473a",
+      "ts": "2026-10-22T14:13:56.841Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 37 de « Facturation » » est ouverte",
+      "ref": {
+        "application": "facturation",
+        "fiche": "037-fonction-37-de-facturation"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:037-fonction-37-de-facturation/300994fb",
+      "ts": "2026-10-22T14:13:56.842Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 37 de « Facturation » »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "037-fonction-37-de-facturation"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:037-fonction-37-de-facturation/90aee46f",
+      "ts": "2026-10-22T14:13:57.020Z",
+      "kind": "gate",
+      "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 37 de « Facturation » »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "037-fonction-37-de-facturation"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:038-fonction-38-de-rapports/87697f25",
+      "ts": "2026-10-22T14:13:57.171Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 38 de « Rapports » » est ouverte",
+      "ref": {
+        "application": "rapports",
+        "fiche": "038-fonction-38-de-rapports"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:038-fonction-38-de-rapports/31cd012c",
+      "ts": "2026-10-22T14:13:57.172Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 38 de « Rapports » »",
+      "ref": {
+        "application": "rapports",
+        "fiche": "038-fonction-38-de-rapports"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:038-fonction-38-de-rapports/6fd3bd7e",
+      "ts": "2026-10-22T14:13:57.355Z",
+      "kind": "gate",
+      "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 38 de « Rapports » »",
+      "ref": {
+        "application": "rapports",
+        "fiche": "038-fonction-38-de-rapports"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:038-fonction-38-de-rapports/629dd1db",
+      "ts": "2026-10-22T14:13:57.493Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « le feu vert » pour « Fonction 38 de « Rapports » »",
+      "ref": {
+        "application": "rapports",
+        "fiche": "038-fonction-38-de-rapports"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:039-fonction-39-de-synchronisation/2cbd8024",
+      "ts": "2026-10-22T14:13:58.240Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 39 de « Synchronisation » »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "039-fonction-39-de-synchronisation"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:039-fonction-39-de-synchronisation/f5caeb0d",
+      "ts": "2026-10-22T14:13:58.240Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 39 de « Synchronisation » » est ouverte",
+      "ref": {
+        "application": "synchro",
+        "fiche": "039-fonction-39-de-synchronisation"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:039-fonction-39-de-synchronisation/301a6b03",
+      "ts": "2026-10-22T14:13:58.440Z",
+      "kind": "gate",
+      "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 39 de « Synchronisation » »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "039-fonction-39-de-synchronisation"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:039-fonction-39-de-synchronisation/f8d55de0",
+      "ts": "2026-10-22T14:13:58.587Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « le feu vert » pour « Fonction 39 de « Synchronisation » »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "039-fonction-39-de-synchronisation"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:039-fonction-39-de-synchronisation/22f3f95c",
+      "ts": "2026-10-22T14:13:59.269Z",
+      "kind": "lot",
+      "phrase": "Le lot « Le lot de la fonction 39 » est prévu dans « Fonction 39 de « Synchronisation » »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "039-fonction-39-de-synchronisation",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:039-fonction-39-de-synchronisation/cfc0bb9b",
+      "ts": "2026-10-22T14:13:59.428Z",
+      "kind": "lot_etat",
+      "phrase": "Le lot « Le lot de la fonction 39 » commence",
+      "ref": {
+        "application": "synchro",
+        "fiche": "039-fonction-39-de-synchronisation",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:040-fonction-40-de-site-public/7b7944fd",
+      "ts": "2026-10-22T14:13:59.567Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 40 de « Site public » » est ouverte",
+      "ref": {
+        "application": "site",
+        "fiche": "040-fonction-40-de-site-public"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:040-fonction-40-de-site-public/291175a5",
+      "ts": "2026-10-22T14:13:59.568Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 40 de « Site public » »",
+      "ref": {
+        "application": "site",
+        "fiche": "040-fonction-40-de-site-public"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:040-fonction-40-de-site-public/a10cecde",
+      "ts": "2026-10-22T14:13:59.751Z",
+      "kind": "gate",
+      "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 40 de « Site public » »",
+      "ref": {
+        "application": "site",
+        "fiche": "040-fonction-40-de-site-public"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:040-fonction-40-de-site-public/494ba9cf",
+      "ts": "2026-10-22T14:13:59.890Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « le feu vert » pour « Fonction 40 de « Site public » »",
+      "ref": {
+        "application": "site",
+        "fiche": "040-fonction-40-de-site-public"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:040-fonction-40-de-site-public/6eb3c470",
+      "ts": "2026-10-22T14:14:00.561Z",
+      "kind": "lot",
+      "phrase": "Le lot « Le lot de la fonction 40 » est prévu dans « Fonction 40 de « Site public » »",
+      "ref": {
+        "application": "site",
+        "fiche": "040-fonction-40-de-site-public",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:040-fonction-40-de-site-public/50f7e4d6",
+      "ts": "2026-10-22T14:14:00.721Z",
+      "kind": "lot_etat",
+      "phrase": "Le lot « Le lot de la fonction 40 » commence",
+      "ref": {
+        "application": "site",
+        "fiche": "040-fonction-40-de-site-public",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:040-fonction-40-de-site-public/e2bc4e2e",
+      "ts": "2026-10-22T14:14:00.876Z",
+      "kind": "lot_etat",
+      "phrase": "Le lot « Le lot de la fonction 40 » est fini",
+      "ref": {
+        "application": "site",
+        "fiche": "040-fonction-40-de-site-public",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:041-fonction-41-de-application-de-bureau/45977842",
+      "ts": "2026-10-22T14:14:01.056Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 41 de « Application de bureau » » est ouverte",
+      "ref": {
+        "application": "bureau",
+        "fiche": "041-fonction-41-de-application-de-bureau"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:041-fonction-41-de-application-de-bureau/42f94b2f",
+      "ts": "2026-10-22T14:14:01.057Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 41 de « Application de bureau » »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "041-fonction-41-de-application-de-bureau"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:041-fonction-41-de-application-de-bureau/3c8a5022",
+      "ts": "2026-10-22T14:14:01.242Z",
+      "kind": "gate",
+      "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 41 de « Application de bureau » »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "041-fonction-41-de-application-de-bureau"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:041-fonction-41-de-application-de-bureau/ff14f084",
+      "ts": "2026-10-22T14:14:01.379Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « le feu vert » pour « Fonction 41 de « Application de bureau » »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "041-fonction-41-de-application-de-bureau"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:041-fonction-41-de-application-de-bureau/1bb9f55a",
+      "ts": "2026-10-22T14:14:02.087Z",
+      "kind": "lot",
+      "phrase": "Le lot « Le lot de la fonction 41 » est prévu dans « Fonction 41 de « Application de bureau » »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "041-fonction-41-de-application-de-bureau",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:041-fonction-41-de-application-de-bureau/e6538824",
+      "ts": "2026-10-22T14:14:02.243Z",
+      "kind": "lot_etat",
+      "phrase": "Le lot « Le lot de la fonction 41 » commence",
+      "ref": {
+        "application": "bureau",
+        "fiche": "041-fonction-41-de-application-de-bureau",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:041-fonction-41-de-application-de-bureau/fde8c2fa",
+      "ts": "2026-10-22T14:14:02.350Z",
+      "kind": "note",
+      "phrase": "Une intention est notée sur « Fonction 41 de « Application de bureau » »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "041-fonction-41-de-application-de-bureau"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:041-fonction-41-de-application-de-bureau/148c52a8",
+      "ts": "2026-10-22T14:14:02.351Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 41 de « Application de bureau » »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "041-fonction-41-de-application-de-bureau"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:042-fonction-42-de-application-terrain/5e134a5c",
+      "ts": "2026-10-22T14:14:02.509Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 42 de « Application terrain » » est ouverte",
+      "ref": {
+        "application": "terrain",
+        "fiche": "042-fonction-42-de-application-terrain"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:042-fonction-42-de-application-terrain/734ea7c2",
+      "ts": "2026-10-22T14:14:02.510Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 42 de « Application terrain » »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "042-fonction-42-de-application-terrain"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:043-fonction-43-de-administration/e11c8532",
+      "ts": "2026-10-22T14:14:02.694Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 43 de « Administration » » est ouverte",
+      "ref": {
+        "application": "admin",
+        "fiche": "043-fonction-43-de-administration"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:043-fonction-43-de-administration/81f7c429",
+      "ts": "2026-10-22T14:14:02.699Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 43 de « Administration » »",
+      "ref": {
+        "application": "admin",
+        "fiche": "043-fonction-43-de-administration"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:043-fonction-43-de-administration/3bad9613",
+      "ts": "2026-10-22T14:14:02.882Z",
+      "kind": "gate",
+      "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 43 de « Administration » »",
+      "ref": {
+        "application": "admin",
+        "fiche": "043-fonction-43-de-administration"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:044-fonction-44-de-portail-client/17489d16",
+      "ts": "2026-10-22T14:14:03.009Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 44 de « Portail client » » est ouverte",
+      "ref": {
+        "application": "portail",
+        "fiche": "044-fonction-44-de-portail-client"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:044-fonction-44-de-portail-client/240a7b1c",
+      "ts": "2026-10-22T14:14:03.010Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 44 de « Portail client » »",
+      "ref": {
+        "application": "portail",
+        "fiche": "044-fonction-44-de-portail-client"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:044-fonction-44-de-portail-client/45526ba9",
+      "ts": "2026-10-22T14:14:03.190Z",
+      "kind": "gate",
+      "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 44 de « Portail client » »",
+      "ref": {
+        "application": "portail",
+        "fiche": "044-fonction-44-de-portail-client"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:044-fonction-44-de-portail-client/ec8db39f",
+      "ts": "2026-10-22T14:14:03.306Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « le feu vert » pour « Fonction 44 de « Portail client » »",
+      "ref": {
+        "application": "portail",
+        "fiche": "044-fonction-44-de-portail-client"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:045-fonction-45-de-facturation/def4ef5f",
+      "ts": "2026-10-22T14:14:03.923Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 45 de « Facturation » » est ouverte",
+      "ref": {
+        "application": "facturation",
+        "fiche": "045-fonction-45-de-facturation"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:045-fonction-45-de-facturation/b11bd63f",
+      "ts": "2026-10-22T14:14:03.924Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 45 de « Facturation » »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "045-fonction-45-de-facturation"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:045-fonction-45-de-facturation/2bf438ca",
+      "ts": "2026-10-22T14:14:04.085Z",
+      "kind": "gate",
+      "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 45 de « Facturation » »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "045-fonction-45-de-facturation"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:045-fonction-45-de-facturation/99ffd957",
+      "ts": "2026-10-22T14:14:04.196Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « le feu vert » pour « Fonction 45 de « Facturation » »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "045-fonction-45-de-facturation"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:045-fonction-45-de-facturation/20572d24",
+      "ts": "2026-10-22T14:14:04.921Z",
+      "kind": "lot",
+      "phrase": "Le lot « Le lot de la fonction 45 » est prévu dans « Fonction 45 de « Facturation » »",
+      "ref": {
+        "application": "facturation",
+        "fiche": "045-fonction-45-de-facturation",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:045-fonction-45-de-facturation/58fad28c",
+      "ts": "2026-10-22T14:14:05.087Z",
+      "kind": "lot_etat",
+      "phrase": "Le lot « Le lot de la fonction 45 » commence",
+      "ref": {
+        "application": "facturation",
+        "fiche": "045-fonction-45-de-facturation",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:046-fonction-46-de-rapports/ec53e0ee",
+      "ts": "2026-10-22T14:14:05.230Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 46 de « Rapports » » est ouverte",
+      "ref": {
+        "application": "rapports",
+        "fiche": "046-fonction-46-de-rapports"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:046-fonction-46-de-rapports/82809624",
+      "ts": "2026-10-22T14:14:05.231Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 46 de « Rapports » »",
+      "ref": {
+        "application": "rapports",
+        "fiche": "046-fonction-46-de-rapports"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:046-fonction-46-de-rapports/15d90c1c",
+      "ts": "2026-10-22T14:14:05.390Z",
+      "kind": "gate",
+      "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 46 de « Rapports » »",
+      "ref": {
+        "application": "rapports",
+        "fiche": "046-fonction-46-de-rapports"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:046-fonction-46-de-rapports/c3b7e911",
+      "ts": "2026-10-22T14:14:05.503Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « le feu vert » pour « Fonction 46 de « Rapports » »",
+      "ref": {
+        "application": "rapports",
+        "fiche": "046-fonction-46-de-rapports"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:046-fonction-46-de-rapports/f5e666d3",
+      "ts": "2026-10-22T14:14:06.199Z",
+      "kind": "lot",
+      "phrase": "Le lot « Le lot de la fonction 46 » est prévu dans « Fonction 46 de « Rapports » »",
+      "ref": {
+        "application": "rapports",
+        "fiche": "046-fonction-46-de-rapports",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:046-fonction-46-de-rapports/beca6539",
+      "ts": "2026-10-22T14:14:06.345Z",
+      "kind": "lot_etat",
+      "phrase": "Le lot « Le lot de la fonction 46 » commence",
+      "ref": {
+        "application": "rapports",
+        "fiche": "046-fonction-46-de-rapports",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:046-fonction-46-de-rapports/24cdde84",
+      "ts": "2026-10-22T14:14:06.495Z",
+      "kind": "lot_etat",
+      "phrase": "Le lot « Le lot de la fonction 46 » est fini",
+      "ref": {
+        "application": "rapports",
+        "fiche": "046-fonction-46-de-rapports",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:047-fonction-47-de-synchronisation/c42180d2",
+      "ts": "2026-10-22T14:14:06.645Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 47 de « Synchronisation » » est ouverte",
+      "ref": {
+        "application": "synchro",
+        "fiche": "047-fonction-47-de-synchronisation"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:047-fonction-47-de-synchronisation/e3748939",
+      "ts": "2026-10-22T14:14:06.646Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 47 de « Synchronisation » »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "047-fonction-47-de-synchronisation"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:047-fonction-47-de-synchronisation/c0220e56",
+      "ts": "2026-10-22T14:14:06.796Z",
+      "kind": "gate",
+      "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 47 de « Synchronisation » »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "047-fonction-47-de-synchronisation"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:047-fonction-47-de-synchronisation/605fbcae",
+      "ts": "2026-10-22T14:14:06.921Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « le feu vert » pour « Fonction 47 de « Synchronisation » »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "047-fonction-47-de-synchronisation"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:047-fonction-47-de-synchronisation/f2270753",
+      "ts": "2026-10-22T14:14:07.669Z",
+      "kind": "lot",
+      "phrase": "Le lot « Le lot de la fonction 47 » est prévu dans « Fonction 47 de « Synchronisation » »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "047-fonction-47-de-synchronisation",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:047-fonction-47-de-synchronisation/0f35337b",
+      "ts": "2026-10-22T14:14:07.835Z",
+      "kind": "lot_etat",
+      "phrase": "Le lot « Le lot de la fonction 47 » commence",
+      "ref": {
+        "application": "synchro",
+        "fiche": "047-fonction-47-de-synchronisation",
+        "lot": "L1"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:047-fonction-47-de-synchronisation/6c565875",
+      "ts": "2026-10-22T14:14:07.951Z",
+      "kind": "note",
+      "phrase": "Une intention est notée sur « Fonction 47 de « Synchronisation » »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "047-fonction-47-de-synchronisation"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:047-fonction-47-de-synchronisation/d843783a",
+      "ts": "2026-10-22T14:14:07.953Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 47 de « Synchronisation » »",
+      "ref": {
+        "application": "synchro",
+        "fiche": "047-fonction-47-de-synchronisation"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:048-fonction-48-de-site-public/21654a19",
+      "ts": "2026-10-22T14:14:08.101Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 48 de « Site public » » est ouverte",
+      "ref": {
+        "application": "site",
+        "fiche": "048-fonction-48-de-site-public"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:048-fonction-48-de-site-public/d2c9ec1a",
+      "ts": "2026-10-22T14:14:08.102Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 48 de « Site public » »",
+      "ref": {
+        "application": "site",
+        "fiche": "048-fonction-48-de-site-public"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:049-fonction-49-de-application-de-bureau/73252072",
+      "ts": "2026-10-22T14:14:08.273Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 49 de « Application de bureau » » est ouverte",
+      "ref": {
+        "application": "bureau",
+        "fiche": "049-fonction-49-de-application-de-bureau"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:049-fonction-49-de-application-de-bureau/b47101a9",
+      "ts": "2026-10-22T14:14:08.274Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 49 de « Application de bureau » »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "049-fonction-49-de-application-de-bureau"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:049-fonction-49-de-application-de-bureau/70e12ef3",
+      "ts": "2026-10-22T14:14:08.456Z",
+      "kind": "gate",
+      "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 49 de « Application de bureau » »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "049-fonction-49-de-application-de-bureau"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:050-fonction-50-de-application-terrain/695b2e77",
+      "ts": "2026-10-22T14:14:08.597Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 50 de « Application terrain » » est ouverte",
+      "ref": {
+        "application": "terrain",
+        "fiche": "050-fonction-50-de-application-terrain"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:050-fonction-50-de-application-terrain/a8b854f9",
+      "ts": "2026-10-22T14:14:08.599Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 50 de « Application terrain » »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "050-fonction-50-de-application-terrain"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:050-fonction-50-de-application-terrain/9c707f42",
+      "ts": "2026-10-22T14:14:08.787Z",
+      "kind": "gate",
+      "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 50 de « Application terrain » »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "050-fonction-50-de-application-terrain"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:050-fonction-50-de-application-terrain/8712627a",
+      "ts": "2026-10-22T14:14:08.912Z",
+      "kind": "gate",
+      "phrase": "Tu accordes « le feu vert » pour « Fonction 50 de « Application terrain » »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "050-fonction-50-de-application-terrain"
+      },
+      "trait": false
+    }
+  ],
+  "regime": [
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:13:19.417Z",
+      "a": "2026-10-22T14:13:19.683Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:13:19.683Z",
+      "a": null
+    }
+  ],
+  "a_venir": [
+    {
+      "ligne": "fiche:001-fonction-1-de-application-de-bureau@5",
+      "etape": 5,
+      "apres": "fiche:001-fonction-1-de-application-de-bureau@4"
+    },
+    {
+      "ligne": "fiche:001-fonction-1-de-application-de-bureau@6",
+      "etape": 6,
+      "apres": "fiche:001-fonction-1-de-application-de-bureau@5"
+    },
+    {
+      "ligne": "fiche:001-fonction-1-de-application-de-bureau@7",
+      "etape": 7,
+      "apres": "fiche:001-fonction-1-de-application-de-bureau@6"
+    },
+    {
+      "ligne": "fiche:001-fonction-1-de-application-de-bureau@8",
+      "etape": 8,
+      "apres": "fiche:001-fonction-1-de-application-de-bureau@7"
+    },
+    {
+      "ligne": "fiche:002-fonction-2-de-application-terrain@6",
+      "etape": 6,
+      "apres": "fiche:002-fonction-2-de-application-terrain@5"
+    },
+    {
+      "ligne": "fiche:002-fonction-2-de-application-terrain@7",
+      "etape": 7,
+      "apres": "fiche:002-fonction-2-de-application-terrain@6"
+    },
+    {
+      "ligne": "fiche:002-fonction-2-de-application-terrain@8",
+      "etape": 8,
+      "apres": "fiche:002-fonction-2-de-application-terrain@7"
+    },
+    {
+      "ligne": "fiche:003-fonction-3-de-administration@6",
+      "etape": 6,
+      "apres": "fiche:003-fonction-3-de-administration@5"
+    },
+    {
+      "ligne": "fiche:003-fonction-3-de-administration@7",
+      "etape": 7,
+      "apres": "fiche:003-fonction-3-de-administration@6"
+    },
+    {
+      "ligne": "fiche:003-fonction-3-de-administration@8",
+      "etape": 8,
+      "apres": "fiche:003-fonction-3-de-administration@7"
+    },
+    {
+      "ligne": "fiche:004-fonction-4-de-portail-client@7",
+      "etape": 7,
+      "apres": "fiche:004-fonction-4-de-portail-client@6"
+    },
+    {
+      "ligne": "fiche:004-fonction-4-de-portail-client@8",
+      "etape": 8,
+      "apres": "fiche:004-fonction-4-de-portail-client@7"
+    },
+    {
+      "ligne": "fiche:005-fonction-5-de-facturation@7",
+      "etape": 7,
+      "apres": "fiche:005-fonction-5-de-facturation@6"
+    },
+    {
+      "ligne": "fiche:005-fonction-5-de-facturation@8",
+      "etape": 8,
+      "apres": "fiche:005-fonction-5-de-facturation@7"
+    },
+    {
+      "ligne": "fiche:006-fonction-6-de-rapports@5",
+      "etape": 5,
+      "apres": "fiche:006-fonction-6-de-rapports@4"
+    },
+    {
+      "ligne": "fiche:006-fonction-6-de-rapports@6",
+      "etape": 6,
+      "apres": "fiche:006-fonction-6-de-rapports@5"
+    },
+    {
+      "ligne": "fiche:006-fonction-6-de-rapports@7",
+      "etape": 7,
+      "apres": "fiche:006-fonction-6-de-rapports@6"
+    },
+    {
+      "ligne": "fiche:006-fonction-6-de-rapports@8",
+      "etape": 8,
+      "apres": "fiche:006-fonction-6-de-rapports@7"
+    },
+    {
+      "ligne": "fiche:007-fonction-7-de-synchronisation@5",
+      "etape": 5,
+      "apres": "fiche:007-fonction-7-de-synchronisation@4"
+    },
+    {
+      "ligne": "fiche:007-fonction-7-de-synchronisation@6",
+      "etape": 6,
+      "apres": "fiche:007-fonction-7-de-synchronisation@5"
+    },
+    {
+      "ligne": "fiche:007-fonction-7-de-synchronisation@7",
+      "etape": 7,
+      "apres": "fiche:007-fonction-7-de-synchronisation@6"
+    },
+    {
+      "ligne": "fiche:007-fonction-7-de-synchronisation@8",
+      "etape": 8,
+      "apres": "fiche:007-fonction-7-de-synchronisation@7"
+    },
+    {
+      "ligne": "fiche:008-fonction-8-de-site-public@6",
+      "etape": 6,
+      "apres": "fiche:008-fonction-8-de-site-public@5"
+    },
+    {
+      "ligne": "fiche:008-fonction-8-de-site-public@7",
+      "etape": 7,
+      "apres": "fiche:008-fonction-8-de-site-public@6"
+    },
+    {
+      "ligne": "fiche:008-fonction-8-de-site-public@8",
+      "etape": 8,
+      "apres": "fiche:008-fonction-8-de-site-public@7"
+    },
+    {
+      "ligne": "fiche:009-fonction-9-de-application-de-bureau@6",
+      "etape": 6,
+      "apres": "fiche:009-fonction-9-de-application-de-bureau@5"
+    },
+    {
+      "ligne": "fiche:009-fonction-9-de-application-de-bureau@7",
+      "etape": 7,
+      "apres": "fiche:009-fonction-9-de-application-de-bureau@6"
+    },
+    {
+      "ligne": "fiche:009-fonction-9-de-application-de-bureau@8",
+      "etape": 8,
+      "apres": "fiche:009-fonction-9-de-application-de-bureau@7"
+    },
+    {
+      "ligne": "fiche:010-fonction-10-de-application-terrain@7",
+      "etape": 7,
+      "apres": "fiche:010-fonction-10-de-application-terrain@6"
+    },
+    {
+      "ligne": "fiche:010-fonction-10-de-application-terrain@8",
+      "etape": 8,
+      "apres": "fiche:010-fonction-10-de-application-terrain@7"
+    },
+    {
+      "ligne": "fiche:011-fonction-11-de-administration@7",
+      "etape": 7,
+      "apres": "fiche:011-fonction-11-de-administration@6"
+    },
+    {
+      "ligne": "fiche:011-fonction-11-de-administration@8",
+      "etape": 8,
+      "apres": "fiche:011-fonction-11-de-administration@7"
+    },
+    {
+      "ligne": "fiche:012-fonction-12-de-portail-client@5",
+      "etape": 5,
+      "apres": "fiche:012-fonction-12-de-portail-client@4"
+    },
+    {
+      "ligne": "fiche:012-fonction-12-de-portail-client@6",
+      "etape": 6,
+      "apres": "fiche:012-fonction-12-de-portail-client@5"
+    },
+    {
+      "ligne": "fiche:012-fonction-12-de-portail-client@7",
+      "etape": 7,
+      "apres": "fiche:012-fonction-12-de-portail-client@6"
+    },
+    {
+      "ligne": "fiche:012-fonction-12-de-portail-client@8",
+      "etape": 8,
+      "apres": "fiche:012-fonction-12-de-portail-client@7"
+    },
+    {
+      "ligne": "fiche:013-fonction-13-de-facturation@5",
+      "etape": 5,
+      "apres": "fiche:013-fonction-13-de-facturation@4"
+    },
+    {
+      "ligne": "fiche:013-fonction-13-de-facturation@6",
+      "etape": 6,
+      "apres": "fiche:013-fonction-13-de-facturation@5"
+    },
+    {
+      "ligne": "fiche:013-fonction-13-de-facturation@7",
+      "etape": 7,
+      "apres": "fiche:013-fonction-13-de-facturation@6"
+    },
+    {
+      "ligne": "fiche:013-fonction-13-de-facturation@8",
+      "etape": 8,
+      "apres": "fiche:013-fonction-13-de-facturation@7"
+    },
+    {
+      "ligne": "fiche:014-fonction-14-de-rapports@6",
+      "etape": 6,
+      "apres": "fiche:014-fonction-14-de-rapports@5"
+    },
+    {
+      "ligne": "fiche:014-fonction-14-de-rapports@7",
+      "etape": 7,
+      "apres": "fiche:014-fonction-14-de-rapports@6"
+    },
+    {
+      "ligne": "fiche:014-fonction-14-de-rapports@8",
+      "etape": 8,
+      "apres": "fiche:014-fonction-14-de-rapports@7"
+    },
+    {
+      "ligne": "fiche:015-fonction-15-de-synchronisation@6",
+      "etape": 6,
+      "apres": "fiche:015-fonction-15-de-synchronisation@5"
+    },
+    {
+      "ligne": "fiche:015-fonction-15-de-synchronisation@7",
+      "etape": 7,
+      "apres": "fiche:015-fonction-15-de-synchronisation@6"
+    },
+    {
+      "ligne": "fiche:015-fonction-15-de-synchronisation@8",
+      "etape": 8,
+      "apres": "fiche:015-fonction-15-de-synchronisation@7"
+    },
+    {
+      "ligne": "fiche:016-fonction-16-de-site-public@7",
+      "etape": 7,
+      "apres": "fiche:016-fonction-16-de-site-public@6"
+    },
+    {
+      "ligne": "fiche:016-fonction-16-de-site-public@8",
+      "etape": 8,
+      "apres": "fiche:016-fonction-16-de-site-public@7"
+    },
+    {
+      "ligne": "fiche:017-fonction-17-de-application-de-bureau@7",
+      "etape": 7,
+      "apres": "fiche:017-fonction-17-de-application-de-bureau@6"
+    },
+    {
+      "ligne": "fiche:017-fonction-17-de-application-de-bureau@8",
+      "etape": 8,
+      "apres": "fiche:017-fonction-17-de-application-de-bureau@7"
+    },
+    {
+      "ligne": "fiche:018-fonction-18-de-application-terrain@5",
+      "etape": 5,
+      "apres": "fiche:018-fonction-18-de-application-terrain@4"
+    },
+    {
+      "ligne": "fiche:018-fonction-18-de-application-terrain@6",
+      "etape": 6,
+      "apres": "fiche:018-fonction-18-de-application-terrain@5"
+    },
+    {
+      "ligne": "fiche:018-fonction-18-de-application-terrain@7",
+      "etape": 7,
+      "apres": "fiche:018-fonction-18-de-application-terrain@6"
+    },
+    {
+      "ligne": "fiche:018-fonction-18-de-application-terrain@8",
+      "etape": 8,
+      "apres": "fiche:018-fonction-18-de-application-terrain@7"
+    },
+    {
+      "ligne": "fiche:019-fonction-19-de-administration@5",
+      "etape": 5,
+      "apres": "fiche:019-fonction-19-de-administration@4"
+    },
+    {
+      "ligne": "fiche:019-fonction-19-de-administration@6",
+      "etape": 6,
+      "apres": "fiche:019-fonction-19-de-administration@5"
+    },
+    {
+      "ligne": "fiche:019-fonction-19-de-administration@7",
+      "etape": 7,
+      "apres": "fiche:019-fonction-19-de-administration@6"
+    },
+    {
+      "ligne": "fiche:019-fonction-19-de-administration@8",
+      "etape": 8,
+      "apres": "fiche:019-fonction-19-de-administration@7"
+    },
+    {
+      "ligne": "fiche:020-fonction-20-de-portail-client@6",
+      "etape": 6,
+      "apres": "fiche:020-fonction-20-de-portail-client@5"
+    },
+    {
+      "ligne": "fiche:020-fonction-20-de-portail-client@7",
+      "etape": 7,
+      "apres": "fiche:020-fonction-20-de-portail-client@6"
+    },
+    {
+      "ligne": "fiche:020-fonction-20-de-portail-client@8",
+      "etape": 8,
+      "apres": "fiche:020-fonction-20-de-portail-client@7"
+    },
+    {
+      "ligne": "fiche:021-fonction-21-de-facturation@6",
+      "etape": 6,
+      "apres": "fiche:021-fonction-21-de-facturation@5"
+    },
+    {
+      "ligne": "fiche:021-fonction-21-de-facturation@7",
+      "etape": 7,
+      "apres": "fiche:021-fonction-21-de-facturation@6"
+    },
+    {
+      "ligne": "fiche:021-fonction-21-de-facturation@8",
+      "etape": 8,
+      "apres": "fiche:021-fonction-21-de-facturation@7"
+    },
+    {
+      "ligne": "fiche:022-fonction-22-de-rapports@7",
+      "etape": 7,
+      "apres": "fiche:022-fonction-22-de-rapports@6"
+    },
+    {
+      "ligne": "fiche:022-fonction-22-de-rapports@8",
+      "etape": 8,
+      "apres": "fiche:022-fonction-22-de-rapports@7"
+    },
+    {
+      "ligne": "fiche:023-fonction-23-de-synchronisation@7",
+      "etape": 7,
+      "apres": "fiche:023-fonction-23-de-synchronisation@6"
+    },
+    {
+      "ligne": "fiche:023-fonction-23-de-synchronisation@8",
+      "etape": 8,
+      "apres": "fiche:023-fonction-23-de-synchronisation@7"
+    },
+    {
+      "ligne": "fiche:024-fonction-24-de-site-public@5",
+      "etape": 5,
+      "apres": "fiche:024-fonction-24-de-site-public@4"
+    },
+    {
+      "ligne": "fiche:024-fonction-24-de-site-public@6",
+      "etape": 6,
+      "apres": "fiche:024-fonction-24-de-site-public@5"
+    },
+    {
+      "ligne": "fiche:024-fonction-24-de-site-public@7",
+      "etape": 7,
+      "apres": "fiche:024-fonction-24-de-site-public@6"
+    },
+    {
+      "ligne": "fiche:024-fonction-24-de-site-public@8",
+      "etape": 8,
+      "apres": "fiche:024-fonction-24-de-site-public@7"
+    },
+    {
+      "ligne": "fiche:025-fonction-25-de-application-de-bureau@5",
+      "etape": 5,
+      "apres": "fiche:025-fonction-25-de-application-de-bureau@4"
+    },
+    {
+      "ligne": "fiche:025-fonction-25-de-application-de-bureau@6",
+      "etape": 6,
+      "apres": "fiche:025-fonction-25-de-application-de-bureau@5"
+    },
+    {
+      "ligne": "fiche:025-fonction-25-de-application-de-bureau@7",
+      "etape": 7,
+      "apres": "fiche:025-fonction-25-de-application-de-bureau@6"
+    },
+    {
+      "ligne": "fiche:025-fonction-25-de-application-de-bureau@8",
+      "etape": 8,
+      "apres": "fiche:025-fonction-25-de-application-de-bureau@7"
+    },
+    {
+      "ligne": "fiche:026-fonction-26-de-application-terrain@6",
+      "etape": 6,
+      "apres": "fiche:026-fonction-26-de-application-terrain@5"
+    },
+    {
+      "ligne": "fiche:026-fonction-26-de-application-terrain@7",
+      "etape": 7,
+      "apres": "fiche:026-fonction-26-de-application-terrain@6"
+    },
+    {
+      "ligne": "fiche:026-fonction-26-de-application-terrain@8",
+      "etape": 8,
+      "apres": "fiche:026-fonction-26-de-application-terrain@7"
+    },
+    {
+      "ligne": "fiche:027-fonction-27-de-administration@6",
+      "etape": 6,
+      "apres": "fiche:027-fonction-27-de-administration@5"
+    },
+    {
+      "ligne": "fiche:027-fonction-27-de-administration@7",
+      "etape": 7,
+      "apres": "fiche:027-fonction-27-de-administration@6"
+    },
+    {
+      "ligne": "fiche:027-fonction-27-de-administration@8",
+      "etape": 8,
+      "apres": "fiche:027-fonction-27-de-administration@7"
+    },
+    {
+      "ligne": "fiche:028-fonction-28-de-portail-client@7",
+      "etape": 7,
+      "apres": "fiche:028-fonction-28-de-portail-client@6"
+    },
+    {
+      "ligne": "fiche:028-fonction-28-de-portail-client@8",
+      "etape": 8,
+      "apres": "fiche:028-fonction-28-de-portail-client@7"
+    },
+    {
+      "ligne": "fiche:029-fonction-29-de-facturation@7",
+      "etape": 7,
+      "apres": "fiche:029-fonction-29-de-facturation@6"
+    },
+    {
+      "ligne": "fiche:029-fonction-29-de-facturation@8",
+      "etape": 8,
+      "apres": "fiche:029-fonction-29-de-facturation@7"
+    },
+    {
+      "ligne": "fiche:030-fonction-30-de-rapports@5",
+      "etape": 5,
+      "apres": "fiche:030-fonction-30-de-rapports@4"
+    },
+    {
+      "ligne": "fiche:030-fonction-30-de-rapports@6",
+      "etape": 6,
+      "apres": "fiche:030-fonction-30-de-rapports@5"
+    },
+    {
+      "ligne": "fiche:030-fonction-30-de-rapports@7",
+      "etape": 7,
+      "apres": "fiche:030-fonction-30-de-rapports@6"
+    },
+    {
+      "ligne": "fiche:030-fonction-30-de-rapports@8",
+      "etape": 8,
+      "apres": "fiche:030-fonction-30-de-rapports@7"
+    },
+    {
+      "ligne": "fiche:031-fonction-31-de-synchronisation@5",
+      "etape": 5,
+      "apres": "fiche:031-fonction-31-de-synchronisation@4"
+    },
+    {
+      "ligne": "fiche:031-fonction-31-de-synchronisation@6",
+      "etape": 6,
+      "apres": "fiche:031-fonction-31-de-synchronisation@5"
+    },
+    {
+      "ligne": "fiche:031-fonction-31-de-synchronisation@7",
+      "etape": 7,
+      "apres": "fiche:031-fonction-31-de-synchronisation@6"
+    },
+    {
+      "ligne": "fiche:031-fonction-31-de-synchronisation@8",
+      "etape": 8,
+      "apres": "fiche:031-fonction-31-de-synchronisation@7"
+    },
+    {
+      "ligne": "fiche:032-fonction-32-de-site-public@6",
+      "etape": 6,
+      "apres": "fiche:032-fonction-32-de-site-public@5"
+    },
+    {
+      "ligne": "fiche:032-fonction-32-de-site-public@7",
+      "etape": 7,
+      "apres": "fiche:032-fonction-32-de-site-public@6"
+    },
+    {
+      "ligne": "fiche:032-fonction-32-de-site-public@8",
+      "etape": 8,
+      "apres": "fiche:032-fonction-32-de-site-public@7"
+    },
+    {
+      "ligne": "fiche:033-fonction-33-de-application-de-bureau@6",
+      "etape": 6,
+      "apres": "fiche:033-fonction-33-de-application-de-bureau@5"
+    },
+    {
+      "ligne": "fiche:033-fonction-33-de-application-de-bureau@7",
+      "etape": 7,
+      "apres": "fiche:033-fonction-33-de-application-de-bureau@6"
+    },
+    {
+      "ligne": "fiche:033-fonction-33-de-application-de-bureau@8",
+      "etape": 8,
+      "apres": "fiche:033-fonction-33-de-application-de-bureau@7"
+    },
+    {
+      "ligne": "fiche:034-fonction-34-de-application-terrain@7",
+      "etape": 7,
+      "apres": "fiche:034-fonction-34-de-application-terrain@6"
+    },
+    {
+      "ligne": "fiche:034-fonction-34-de-application-terrain@8",
+      "etape": 8,
+      "apres": "fiche:034-fonction-34-de-application-terrain@7"
+    },
+    {
+      "ligne": "fiche:035-fonction-35-de-administration@7",
+      "etape": 7,
+      "apres": "fiche:035-fonction-35-de-administration@6"
+    },
+    {
+      "ligne": "fiche:035-fonction-35-de-administration@8",
+      "etape": 8,
+      "apres": "fiche:035-fonction-35-de-administration@7"
+    },
+    {
+      "ligne": "fiche:036-fonction-36-de-portail-client@5",
+      "etape": 5,
+      "apres": "fiche:036-fonction-36-de-portail-client@4"
+    },
+    {
+      "ligne": "fiche:036-fonction-36-de-portail-client@6",
+      "etape": 6,
+      "apres": "fiche:036-fonction-36-de-portail-client@5"
+    },
+    {
+      "ligne": "fiche:036-fonction-36-de-portail-client@7",
+      "etape": 7,
+      "apres": "fiche:036-fonction-36-de-portail-client@6"
+    },
+    {
+      "ligne": "fiche:036-fonction-36-de-portail-client@8",
+      "etape": 8,
+      "apres": "fiche:036-fonction-36-de-portail-client@7"
+    },
+    {
+      "ligne": "fiche:037-fonction-37-de-facturation@5",
+      "etape": 5,
+      "apres": "fiche:037-fonction-37-de-facturation@4"
+    },
+    {
+      "ligne": "fiche:037-fonction-37-de-facturation@6",
+      "etape": 6,
+      "apres": "fiche:037-fonction-37-de-facturation@5"
+    },
+    {
+      "ligne": "fiche:037-fonction-37-de-facturation@7",
+      "etape": 7,
+      "apres": "fiche:037-fonction-37-de-facturation@6"
+    },
+    {
+      "ligne": "fiche:037-fonction-37-de-facturation@8",
+      "etape": 8,
+      "apres": "fiche:037-fonction-37-de-facturation@7"
+    },
+    {
+      "ligne": "fiche:038-fonction-38-de-rapports@6",
+      "etape": 6,
+      "apres": "fiche:038-fonction-38-de-rapports@5"
+    },
+    {
+      "ligne": "fiche:038-fonction-38-de-rapports@7",
+      "etape": 7,
+      "apres": "fiche:038-fonction-38-de-rapports@6"
+    },
+    {
+      "ligne": "fiche:038-fonction-38-de-rapports@8",
+      "etape": 8,
+      "apres": "fiche:038-fonction-38-de-rapports@7"
+    },
+    {
+      "ligne": "fiche:039-fonction-39-de-synchronisation@6",
+      "etape": 6,
+      "apres": "fiche:039-fonction-39-de-synchronisation@5"
+    },
+    {
+      "ligne": "fiche:039-fonction-39-de-synchronisation@7",
+      "etape": 7,
+      "apres": "fiche:039-fonction-39-de-synchronisation@6"
+    },
+    {
+      "ligne": "fiche:039-fonction-39-de-synchronisation@8",
+      "etape": 8,
+      "apres": "fiche:039-fonction-39-de-synchronisation@7"
+    },
+    {
+      "ligne": "fiche:040-fonction-40-de-site-public@7",
+      "etape": 7,
+      "apres": "fiche:040-fonction-40-de-site-public@6"
+    },
+    {
+      "ligne": "fiche:040-fonction-40-de-site-public@8",
+      "etape": 8,
+      "apres": "fiche:040-fonction-40-de-site-public@7"
+    },
+    {
+      "ligne": "fiche:041-fonction-41-de-application-de-bureau@7",
+      "etape": 7,
+      "apres": "fiche:041-fonction-41-de-application-de-bureau@6"
+    },
+    {
+      "ligne": "fiche:041-fonction-41-de-application-de-bureau@8",
+      "etape": 8,
+      "apres": "fiche:041-fonction-41-de-application-de-bureau@7"
+    },
+    {
+      "ligne": "fiche:042-fonction-42-de-application-terrain@5",
+      "etape": 5,
+      "apres": "fiche:042-fonction-42-de-application-terrain@4"
+    },
+    {
+      "ligne": "fiche:042-fonction-42-de-application-terrain@6",
+      "etape": 6,
+      "apres": "fiche:042-fonction-42-de-application-terrain@5"
+    },
+    {
+      "ligne": "fiche:042-fonction-42-de-application-terrain@7",
+      "etape": 7,
+      "apres": "fiche:042-fonction-42-de-application-terrain@6"
+    },
+    {
+      "ligne": "fiche:042-fonction-42-de-application-terrain@8",
+      "etape": 8,
+      "apres": "fiche:042-fonction-42-de-application-terrain@7"
+    },
+    {
+      "ligne": "fiche:043-fonction-43-de-administration@5",
+      "etape": 5,
+      "apres": "fiche:043-fonction-43-de-administration@4"
+    },
+    {
+      "ligne": "fiche:043-fonction-43-de-administration@6",
+      "etape": 6,
+      "apres": "fiche:043-fonction-43-de-administration@5"
+    },
+    {
+      "ligne": "fiche:043-fonction-43-de-administration@7",
+      "etape": 7,
+      "apres": "fiche:043-fonction-43-de-administration@6"
+    },
+    {
+      "ligne": "fiche:043-fonction-43-de-administration@8",
+      "etape": 8,
+      "apres": "fiche:043-fonction-43-de-administration@7"
+    },
+    {
+      "ligne": "fiche:044-fonction-44-de-portail-client@6",
+      "etape": 6,
+      "apres": "fiche:044-fonction-44-de-portail-client@5"
+    },
+    {
+      "ligne": "fiche:044-fonction-44-de-portail-client@7",
+      "etape": 7,
+      "apres": "fiche:044-fonction-44-de-portail-client@6"
+    },
+    {
+      "ligne": "fiche:044-fonction-44-de-portail-client@8",
+      "etape": 8,
+      "apres": "fiche:044-fonction-44-de-portail-client@7"
+    },
+    {
+      "ligne": "fiche:045-fonction-45-de-facturation@6",
+      "etape": 6,
+      "apres": "fiche:045-fonction-45-de-facturation@5"
+    },
+    {
+      "ligne": "fiche:045-fonction-45-de-facturation@7",
+      "etape": 7,
+      "apres": "fiche:045-fonction-45-de-facturation@6"
+    },
+    {
+      "ligne": "fiche:045-fonction-45-de-facturation@8",
+      "etape": 8,
+      "apres": "fiche:045-fonction-45-de-facturation@7"
+    },
+    {
+      "ligne": "fiche:046-fonction-46-de-rapports@7",
+      "etape": 7,
+      "apres": "fiche:046-fonction-46-de-rapports@6"
+    },
+    {
+      "ligne": "fiche:046-fonction-46-de-rapports@8",
+      "etape": 8,
+      "apres": "fiche:046-fonction-46-de-rapports@7"
+    },
+    {
+      "ligne": "fiche:047-fonction-47-de-synchronisation@7",
+      "etape": 7,
+      "apres": "fiche:047-fonction-47-de-synchronisation@6"
+    },
+    {
+      "ligne": "fiche:047-fonction-47-de-synchronisation@8",
+      "etape": 8,
+      "apres": "fiche:047-fonction-47-de-synchronisation@7"
+    },
+    {
+      "ligne": "fiche:048-fonction-48-de-site-public@5",
+      "etape": 5,
+      "apres": "fiche:048-fonction-48-de-site-public@4"
+    },
+    {
+      "ligne": "fiche:048-fonction-48-de-site-public@6",
+      "etape": 6,
+      "apres": "fiche:048-fonction-48-de-site-public@5"
+    },
+    {
+      "ligne": "fiche:048-fonction-48-de-site-public@7",
+      "etape": 7,
+      "apres": "fiche:048-fonction-48-de-site-public@6"
+    },
+    {
+      "ligne": "fiche:048-fonction-48-de-site-public@8",
+      "etape": 8,
+      "apres": "fiche:048-fonction-48-de-site-public@7"
+    },
+    {
+      "ligne": "fiche:049-fonction-49-de-application-de-bureau@5",
+      "etape": 5,
+      "apres": "fiche:049-fonction-49-de-application-de-bureau@4"
+    },
+    {
+      "ligne": "fiche:049-fonction-49-de-application-de-bureau@6",
+      "etape": 6,
+      "apres": "fiche:049-fonction-49-de-application-de-bureau@5"
+    },
+    {
+      "ligne": "fiche:049-fonction-49-de-application-de-bureau@7",
+      "etape": 7,
+      "apres": "fiche:049-fonction-49-de-application-de-bureau@6"
+    },
+    {
+      "ligne": "fiche:049-fonction-49-de-application-de-bureau@8",
+      "etape": 8,
+      "apres": "fiche:049-fonction-49-de-application-de-bureau@7"
+    },
+    {
+      "ligne": "fiche:050-fonction-50-de-application-terrain@6",
+      "etape": 6,
+      "apres": "fiche:050-fonction-50-de-application-terrain@5"
+    },
+    {
+      "ligne": "fiche:050-fonction-50-de-application-terrain@7",
+      "etape": 7,
+      "apres": "fiche:050-fonction-50-de-application-terrain@6"
+    },
+    {
+      "ligne": "fiche:050-fonction-50-de-application-terrain@8",
+      "etape": 8,
+      "apres": "fiche:050-fonction-50-de-application-terrain@7"
+    },
+    {
+      "ligne": "etape:7",
+      "etape": 7,
+      "apres": "etape:6"
+    },
+    {
+      "ligne": "etape:8",
+      "etape": 8,
+      "apres": "etape:7"
+    }
+  ]
+}

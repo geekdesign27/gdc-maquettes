@@ -58,7 +58,7 @@
   ],
   "chantier": {
     "regime": "pause",
-    "depuis": "2026-10-21T15:53:29.978Z",
+    "depuis": "2026-10-22T14:13:04.587Z",
     "raison": "personne n'avance et 1 décision t'attend"
   },
   "plan": {
@@ -93,7 +93,7 @@
             "nom": "Le panneau du permis"
           }
         ],
-        "activee": "2026-10-21T15:53:30.266Z",
+        "activee": "2026-10-22T14:13:04.857Z",
         "par_ce_projet": true
       },
       {
@@ -126,7 +126,7 @@
             "nom": "Le chantier, une parcelle par application"
           }
         ],
-        "activee": "2026-10-21T15:53:30.266Z",
+        "activee": "2026-10-22T14:13:04.857Z",
         "par_ce_projet": true
       },
       {
@@ -154,7 +154,7 @@
             "nom": "La cabane de la garantie"
           }
         ],
-        "activee": "2026-10-21T15:53:30.266Z",
+        "activee": "2026-10-22T14:13:04.857Z",
         "par_ce_projet": true
       },
       {
@@ -175,7 +175,8 @@
             "nom": "Le carnet des demandes"
           }
         ],
-        "activee": null
+        "activee": "2026-10-22T14:13:04.857Z",
+        "par_ce_projet": true
       }
     ],
     "parcelles": [
@@ -191,6 +192,30 @@
               {
                 "lot": "L1",
                 "nom": "L'écran de clôture"
+              },
+              {
+                "lot": "L2",
+                "nom": "L'export Excel"
+              }
+            ]
+          },
+          {
+            "fiche": "002-signer-un-rapport",
+            "nom": "Signer un rapport",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Signer un rapport"
+              }
+            ]
+          },
+          {
+            "fiche": "003-reparer-la-signature-du-rapport",
+            "nom": "Réparer la signature du rapport",
+            "lots": [
+              {
+                "lot": "L1",
+                "nom": "Réparer la signature du rapport"
               }
             ]
           }
@@ -202,7 +227,7 @@
         "type": "maison",
         "fiches": [
           {
-            "fiche": "002-saisir-un-constat-hors-ligne",
+            "fiche": "004-saisir-un-constat-hors-ligne",
             "nom": "Saisir un constat hors ligne",
             "lots": []
           }
@@ -238,8 +263,8 @@
       "id": "bureau",
       "nom": "Application de bureau",
       "type": "immeuble",
-      "etat": "completed",
-      "etape": 8,
+      "etat": "finishing",
+      "etape": 10,
       "etages": [
         {
           "fiche": "001-cloturer-un-audit",
@@ -254,15 +279,55 @@
               "nom": "L'écran de clôture",
               "statut": "fini",
               "phase": null
+            },
+            {
+              "lot": "L2",
+              "nom": "L'export Excel",
+              "statut": "abandonne",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "002-signer-un-rapport",
+          "nom": "Signer un rapport",
+          "stade": "inspection",
+          "etape": 7,
+          "suppose": true,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Signer un rapport",
+              "statut": "fini",
+              "phase": null
+            }
+          ]
+        },
+        {
+          "fiche": "003-reparer-la-signature-du-rapport",
+          "nom": "Réparer la signature du rapport",
+          "stade": "completed",
+          "etape": 8,
+          "livre": true,
+          "suppose": true,
+          "pieces": [
+            {
+              "lot": "L1",
+              "nom": "Réparer la signature du rapport",
+              "statut": "fini",
+              "phase": null
             }
           ]
         }
       ],
+      "raison": "surélévation : l'étage en chantier se lit dans etages (building 2.0.0)",
       "ref": {
         "application": "bureau"
       },
       "source": [
-        "001-cloturer-un-audit"
+        "001-cloturer-un-audit",
+        "002-signer-un-rapport",
+        "003-reparer-la-signature-du-rapport"
       ]
     },
     {
@@ -291,6 +356,30 @@
       "source": "001-cloturer-un-audit"
     },
     {
+      "element": "crane",
+      "id": "grue-002-signer-un-rapport",
+      "ancre": "bureau",
+      "nom": "La grue de la fiche « Signer un rapport » (entrée dans dev)",
+      "etat": "lifting",
+      "ref": {
+        "application": "bureau",
+        "fiche": "002-signer-un-rapport"
+      },
+      "source": "002-signer-un-rapport"
+    },
+    {
+      "element": "crane",
+      "id": "grue-003-reparer-la-signature-du-rapport",
+      "ancre": "bureau",
+      "nom": "La grue de la fiche « Réparer la signature du rapport » (entrée dans dev)",
+      "etat": "lifting",
+      "ref": {
+        "application": "bureau",
+        "fiche": "003-reparer-la-signature-du-rapport"
+      },
+      "source": "003-reparer-la-signature-du-rapport"
+    },
+    {
       "element": "building",
       "id": "terrain",
       "nom": "Application terrain",
@@ -299,7 +388,7 @@
       "etape": 4,
       "etages": [
         {
-          "fiche": "002-saisir-un-constat-hors-ligne",
+          "fiche": "004-saisir-un-constat-hors-ligne",
           "nom": "Saisir un constat hors ligne",
           "stade": "plot",
           "etape": 4,
@@ -310,21 +399,21 @@
         "application": "terrain"
       },
       "source": [
-        "002-saisir-un-constat-hors-ligne"
+        "004-saisir-un-constat-hors-ligne"
       ]
     },
     {
       "element": "survey-poles",
-      "id": "gabarits-002-saisir-un-constat-hors-ligne",
+      "id": "gabarits-004-saisir-un-constat-hors-ligne",
       "ancre": "terrain",
       "nom": "Les gabarits de la fiche « Saisir un constat hors ligne »",
       "pluriel": true,
       "etat": "default",
       "ref": {
         "application": "terrain",
-        "fiche": "002-saisir-un-constat-hors-ligne"
+        "fiche": "004-saisir-un-constat-hors-ligne"
       },
-      "source": "002-saisir-un-constat-hors-ligne"
+      "source": "004-saisir-un-constat-hors-ligne"
     },
     {
       "element": "building",
@@ -409,7 +498,7 @@
       "ancre": "panneau-permis",
       "nom": "Le permis de construire (périmé : Le cahier des besoins (PRD), Le profil du projet a changé)",
       "etat": "expired",
-      "source": "décision du projet du 2026-10-21T15:53:16.021Z"
+      "source": "décision du projet du 2026-10-22T14:12:15.330Z"
     },
     {
       "element": "parking",
@@ -427,10 +516,10 @@
       "nom": "Claire, l'architecte",
       "etat": "waiting",
       "lieu": "bureau-client",
-      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-21T15:53:24.153Z",
+      "source": "activité de la fiche 003-reparer-la-signature-du-rapport, 2026-10-22T14:12:53.159Z",
       "ref": {
         "application": "bureau",
-        "fiche": "001-cloturer-un-audit"
+        "fiche": "003-reparer-la-signature-du-rapport"
       },
       "motif": "decision",
       "decision": "decision-on-continue"
@@ -442,7 +531,7 @@
       "nom": "Lina, le designer UX/UI",
       "etat": "celebrate",
       "lieu": "bureau-etudes",
-      "source": "activité du projet, 2026-10-21T15:53:15.795Z"
+      "source": "activité du projet, 2026-10-22T14:12:14.601Z"
     },
     {
       "element": "character",
@@ -451,7 +540,7 @@
       "nom": "Emma, la développeuse interface",
       "etat": "celebrate",
       "lieu": "baraque",
-      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-21T15:53:20.276Z",
+      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-22T14:12:25.979Z",
       "ref": {
         "application": "bureau",
         "fiche": "001-cloturer-un-audit"
@@ -464,7 +553,7 @@
       "nom": "Olivier, le surveillant de chantier",
       "etat": "celebrate",
       "lieu": "baraque",
-      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-21T15:53:21.091Z",
+      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-22T14:12:28.044Z",
       "ref": {
         "application": "bureau",
         "fiche": "001-cloturer-un-audit"
@@ -478,29 +567,30 @@
       "etat": "inspect",
       "lieu": "batiment:bureau",
       "programme": true,
-      "source": "contrôle ou preuve de moins de deux minutes sur 001-cloturer-un-audit",
-      "etage": "001-cloturer-un-audit",
+      "source": "contrôle ou preuve de moins de deux minutes sur 003-reparer-la-signature-du-rapport",
+      "etage": "003-reparer-la-signature-du-rapport",
       "motif": "controle",
       "ref": {
         "application": "bureau",
-        "fiche": "001-cloturer-un-audit"
+        "fiche": "003-reparer-la-signature-du-rapport"
       }
     }
   ],
   "actions": [
     {
-      "ts": "2026-10-21T15:53:30.266Z",
+      "ts": "2026-10-22T14:13:04.858Z",
       "action": "apparait",
       "element": "survey-poles",
-      "id": "gabarits-002-saisir-un-constat-hors-ligne",
+      "id": "gabarits-004-saisir-un-constat-hors-ligne",
       "nom": "Les gabarits de la fiche « Saisir un constat hors ligne »",
       "etat": "default",
       "lieu": "terrain",
       "phrase": "Les gabarits de la fiche « Saisir un constat hors ligne » apparaissent (le bâtiment « Application terrain »)",
       "ref": {
         "application": "terrain",
-        "fiche": "002-saisir-un-constat-hors-ligne"
-      }
+        "fiche": "004-saisir-un-constat-hors-ligne"
+      },
+      "cause": "evt:004-saisir-un-constat-hors-ligne/d5e42650"
     }
   ]
 }
