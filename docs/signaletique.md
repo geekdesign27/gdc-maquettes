@@ -31,6 +31,7 @@ Le langage des signaux, à l'image des jeux de gestion et des interfaces de supe
 | Avertissement | Nombre d'avertissements ouverts | Orange |
 | Validé | Coche, sans nombre | Apparaît quand tout est prouvé |
 | Progression | Barre et fraction (« 3 / 7 ») | La fraction vient du harnais ; jamais de pourcentage sans sa règle |
+| Repère d'agent (`agent-marker`) | Portrait, prénom et signe d'état, au-dessus de la tête | Permanent seulement pour Attend ta décision et Bloqué ; court (portrait et prénom) au survol pour les autres ; les repères qui se touchent se regroupent, avec le signe le plus grave et le nombre. Jamais de halo coloré dans la scène (décision de Pierre-Alain du 22 octobre 2026) |
 
 ## Les signaux dans la scène (3D)
 

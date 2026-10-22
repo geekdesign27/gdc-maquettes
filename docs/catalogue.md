@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-54 éléments : 44 livré, 8 à faire, 2 exemple ; 5 nouvelle(s) version(s) prévue(s).
+55 éléments : 44 livré, 9 à faire, 2 exemple ; 5 nouvelle(s) version(s) prévue(s).
 
 ## G0 : La ligne graphique
 
@@ -749,6 +749,7 @@ Faire de la carte la visualisation du harnais : relier au survol la carte, le fi
 | 12 | `party-shed` | Le cabanon de la fête | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer la pause : le chantier est fermé et l'équipe fait la fête au cabanon en attendant ta décision. | à faire |
 | 13 | `city-car` | La voiture d'ambiance | Composant 3D Three.js, conforme à docs/contrat-composant.md | Faire vivre la ville autour du chantier, sans rien dire du harnais. | à faire |
 | 14 | `city-map` | La carte vivante | Document de référence, pas de code | Assembler et animer la carte du chantier à partir des scènes que GDC envoie : où chaque élément se pose, par où chacun marche, et la vie du chantier qui naît de l'état reçu. | à faire |
+| 15 | `agent-marker` | Le repère d'agent | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Repérer et attraper facilement, sur la carte entière, les agents avec qui on peut ou doit interagir. | à faire |
 
 ### Le survol partagé (`hover-link`)
 
@@ -900,6 +901,23 @@ Pas un composant : un module de la bibliothèque livrée à GDC (src/ville/), qu
   - Plafonds : 12 ouvriers sur la carte et 4 par bâtiment ; 4 et 1 en qualité basse ; postures fixes et aucun trajet avec reducedMotion
   - Fluidité mesurée à 12 ouvriers ; lisible en clair et en sombre
   - Aucune couleur d'état dans la scène ; ouvriers et usagers sans badge, sans nom, sans clic
+
+### Le repère d'agent (`agent-marker`)
+
+Un repère HTML posé au-dessus de la tête de l'agent, sur l'ancre label de character (2,05 m), qui le suit. Sur la carte entière d'un portable de 13 pouces, un agent ne mesure que 16 × 5 px (environ 8 px par mètre) : le repère garde une taille fixe en pixels, quel que soit le zoom, et passe devant les murs. Le repère complet porte le portrait du lot G7 (fixe, sans son geste), le prénom et le signe d'état (src/signes.js), avec une pointe vers la tête. Repère permanent pour les agents qui attendent ta décision (waiting) et pour les bloqués (blocked) ; les autres n'ont qu'un repère court au survol (portrait et prénom, sans signe). Les repères qui se touchent n'en font qu'un : trois portraits au plus, le signe le plus grave (ctx.plusGrave) et le nombre ; au clic, le groupe se déplie. Une impulsion douce à l'apparition, puis fixe ; rien ne bouge avec moins d'animations. Cliquer un repère vaut cliquer l'agent : GDC ouvre sa fiche (agent-popup). Côté carte (l'assemblage, GDC ou la galerie), sans que character change : la zone de prise d'un agent se calcule à l'écran, et non par une forme 3D invisible qui grandirait et rapetisserait avec le zoom ; le pointeur prend l'agent le plus proche à moins de 12 px (une cible de 24 px, WCAG 2.5.8), devant le bâtiment ou le décor qui est derrière lui ; au survol, l'anneau de sélection (selection-ring, état hover, à l'encre) se pose à ses pieds et le repère court s'ouvre. Écartés : le halo de la couleur du casque (une couleur qui dit un état dans la 3D, bible 17.3 ; le jaune du site se lit Bloqué, le bleu d'architecture se lit Actif ; un scintillement continu est interdit, signalétique, principe 5) et la silhouette à travers les murs (coûteuse, et couverte par le repère, qui reste visible au-dessus du mur). Ouvriers et usagers n'ont jamais de repère. Fiche validée par Pierre-Alain le 22 octobre 2026.
+
+- Fabriqué par : intégrateur d'interface (le repère) ; intégrateur (la prise, côté carte) ; directeur artistique (relecture)
+- Élément : `<gdc-agent-marker>`
+- Entrées (propriété data) : `agents` (liste de { id, name, state, x, y } : les agents de la carte, hors ouvriers et usagers ; id : l'identifiant de l'agent, celui des portraits (equipe.json), comme pour agent-popup ; state : mêmes valeurs que character ; x, y : la position à l'écran de leur ancre label, en pixels, que GDC recalcule quand la caméra ou l'agent bouge) ; `hovered` (identifiant de l'agent sous le pointeur (la prise côté carte), ou null)
+- Sorties (événements) : `gdc-select` (detail.id = agent choisi)
+- Critères d'acceptation :
+  - Taille fixe en pixels, lisible sur la carte entière d'un portable de 13 pouces, en clair et en sombre
+  - Trois indices pour l'état : couleur, forme et icône, dans le HTML seulement ; aucune couleur ajoutée à la scène
+  - Repère permanent pour waiting et blocked seulement ; repère court au survol pour les autres ; jamais d'ouvrier ni d'usager
+  - Les repères qui se touchent se regroupent : trois portraits au plus, le signe le plus grave et le nombre ; le groupe se déplie au clic
+  - Une impulsion à l'apparition, puis fixe ; aucun mouvement avec moins d'animations, le portrait compris
+  - Chaque repère se prend au clavier (Tab, Entrée) et émet gdc-select
+  - Côté carte : un agent se prend à 12 px du pointeur, devant ce qui est derrière lui, sur la séquence fixtures/projet-type (étape 18 : trois agents groupés à la réception)
 
 ### La clôture de chantier (`site-fence`), version 1.1.0
 
