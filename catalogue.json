@@ -1769,7 +1769,7 @@
       "category": "style",
       "name": "L'heure réelle",
       "purpose": "La carte suit l'heure réelle : le jour, une nuit pas trop sombre, une courte aube et un court crépuscule ; la nuit, les fenêtres disent où l'on travaille.",
-      "description": "Pas un composant. 1. src/lumiere.json gagne une recette de nuit (ciel, lune à la place du soleil, intensités) à côté de celle du jour, un bloc transitions, un bloc fenetres (une couleur blanc chaud, une intensité faible et une franche) et la couleur des projecteurs (floodlight) ; il est séparé de la palette exprès, aucun modèle n'est à reconstruire. 2. L'assemblage de la carte, dans la bibliothèque livrée à GDC, lit l'heure du poste et calcule le lever et le coucher du soleil à Fribourg selon la date, sur le poste, sans réseau (choix de Pierre-Alain). Il éclaire les vitres comme il désature les zones grises : sur des copies des matériaux de vitre, sans logique dans les composants ; faiblement sur tout bâtiment habité et tout bureau, franchement là où un agent travaille (bureau active, étage occupied du bâtiment, conteneur où se trouve un agent). 3. La galerie gagne une bascule jour, aube et nuit pour les revues. Fiche validée par Pierre-Alain le 21 octobre 2026.",
+      "description": "Pas un composant. 1. src/lumiere.json gagne une recette de nuit (ciel, lune à la place du soleil, intensités) à côté de celle du jour, un bloc transitions, un bloc fenetres (une couleur blanc chaud, une intensité faible et une franche) et la couleur des projecteurs (floodlight) ; il est séparé de la palette exprès, aucun modèle n'est à reconstruire. 2. L'assemblage de la carte, dans la bibliothèque livrée à GDC, lit l'heure du poste et calcule le lever et le coucher du soleil à Fribourg selon la date, sur le poste, sans réseau (choix de Pierre-Alain). Il éclaire les vitres comme il désature les zones grises : sur des copies des matériaux de vitre, sans logique dans les composants ; faiblement sur tout bâtiment habité et tout bureau, franchement là où un agent travaille (bureau active, étage occupied du bâtiment, conteneur où se trouve un agent). 3. La galerie gagne une bascule jour, aube et nuit pour les revues. Fiche validée par Pierre-Alain le 21 octobre 2026. Décisions de Pierre-Alain du 22 octobre 2026, sur planche : la recette de nuit, le fond de nuit teinté, les fenêtres faibles (0,4) et franches (1,0) ; le bureau de contrôle, sans vitre, ne s'éclaire pas ; l'utilisateur peut forcer le moment avec time-of-day.",
       "acceptance": [
         "Le jour, rien ne change : le cube étalon reste conforme",
         "La nuit, sur la capture des valeurs, chaque objet se lit à sa forme et l'interface reste lisible",
@@ -1778,7 +1778,7 @@
         "Aucune horloge du réseau : l'heure du poste",
         "Le passage est trop lent pour être une animation : rien de particulier avec moins d'animations"
       ],
-      "status": "à faire",
+      "status": "livré",
       "role": "directeur artistique (la recette) ; modeleur (les vitres par étage du bâtiment)"
     },
     {
@@ -1789,7 +1789,7 @@
       "category": "interface",
       "name": "Le moment de la carte",
       "purpose": "Suivre l'heure réelle, ou choisir le jour, l'aube ou la nuit pour y voir plus clair ; l'horaire du soleil de Fribourg.",
-      "description": "Fabriqué avec day-night. Un sélecteur à quatre positions, Auto, Jour, Aube et Nuit, que GDC pose sur la carte. Il montre aussi l'horaire : l'heure du poste, le moment et le prochain passage (« 18:42 · Crépuscule · nuit à 18:48 »), ainsi que le lever et le coucher du soleil à Fribourg. Auto suit le soleil. Un moment choisi retombe de lui-même au prochain passage, et l'élément l'annonce (« Jour choisi · heure réelle à 07:44 »). L'élément n'interprète rien : GDC lui donne carte.horaire() et transmet le choix à carte.regleHeure. Décisions de Pierre-Alain du 22 octobre 2026 : un sélecteur, une durée jusqu'au prochain passage, l'horaire affiché.",
+      "description": "Fabriqué avec day-night. Un sélecteur à quatre positions, Auto, Jour, Aube et Nuit, que GDC pose sur la carte. Il montre aussi l'horaire : l'heure du poste, le moment et le prochain passage (« 18:42 · Crépuscule · nuit à 18:48 »), ainsi que le lever et le coucher du soleil à Fribourg. Auto suit le soleil. Un moment choisi retombe de lui-même au prochain passage, et l'élément l'annonce (« Jour choisi · heure réelle à 07:44 »). L'élément n'interprète rien : GDC lui donne carte.horaire() et transmet le choix à carte.regleHeure. Décisions de Pierre-Alain du 22 octobre 2026 : un sélecteur, une durée jusqu'au prochain passage, l'horaire affiché. Pas de durée minimale : un choix retombe toujours au prochain passage. L'entrée horaire et les valeurs auto, jour, aube et nuit gardent la langue de l'API de la carte, le reste du code est en anglais (décisions du même jour).",
       "inputs": {
         "horaire": "carte.horaire() : { mode, moment, jour, maintenant, lever, coucher, prochain: { instant, moment }, fin }. mode vaut auto, jour, aube ou nuit ; moment vaut jour, aube, crepuscule ou nuit ; les instants sont en millisecondes. GDC le relit à chaque update de la carte qui rend true, et au moins une fois par minute pour l'heure affichée."
       },
@@ -1803,7 +1803,7 @@
         "Lisible en clair et en sombre, ainsi que sur téléphone",
         "Ligne au journal des versions"
       ],
-      "status": "à faire",
+      "status": "livré",
       "role": "intégrateur d'interface"
     },
     {
