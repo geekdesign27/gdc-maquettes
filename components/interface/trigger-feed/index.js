@@ -63,7 +63,7 @@ button.ligne:hover { background: color-mix(in srgb, var(--gdc-ink) 7%, transpare
 .ligne.regime::before, .ligne.regime::after { content: ""; flex: 1 1 0; min-width: 12px; border-top: 1px solid color-mix(in srgb, var(--gdc-ink) 22%, transparent); }
 .ligne.regime .phrase { flex: 0 1 auto; padding: 0; text-align: center; }
 /* une nouvelle action : une seule impulsion douce ; avec moins d'animations, sa duree est nulle */
-.ligne.neuve { animation: impulsion calc(var(--gdc-motion, 1) * 1400ms) ease-out 1; }
+.ligne.neuve:not([data-highlight]) { animation: impulsion calc(var(--gdc-motion, 1) * 1400ms) ease-out 1; }
 @keyframes impulsion { from { background: color-mix(in srgb, var(--gdc-ink) 13%, transparent); } to { background: transparent; } }
 /* « n nouvelles actions » : la liste remontee ne saute pas, ce bouton ramene en haut */
 .nouvelles { position: absolute; z-index: 1; top: 38px; left: 50%; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 6px;
@@ -108,6 +108,8 @@ export function define(registry, ctx) {
     #open = false; // deplie sur telephone
     #highlight = null;
     #refs = new WeakMap(); // ligne -> reference (le survol partage)
+    #instantNodes = new Map(); // instant (ts) -> son element, garde d'un rendu a l'autre
+    #lineNodes = new Map(); // cle d'action -> l'element de sa ligne
     #queue = []; // les annonces en attente
     #timer = null;
     #els = {};
@@ -242,54 +244,80 @@ export function define(registry, ctx) {
       return arrivees.filter((a) => gardees.has(a));
     }
 
+    // la liste est mise a jour en place, par cle : une ligne gardee ne quitte jamais la page, la ligne qui a le focus
+    // le garde (pas de gdc-hover null puis la meme reference), et seules les nouvelles lignes sont creees
     #render() {
       const { liste, vide } = this.#els;
-      const focusKey = this.shadowRoot.activeElement?.dataset?.key;
+      const actif = this.shadowRoot.activeElement;
+      const ligneActive = actif?.classList?.contains("ligne") ? actif : null;
+      // replie sur telephone, seule la premiere ligne se voit : mesure avant de changer la liste
+      const replie =
+        !this.#open && getComputedStyle(this.#els.deplie).display !== "none";
       // la liste remontee ne saute pas : la premiere ligne visible garde sa place
       const enHaut = this.#atTop();
       const repere = enHaut ? null : this.#firstVisible();
       const groupes = instants(this.#kept).reverse();
-      const ol = document.createElement("ol");
-      ol.setAttribute("aria-label", "Actions, la plus récente en haut");
+      let ol = liste.querySelector("ol");
+      if (!ol) {
+        ol = document.createElement("ol");
+        ol.setAttribute("aria-label", "Actions, la plus récente en haut");
+        liste.append(ol);
+      }
+      const instantsVus = new Map();
+      const lignesVues = new Map();
       let jourAvant = jourDe(new Date());
       let heureAvant = null;
-      for (const g of groupes) {
-        const li = document.createElement("li");
-        li.className = "instant";
+      const items = groupes.map((g) => {
+        const cle = `ts:${g.ts}`;
+        const li = this.#instantNodes.get(cle) ?? instantVide();
+        instantsVus.set(cle, li);
+        const [heure, ul] = li.children;
+        const t = heure.firstChild;
         const date = new Date(g.ts);
-        const t = document.createElement("time");
+        let seule = "Heure inconnue";
         if (Number.isFinite(date.getTime())) {
-          t.dateTime = g.ts;
+          seule = HEURE.format(date);
           const jour = jourDe(date);
+          t.dateTime = g.ts;
           t.textContent =
-            (jour !== jourAvant ? `${JOUR.format(date)} · ` : "") +
-            HEURE.format(date);
+            (jour !== jourAvant ? `${JOUR.format(date)} · ` : "") + seule;
           jourAvant = jour;
-        } else t.textContent = "Heure inconnue";
-        // deux instants dans la meme seconde : l'heure n'est pas repetee
-        if (t.textContent !== heureAvant) {
-          const heure = document.createElement("p");
-          heure.className = "heure";
-          heure.append(t);
-          li.append(heure);
+        } else {
+          t.removeAttribute("datetime");
+          t.textContent = seule;
         }
-        heureAvant = t.textContent;
-        const ul = document.createElement("ul");
-        ul.className = "lignes";
+        // deux instants dans la meme seconde : l'heure n'est pas repetee
+        heure.hidden = seule === heureAvant;
+        heureAvant = seule;
         // le changement de regime sous les autres actions de son instant : il separe l'avant de l'apres
         const actions = [
           ...g.actions.filter((a) => !REGIMES.includes(a.action)),
           ...g.actions.filter((a) => REGIMES.includes(a.action)),
         ];
-        for (const a of actions) {
-          const item = document.createElement("li");
-          item.append(this.#ligne(a));
-          ul.append(item);
-        }
-        li.append(ul);
-        ol.append(li);
-      }
-      liste.replaceChildren(ol);
+        place(
+          ul,
+          actions.map((a) => {
+            const key = this.#keys.get(a) ?? baseKey(a);
+            let item = this.#lineNodes.get(key);
+            if (item) item.firstChild.classList.remove("neuve");
+            else {
+              item = document.createElement("li");
+              item.append(this.#ligne(a, key));
+            }
+            lignesVues.set(key, item);
+            return item;
+          }),
+        );
+        return li;
+      });
+      place(ol, items);
+      // replie, une ligne qui avait le focus et n'est plus la premiere va etre cachee : le focus passe a la
+      // premiere avant toute mesure, sinon le navigateur le retire d'abord (gdc-hover null, puis la nouvelle)
+      const premiere = this.#premiere();
+      if (replie && ligneActive && ligneActive !== premiere)
+        premiere?.focus({ preventScroll: true });
+      this.#instantNodes = instantsVus;
+      this.#lineNodes = lignesVues;
       vide.hidden = groupes.length > 0;
       liste.hidden = !groupes.length;
       if (repere) {
@@ -300,16 +328,21 @@ export function define(registry, ctx) {
       if (nouvelles && !enHaut) this.#unseen += nouvelles;
       else if (enHaut) this.#unseen = 0;
       this.#badge();
-      // le focus d'abord, puis l'arret de tabulation : la ligne qui l'avait, sinon la premiere
-      const garde = focusKey ? this.#ligneDe(focusKey) : null;
-      garde?.focus({ preventScroll: true });
-      this.#tabTo(garde || this.#premiere());
-      if (focusKey && !garde) this.#premiere()?.focus({ preventScroll: true });
+      this.#els.deplie.hidden = lignesVues.size < 2;
+      // l'arret de tabulation : la ligne qui a le focus, sinon celui d'avant, s'ils sont encore visibles ; sinon la
+      // premiere. Une ligne qui avait le focus et qui est partie ou cachee (repliee sur telephone) le passe a la
+      // premiere, tout de suite, pour qu'il ne tombe pas hors de l'element
+      const perdu = Boolean(ligneActive) && !(ligneActive.isConnected && visible(ligneActive));
+      const avant = [...liste.querySelectorAll(".ligne")].find((l) => l.tabIndex === 0);
+      const tab =
+        (!perdu && ligneActive) || (avant && visible(avant) ? avant : null) || this.#premiere();
+      this.#tabTo(tab);
+      if (perdu) tab?.focus({ preventScroll: true });
       this.#lightUp();
     }
 
     // une action : un bouton si elle porte une reference (survol et clic), sinon une ligne lisible au clavier
-    #ligne(a) {
+    #ligne(a, key) {
       const ref = a.ref && typeof a.ref === "object" ? a.ref : null;
       const regime = REGIMES.includes(a.action);
       const l = document.createElement(ref ? "button" : "div");
@@ -319,7 +352,6 @@ export function define(registry, ctx) {
         this.#refs.set(l, ref);
       }
       l.tabIndex = -1;
-      const key = this.#keys.get(a) ?? baseKey(a);
       l.dataset.key = key;
       if (this.#fresh.has(key)) l.classList.add("neuve");
       if (!regime) l.append(this.#visage(a));
@@ -380,6 +412,8 @@ export function define(registry, ctx) {
           `${nombre(arrivees.length)}. La plus récente, ${message(groupes.at(-1))}`,
         );
       else this.#queue.push(...groupes.map(message));
+      // une file courte : des annonces en retard sur le fil ne servent plus
+      this.#queue = this.#queue.slice(-ANNONCES_MAX);
       if (!this.#timer) this.#speak();
     }
 
@@ -538,6 +572,33 @@ export function define(registry, ctx) {
     return p === undefined || p === null || p === ""
       ? "Action sans description"
       : String(p);
+  }
+
+  // un instant : son heure, puis ses lignes
+  function instantVide() {
+    const li = document.createElement("li");
+    li.className = "instant";
+    const heure = document.createElement("p");
+    heure.className = "heure";
+    heure.append(document.createElement("time"));
+    const ul = document.createElement("ul");
+    ul.className = "lignes";
+    li.append(heure, ul);
+    return li;
+  }
+
+  // pose les enfants dans l'ordre voulu sans deplacer ceux qui y sont deja, puis retire les autres
+  function place(parent, enfants) {
+    let suivant = parent.firstChild;
+    for (const e of enfants) {
+      if (e === suivant) suivant = suivant.nextSibling;
+      else parent.insertBefore(e, suivant);
+    }
+    while (suivant) {
+      const apres = suivant.nextSibling;
+      suivant.remove();
+      suivant = apres;
+    }
   }
 
   function nombre(n) {

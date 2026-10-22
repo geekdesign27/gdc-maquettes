@@ -28,7 +28,9 @@
     #anchors { position: absolute; inset: 0; pointer-events: none; }
     /* le fil des declencheurs, a gauche de la carte vivante ; replie en bas sur telephone */
     #stage .fil-ville { position: absolute; z-index: 2; left: 12px; top: 12px; bottom: 12px; width: min(340px, 40%); }
-    @media (max-width: 600px) { #stage .fil-ville { top: auto; right: 12px; width: auto; } }
+    /* sur telephone, la scene peut deborder de l'ecran (la barre) : le fil reste dans l'ecran et dans la scene ; en flex, sa
+       liste depliee defile au lieu de sortir par le haut */
+    @media (max-width: 600px) { #stage .fil-ville { top: auto; right: 12px; width: auto; max-width: calc(100vw - 24px); max-height: calc(100% - 24px); display: flex; flex-direction: column; } }
     .anchor { position: absolute; transform: translate(-50%, -100%); background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 4px; padding: 1px 6px; font-size: 12px; white-space: nowrap; }
     .anchor.repere { display: flex; align-items: center; gap: 4px; padding: 2px 7px 2px 3px; border-radius: 12px; font-weight: 600; pointer-events: auto; }
     .anchor.repere b { display: inline-grid; place-items: center; min-width: 18px; height: 18px; padding: 0 4px; border-radius: 9px; background: var(--zone); color: #fff; font-size: 11px; }
