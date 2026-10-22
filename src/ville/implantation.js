@@ -56,9 +56,19 @@ export const PAS_PARCELLE = 14; // socle de 12 m (une fiche) et 2 m entre deux p
 export const SOCLES = { house: 12, block: 15, hall: 18 };
 const ECART_SOCLES = 2;
 const BORD_PARCELLES = 43; // le bord gauche de la premiere parcelle, a droite du chemin des experts
-export const MAX_APPLICATIONS = 4;
+export const MAX_APPLICATIONS = 8;
+// Au-dela de quatre applications, une deuxieme rangee de parcelles sous l'allee (decision de Pierre-Alain du 22 octobre
+// 2026) : le chantier s'approfondit, le terrain garde sa largeur (120 m au plus pour site-ground), aucun composant ne
+// change. La deuxieme rangee commence apres la bande des bennes, du stock et des camions de la premiere, a sa propre
+// allee devant ses portes et la place de ses camions devant elle.
+export const PAR_RANGEE = 4;
 const Z_PARCELLE = 37;
 const Z_ALLEE = 44.8; // l'allee du chantier, entre les batiments et les bennes
+const Z_PARCELLE_2 = 59.5; // socles de 53,5 a 65,5
+const Z_ALLEE_2 = 67.3; // l'allee de la deuxieme rangee, devant ses portes
+const Z_CAMION_2 = 70; // la place des camions de la deuxieme rangee
+const AVANT_2 = 72.5; // le bord avant du chantier a deux rangees (54,5 a une rangee)
+const X_LIAISON = 31.4; // le chemin qui descend de l'allee a l'allee de la deuxieme rangee, le long de l'entree
 const Z_ROUTE = 26; // l'axe de la route entre les transformations et les bureaux
 const X_ROUTE = 27; // l'axe de la route entre les bureaux et le chantier
 
@@ -110,9 +120,14 @@ const LIEUX = {
   "panneau-feu-vert": {
     element: "decision-sign",
     zone: "chantier",
-    position: [41.8, 0, 37.5], // entre les experts et la parcelle
+    position: [41.7, 0, 37.5], // entre les experts et la parcelle
     porte: [40.6, 36.4],
-    panneau: [41.8, 0, 37.5],
+    panneau: [41.7, 0, 37.5],
+    // la bande entre le chemin des experts (x = 40,6) et la premiere parcelle (x = 43) : les panneaux se rangent le
+    // long d'elle, trois par rang (un panneau fait 0,9 m de large) ; le second rang, a 0,85 m vers la parcelle (vers la
+    // plateforme, il serait sur le chemin des experts), glisse de 0,2 m : les tableaux ne se touchent pas et, vu de la
+    // camera, ceux du second rang tombent entre ceux du premier
+    grille: { pas: [0, 1.3], rang: [0.85, 0.2], centre: true },
   },
   "aire-reception": {
     element: "reception-area",
@@ -174,7 +189,7 @@ function cloture(enceinte, cle, bord, [a, b], gate = false) {
   };
 }
 
-// L'implantation pour un nombre d'applications (1 a 4) : terrain, chantier, cadres des zones, dalles du sol, clotures,
+// L'implantation pour un nombre d'applications (1 a 8 ; au-dela de 4, la deuxieme rangee) : terrain, chantier, cadres des zones, dalles du sol, clotures,
 // lieux fixes, decor du chantier, parcelles, points de la vie du chantier et voies. types : le type de chaque batiment
 // (house, block, hall), dans l'ordre des parcelles ; chaque parcelle prend alors la largeur de son socle. Sans types,
 // les parcelles sont au pas de 14 m (la scene de reference).
@@ -186,19 +201,22 @@ export function implantation(applications = 1, types = null, densite = DENSITE_P
     Math.max(Math.round(Number(types ? types.length : applications)) || 1, 1),
     MAX_APPLICATIONS,
   );
+  // chaque rangee repart du bord gauche ; le chantier va jusqu'au bout de la plus longue
   const centres = [];
   let finParcelles = 0;
   for (let k = 0, bord = BORD_PARCELLES; k < apps; k++) {
+    if (k === PAR_RANGEE) bord = BORD_PARCELLES;
     const largeur = types ? SOCLES[types[k]] || SOCLES.block : PAS_PARCELLE - ECART_SOCLES;
-    centres.push(types ? bord + largeur / 2 : 49 + PAS_PARCELLE * k);
-    finParcelles = centres[k] + largeur / 2;
-    bord = finParcelles + ECART_SOCLES;
+    centres.push(types ? bord + largeur / 2 : 49 + PAS_PARCELLE * (k % PAR_RANGEE));
+    finParcelles = Math.max(finParcelles, centres[k] + largeur / 2);
+    bord = centres[k] + largeur / 2 + ECART_SOCLES;
   }
+  const deuxRangees = apps > PAR_RANGEE;
   const CHANTIER = {
     x: [29.5, finParcelles + 1.5],
-    z: [28.5, 54.5],
+    z: [28.5, deuxRangees ? AVANT_2 : 54.5],
   };
-  const TERRAIN = { x: [0, Math.max(CHANTIER.x[1] + 1.5, 60)], z: [7, 56] };
+  const TERRAIN = { x: [0, Math.max(CHANTIER.x[1] + 1.5, 60)], z: [7, Math.max(56, CHANTIER.z[1] + 1.5)] };
   const CADRES = {
     bureaux: { x: [1, 24.5], z: [29, 55] },
     chantier: CHANTIER,
@@ -213,7 +231,7 @@ export function implantation(applications = 1, types = null, densite = DENSITE_P
     [CADRES.remise.x, CADRES.remise.z, "concrete"],
     [CADRES.transformations.x, CADRES.transformations.z, "concrete"],
     [[30, 41.5], [29, 46], "concrete"], // la plateforme des experts, dans le chantier
-    [[25, 29], [8, 56], "asphalt"], // la voie entre les bureaux et le chantier, puis vers les transformations
+    [[25, 29], [8, TERRAIN.z[1]], "asphalt"], // la voie entre les bureaux et le chantier, puis vers les transformations
     [[1, 58.5], [24, 28], "asphalt"], // la voie entre les transformations et les bureaux, puis vers la reception
   ].map(([x, z, surface]) => ({
     x: centre(x) - centre(TERRAIN.x),
@@ -223,11 +241,13 @@ export function implantation(applications = 1, types = null, densite = DENSITE_P
     surface,
   }));
 
-  // l'entree du chantier face au bureau d'etudes, sa sortie en haut vers la reception
+  // l'entree du chantier face au bureau d'etudes, sa sortie en haut vers la reception ; a deux rangees, l'entree ne
+  // bouge pas et la cloture continue au-dela
   const sortie = [CHANTIER.x[1] - 12.5, CHANTIER.x[1]];
-  const ENTREE = [44, CHANTIER.z[1]];
+  const ENTREE = [44, 54.5];
   const clotures = [
     cloture(CHANTIER, "fence:entree", "x-", ENTREE, true),
+    ...(deuxRangees ? [cloture(CHANTIER, "fence:gauche-avant", "x-", [ENTREE[1], CHANTIER.z[1]])] : []),
     cloture(CHANTIER, "fence:gauche", "x-", [CHANTIER.z[0], 44]),
     cloture(CHANTIER, "fence:sortie", "z-", sortie, true),
     cloture(CHANTIER, "fence:fond", "z-", [CHANTIER.x[0], sortie[0]]),
@@ -271,7 +291,7 @@ export function implantation(applications = 1, types = null, densite = DENSITE_P
   const milieu = [centre(CHANTIER.x), centre(CHANTIER.z)];
   // les ecarts entre deux socles voisins : le milieu de chacun
   const ecarts = [];
-  for (let k = 0; k + 1 < apps; k++) {
+  for (let k = 0; k + 1 < Math.min(apps, PAR_RANGEE); k++) {
     const l = (n) => (types ? SOCLES[types[n]] || SOCLES.block : PAS_PARCELLE - ECART_SOCLES);
     ecarts.push((centres[k] + l(k) / 2 + centres[k + 1] - l(k + 1) / 2) / 2);
   }
@@ -308,16 +328,19 @@ export function implantation(applications = 1, types = null, densite = DENSITE_P
   ];
 
   // Une parcelle par application, de gauche a droite le long de l'allee : le batiment au centre, ses gabarits, sa grue,
-  // la place du camion de livraison et sa porte sur l'allee.
+  // la place du camion de livraison et sa porte sur l'allee. Les applications 5 a 8 font la deuxieme rangee.
   const parcelles = [];
   for (let k = 0; k < apps; k++) {
     const x = centres[k];
+    const rangee = k < PAR_RANGEE ? 1 : 2;
+    const z = rangee === 1 ? Z_PARCELLE : Z_PARCELLE_2;
     parcelles.push({
       index: k,
-      position: [x, 0, Z_PARCELLE],
-      grue: { position: [x - 4.4, 0, 32.6], rotation: -Math.PI / 2 },
-      camion: { position: [x + 3, 0, 51], rotation: Math.PI / 2 },
-      porte: [x, Z_ALLEE],
+      rangee,
+      position: [x, 0, z],
+      grue: { position: [x - 4.4, 0, z - 4.4], rotation: -Math.PI / 2 },
+      camion: { position: [x + 3, 0, rangee === 1 ? 51 : Z_CAMION_2], rotation: Math.PI / 2 },
+      porte: [x, rangee === 1 ? Z_ALLEE : Z_ALLEE_2],
     });
   }
 
@@ -427,13 +450,28 @@ function voies({ CHANTIER, ENTREE, sortie, lieux, parcelles }) {
   relie("porte:bureau-controle", "experts:controle");
   relie("porte:panneau-feu-vert", "experts:feu-vert");
   let avant = "allee:experts";
-  for (const p of parcelles) {
+  for (const p of parcelles.filter((x) => x.rangee === 1)) {
     const id = `allee:${p.index + 1}`;
     point(id, p.porte[0], Z_ALLEE, true);
     relie(avant, id);
     avant = id;
   }
   point("allee:fin", xFin, Z_ALLEE, true);
+  // la deuxieme rangee : son allee part de l'entree du chantier et rejoint l'allee a droite, le long de la cloture
+  const deuxieme = parcelles.filter((x) => x.rangee === 2);
+  if (deuxieme.length) {
+    point("allee2:depart", X_LIAISON, Z_ALLEE_2, true);
+    relie("chantier:entree", "allee2:depart");
+    let avant2 = "allee2:depart";
+    for (const p of deuxieme) {
+      const id = `allee:${p.index + 1}`;
+      point(id, p.porte[0], Z_ALLEE_2, true);
+      relie(avant2, id);
+      avant2 = id;
+    }
+    point("allee2:fin", xFin, Z_ALLEE_2, true);
+    chaine([avant2, "allee2:fin", "allee:fin"]);
+  }
   point("fond:fin", xFin, CHANTIER.z[0] + 1.2, true);
   point("fond:sortie", xPortail, CHANTIER.z[0] + 1.2, true);
   point("portail:sortie", xPortail, CHANTIER.z[0], true);

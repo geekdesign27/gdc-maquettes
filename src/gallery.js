@@ -75,7 +75,8 @@ function resize() {
   renderer.setSize(w, h, false);
   // la scene de reference (60 x 50 m, 14 m de plus par application) se cadre en entier sur un portable de 13 pouces ;
   // on zoome a la molette
-  const view = current.scene ? 26 + 5 * (current.apps - 1) : options.planche ? 18 : 12;
+  // au-dela de quatre applications, la deuxieme rangee approfondit la carte au lieu de l'elargir
+  const view = current.scene ? 26 + 5 * (Math.min(current.apps, 4) - 1) + (current.apps > 4 ? 6 : 0) : options.planche ? 18 : 12;
   const aspect = w / Math.max(h, 1);
   Object.assign(camera, { left: -view * aspect, right: view * aspect, top: view, bottom: -view });
   camera.updateProjectionMatrix();

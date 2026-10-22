@@ -34,13 +34,13 @@ const echantillons = (c) => {
   const n = Math.max(2, Math.ceil(c.longueur / 0.25));
   return Array.from({ length: n + 1 }, (_, i) => positionSur(c, i / n));
 };
-for (let apps = 1; apps <= 4; apps++) {
+for (let apps = 1; apps <= 8; apps++) {
   const imp = implantation(apps);
   const chemins = creeChemins(imp.voies);
   const lieux = Object.keys(imp.lieux);
   const bouts = [...lieux, ...imp.parcelles.map((p) => `allee:${p.index + 1}`)];
   // le socle de chaque parcelle : on n'y coupe jamais (on entre par sa porte, sur l'allee)
-  const socles = imp.parcelles.map((p) => ({ x: [p.position[0] - 6, p.position[0] + 6], z: [31, 43] }));
+  const socles = imp.parcelles.map((p) => ({ x: [p.position[0] - 6, p.position[0] + 6], z: [p.position[2] - 6, p.position[2] + 6] }));
   for (const de of bouts)
     for (const vers of bouts) {
       if (de === vers) continue;
@@ -77,6 +77,34 @@ for (const types of [['house'], ['block', 'block', 'block'], ['hall', 'hall', 'h
     verifie(g > 40.6, `${types} : la parcelle ${k + 1} empiète sur le chemin des experts`);
   });
   verifie(creeChemins(imp.voies).chemin('baraque', `allee:${types.length}`), `${types} : la dernière parcelle n'est pas desservie`);
+}
+
+let rapportRangee = '';
+// --- Au-dela de quatre applications, la deuxieme rangee sous l'allee (decision de Pierre-Alain du 22 octobre 2026) :
+// aucune parcelle ne se pose sur une autre ni sur la place d'un camion, tout reste dans le chantier, le terrain garde
+// 120 m de large au plus, chaque parcelle est desservie et l'entree du chantier ne bouge pas
+{
+  const boite = (cx, cz, lx, lz) => ({ x: [cx - lx / 2, cx + lx / 2], z: [cz - lz / 2, cz + lz / 2] });
+  const coupe = (a, b) => a.x[0] < b.x[1] && b.x[0] < a.x[1] && a.z[0] < b.z[1] && b.z[0] < a.z[1];
+  const melanges = [['block', 'house', 'block', 'house', 'block', 'house', 'block', 'house'], ['house', 'house', 'house', 'house', 'house'], ['block', 'block', 'block', 'block', 'block', 'block', 'block']];
+  for (const types of melanges) {
+    const imp = implantation(types.length, types);
+    const nom = `deuxième rangée (${types.length} app.)`;
+    verifie(imp.parcelles.length === types.length, `${nom} : ${imp.parcelles.length} parcelles`);
+    const socles = imp.parcelles.map((p, k) => boite(p.position[0], p.position[2], SOCLES[types[k]], 12));
+    const camions = imp.parcelles.map((p) => boite(p.camion.position[0], p.camion.position[2], 7.2, 2.6));
+    imp.parcelles.forEach((p, k) => {
+      verifie(p.rangee === (k < 4 ? 1 : 2), `${nom} : la parcelle ${k + 1} est dans la rangée ${p.rangee}`);
+      for (const r of [socles[k], camions[k]]) verifie(r.x[0] > imp.chantier.x[0] && r.x[1] < imp.chantier.x[1] && r.z[0] > imp.chantier.z[0] && r.z[1] < imp.chantier.z[1], `${nom} : la parcelle ${k + 1} ou son camion sort du chantier`);
+      socles.forEach((o, j) => j > k && verifie(!coupe(socles[k], o), `${nom} : les parcelles ${k + 1} et ${j + 1} se chevauchent`));
+      camions.forEach((c, j) => verifie(!coupe(socles[k], c), `${nom} : le camion de la parcelle ${j + 1} est sur la parcelle ${k + 1}`));
+      verifie(creeChemins(imp.voies).chemin('baraque', `allee:${k + 1}`), `${nom} : la parcelle ${k + 1} n'est pas desservie`);
+    });
+    verifie(imp.terrain.x[1] - imp.terrain.x[0] <= 120, `${nom} : terrain de ${imp.terrain.x[1] - imp.terrain.x[0]} m, plus que les 120 m de site-ground`);
+    const entree = imp.clotures.find((c) => c.cle === 'fence:entree');
+    verifie(entree.position[2] === implantation(1).clotures.find((c) => c.cle === 'fence:entree').position[2], `${nom} : l'entrée du chantier a bougé`);
+  }
+  rapportRangee = (`deuxième rangée : 5 à 8 applications sur deux rangées, chantier de ${implantation(8, melanges[0]).chantier.z[1] - implantation(4).chantier.z[1]} m plus profond, terrain de ${implantation(8, melanges[0]).terrain.x[1]} m de large`);
 }
 
 // --- Les sequences de GDC (fixtures/) : lecture et vie, sans Three.js. Elles se lisent par leur index.json seulement
@@ -133,7 +161,7 @@ for (const cat of await readdir(join(ROOT, 'components')))
         sources[`${cat}/${id}/${f}`] = b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength);
       }
 const chargeur = creeChargeur({ GLTFLoader, SkeletonUtils }, sources);
-const rapports = [];
+const rapports = [rapportRangee];
 // la direction de visee de la camera isometrique de la galerie, a peu pres : de haut et de biais
 const ISO = new THREE.Vector3(-1, -1.15, -1).normalize();
 
@@ -202,6 +230,45 @@ for (const [nom, scenes] of Object.entries(sequences))
           }
         });
         for (const [zone, oui] of Object.entries(lu.zones)) if (oui) verifie(carte.cadres().find((z) => z.cle === zone).activee, `${nom} ${i + 1} : la zone ${zone} reste grise`);
+        // un seul jeu de gabarits par parcelle : ceux des fiches a l'etude d'un batiment ont le meme volume, au meme endroit
+        const gabarits = {};
+        carte.root.traverse((o) => {
+          if (o.userData.component !== 'survey-poles' || !visible(o)) return;
+          const t = carte.cible(o);
+          gabarits[t?.ancre] = (gabarits[t?.ancre] || 0) + 1;
+        });
+        for (const [b, n] of Object.entries(gabarits)) verifie(n === 1, `${nom} ${i + 1} : ${n} jeux de gabarits empilés sur ${b}`);
+        // les decisions d'un meme lieu (decision de Pierre-Alain du 22 octobre 2026) : six panneaux au plus, en grille,
+        // un badge chacun et le total sur le dernier au-dela ; aucun sur un autre, aucun sur le chemin des experts ni sur
+        // une parcelle ; chacun cliquable de la camera
+        for (const g of carte.panneaux()) {
+          const ou = `${nom} ${i + 1} : ${g.element} à ${g.lieu}`;
+          verifie(g.montres.length === Math.min(g.total, 6), `${ou} : ${g.montres.length} panneaux montrés pour ${g.total}`);
+          const badges = g.montres.map((id) => g.badges[id]);
+          verifie(badges.every((b, k) => b === (k === badges.length - 1 && g.total > 6 ? g.total : 1)), `${ou} : badges ${badges.join(', ')} pour ${g.total} décisions`);
+          const poses = [];
+          carte.root.traverse((o) => {
+            if (o.userData.component !== g.element || !visible(o)) return;
+            const t = carte.cible(o);
+            if (t && g.montres.includes(t.id)) poses.push([t.id, o]);
+          });
+          verifie(poses.length === g.montres.length, `${ou} : ${poses.length} panneaux posés pour ${g.montres.length} montrés`);
+          for (const [id, o] of poses) {
+            // piece par piece (le tableau, son poteau, son pied) : la boite d'ensemble deborde de ce qu'il occupe
+            const pieces = (x) => { const l = []; x.traverse((m) => m.isMesh && visible(m) && l.push(new THREE.Box3().setFromObject(m).expandByScalar(-0.005))); return l; };
+            const p1 = pieces(o);
+            for (const [id2, o2] of poses) if (id2 > id) verifie(!pieces(o2).some((b2) => p1.some((b1) => b1.intersectsBox(b2))), `${ou} : ${id} et ${id2} l'un dans l'autre`);
+            // le panneau fait 0,9 m de large ; la bande va du chemin des experts (x = 40,6, et l'epaule d'un passant) au
+            // bord de la premiere parcelle (x = 43)
+            if (g.lieu === 'panneau-feu-vert') verifie(o.position.x - 0.45 > 40.6 + 0.3 && o.position.x + 0.45 <= 43 + 1e-6, `${ou} : ${id} hors de la bande entre le chemin des experts et la parcelle (x = ${o.position.x.toFixed(2)})`);
+            const vise = new THREE.Box3().setFromObject(o).getCenter(new THREE.Vector3());
+            const rayon = new THREE.Raycaster(vise.clone().sub(ISO.clone().multiplyScalar(60)), ISO);
+            const h = carte.designe(rayon.intersectObject(carte.root, true).filter((x) => visible(x.object)).map((x) => x.object));
+            const t = h && carte.cible(h);
+            verifie(t && t.id === id, `${ou} : un clic sur ${id} touche ${t ? t.id : h ? h.name : 'rien'}`);
+            verifie(carte.ancreElement(id) !== null, `${ou} : ${id} sans ancre de badge`);
+          }
+        }
       }
       // la vue en coupe (building-interior 2.0.0) s'ouvre et se ferme sur chaque etage de chaque batiment de la derniere
       // scene : une piece par lot, chaque agent de l'etage a la piece de son lot ou sur le palier
@@ -428,11 +495,12 @@ for (const [nom, scenes] of Object.entries(sequences))
     return Math.hypot(A.x + t * (B.x - A.x) - x, A.z + t * (B.z - A.z) - z);
   };
   for (const densite of ['sobre', 'moyenne', 'dense'])
-    for (const types of [null, ['house'], ['hall'], ['block', 'hall'], ['house', 'house', 'house'], ['hall', 'hall', 'hall', 'house']])
-      for (const apps of types ? [types.length] : [1, 2, 3, 4]) {
+    for (const types of [null, ['house'], ['hall'], ['block', 'hall'], ['house', 'house', 'house'], ['hall', 'hall', 'hall', 'house'], ['block', 'house', 'block', 'house', 'block', 'house', 'block', 'house'], ['house', 'house', 'house', 'house', 'house']])
+      for (const apps of types ? [types.length] : [1, 2, 3, 4, 5, 8]) {
         const imp = implantation(apps, types, densite);
         const nom = `projecteurs ${densite}, ${apps} app.${types ? ' ' + types.join(',') : ''}`;
-        const attendu = { sobre: 8, moyenne: 11 + apps - 1, dense: 13 + apps - 1 }[densite];
+        // un projecteur de plus entre deux parcelles voisines au fond, celles de la premiere rangee seulement
+        const attendu = { sobre: 8, moyenne: 11 + Math.min(apps, 4) - 1, dense: 13 + Math.min(apps, 4) - 1 }[densite];
         verifie(imp.projecteurs.length === attendu, `${nom} : ${imp.projecteurs.length} projecteurs au lieu de ${attendu}`);
         for (const p of imp.projecteurs) {
           const [x, , z] = p.position;

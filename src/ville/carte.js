@@ -98,6 +98,13 @@ const POSTES = [
   "reception-area",
   "site-office",
 ];
+// Les decisions attendues au meme lieu (decision de Pierre-Alain du 22 octobre 2026) : une grille compacte de trois
+// panneaux par rang, un panneau et un badge par decision, six au plus ; au-dela, le dernier porte le total dans son
+// badge (panneaux()). Chaque panneau montre reste cliquable. pas : d'un panneau au suivant dans le rang ; rang : d'un
+// rang au suivant ; un lieu peut avoir sa grille (implantation.js, le feu vert).
+const MAX_PANNEAUX = 6;
+const PAR_RANG = 3;
+const GRILLE = { pas: [1.4, 0], rang: [0, -1.3] };
 // Les elements que la carte sait poser ; ground est le socle, deja fait par site-ground.
 const SIGNAUX = [
   "decision-sign",
@@ -441,15 +448,28 @@ export async function creeCarte(THREE, options) {
     rangs.set(cle, n + 1);
     const l = imp.lieux[el.ancre];
     if (l) {
+      // la grille du lieu, six panneaux au plus ; les suivants comptent dans le badge du dernier
+      const groupe = groupesPanneaux.get(cle) || { lieu: el.ancre, element: el.element, montres: [], total: 0 };
+      groupesPanneaux.set(cle, groupe);
+      groupe.total++;
+      if (n >= MAX_PANNEAUX) return { surplus: true };
+      groupe.montres.push(el.id);
       const [x, y, z] = l.panneau || l.position;
-      return { position: [x + n * 1.4, y, z], rotation: 0 };
+      const g = l.grille || GRILLE;
+      const i = n % PAR_RANG;
+      const r = Math.floor(n / PAR_RANG);
+      const k = g.centre ? [0, 1, -1][i] : i; // centre : le premier au milieu du rang, puis de part et d'autre
+      return {
+        position: [x + k * g.pas[0] + r * g.rang[0], y, z + k * g.pas[1] + r * g.rang[1]],
+        rotation: 0,
+      };
     }
     const p = parcelleDe(el.ancre);
     if (!p) return null;
     const [x, , z] = p.position;
     if (el.element === "defect-sign")
-      return { position: [x - 2 + n * 1.2, 0, 41.2], rotation: 0 };
-    return { position: [x + 2.6 + n * 1.4, 0, 44.2], rotation: 0 };
+      return { position: [x - 2 + n * 1.2, 0, z + 4.2], rotation: 0 };
+    return { position: [x + 2.6 + n * 1.4, 0, p.porte[1] - 0.6], rotation: 0 };
   }
   function placeDe(el, rangs) {
     if (imp.lieux[el.id] && !SIGNAUX.includes(el.element))
@@ -467,18 +487,24 @@ export async function creeCarte(THREE, options) {
     if (SIGNAUX.includes(el.element)) return placeSignal(el, rangs);
     const p = parcelleDe(el.ancre);
     if (!p) return null;
-    if (el.element === "survey-poles")
+    if (el.element === "survey-poles") {
+      // les gabarits de chaque fiche encore a l'etude d'un batiment ont le meme volume, au meme endroit : un seul jeu
+      // par parcelle (volume : 33 jeux empiles, 660 maillages identiques, coutaient un quart des images par seconde)
+      const cle = `survey-poles@${el.ancre}`;
+      if (rangs.get(cle)) return { surplus: true };
+      rangs.set(cle, 1);
       return {
         position: p.position,
         rotation: 0,
         params: { width: 8, depth: 6, height: 6 },
       };
+    }
     if (el.element === "crane")
       return { position: p.grue.position, rotation: p.grue.rotation };
     if (el.element === "delivery-truck")
       return { position: p.camion.position, rotation: p.camion.rotation };
     if (el.element === "excavator")
-      return { position: [p.position[0] - 2, 0, 40.5], rotation: 0 };
+      return { position: [p.position[0] - 2, 0, p.position[2] + 3.5], rotation: 0 };
     return null;
   }
   // les donnees d'un element pour setState : seules les cles de la fiche du composant
@@ -631,13 +657,14 @@ export async function creeCarte(THREE, options) {
       const v = pointAncre(mf, "entry");
       return { pos: [v.x + rang * 0.7, v.z + 0.6], y: 0, facing: ANGLE_DEHORS };
     }
-    // un panneau, ou un lieu plein : on se rassemble devant, en arc
+    // un panneau, ou un lieu plein : on se rassemble en arc derriere lui, vu de la camera, et on le regarde ; devant, on
+    // cachait le panneau et volait son clic
     const [x, , z] = l.panneau || l.position;
-    const angle = Math.PI / 4 + (rang - 1) * 0.7;
+    const angle = (5 * Math.PI) / 4 + (rang - 1) * 0.7;
     return {
       pos: [x + Math.sin(angle) * 1.6, z + Math.cos(angle) * 1.6],
       y: 0,
-      facing: ANGLE_DEHORS + Math.PI,
+      facing: ANGLE_DEHORS,
     };
   }
   // les rangs des personnages par lieu, dans l'ordre de la scene
@@ -723,7 +750,7 @@ export async function creeCarte(THREE, options) {
     }
   };
   const dansParcelle = (p, pa) =>
-    pa && Math.abs(p[0] - pa.position[0]) < 7 && p[1] > 30 && p[1] < 44.5;
+    pa && Math.abs(p[0] - pa.position[0]) < 7 && Math.abs(p[1] - pa.position[2]) < 7.5; // sa parcelle, dans sa rangee
   // un trajet dans le chantier : droit dans sa parcelle, sinon par l'allee
   function trajet(a, vers, pa) {
     if (dansParcelle(a.pos, pa) && dansParcelle(vers, pa)) return [vers];
@@ -908,9 +935,11 @@ export async function creeCarte(THREE, options) {
   const actives = new Set(); // les zones deja activees : pour toujours (decision de Pierre-Alain du 21 octobre 2026)
   let effets = []; // les impulsions : { m, de, vers, t, fin }
 
+  let groupesPanneaux = new Map(); // element@lieu -> { lieu, element, montres, total }
   async function prepare(scene) {
     rangsAgents = rangs(scene);
     const placeRangs = new Map();
+    groupesPanneaux = new Map();
     for (const el of scene.elements.values()) {
       if (el.element === "ground") continue;
       if (el.element === "crane") {
@@ -942,6 +971,10 @@ export async function creeCarte(THREE, options) {
         continue;
       }
       const place = placeDe(el, placeRangs);
+      if (place?.surplus) {
+        retire(cle); // un panneau au-dela de six (il compte dans le badge du dernier), ou des gabarits deja poses
+        continue;
+      }
       if (!place) {
         signale(
           `${el.element} « ${el.id} » : pas de place sur la carte (ancre ${el.ancre ?? "absente"}), ignoré`,
@@ -1437,6 +1470,28 @@ export async function creeCarte(THREE, options) {
         if (majHeure()) encore = true;
       }
       return encore || (anime && vivants.size > 0);
+    },
+    // Les panneaux de decision de chaque lieu : ceux qui sont montres (six au plus, chacun avec son badge) et le total ;
+    // badge : ce que porte le badge de chacun (1, et le total pour le dernier quand il y en a plus de six).
+    panneaux() {
+      return [...groupesPanneaux.values()].map((g) => ({
+        lieu: g.lieu,
+        element: g.element,
+        total: g.total,
+        montres: [...g.montres],
+        badges: Object.fromEntries(g.montres.map((id, k) => [id, k === g.montres.length - 1 && g.total > g.montres.length ? g.total : 1])),
+      }));
+    },
+    // Le point d'une ancre d'un element de GDC pose sur la carte (son badge, son label), dans le repere de la carte ;
+    // null s'il n'est pas montre.
+    ancreElement(id, nom = "badge") {
+      const m = membres.get(`gdc:${id}`);
+      if (!m || !m.inst.root.visible) return null;
+      try {
+        return pointAncre(m, nom).applyMatrix4(plateau.matrix);
+      } catch {
+        return null;
+      }
     },
     // Les reperes HTML : les etapes et les passages sur leurs lieux fixes, la pastille de chaque batiment.
     reperes() {
