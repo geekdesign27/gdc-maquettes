@@ -58,7 +58,7 @@
   ],
   "chantier": {
     "regime": "ouvert",
-    "depuis": "2026-10-21T15:53:14.241Z",
+    "depuis": "2026-10-22T14:12:09.697Z",
     "raison": "activité de moins de trente minutes"
   },
   "plan": {
@@ -93,7 +93,7 @@
             "nom": "Le panneau du permis"
           }
         ],
-        "activee": "2026-10-21T15:53:14.389Z",
+        "activee": "2026-10-22T14:12:09.790Z",
         "par_ce_projet": true
       },
       {
@@ -280,16 +280,17 @@
   ],
   "actions": [
     {
-      "ts": "2026-10-21T15:53:14.389Z",
+      "ts": "2026-10-22T14:12:09.790Z",
       "action": "ouverture",
       "element": "chantier",
       "id": "chantier",
       "de": "ferme",
       "vers": "ouvert",
-      "phrase": "Le chantier ouvre"
+      "phrase": "Le chantier ouvre",
+      "cause": "evt:projet/39dae671"
     },
     {
-      "ts": "2026-10-21T15:53:14.389Z",
+      "ts": "2026-10-22T14:12:09.790Z",
       "action": "apparait",
       "element": "building",
       "id": "bureau",
@@ -298,7 +299,8 @@
       "phrase": "Application de bureau apparaît",
       "ref": {
         "application": "bureau"
-      }
+      },
+      "cause": "evt:projet/39dae671"
     }
   ]
 }

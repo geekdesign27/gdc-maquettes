@@ -1,0 +1,159 @@
+{
+  "schema": 1,
+  "maintenant": "2026-11-09T14:12:27.259Z",
+  "fuseau": "UTC",
+  "debut": "2026-10-22T14:12:09.697Z",
+  "depuis": "evt:001-cloturer-un-audit/506e548b",
+  "complet": false,
+  "lignes": [
+    {
+      "id": "fiche:001-cloturer-un-audit@6",
+      "niveau": "fiche",
+      "parent": "application:bureau@6",
+      "nom": "Clôturer un audit",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "etat": "en_cours",
+      "barres": [
+        {
+          "stade": "structure",
+          "debut": "2026-10-28T14:12:22.697Z",
+          "fin": "2026-11-09T14:12:26.073Z",
+          "commence_par": "evt:001-cloturer-un-audit/9b07a6ea",
+          "finit_par": "evt:001-cloturer-un-audit/c1a18214",
+          "fin_type": "normale"
+        },
+        {
+          "stade": "envelope",
+          "debut": "2026-11-09T14:12:26.073Z",
+          "fin": "2026-11-09T14:12:27.031Z",
+          "commence_par": "evt:001-cloturer-un-audit/c1a18214",
+          "finit_par": "evt:001-cloturer-un-audit/d4441e9e",
+          "fin_type": "normale"
+        },
+        {
+          "stade": "finishing",
+          "debut": "2026-11-09T14:12:27.031Z",
+          "fin": null,
+          "commence_par": "evt:001-cloturer-un-audit/d4441e9e",
+          "finit_par": null,
+          "fin_type": null
+        }
+      ]
+    }
+  ],
+  "retirees": [],
+  "jalons": [],
+  "jours": [
+    {
+      "date": "2026-11-09",
+      "evenements": 9,
+      "actif": true
+    }
+  ],
+  "evenements": [
+    {
+      "id": "evt:001-cloturer-un-audit/d4441e9e",
+      "ts": "2026-11-09T14:12:27.031Z",
+      "kind": "note",
+      "phrase": "Une intention est notée sur « Clôturer un audit »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:001-cloturer-un-audit/2d69dd40",
+      "ts": "2026-11-09T14:12:27.032Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Clôturer un audit »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-cloturer-un-audit"
+      },
+      "trait": false
+    }
+  ],
+  "regime": [
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:09.697Z",
+      "a": "2026-10-22T14:42:12.549Z"
+    },
+    {
+      "valeur": "ferme",
+      "de": "2026-10-22T14:42:12.549Z",
+      "a": "2026-10-24T14:12:13.774Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-24T14:12:13.774Z",
+      "a": "2026-10-24T14:42:15.330Z"
+    },
+    {
+      "valeur": "ferme",
+      "de": "2026-10-24T14:42:15.330Z",
+      "a": "2026-10-27T14:12:16.633Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-27T14:12:16.633Z",
+      "a": "2026-10-27T14:12:18.726Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-27T14:12:18.726Z",
+      "a": "2026-10-27T14:12:19.720Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-27T14:12:19.720Z",
+      "a": "2026-10-27T14:42:19.720Z"
+    },
+    {
+      "valeur": "ferme",
+      "de": "2026-10-27T14:42:19.720Z",
+      "a": "2026-10-28T14:12:21.248Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-28T14:12:21.248Z",
+      "a": "2026-10-28T14:42:22.697Z"
+    },
+    {
+      "valeur": "ferme",
+      "de": "2026-10-28T14:42:22.697Z",
+      "a": "2026-11-09T14:12:23.956Z"
+    },
+    {
+      "valeur": "ouvert",
+      "de": "2026-11-09T14:12:23.956Z",
+      "a": null
+    }
+  ],
+  "a_venir": [
+    {
+      "ligne": "fiche:001-cloturer-un-audit@7",
+      "etape": 7,
+      "apres": "fiche:001-cloturer-un-audit@6"
+    },
+    {
+      "ligne": "fiche:001-cloturer-un-audit@8",
+      "etape": 8,
+      "apres": "fiche:001-cloturer-un-audit@7"
+    },
+    {
+      "ligne": "etape:7",
+      "etape": 7,
+      "apres": "etape:6"
+    },
+    {
+      "ligne": "etape:8",
+      "etape": 8,
+      "apres": "etape:7"
+    }
+  ]
+}

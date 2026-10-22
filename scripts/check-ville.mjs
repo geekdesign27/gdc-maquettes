@@ -231,7 +231,7 @@ for (const [nom, scenes] of Object.entries(sequences))
         await carte.applique(scenes[6], { actions: false });
         verifie(await carte.ouvreCoupe('terrain'), `${nom} 7 : la vue en coupe du terrain ne s'ouvre pas`);
         const vue = carte.vueCoupe;
-        verifie(vue.fiche === '002-saisir-un-constat-hors-ligne', `${nom} 7 : la coupe ouvre ${vue.fiche}`);
+        verifie(/^\d+-saisir-un-constat-hors-ligne$/.test(vue.fiche || ''), `${nom} 7 : la coupe ouvre ${vue.fiche}`);
         verifie(vue.rooms[0]?.id === 'L1' && vue.rooms[0]?.state === 'building', `${nom} 7 : la pièce L1 n'est pas en travaux (${JSON.stringify(vue.rooms[0])})`);
         verifie(vue.places['developpeur-base'] === 'room:1', `${nom} 7 : Julie est à ${vue.places['developpeur-base']}, pas dans la pièce L1`);
         verifie(vue.places.helene === 'palier' && vue.places['expert-securite'] === 'palier', `${nom} 7 : Hélène et Sarah ne sont pas sur le palier`);
@@ -252,9 +252,12 @@ for (const [nom, scenes] of Object.entries(sequences))
     }
   }
 
-// --- Le camion de livraison : il roule benne baissee, la leve une fois gare, et repart (projet-type 15 -> 16 -> 15)
+// --- Le camion de livraison : il roule benne baissee, la leve une fois gare, et repart (le pas « Emma a fini son lot »,
+// celui d'avant, puis retour) ; les pas se trouvent par leur titre : GDC en ajoute d'une version a l'autre
 {
-  const [s15, s16] = [sequences['projet-type'][14], sequences['projet-type'][15]];
+  const pt = sequences['projet-type'];
+  const iCamion = pt.findIndex((s) => s.titre === 'Emma a fini son lot');
+  const [s15, s16] = [pt[iCamion - 1], pt[iCamion]];
   const carte = await creeCarte(THREE, { components: modules, chargeur, theme: 'light', quality: 'high', reducedMotion: false });
   await carte.applique(s15);
   await carte.applique(s16);

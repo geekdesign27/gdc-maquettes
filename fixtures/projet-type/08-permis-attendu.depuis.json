@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "maintenant": "2026-10-22T14:12:15.002Z",
+  "fuseau": "UTC",
+  "debut": "2026-10-22T14:12:09.697Z",
+  "depuis": "evt:projet/f95df430",
+  "complet": false,
+  "lignes": [
+    {
+      "id": "etape:3",
+      "niveau": "etape",
+      "parent": null,
+      "numero": 3,
+      "nom": "Le permis de construire",
+      "zone": "bureaux",
+      "etat": "en_cours",
+      "barres": []
+    }
+  ],
+  "retirees": [],
+  "jalons": [
+    {
+      "id": "jalon:projet/permis-de-construire/1",
+      "ligne": "etape:3",
+      "decision": "permis-de-construire",
+      "nom": "Le permis de construire",
+      "etat": "attendue",
+      "demandee": null,
+      "demandee_par": null,
+      "demandee_source": null,
+      "prise": null,
+      "prise_par": null
+    }
+  ],
+  "jours": [
+    {
+      "date": "2026-10-22",
+      "evenements": 8,
+      "actif": true
+    }
+  ],
+  "evenements": [],
+  "regime": [
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:09.697Z",
+      "a": "2026-10-22T14:12:15.002Z"
+    },
+    {
+      "valeur": "pause",
+      "de": "2026-10-22T14:12:15.002Z",
+      "a": null
+    }
+  ],
+  "a_venir": [
+    {
+      "ligne": "etape:4",
+      "etape": 4,
+      "apres": "etape:3"
+    },
+    {
+      "ligne": "etape:5",
+      "etape": 5,
+      "apres": "etape:4"
+    },
+    {
+      "ligne": "etape:6",
+      "etape": 6,
+      "apres": "etape:5"
+    },
+    {
+      "ligne": "etape:7",
+      "etape": 7,
+      "apres": "etape:6"
+    },
+    {
+      "ligne": "etape:8",
+      "etape": 8,
+      "apres": "etape:7"
+    }
+  ]
+}

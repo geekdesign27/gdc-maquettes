@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "maintenant": "2026-10-22T14:12:10.807Z",
+  "fuseau": "UTC",
+  "debut": "2026-10-22T14:12:09.697Z",
+  "depuis": "evt:projet/39dae671",
+  "complet": false,
+  "lignes": [],
+  "retirees": [],
+  "jalons": [],
+  "jours": [
+    {
+      "date": "2026-10-22",
+      "evenements": 3,
+      "actif": true
+    }
+  ],
+  "evenements": [],
+  "regime": [
+    {
+      "valeur": "ouvert",
+      "de": "2026-10-22T14:12:09.697Z",
+      "a": null
+    }
+  ],
+  "a_venir": [
+    {
+      "ligne": "etape:2",
+      "etape": 2,
+      "apres": "etape:1"
+    },
+    {
+      "ligne": "etape:3",
+      "etape": 3,
+      "apres": "etape:2"
+    },
+    {
+      "ligne": "etape:4",
+      "etape": 4,
+      "apres": "etape:3"
+    },
+    {
+      "ligne": "etape:5",
+      "etape": 5,
+      "apres": "etape:4"
+    },
+    {
+      "ligne": "etape:6",
+      "etape": 6,
+      "apres": "etape:5"
+    },
+    {
+      "ligne": "etape:7",
+      "etape": 7,
+      "apres": "etape:6"
+    },
+    {
+      "ligne": "etape:8",
+      "etape": 8,
+      "apres": "etape:7"
+    }
+  ]
+}
