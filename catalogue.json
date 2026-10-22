@@ -1381,52 +1381,34 @@
     },
     {
       "id": "side-nav",
-      "lot": "G6",
-      "order": 2,
+      "lot": "G8",
+      "order": 6,
       "kind": "html",
       "category": "interface",
       "name": "La navigation",
-      "purpose": "Aller à un lieu, un bâtiment, une fiche ou un agent ; la caméra suit.",
-      "description": "Liste groupée avec pastille d'état ; recherche intégrée.",
+      "purpose": "Aller à un lieu, un agent, un bâtiment, une fiche ou un lot ; la caméra suit. La navigation descend jusqu'aux lots.",
+      "description": "La navigation devient un arbre (choix de Pierre-Alain du 21 octobre 2026, plutôt qu'un arbre séparé à droite) : un élément d'un groupe peut avoir des enfants, sur trois niveaux au plus, selon le modèle d'arbre ARIA. Le groupe « Les bâtiments » descend jusqu'aux fiches (les étages) puis aux lots (les pièces) ; chaque nœud a son signe d'état, son nom et, pour une fiche, son numéro d'étape et sa fraction de lots finis. Les fiches livrées sont repliées sous « Livrées · n », toujours consultables. La recherche trouve aussi un lot et ouvre ses parents. GDC place la colonne (à droite, le fil des déclencheurs étant à gauche). Fiche validée par Pierre-Alain le 21 octobre 2026. Décisions de Pierre-Alain du 22 octobre 2026 : GDC marque une fiche livrée (delivered), donne la fraction de lots finis en { done, total } et un identifiant unique dans tout l'arbre à chaque nœud.",
       "acceptance": [
-        "Utilisable au clavier",
-        "Devient une rangée défilante sur téléphone"
+        "Utilisable au clavier selon le modèle d'arbre ARIA : flèches haut et bas, gauche pour plier, droite pour déplier, Début, Fin, Entrée",
+        "La recherche trouve un lot et ouvre ses parents",
+        "Les fiches livrées restent consultables, repliées sous « Livrées · n »",
+        "Émet gdc-hover et lit highlight (le survol partagé)",
+        "Sur téléphone, la rangée de pastilles montre le premier niveau ; choisir un bâtiment ouvre une deuxième rangée avec ses fiches",
+        "Ligne au journal des versions"
       ],
-      "status": "livré",
+      "status": "à faire",
       "inputs": {
-        "groups": "liste de { title, items: [{ id, name, state }] } ; state est l'un des six états de la signalétique ; absent, pas de signe (rien à signaler) ; toute autre valeur, « inconnu »",
-        "selected": "identifiant sélectionné"
+        "groups": "liste de { title, items } ; un item : { id, name, state?, ref?, etape?, progress?, delivered?, children? : [items] }, trois niveaux au plus ; id est unique dans tout l'arbre (GDC compose celui d'un lot, par exemple 001-cloturer-un-audit/L1) ; state est l'un des six états de la signalétique, absent pas de signe, toute autre valeur « inconnu » ; ref : { application, fiche?, lot? } ; progress : { done, total }, les lots finis sur le total, affiché « 1/3 » ; delivered : un enfant livré est rangé sous « Livrées · n » de son parent (décisions de Pierre-Alain du 22 octobre 2026)",
+        "selected": "identifiant sélectionné ; ses parents s'ouvrent quand il change",
+        "expanded": "identifiants des nœuds dépliés ; quand la liste change, les nœuds ajoutés s'ouvrent et les nœuds retirés se plient ; entre deux changements, l'arbre garde ce que l'utilisateur plie et déplie",
+        "highlight": "référence survolée ailleurs ({ application, fiche?, lot? } ou null)"
       },
       "outputs": {
-        "gdc-select": "detail.id = identifiant choisi"
+        "gdc-select": "detail.id = identifiant choisi, detail.ref = sa référence s'il en a une",
+        "gdc-hover": "detail.ref = la référence du nœud survolé, ou null"
       },
-      "next": {
-        "version": "2.0.0",
-        "lot": "G8",
-        "order": 6,
-        "status": "à faire",
-        "role": "intégrateur d'interface",
-        "purpose": "Aller à un lieu, un agent, un bâtiment, une fiche ou un lot ; la caméra suit. La navigation descend jusqu'aux lots.",
-        "description": "La navigation devient un arbre (choix de Pierre-Alain du 21 octobre 2026, plutôt qu'un arbre séparé à droite) : un élément d'un groupe peut avoir des enfants, sur trois niveaux au plus, selon le modèle d'arbre ARIA. Le groupe « Les bâtiments » descend jusqu'aux fiches (les étages) puis aux lots (les pièces) ; chaque nœud a son signe d'état, son nom et, pour une fiche, son numéro d'étape et sa fraction de lots finis. Les fiches livrées sont repliées sous « Livrées · n », toujours consultables. La recherche trouve aussi un lot et ouvre ses parents. GDC place la colonne (à droite, le fil des déclencheurs étant à gauche). Fiche validée par Pierre-Alain le 21 octobre 2026.",
-        "inputs": {
-          "groups": "liste de { title, items } ; un item : { id, name, state?, ref?, etape?, progress?, children? : [items] }, trois niveaux au plus ; state est l'un des six états de la signalétique",
-          "selected": "identifiant sélectionné",
-          "expanded": "identifiants des nœuds dépliés",
-          "highlight": "référence survolée ailleurs ({ application, fiche?, lot? } ou null)"
-        },
-        "outputs": {
-          "gdc-select": "detail.id = identifiant choisi, detail.ref = sa référence s'il en a une",
-          "gdc-hover": "detail.ref = la référence du nœud survolé, ou null"
-        },
-        "acceptance": [
-          "Utilisable au clavier selon le modèle d'arbre ARIA : flèches haut et bas, gauche pour plier, droite pour déplier, Début, Fin, Entrée",
-          "La recherche trouve un lot et ouvre ses parents",
-          "Les fiches livrées restent consultables, repliées sous « Livrées · n »",
-          "Émet gdc-hover et lit highlight (le survol partagé)",
-          "Sur téléphone, la rangée de pastilles montre le premier niveau ; choisir un bâtiment ouvre une deuxième rangée avec ses fiches",
-          "Ligne au journal des versions"
-        ]
-      }
+      "role": "intégrateur d'interface",
+      "version": "2.0.0"
     },
     {
       "id": "inspector",

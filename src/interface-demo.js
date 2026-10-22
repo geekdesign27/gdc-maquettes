@@ -75,6 +75,124 @@ const neufFiches = (selected, livrees = 4) => ({
   selected,
 });
 
+// La navigation 2.0.0 (lot G8) : l'arbre que GDC tire de sa scene (schema 3) : les lieux des quatre zones, les batiments
+// jusqu'aux fiches (les etages) et aux lots (les pieces), les agents. L'identifiant d'un lot est compose par GDC,
+// fiche/lot ; la fraction des lots finis est { done, total } (decisions de Pierre-Alain du 22 octobre 2026). Les signes
+// d'etat sont ceux de la demonstration : c'est GDC qui les choisit.
+const signeDe = { waiting: "waiting", active: "active", error: "error" };
+const arbreDe = (scene, extra = {}) => {
+  const elements = scene.elements || [];
+  const etatDe = (id) => elements.find((e) => e.id === id)?.etat;
+  const batiments = elements
+    .filter((e) => e.element === "building")
+    .map((b) => ({
+      id: b.id,
+      name: b.nom,
+      ref: b.ref,
+      children: (b.etages || []).map((e) => {
+        const ref = e.fiche ? { ...b.ref, fiche: e.fiche } : b.ref;
+        const pieces = e.pieces || [];
+        return {
+          id: e.fiche ?? `${b.id}/existant`,
+          name: e.nom,
+          ref,
+          etape: e.etape,
+          delivered: Boolean(e.livre),
+          state: e.livre ? "done" : pieces.some((p) => p.statut === "en_cours") ? "active" : undefined,
+          progress: pieces.length ? { done: pieces.filter((p) => p.statut === "fini").length, total: pieces.length } : undefined,
+          children: pieces.map((p) => ({
+            id: `${e.fiche}/${p.lot}`,
+            name: `${p.lot} · ${p.nom}`,
+            ref: { ...ref, lot: p.lot },
+            state: p.statut === "fini" ? "done" : p.statut === "en_cours" ? "active" : undefined,
+          })),
+        };
+      }),
+    }));
+  const agents = elements
+    .filter((e) => e.element === "character")
+    .map((c) => ({ id: c.id, name: c.nom, ref: c.ref ?? undefined, state: c.etat === "waiting" ? "waiting" : undefined }));
+  return {
+    groups: [
+      ...scene.plan.zones.map((z) => ({
+        title: z.nom,
+        items: z.lieux.map((l) => ({ id: l.id, name: l.nom, state: signeDe[etatDe(l.id)] })),
+      })),
+      { title: "Les bâtiments", items: batiments },
+      { title: "Les agents", items: agents },
+    ],
+    ...extra,
+  };
+};
+const sceneDe = (glob) => Object.values(glob)[0];
+const sceneTrois = sceneDe(troisChantiers);
+const sceneLotFini = sceneDe(
+  import.meta.glob("../fixtures/projet-type/16-lot-fini.json", { eager: true, import: "default" }),
+);
+// neuf fiches dans un batiment : quatre livrees sous « Livrees · 4 », des lots pour deux fiches en cours
+const lotsDe = (fiche, lots) =>
+  lots.map(([lot, name, state]) => ({ id: `${fiche}/${lot}`, name: `${lot} · ${name}`, ref: { application: "bureau", fiche, lot }, state }));
+const arbreNeufFiches = (extra) => ({
+  groups: [
+    {
+      title: "Les bâtiments",
+      items: [
+        {
+          id: "bureau",
+          name: "Application de bureau",
+          ref: { application: "bureau" },
+          state: "active",
+          children: neufFiches(null).floors.map((f) => ({
+            id: f.id,
+            name: f.name,
+            etape: f.etape,
+            state: f.state,
+            delivered: f.delivered,
+            ref: { application: "bureau", fiche: f.id },
+            progress: f.delivered ? { done: 2, total: 2 } : f.id === "010-tableau-de-bord" ? { done: 1, total: 3 } : undefined,
+            children: f.id === "010-tableau-de-bord"
+              ? lotsDe(f.id, [["L1", "Les indicateurs", "done"], ["L2", "Le graphique des écarts", "active"], ["L3", "L'export du tableau"]])
+              : f.id === "001-cloturer-un-audit"
+                ? lotsDe(f.id, [["L1", "L'écran de clôture", "done"], ["L2", "Le rapport signé", "done"]])
+                : [],
+          })),
+        },
+        { id: "terrain", name: "Application terrain", ref: { application: "terrain" } },
+      ],
+    },
+  ],
+  ...extra,
+});
+// des cas limites : du HTML dans un nom, un etat inconnu, un identifiant repete, un quatrieme niveau (ignore), une
+// fraction trop grande ou illisible, un item sans identifiant, un groupe sans titre
+const arbreLimites = {
+  selected: "doublon",
+  groups: [
+    {
+      items: [
+        { id: "html", name: "<img src=x onerror=alert(1)> <b>Pas du gras</b>", state: "dormant" },
+        { name: "Sans identifiant : ignoré" },
+        { id: "doublon", name: "Un identifiant", state: "error" },
+        { id: "doublon", name: "Le même identifiant : ignoré" },
+        {
+          id: "a",
+          name: "Un nom très long qui ne tient pas dans la colonne de la navigation et se coupe",
+          etape: 6,
+          progress: { done: 5, total: 3 },
+          children: [
+            {
+              id: "b",
+              name: "Deuxième niveau, fraction illisible",
+              progress: { done: "x", total: 2 },
+              children: [{ id: "c", name: "Troisième niveau", children: [{ id: "d", name: "Quatrième niveau : ignoré" }] }],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
 // Les variantes montrees pour chaque element : { titre, data }. Les donnees suivent la fiche du catalogue.
 const minutes = (n) => new Date(Date.now() - n * 60000).toISOString();
 export const variantes = {
@@ -107,72 +225,33 @@ export const variantes = {
       },
     },
   ],
-  // la navigation : le plan du projet-type (fixtures/projet-type), a l'etape de la construction
+  // la navigation 2.0.0 : l'arbre tire des sequences de GDC ; la suite change expanded puis le choix, comme GDC
   "side-nav": [
     {
-      titre: "Le chantier, une application choisie",
-      style: "height: 420px; max-width: 300px",
-      data: {
-        selected: "bureau",
-        groups: [
-          // les quatre zones du contrat GDC (plan.zones, schema 3) et leurs lieux, dans l'ordre de fixtures/projet-type
-          {
-            title: "Les bureaux",
-            items: [
-              { id: "bureau-architecte", name: "Le bureau d'architecte" },
-              { id: "bureau-client", name: "Le bureau du client", state: "waiting" },
-              { id: "bureau-etudes", name: "Le bureau d'études", state: "active" },
-              { id: "panneau-permis", name: "Le panneau du permis" },
-            ],
-          },
-          {
-            title: "Le chantier",
-            items: [
-              { id: "baraque", name: "La baraque du conducteur de travaux", state: "active" },
-              { id: "bureau-controle", name: "Le bureau de contrôle", state: "error" },
-              { id: "panneau-feu-vert", name: "Le panneau du feu vert" },
-              { id: "chantier", name: "Le chantier, une parcelle par application" },
-            ],
-          },
-          {
-            title: "La réception, la remise des clés et la garantie",
-            items: [
-              { id: "aire-reception", name: "L'aire de réception" },
-              { id: "cabane-cles", name: "La cabane de la remise des clés" },
-              { id: "cabane-garantie", name: "La cabane de la garantie" },
-            ],
-          },
-          {
-            title: "Les transformations",
-            items: [
-              { id: "cabane-transformations", name: "La cabane des transformations" },
-              { id: "parking", name: "Le carnet des demandes" },
-            ],
-          },
-          {
-            title: "Les bâtiments",
-            items: [{ id: "bureau", name: "Application de bureau", state: "active" }],
-          },
-          {
-            title: "Les fiches",
-            items: [
-              { id: "001-cloturer-un-audit", name: "Clôturer un audit", state: "active" },
-              { id: "002-signer-le-rapport", name: "Signer le rapport", state: "done" },
-            ],
-          },
-          {
-            title: "Les agents",
-            items: [
-              { id: "claire", name: "Claire, architecte", state: "active" },
-              { id: "lina", name: "Lina, designer UX/UI", state: "blocked" },
-              { id: "yves", name: "Yves, conducteur de travaux", state: "active" },
-              { id: "victor", name: "Victor, chef de chantier", state: "dormant" },
-            ],
-          },
-        ],
-      },
+      titre: "Trois applications (étape 8) : la fiche de Julie choisie, ses parents ouverts ; l'existant sous « Livrées »",
+      style: "height: 560px; max-width: 320px",
+      data: arbreDe(sceneTrois, { selected: "002-saisir-un-constat-hors-ligne" }),
     },
-    { titre: "Sans données", style: "height: 160px; max-width: 300px", data: {} },
+    {
+      titre: "Neuf fiches : quatre livrées sous « Livrées · 4 », les six états ; expanded ouvre le bâtiment et une fiche",
+      style: "height: 520px; max-width: 320px",
+      data: arbreNeufFiches({ expanded: ["bureau", "010-tableau-de-bord"] }),
+      suite: [
+        arbreNeufFiches({ expanded: ["bureau"] }),
+        arbreNeufFiches({ expanded: ["bureau"], selected: "002-signer-le-rapport" }),
+      ],
+    },
+    {
+      titre: "Projet type, étape 16 : un lot fini choisi",
+      style: "height: 420px; max-width: 320px",
+      data: arbreDe(sceneLotFini, { selected: "001-cloturer-un-audit/L1" }),
+    },
+    {
+      titre: "Cas limites : du HTML affiché comme du texte, un état inconnu, un identifiant répété, un quatrième niveau",
+      style: "height: 320px; max-width: 320px",
+      data: arbreLimites,
+    },
+    { titre: "Sans données", style: "height: 160px; max-width: 320px", data: {} },
   ],
   // le selecteur d'etages : les batiments de fixtures/trois-applications (etape 8), puis neuf fiches pour le rez
   "floor-selector": [
@@ -522,15 +601,13 @@ function rendJournal() {
   );
 }
 
-// Le survol partage (lot G8, hover-link) : un banc d'essai a trois colonnes tire de fixtures/trois-applications (le fil,
-// les etages, l'arbre) : le fil et le selecteur sont les vrais elements ; l'arbre, une liste branchee par ctx.hoverLink
-// comme le sera side-nav 2.0.0.
+// Le survol partage (lot G8, hover-link) : un banc d'essai a trois colonnes tire de fixtures/trois-applications : le
+// vrai fil, les vrais selecteurs d'etages, la vraie navigation (l'arbre).
 // Le relais de la page (plus bas) fait ce que fera GDC : chaque gdc-hover revient en highlight a tous.
 const etapesTrois = import.meta.glob("../fixtures/trois-applications/0*.json", {
   eager: true,
   import: "default",
 });
-const recepteurs = new Set(); // (ref) => void : les colonnes du banc
 let survols = 0;
 function sectionSurvol(entry) {
   const s = el("section", { id: entry.id });
@@ -540,7 +617,7 @@ function sectionSurvol(entry) {
     el(
       "p",
       {},
-      "Banc d'essai tiré de fixtures/trois-applications : à gauche, le vrai fil des déclencheurs ; au milieu, le vrai sélecteur d'étages ; à droite, l'arbre est une liste simple branchée par ctx.hoverLink, comme le sera la navigation 2.0.0. Survole ou parcours au clavier : ce qui correspond s'allume dans les trois. La carte et le fil se relient dans la galerie (la ville).",
+      "Banc d'essai tiré de fixtures/trois-applications : à gauche, le vrai fil des déclencheurs ; au milieu, le vrai sélecteur d'étages ; à droite, la vraie navigation, l'arbre des fiches et des lots. Survole ou parcours au clavier : ce qui correspond s'allume dans les trois. La carte, le fil et l'arbre se relient dans la galerie (la ville).",
     ),
   );
   const scenes = Object.keys(etapesTrois)
@@ -549,20 +626,6 @@ function sectionSurvol(entry) {
   const batiments = scenes
     .at(-1)
     .elements.filter((e) => e.element === "building");
-  // chaque bouton porte la reference que GDC a donnee au batiment, completee par les identifiants de GDC (la fiche
-  // de l'etage, le lot de la piece) : le banc n'invente aucun identifiant
-  const refs = new WeakMap();
-  const bouton = (texte, ref) => {
-    const b = el("button", { type: "button" }, texte);
-    refs.set(b, ref);
-    return b;
-  };
-  const item = (b, enfants) => {
-    const li = el("li");
-    li.append(b);
-    if (enfants) li.append(enfants);
-    return li;
-  };
   const colonne = (titre) => {
     const c = el("div", { class: "cadre banc-colonne" });
     c.append(el("h3", {}, titre));
@@ -579,41 +642,21 @@ function sectionSurvol(entry) {
   // les etages : le vrai selecteur d'etages (floor-selector), un par batiment ; il emet gdc-hover et lit highlight
   // lui-meme, par le relais de la page
   const etages = colonne("Le sélecteur d'étages");
-  const refEtage = (b, e) =>
-    e.fiche ? { ...b.ref, fiche: e.fiche } : b.ref;
   for (const b of batiments) {
     const selecteur = document.createElement("gdc-floor-selector");
     selecteur.data = selecteurDe(b, null);
     selecteur.style.marginBottom = "8px";
     etages.append(selecteur);
   }
-  // l'arbre : application, fiches, lots
+  // l'arbre : la vraie navigation (side-nav 2.0.0), tiree de la derniere scene ; elle emet gdc-hover et lit highlight
+  // elle-meme, par le relais de la page
   const arbre = colonne("L'arbre, à droite");
-  const racine = el("ul");
-  for (const b of batiments) {
-    const fiches = el("ul");
-    for (const e of b.etages.filter((x) => x.fiche)) {
-      const lots = el("ul");
-      for (const p of e.pieces)
-        lots.append(item(bouton(`${p.lot} · ${p.nom}`, { ...refEtage(b, e), lot: p.lot })));
-      fiches.append(item(bouton(e.nom, refEtage(b, e)), e.pieces.length ? lots : null));
-    }
-    racine.append(item(bouton(b.nom, b.ref), fiches));
-  }
-  arbre.append(racine);
+  const arbreElement = document.createElement("gdc-side-nav");
+  arbreElement.data = arbreDe(scenes.at(-1), { expanded: batiments.map((b) => b.id) });
+  arbreElement.style.height = "460px";
+  arbre.append(arbreElement);
   const grille = el("div", { class: "banc" });
-  for (const c of [fil, etages, arbre]) {
-    grille.append(c);
-    if (c !== arbre) continue;
-    interfaceContext.hoverLink(c, (n) => refs.get(n) || null);
-    recepteurs.add((ref) => {
-      for (const b of c.querySelectorAll("button"))
-        b.toggleAttribute(
-          "data-highlight",
-          interfaceContext.correspond(ref, refs.get(b)),
-        );
-    });
-  }
+  grille.append(fil, etages, arbre);
   // le compteur : un seul evenement par changement de reference, null a la sortie
   const compteur = el("p", { class: "banc-journal" }, "Aucun gdc-hover encore.");
   s.addEventListener("gdc-hover", (e) => {
@@ -643,7 +686,7 @@ demos.append(
   ...g7.map(sectionIllustration),
 );
 // Le relais du survol partage, comme GDC le fera : chaque gdc-hover revient en highlight a tous les elements qui le
-// lisent, l'emetteur compris, et aux colonnes du banc d'essai. La derniere reference de chaque element est gardee ;
+// lisent, l'emetteur compris. La derniere reference de chaque element est gardee ;
 // highlight est la plus recente qui n'est pas null : quand le pointeur quitte l'arbre, le focus reste dans le fil.
 const survolsParElement = new Map();
 document.addEventListener("gdc-hover", (e) => {
@@ -653,7 +696,6 @@ document.addEventListener("gdc-hover", (e) => {
   for (const m of Object.values(elements))
     if (m.meta.inputs.includes("highlight"))
       for (const n of document.querySelectorAll(m.meta.tag)) n.highlight = ref;
-  for (const r of recepteurs) r(ref);
 });
 const sj = el("section", { id: "controle" });
 sj.append(

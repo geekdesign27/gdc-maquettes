@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-55 éléments : 46 livré, 7 à faire, 2 exemple ; 4 nouvelle(s) version(s) prévue(s).
+55 éléments : 45 livré, 8 à faire, 2 exemple ; 3 nouvelle(s) version(s) prévue(s).
 
 ## G0 : La ligne graphique
 
@@ -562,7 +562,6 @@ Barre du haut, navigation, inspecteur, fiche d'agent, badges, barres de progress
 |---|---|---|---|---|---|
 | 0 | `fonts` | Les polices | Document de référence, pas de code | Manrope pour les titres, Inter pour l'interface, une police à chasse fixe pour les références. | livré |
 | 1 | `top-bar` | La barre du haut | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Le projet, ce qui t'attend, qui travaille, la fraîcheur des données. | livré |
-| 2 | `side-nav` | La navigation | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Aller à un lieu, un bâtiment, une fiche ou un agent ; la caméra suit. | livré |
 | 3 | `copy-button` | L'icône de copie | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Copier le nom et l'identifiant d'un élément, pour le coller dans l'outil d'IA. | livré |
 | 4 | `progress-bar` | La barre de progression | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Montrer l'avancement d'une fiche ou d'un lot, avec sa règle de calcul. | livré |
 | 5 | `notification-badge` | Le badge de notification | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Compter les alertes, les avertissements, ou montrer que tout est validé. | livré |
@@ -588,19 +587,6 @@ Nom du projet et ses initiales (en attendant un logo), nombre de décisions atte
 - Critères d'acceptation :
   - Tient sur un téléphone
   - La fraîcheur passe en avertissement au-delà d'un délai
-
-### La navigation (`side-nav`)
-
-Liste groupée avec pastille d'état ; recherche intégrée.
-
-- Élément : `<gdc-side-nav>`
-- Entrées (propriété data) : `groups` (liste de { title, items: [{ id, name, state }] } ; state est l'un des six états de la signalétique ; absent, pas de signe (rien à signaler) ; toute autre valeur, « inconnu ») ; `selected` (identifiant sélectionné)
-- Sorties (événements) : `gdc-select` (detail.id = identifiant choisi)
-- Critères d'acceptation :
-  - Utilisable au clavier
-  - Devient une rangée défilante sur téléphone
-
-Nouvelle version prévue : 2.0.0, au lot G8 (à faire).
 
 ### L'icône de copie (`copy-button`)
 
@@ -720,7 +706,7 @@ Faire de la carte la visualisation du harnais : relier au survol la carte, le fi
 | 3 | `floor-selector` | Le sélecteur d'étages | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Choisir l'étage d'un bâtiment, c'est-à-dire la fiche à regarder ; la vue en coupe s'ouvre sur cet étage. | livré |
 | 4 | `building-interior` | L'intérieur d'un bâtiment | Composant 3D Three.js, conforme à docs/contrat-composant.md | La vue micro : un étage ouvert, c'est-à-dire une fiche, avec une pièce par lot, l'étape où en est chaque lot et les experts au travail. | livré |
 | 5 | `trigger-feed` | Le fil des déclencheurs | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Lire à gauche ce que le harnais vient de faire, action par action, dans l'ordre. | livré |
-| 6 | `side-nav` | La navigation (version 2.0.0) | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Aller à un lieu, un agent, un bâtiment, une fiche ou un lot ; la caméra suit. La navigation descend jusqu'aux lots. | à faire |
+| 6 | `side-nav` | La navigation | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Aller à un lieu, un agent, un bâtiment, une fiche ou un lot ; la caméra suit. La navigation descend jusqu'aux lots. | à faire |
 | 7 | `day-night` | L'heure réelle | Document de référence, pas de code | La carte suit l'heure réelle : le jour, une nuit pas trop sombre, une courte aube et un court crépuscule ; la nuit, les fenêtres disent où l'on travaille. | à faire |
 | 8 | `floodlight` | Le projecteur de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Éclairer le chantier la nuit quand on y travaille. | à faire |
 | 9 | `character-kit` | Le personnage maître et son équipe (version v003) | Bibliothèque de modèles 3D produite par un script Blender (blender/assets/<id>.py) et réutilisée par plusieurs composants : components/kit/<id>/ | Un squelette, une morphologie et des animations communes pour tous les agents. | à faire |
@@ -818,6 +804,22 @@ Une liste, la plus récente en haut ; les actions d'un même instant (ts) sont g
   - Si l'utilisateur a remonté la liste, elle ne saute pas : un bouton « n nouvelles actions » ramène en haut
   - Repliée sur la dernière action sur téléphone
   - Lisible en clair et en sombre
+
+### La navigation (`side-nav`)
+
+La navigation devient un arbre (choix de Pierre-Alain du 21 octobre 2026, plutôt qu'un arbre séparé à droite) : un élément d'un groupe peut avoir des enfants, sur trois niveaux au plus, selon le modèle d'arbre ARIA. Le groupe « Les bâtiments » descend jusqu'aux fiches (les étages) puis aux lots (les pièces) ; chaque nœud a son signe d'état, son nom et, pour une fiche, son numéro d'étape et sa fraction de lots finis. Les fiches livrées sont repliées sous « Livrées · n », toujours consultables. La recherche trouve aussi un lot et ouvre ses parents. GDC place la colonne (à droite, le fil des déclencheurs étant à gauche). Fiche validée par Pierre-Alain le 21 octobre 2026. Décisions de Pierre-Alain du 22 octobre 2026 : GDC marque une fiche livrée (delivered), donne la fraction de lots finis en { done, total } et un identifiant unique dans tout l'arbre à chaque nœud.
+
+- Fabriqué par : intégrateur d'interface
+- Élément : `<gdc-side-nav>`
+- Entrées (propriété data) : `groups` (liste de { title, items } ; un item : { id, name, state?, ref?, etape?, progress?, delivered?, children? : [items] }, trois niveaux au plus ; id est unique dans tout l'arbre (GDC compose celui d'un lot, par exemple 001-cloturer-un-audit/L1) ; state est l'un des six états de la signalétique, absent pas de signe, toute autre valeur « inconnu » ; ref : { application, fiche?, lot? } ; progress : { done, total }, les lots finis sur le total, affiché « 1/3 » ; delivered : un enfant livré est rangé sous « Livrées · n » de son parent (décisions de Pierre-Alain du 22 octobre 2026)) ; `selected` (identifiant sélectionné ; ses parents s'ouvrent quand il change) ; `expanded` (identifiants des nœuds dépliés ; quand la liste change, les nœuds ajoutés s'ouvrent et les nœuds retirés se plient ; entre deux changements, l'arbre garde ce que l'utilisateur plie et déplie) ; `highlight` (référence survolée ailleurs ({ application, fiche?, lot? } ou null))
+- Sorties (événements) : `gdc-select` (detail.id = identifiant choisi, detail.ref = sa référence s'il en a une) ; `gdc-hover` (detail.ref = la référence du nœud survolé, ou null)
+- Critères d'acceptation :
+  - Utilisable au clavier selon le modèle d'arbre ARIA : flèches haut et bas, gauche pour plier, droite pour déplier, Début, Fin, Entrée
+  - La recherche trouve un lot et ouvre ses parents
+  - Les fiches livrées restent consultables, repliées sous « Livrées · n »
+  - Émet gdc-hover et lit highlight (le survol partagé)
+  - Sur téléphone, la rangée de pastilles montre le premier niveau ; choisir un bâtiment ouvre une deuxième rangée avec ses fiches
+  - Ligne au journal des versions
 
 ### L'heure réelle (`day-night`)
 
@@ -966,20 +968,4 @@ Deux métiers de plus, qui ne sont pas des agents : worker (l'ouvrier, de l'équ
 - Critères d'acceptation :
   - worker et civilian se lisent à la tenue, sans badge ni nom
   - headlamp : la lentille brille sans vraie lumière ; le client n'a pas de casque, donc pas de lampe
-  - Ligne au journal des versions
-
-### La navigation (`side-nav`), version 2.0.0
-
-La navigation devient un arbre (choix de Pierre-Alain du 21 octobre 2026, plutôt qu'un arbre séparé à droite) : un élément d'un groupe peut avoir des enfants, sur trois niveaux au plus, selon le modèle d'arbre ARIA. Le groupe « Les bâtiments » descend jusqu'aux fiches (les étages) puis aux lots (les pièces) ; chaque nœud a son signe d'état, son nom et, pour une fiche, son numéro d'étape et sa fraction de lots finis. Les fiches livrées sont repliées sous « Livrées · n », toujours consultables. La recherche trouve aussi un lot et ouvre ses parents. GDC place la colonne (à droite, le fil des déclencheurs étant à gauche). Fiche validée par Pierre-Alain le 21 octobre 2026.
-
-- Fabriqué par : intégrateur d'interface
-- Élément : `<gdc-side-nav>`
-- Entrées (propriété data) : `groups` (liste de { title, items } ; un item : { id, name, state?, ref?, etape?, progress?, children? : [items] }, trois niveaux au plus ; state est l'un des six états de la signalétique) ; `selected` (identifiant sélectionné) ; `expanded` (identifiants des nœuds dépliés) ; `highlight` (référence survolée ailleurs ({ application, fiche?, lot? } ou null))
-- Sorties (événements) : `gdc-select` (detail.id = identifiant choisi, detail.ref = sa référence s'il en a une) ; `gdc-hover` (detail.ref = la référence du nœud survolé, ou null)
-- Critères d'acceptation :
-  - Utilisable au clavier selon le modèle d'arbre ARIA : flèches haut et bas, gauche pour plier, droite pour déplier, Début, Fin, Entrée
-  - La recherche trouve un lot et ouvre ses parents
-  - Les fiches livrées restent consultables, repliées sous « Livrées · n »
-  - Émet gdc-hover et lit highlight (le survol partagé)
-  - Sur téléphone, la rangée de pastilles montre le premier niveau ; choisir un bâtiment ouvre une deuxième rangée avec ses fiches
   - Ligne au journal des versions
