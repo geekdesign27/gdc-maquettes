@@ -31,6 +31,25 @@ const selecteurDe = (b, selected) => ({
   })),
   selected,
 });
+// Le fil des declencheurs (lot G8) : les actions des sequences de GDC, etape par etape (schema 3, actions).
+const sequence = (glob) =>
+  Object.keys(glob)
+    .sort()
+    .map((k) => glob[k].actions || []);
+const actionsProjetType = sequence(
+  import.meta.glob("../fixtures/projet-type/[0-9]*.json", { eager: true, import: "default" }),
+);
+const actionsTroisApplications = sequence(
+  import.meta.glob("../fixtures/trois-applications/[0-9]*.json", { eager: true, import: "default" }),
+);
+// des cas limites : une phrase qui ressemble a du HTML, une heure illisible, une personne inconnue, sans phrase
+const actionsLimites = [
+  { ts: "2026-10-21T15:53:40.000Z", action: "change", element: "building", id: "bureau", nom: "Application de bureau", phrase: "<b>Application de bureau</b> : <img src=x onerror=alert(1)> structure → envelope", ref: { application: "bureau" } },
+  { ts: "2026-10-21T15:53:41.000Z", action: "apparait", element: "character", id: "inconnu", nom: "Quelqu'un, un rôle inconnu", phrase: "Quelqu'un, un rôle inconnu apparaît (la baraque)" },
+  { ts: "2026-10-21T15:53:41.000Z", action: "quantite", element: "parking", id: "parking" },
+  { ts: "pas une date", action: "change", element: "control-office", id: "bureau-controle", phrase: "Le bureau de contrôle : idle → error" },
+  { ts: "2026-10-21T15:53:42.000Z", action: "fermeture", element: "chantier", id: "chantier", phrase: "Le chantier ferme" },
+];
 // neuf fiches, pour voir le rez regroupe : les plus anciennes livrees, puis le chantier en cours
 const neufFiches = (selected, livrees = 4) => ({
   building: { id: "bureau", name: "Application de bureau" },
@@ -183,6 +202,32 @@ export const variantes = {
       data: { building: { id: "terrain", name: "Application terrain" }, floors: [] },
     },
     { titre: "Sans données", style: "max-width: 340px", data: {} },
+  ],
+  // le fil : la suite ajoute l'etape suivante, comme GDC (impulsion, annonce, « n nouvelles actions » si la liste est
+  // remontee)
+  "trigger-feed": [
+    {
+      titre: "Trois applications : étapes 1 à 3 ; « Étape suivante » ajoute les actions de la suivante",
+      style: "height: 420px; max-width: 380px",
+      data: { actions: actionsTroisApplications.slice(0, 3).flat() },
+      suite: actionsTroisApplications.slice(3).map((actions) => ({ actions })),
+    },
+    {
+      titre: "Projet type : les vingt et une étapes",
+      style: "height: 420px; max-width: 380px",
+      data: { actions: actionsProjetType.flat() },
+    },
+    {
+      titre: "Projet type, limit 6 : les six plus récentes",
+      style: "max-width: 380px",
+      data: { actions: actionsProjetType.flat(), limit: 6 },
+    },
+    {
+      titre: "Cas limites : du HTML affiché comme du texte, une heure illisible, une personne inconnue, sans phrase",
+      style: "max-width: 380px",
+      data: { actions: actionsLimites },
+    },
+    { titre: "Sans données", style: "max-width: 380px", data: {} },
   ],
   "copy-button": [
     { titre: "Un nom : copie « Le bureau d'études (bureau-etudes) »", data: { id: "bureau-etudes", text: "Le bureau d'études" } },
@@ -430,6 +475,21 @@ function sectionElement(entry) {
       f.append(n);
       d.append(el("h3", {}, v.titre), f);
     } else d.append(el("h3", {}, v.titre), n);
+    // la suite : chaque clic donne le data suivant a l'element, comme GDC a chaque nouvelle scene
+    if (v.suite) {
+      let i = 0;
+      const b = el("button", { type: "button", class: "suite" });
+      const libelle = () => {
+        b.textContent = i < v.suite.length ? `Étape suivante (${v.suite.length - i} restantes)` : "Toutes les étapes sont jouées";
+        b.disabled = i >= v.suite.length;
+      };
+      b.addEventListener("click", () => {
+        n.data = v.suite[i++];
+        libelle();
+      });
+      libelle();
+      d.append(b);
+    }
     s.append(d);
     // controle en direct : l'element s'est-il construit, et n'emet-il que les evenements de sa fiche ?
     queueMicrotask(() =>
@@ -463,7 +523,8 @@ function rendJournal() {
 }
 
 // Le survol partage (lot G8, hover-link) : un banc d'essai a trois colonnes tire de fixtures/trois-applications (le fil,
-// les etages, l'arbre), branche par ctx.hoverLink comme le seront trigger-feed, floor-selector et side-nav 2.0.0.
+// les etages, l'arbre) : le fil et le selecteur sont les vrais elements ; l'arbre, une liste branchee par ctx.hoverLink
+// comme le sera side-nav 2.0.0.
 // Le relais de la page (plus bas) fait ce que fera GDC : chaque gdc-hover revient en highlight a tous.
 const etapesTrois = import.meta.glob("../fixtures/trois-applications/0*.json", {
   eager: true,
@@ -479,7 +540,7 @@ function sectionSurvol(entry) {
     el(
       "p",
       {},
-      "Banc d'essai tiré de fixtures/trois-applications : le fil et l'arbre sont deux listes simples branchées par ctx.hoverLink, comme le seront le fil des déclencheurs et la navigation 2.0.0 ; au milieu, le vrai sélecteur d'étages. Survole ou parcours au clavier : ce qui correspond s'allume dans les trois. La carte se branche avec building 2.0.0.",
+      "Banc d'essai tiré de fixtures/trois-applications : à gauche, le vrai fil des déclencheurs ; au milieu, le vrai sélecteur d'étages ; à droite, l'arbre est une liste simple branchée par ctx.hoverLink, comme le sera la navigation 2.0.0. Survole ou parcours au clavier : ce qui correspond s'allume dans les trois. La carte et le fil se relient dans la galerie (la ville).",
     ),
   );
   const scenes = Object.keys(etapesTrois)
@@ -507,16 +568,13 @@ function sectionSurvol(entry) {
     c.append(el("h3", {}, titre));
     return c;
   };
-  // le fil : les actions referencees des huit etapes, la plus recente en haut
+  // le fil : le vrai fil des declencheurs (trigger-feed), les actions des huit etapes ; il emet gdc-hover et lit
+  // highlight lui-meme, par le relais de la page
   const fil = colonne("Le fil, à gauche");
-  const actions = el("ul");
-  for (const a of scenes
-    .flatMap((sc) => sc.actions || [])
-    .filter((a) => a.ref)
-    .reverse()
-    .slice(0, 12))
-    actions.append(item(bouton(a.phrase, a.ref)));
-  fil.append(actions);
+  const filElement = document.createElement("gdc-trigger-feed");
+  filElement.data = { actions: scenes.flatMap((sc) => sc.actions || []) };
+  filElement.style.height = "460px";
+  fil.append(filElement);
   // les etages : le panneau d'ascenseur de chaque batiment, l'etage du haut en haut
   // les etages : le vrai selecteur d'etages (floor-selector), un par batiment ; il emet gdc-hover et lit highlight
   // lui-meme, par le relais de la page
@@ -546,7 +604,7 @@ function sectionSurvol(entry) {
   const grille = el("div", { class: "banc" });
   for (const c of [fil, etages, arbre]) {
     grille.append(c);
-    if (c === etages) continue;
+    if (c !== arbre) continue;
     interfaceContext.hoverLink(c, (n) => refs.get(n) || null);
     recepteurs.add((ref) => {
       for (const b of c.querySelectorAll("button"))

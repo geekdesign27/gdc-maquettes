@@ -27,7 +27,7 @@
     .illustrations { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
     .illustration { margin: 0; display: grid; justify-items: center; gap: 4px; }
     .illustration figcaption { font: 11px/1.2 var(--gdc-font-mono); color: var(--gdc-muted); }
-    @media (max-width: 600px) { gdc-side-nav { height: auto !important; max-width: none !important; } }
+    @media (max-width: 600px) { gdc-side-nav, gdc-trigger-feed { height: auto !important; max-width: none !important; } }
     .banc { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: start; }
     main.phone .banc { grid-template-columns: 1fr; }
     @media (max-width: 600px) { .banc { grid-template-columns: 1fr; } }
@@ -39,6 +39,8 @@
     .banc button:hover { background: color-mix(in srgb, var(--gdc-ink) 7%, transparent); }
     .banc button[data-highlight] { background: var(--gdc-highlight-fill); box-shadow: var(--gdc-highlight-ring); }
     .banc-journal { font: 12px/1.5 var(--gdc-font-mono); color: var(--gdc-muted); margin: 8px 0 0; }
+    .suite { display: block; margin: 8px 0 0; border: 1px solid color-mix(in srgb, var(--gdc-ink) 25%, transparent); background: var(--gdc-surface); color: var(--gdc-ink); border-radius: 6px; padding: 6px 10px; font: inherit; cursor: pointer; min-height: 36px; }
+    .suite:disabled { color: var(--gdc-muted); cursor: default; }
     #journal { font: 12px/1.5 var(--gdc-font-mono); white-space: pre-wrap; margin: 0; }
     #journal .ko { color: var(--gdc-state-error); font-weight: 600; }
   </style>
