@@ -188,7 +188,10 @@ function retireFil() {
 // etape (src/arbre.js) ; les batiments se deplient a leur arrivee ; un choix est confirme comme GDC le ferait.
 let arbreVille = null;
 let choixVille = null;
-function poseArbre(scene) {
+let sequenceArbre = null; // le choix tient tant qu'on reste dans la meme sequence (une bascule recree la carte)
+function poseArbre(scene, sequence) {
+  if (sequence !== sequenceArbre) choixVille = null;
+  sequenceArbre = sequence;
   if (!arbreVille) {
     arbreVille = document.createElement('gdc-side-nav');
     arbreVille.className = 'arbre-ville';
@@ -205,7 +208,6 @@ function poseArbre(scene) {
 function retireArbre() {
   arbreVille?.remove();
   arbreVille = null;
-  choixVille = null;
 }
 // Le survol partage entre la carte, le fil et l'arbre, comme GDC le fera : chaque source garde sa derniere reference ;
 // le highlight est la plus recente qui n'est pas null, renvoye au fil et a l'arbre (l'emetteur compris) et pose sur la
@@ -231,7 +233,7 @@ async function instanceVille(id, state) {
   await carte.applique(sceneDe(premier));
   const actionsJusqua = (s) => etapes.slice(0, etapes.indexOf(s) + 1).flatMap((x) => sceneDe(x).actions || []);
   poseFil(actionsJusqua(premier));
-  poseArbre(sceneDe(premier));
+  poseArbre(sceneDe(premier), nom);
   let etape = premier;
   const inst = {
     root: carte.root,
@@ -241,7 +243,7 @@ async function instanceVille(id, state) {
       etape = s;
       if (suite && filVille) filVille.data = { actions: sceneDe(s).actions || [] };
       else poseFil(actionsJusqua(s));
-      poseArbre(sceneDe(s));
+      poseArbre(sceneDe(s), nom);
       carte.applique(sceneDe(s), { actions: suite }).then(() => {
         if (current.inst !== inst) return;
         current.apps = carte.applications;

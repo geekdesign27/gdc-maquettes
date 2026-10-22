@@ -32,7 +32,7 @@
        liste depliee defile au lieu de sortir par le haut */
     @media (max-width: 600px) { #stage .fil-ville { top: auto; right: 12px; width: auto; max-width: calc(100vw - 24px); max-height: calc(100% - 24px); display: flex; flex-direction: column; } }
     /* l'arbre des fiches et des lots, a droite ; en haut sur telephone, ses rangees de pastilles */
-    #stage .arbre-ville { position: absolute; z-index: 2; right: 12px; top: 12px; bottom: 12px; width: min(300px, 30%); border-radius: 8px; overflow: hidden; }
+    #stage .arbre-ville { position: absolute; z-index: 2; right: 12px; top: 12px; bottom: 12px; width: clamp(240px, 30%, 300px); border-radius: 8px; overflow: hidden; }
     @media (max-width: 600px) { #stage .arbre-ville { bottom: auto; left: 12px; width: auto; max-width: calc(100vw - 24px); } }
     .anchor { position: absolute; transform: translate(-50%, -100%); background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 4px; padding: 1px 6px; font-size: 12px; white-space: nowrap; }
     .anchor.repere { display: flex; align-items: center; gap: 4px; padding: 2px 7px 2px 3px; border-radius: 12px; font-weight: 600; pointer-events: auto; }

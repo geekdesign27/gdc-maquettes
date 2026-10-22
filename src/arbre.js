@@ -16,8 +16,9 @@ export const arbreDe = (scene, extra = {}) => {
       children: (b.etages || []).map((e) => {
         const ref = e.fiche ? { ...b.ref, fiche: e.fiche } : b.ref;
         const pieces = e.pieces || [];
+        const id = e.fiche ?? `${b.id}/existant`;
         return {
-          id: e.fiche ?? `${b.id}/existant`,
+          id,
           name: e.nom,
           ref,
           etape: e.etape,
@@ -25,7 +26,7 @@ export const arbreDe = (scene, extra = {}) => {
           state: e.livre ? "done" : pieces.some((p) => p.statut === "en_cours") ? "active" : undefined,
           progress: pieces.length ? { done: pieces.filter((p) => p.statut === "fini").length, total: pieces.length } : undefined,
           children: pieces.map((p) => ({
-            id: `${e.fiche}/${p.lot}`,
+            id: `${id}/${p.lot}`,
             name: `${p.lot} · ${p.nom}`,
             ref: { ...ref, lot: p.lot },
             state: p.statut === "fini" ? "done" : p.statut === "en_cours" ? "active" : undefined,

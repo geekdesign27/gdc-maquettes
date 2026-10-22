@@ -95,6 +95,11 @@ li[aria-selected="true"] > .ligne .extra { color: var(--gdc-ink); }
   li[aria-selected="true"] > .ligne, li[aria-selected="true"] > .ligne[data-highlight] { background: var(--gdc-ink); color: var(--gdc-surface);
     border-color: var(--gdc-ink); }
   li[aria-selected="true"] > .ligne .extra { color: var(--gdc-surface); }
+  /* sur la pastille choisie, a l'encre, le focus et la marque du survol se tracent a la couleur de la surface */
+  li[aria-selected="true"]:focus-visible > .ligne { outline-color: var(--gdc-surface); outline-offset: -4px; }
+  li[aria-selected="true"] > .ligne[data-highlight] { box-shadow: inset 0 0 0 2px var(--gdc-ink), inset 0 0 0 3px var(--gdc-surface); }
+  /* sans etat, pas de case vide : le nom reste centre dans sa pastille */
+  .signe:empty { display: none; }
   li[aria-selected="true"] > .ligne::before, .ligne[data-contient]::before { display: none; }
   /* le batiment dont les fiches font la deuxieme rangee, et le parent visible du choisi */
   .ligne[data-contient], [role="tree"] > li[aria-expanded="true"] > .ligne { border-color: var(--gdc-ink); }
@@ -103,8 +108,9 @@ li[aria-selected="true"] > .ligne .extra { color: var(--gdc-ink); }
   .pli { display: none; }
   [role="tree"] > li > [role="group"] { position: absolute; left: 0; right: 0; bottom: 0; height: 50px; padding: 0 8px 8px; overflow-x: auto; overflow-y: hidden;
     scrollbar-width: thin; }
-  /* « Livrees · n » : une pastille qui deplie ses fiches dans la meme rangee */
-  li.dossier { display: flex; gap: 6px; align-items: center; }
+  /* dans la deuxieme rangee, un noeud deplie montre ses enfants a sa suite : les fiches de « Livrees · n », et pendant une
+     recherche les lots trouves apres leur fiche (decision de Pierre-Alain du 22 octobre 2026) */
+  [role="tree"] > li > [role="group"] li { display: flex; gap: 6px; align-items: center; }
   li.dossier > .ligne .pli { display: inline-grid; }
   li.dossier[aria-expanded="true"] > .ligne .pli svg { transform: rotate(180deg); }
   .vide { margin: 8px; white-space: nowrap; }
@@ -124,7 +130,10 @@ export function define(registry, ctx) {
     #sections = []; // { section, nodes (premier niveau) }
     #refs = new WeakMap(); // li -> reference (le survol partage)
     #phone = null; // MediaQueryList du telephone
-    #onPhone = () => this.#paint();
+    #onPhone = () => {
+      this.#paint();
+      this.#reveal(undefined, true);
+    };
     #els = {};
 
     constructor() {
@@ -390,10 +399,11 @@ export function define(registry, ctx) {
         let ouvert = montres
           ? n.children.some((c) => montres.has(c))
           : this.#open.has(n.key);
-        // sur telephone, seul le batiment de la deuxieme rangee s'ouvre, et ses fiches gardent leurs lots
-        if (phone && !n.dossier) ouvert = n === haut;
+        // sur telephone, seul le batiment de la deuxieme rangee s'ouvre ; ses fiches ne montrent leurs lots que
+        // pendant une recherche, ceux qui sont trouves (decision de Pierre-Alain du 22 octobre 2026)
+        if (phone && !n.dossier) ouvert = n.depth === 1 ? n === haut : Boolean(montres) && ouvert;
         n.groupEl.hidden = !ouvert;
-        if (phone && !n.dossier && n.depth > 1)
+        if (phone && !n.dossier && n.depth > 1 && !montres)
           n.el.removeAttribute("aria-expanded");
         else n.el.setAttribute("aria-expanded", String(ouvert));
       }
