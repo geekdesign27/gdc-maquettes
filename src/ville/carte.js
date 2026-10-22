@@ -4,7 +4,7 @@
 // - les actions jouees dans l'ordre de leur horodatage, les marches le long des voies (chemins.js), plafonnees ;
 // - la vie du chantier (vie.js), tiree du regime, des phases et des agents presents, a partir d'une graine ;
 // - les zones jamais activees en niveaux de gris, colorees pour toujours a la premiere activation ;
-// - la vue en coupe (building-interior) d'un batiment, que GDC ouvre au clic.
+// - la vue en coupe (building-interior 2.0.0) d'un etage, que GDC ouvre au clic ou au selecteur d'etages.
 // Les composants n'en savent rien : la carte les cree, les pose, leur donne un etat, et recolore des copies de leurs
 // materiaux (zones grises, remplacants des ouvriers et des usagers). Three.js, le chargeur des modeles et les
 // composants sont injectes ; rien n'est charge d'ailleurs.
@@ -34,7 +34,12 @@ import {
   metaPersonne,
 } from "./equipe.js";
 import { alea } from "./graine.js";
-import { groupFloors, anchorFor, refOf } from "../etages.js";
+import {
+  groupFloors,
+  anchorFor,
+  refOf,
+  roomsFromPieces,
+} from "../etages.js";
 import { tokens, makeContext, paletteFor } from "../tokens.js";
 
 // Les remplacants, en attendant character 1.2.0 (worker et civilian) : la carte recolore des copies des materiaux de la
@@ -54,6 +59,8 @@ const RAYON_VIRAGE = 2.5; // m, le camion arrondit les angles des voies
 const RECUL_CAMION = 5; // m, il recule hors de sa place avant de repartir
 const BRAQUAGE = 6; // 1/s, la vitesse a laquelle son cap rejoint celui de la voie
 const ECART_PERSONNES = 0.75; // m, deux personnes ne se posent jamais plus pres
+const ECART_PIECE = 0.9; // m, entre deux agents d'une meme piece de la vue en coupe
+const PALIER = 0.6; // m, du bord avant du socle de la coupe aux agents sans piece
 // Les phases du gros oeuvre, ou la grue est montee sur la parcelle (docs/ville.md : la structure et ses echafaudages,
 // la grue) ; GDC la fait lever (lifting) a la fusion vers dev, et la pose meme hors de ces phases.
 const PHASES_GRUE = ["structure", "envelope"];
@@ -1396,6 +1403,19 @@ export async function creeCarte(THREE, options) {
     },
     // La reference survolee sous un objet (le survol partage) : le batiment, l'etage ou la piece ; null ailleurs.
     refSous(objet) {
+      if (coupe) {
+        // une piece de la vue en coupe : son lot ; le reste de la coupe : la fiche de l'etage ouvert
+        let o = objet;
+        while (o && o !== coupe.inst.root && !o.userData.room) o = o.parent;
+        if (o) {
+          const b = lu.batiments.find((x) => x.id === coupe.id);
+          const etage = { grouped: false, ids: [coupe.fiche] };
+          const r = o.userData.room
+            ? coupe.rooms[o.userData.room.index - 1]
+            : null;
+          return refOf(b.ref || { application: b.id }, etage, r);
+        }
+      }
       const m = membreDe(objet);
       if (!m || m.id !== "building" || !m.el) return null;
       const b = lu.batiments.find((x) => x.id === m.el.id);
@@ -1425,6 +1445,22 @@ export async function creeCarte(THREE, options) {
       anneau.grand.setState("hidden");
       anneau.petit.setState("hidden");
       if (!ref || !lu) return;
+      if (coupe && ref.fiche !== undefined && ref.fiche === coupe.fiche) {
+        const b = lu.batiments.find((x) => x.id === coupe.id);
+        if ((b.ref?.application || b.id) === ref.application) {
+          // dans la coupe ouverte, l'anneau va a la piece du lot ; la fiche seule n'en pose pas (toute la vue l'est)
+          const m = coupe.rooms.findIndex((r) => r.id === ref.lot);
+          if (m < 0) return;
+          coupe.inst.root.updateMatrix();
+          anneau.petit.root.position.copy(
+            coupe.inst
+              .anchor(`room:${m + 1}`)
+              .applyMatrix4(coupe.inst.root.matrix),
+          );
+          anneau.petit.setState("hover");
+          return;
+        }
+      }
       const b = lu.batiments.find(
         (x) => (x.ref?.application || x.id) === ref.application,
       );
@@ -1443,11 +1479,18 @@ export async function creeCarte(THREE, options) {
       anneau.petit.root.position.copy(pointAncre(m, ancre));
       anneau.petit.setState("hover");
     },
-    // La vue en coupe d'un batiment (building-interior 1.0 : une piece par fiche, les agents a leur piece).
-    ouvreCoupe: (id) => ouvreCoupe(id),
+    // La vue en coupe d'un etage (building-interior 2.0.0 : une piece par lot, les agents a leur piece ou sur le palier) :
+    // fiche, l'etage clique ou choisi au selecteur d'etages ; sans fiche, l'etage en chantier le plus haut.
+    ouvreCoupe: (id, fiche) => ouvreCoupe(id, fiche),
     fermeCoupe: () => fermeCoupe(),
     get coupe() {
       return coupe ? coupe.id : null;
+    },
+    // ce que la coupe montre : l'etage ouvert, ses pieces (data.rooms) et la place de chaque agent (room:n ou palier)
+    get vueCoupe() {
+      if (!coupe) return null;
+      const { id, fiche, rooms, places } = coupe;
+      return { id, fiche, rooms, places };
     },
     get regime() {
       return regime;
@@ -1544,95 +1587,122 @@ export async function creeCarte(THREE, options) {
     throw new Error(`ancre inconnue : ${nom}`);
   }
 
-  // --- la vue en coupe
-  const ETAT_PIECE = {
-    plot: "study",
-    excavation: "construction",
-    foundations: "construction",
-    structure: "construction",
-    envelope: "construction",
-    finishing: "construction",
-    inspection: "reception",
-    completed: "done",
-  };
-  async function ouvreCoupe(id) {
+  // --- la vue en coupe (building-interior 2.0.0) : un etage ouvert, une piece par lot
+  // L'etage d'un batiment a ouvrir : la fiche demandee (l'etage clique, ou choisi au selecteur d'etages) ; sinon l'etage
+  // en chantier le plus haut, sinon le dernier (decision de Pierre-Alain du 22 octobre 2026). Un batiment sans etage
+  // s'ouvre sur un etage vide a son stade.
+  function etageAOuvrir(b, fiche) {
+    const etages = b.etages || [];
+    if (fiche !== undefined && fiche !== null) {
+      const e = etages.find((x) => x.fiche === fiche);
+      if (e) return e;
+    }
+    const enChantier = etages.filter((e) => !e.livre);
+    return (
+      enChantier[enChantier.length - 1] ||
+      etages[etages.length - 1] || { fiche: null, stade: b.etat, pieces: [] }
+    );
+  }
+  async function ouvreCoupe(id, fiche) {
     if (coupe) fermeCoupe(true);
     const b = lu?.batiments.find((x) => x.id === id);
     const mb = membres.get(`gdc:${id}`);
     if (!b || !mb) return false;
-    const fiches = (b.etages || []).slice(-12);
-    const rooms = (
-      fiches.length ? fiches : [{ fiche: null, stade: b.etat }]
-    ).map((e) => {
-      const attend = [...lu.elements.values()].some(
-        (x) =>
-          x.element === "decision-sign" &&
-          x.ref?.fiche &&
-          x.ref.fiche === e.fiche,
-      );
-      const defaut = [...lu.elements.values()].some(
+    const etage = etageAOuvrir(b, fiche);
+    const sesAgents = lu.personnages.filter(
+      (p) => p.batiment === id && (p.etage ?? null) === etage.fiche,
+    );
+    // les metiers presents par lot, et les lots qu'un defect-sign designe (un defaut sur la fiche seule n'en designe
+    // aucun : decision de Pierre-Alain du 22 octobre 2026)
+    const trades = {};
+    for (const p of sesAgents)
+      if (p.piece)
+        (trades[p.piece] ||= []).push(
+          parametresDe(personneDe(p) || { metier: "engineer" }).trade,
+        );
+    const defects = [...lu.elements.values()]
+      .filter(
         (x) =>
           x.element === "defect-sign" &&
-          x.ref?.fiche &&
-          x.ref.fiche === e.fiche,
-      );
-      const trades = lu.personnages
-        .filter((p) => p.batiment === id && p.etage === e.fiche)
-        .map(
-          (p) => parametresDe(personneDe(p) || { metier: "engineer" }).trade,
-        );
-      return {
-        state: defaut
-          ? "defect"
-          : attend
-            ? "waiting"
-            : ETAT_PIECE[e.stade] || "study",
-        trades,
-      };
+          x.ref?.fiche === etage.fiche &&
+          x.ref?.lot,
+      )
+      .map((x) => x.ref.lot);
+    const rooms = roomsFromPieces(etage.pieces, { defects, trades });
+    const inst = await cree("building-interior", {
+      rooms: Math.max(rooms.length, 1),
     });
-    const inst = await cree("building-interior", { rooms: rooms.length });
     inst.root.position.copy(mb.inst.root.position);
     plateau.add(inst.root);
-    inst.setState("default", { rooms });
-    // le batiment et ce qui l'entoure s'effacent ; ses agents vont a leur piece
+    inst.setState("default", { floor: { stage: etage.stade }, rooms });
+    // le batiment et ce qui l'entoure (engins, grue de la parcelle) s'effacent, avec les agents des autres etages ; ceux
+    // de l'etage vont a leur piece, ou sur le palier, devant, s'ils n'en ont pas (controle, mission, relecture)
+    const autres = lu.personnages
+      .filter((p) => p.batiment === id && !sesAgents.includes(p))
+      .map((p) => membres.get(`gdc:${p.id}`))
+      .filter(Boolean);
     const caches = [...membres.values()].filter(
       (m) =>
         m.inst.root.visible &&
         (m === mb ||
+          autres.includes(m) ||
+          m.batiment === id ||
           m.el?.ancre === id ||
           (m.vie && vivants.get(m.cle)?.spec.batiment === id)),
     );
     for (const m of caches) m.inst.root.visible = false;
+    inst.root.updateMatrixWorld(true);
+    const boite = new THREE.Box3()
+      .setFromObject(inst.root)
+      .applyMatrix4(inst.root.matrixWorld.clone().invert());
+    const surPalier = sesAgents.filter(
+      (p) => !rooms.some((r) => r.id === p.piece),
+    );
+    const parPiece = {};
     const deplaces = [];
-    lu.personnages
-      .filter((p) => p.batiment === id)
-      .forEach((p, k) => {
-        const a = membres.get(`gdc:${p.id}`)?.acteur;
-        if (!a) return;
-        const n =
-          Math.max(
-            fiches.findIndex((e) => e.fiche === p.etage),
-            0,
-          ) + 1;
-        let v;
-        try {
-          v = inst
-            .anchor(`room:${Math.min(n, rooms.length)}`)
-            .clone()
-            .add(inst.root.position);
-        } catch {
-          return;
-        }
-        deplaces.push({
-          a,
-          avant: [...a.pos],
-          y: a.y,
-          visible: a.m.inst.root.visible,
-        });
-        placeActeur(a, [v.x + (k % 2) * 0.7, v.z], v.y);
-        a.m.inst.root.visible = true;
+    const places = {};
+    for (const p of sesAgents) {
+      const a = membres.get(`gdc:${p.id}`)?.acteur;
+      if (!a) continue;
+      const m = rooms.findIndex((r) => r.id === p.piece);
+      let local;
+      if (m >= 0) {
+        // dans sa piece, les agents d'une meme piece cote a cote
+        const k = (parPiece[m] = (parPiece[m] ?? -1) + 1);
+        const n = sesAgents.filter((x) => x.piece === p.piece).length;
+        local = inst
+          .anchor(`room:${m + 1}`)
+          .add(new THREE.Vector3((k - (n - 1) / 2) * ECART_PIECE, 0, 0));
+        places[p.id] = `room:${m + 1}`;
+      } else {
+        const k = surPalier.indexOf(p);
+        local = new THREE.Vector3(
+          (k - (surPalier.length - 1) / 2) * ECART_PIECE,
+          0,
+          boite.max.z - PALIER,
+        );
+        places[p.id] = "palier";
+      }
+      const v = local.add(inst.root.position);
+      deplaces.push({
+        a,
+        avant: [...a.pos],
+        y: a.y,
+        visible: a.m.inst.root.visible,
       });
-    coupe = { id, inst, caches, deplaces, fermeture: null };
+      placeActeur(a, [v.x, v.z], v.y);
+      a.m.inst.root.visible = true;
+    }
+    coupe = {
+      id,
+      fiche: etage.fiche,
+      rooms,
+      places,
+      inst,
+      caches,
+      deplaces,
+      fermeture: null,
+    };
     return true;
   }
   function fermeCoupe(net = false) {

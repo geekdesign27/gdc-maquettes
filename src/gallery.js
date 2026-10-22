@@ -417,7 +417,7 @@ window.galerie = {
   },
 };
 
-// La ville : un clic sur un batiment ouvre sa vue en coupe, comme le fera GDC ; un clic ailleurs ou Echap la ferme. Le
+// La ville : un clic sur un etage ouvre sa vue en coupe, comme le fera GDC ; un clic ailleurs ou Echap la ferme. Le
 // survol d'un batiment, d'un etage ou d'une piece pose l'anneau (le survol partage, cote carte).
 const rayon = new THREE.Raycaster();
 const pointeur = new THREE.Vector2();
@@ -435,8 +435,10 @@ renderer.domElement.addEventListener('pointerdown', (ev) => { appui = [ev.client
 renderer.domElement.addEventListener('pointerup', async (ev) => {
   if (!current.ville || !appui || Math.hypot(ev.clientX - appui[0], ev.clientY - appui[1]) > 4) return;
   const { carte } = current.ville;
-  const cible = carte.cible(sousPointeur(ev));
-  if (cible && cible.element === 'building' && carte.coupe !== cible.id) await carte.ouvreCoupe(cible.id);
+  const objet = sousPointeur(ev);
+  const cible = carte.cible(objet);
+  // l'etage touche s'ouvre ; le rez regroupe ou le batiment : l'etage en chantier le plus haut (building-interior 2.0.0)
+  if (cible && cible.element === 'building' && carte.coupe !== cible.id) await carte.ouvreCoupe(cible.id, carte.refSous(objet)?.fiche);
   else carte.fermeCoupe();
   dirty = true;
 });

@@ -104,7 +104,7 @@ await carte.applique(sceneDeGdc);               // gdc scene --avant : plan, ele
 | `cadres()` | Les quatre zones au sol, leurs coins, leur couleur d'interface et `activee`. |
 | `cible(objet)` | L'élément de GDC sous un objet touché (`{ element, id, ref }`), pour le clic ; `null` pour le décor, les ouvriers et les usagers. |
 | `refSous(objet)`, `surligne(ref)` | Le survol partagé côté carte : la référence du bâtiment, de l'étage ou de la pièce survolée ; l'anneau `selection-ring` (`hover`) sur ce qui correspond à une référence reçue. |
-| `ouvreCoupe(id)`, `fermeCoupe()` | La vue en coupe d'un bâtiment (`building-interior` 1.0 : une pièce par fiche, ses agents à leur pièce) ; le bâtiment et ses engins s'effacent le temps de la vue. |
+| `ouvreCoupe(id, fiche)`, `fermeCoupe()`, `vueCoupe` | La vue en coupe d'un étage (`building-interior` 2.0.0) : `fiche`, l'étage cliqué (`refSous(objet).fiche`) ou choisi au sélecteur d'étages ; sans fiche (le rez regroupé, l'existant, le bâtiment), l'étage en chantier le plus haut, sinon le dernier. Une pièce par lot, son aspect tiré de la phase du lot (`roomsFromPieces`, `src/etages.js`) ; les agents de l'étage à la pièce de leur lot, ceux sans pièce sur le palier, devant ; le bâtiment, ses engins et les agents des autres étages s'effacent le temps de la vue. Survolée, une pièce vaut son lot. `vueCoupe` : l'étage ouvert, ses pièces et la place de chaque agent (`room:n` ou `palier`). Décisions de Pierre-Alain du 22 octobre 2026. |
 | `signalements` | Ce que la carte a ignoré : élément ou action hors catalogue, lieu inconnu, personne inconnue d'`equipe.json`. |
 | `compte()`, `regime`, `applications` | Ce que la carte montre, pour un compte rendu. |
 

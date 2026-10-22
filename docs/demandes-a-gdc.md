@@ -64,6 +64,7 @@ Les icônes du lot G7 avaient des identifiants provisoires (`idea`, `survey`, `p
 - le **stade de chaque étage** (fondations, gros œuvre, second œuvre, fini) : la décision de Pierre-Alain du 21 octobre 2026 donne à chaque étage son propre stade. `building` 2.0.0 est en préparation ici ;
 - le passage d'un bâtiment habité **en transformation** quand une nouvelle fiche y démarre (état `alteration`, avec échafaudages et cônes) ;
 - un **défaut ouvert sous garantie** sur un bâtiment livré (le cône `defect-sign`) ;
+- le **lot d'un défaut** quand GDC le connaît (`ref.lot` du `defect-sign`) : la vue en coupe ne montre une pièce en défaut que pour ce lot ; un défaut sur la fiche seule ne touche aucune pièce (décision de Pierre-Alain du 22 octobre 2026, `building-interior` 2.0.0) ;
 - **Question** : un bâtiment livré reste-t-il sur sa parcelle du chantier, ou part-il dans un quartier habité ?
 
 ## 4. Les personnages : où, avec qui, pourquoi

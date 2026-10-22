@@ -149,13 +149,40 @@ for (const [nom, scenes] of Object.entries(sequences))
         verifie(c.agents === lu.personnages.length, `${nom} ${i + 1} : ${c.agents} agents posés pour ${lu.personnages.length} dans la scène`);
         for (const [zone, oui] of Object.entries(lu.zones)) if (oui) verifie(carte.cadres().find((z) => z.cle === zone).activee, `${nom} ${i + 1} : la zone ${zone} reste grise`);
       }
-      // la vue en coupe s'ouvre et se ferme sur chaque batiment de la derniere scene
-      for (const b of lisScene(scenes[scenes.length - 1], connus).batiments) {
-        verifie(await carte.ouvreCoupe(b.id), `${nom} : la vue en coupe de ${b.id} ne s'ouvre pas`);
-        for (let t = 0; t < 60; t++) carte.update(1 / 30);
+      // la vue en coupe (building-interior 2.0.0) s'ouvre et se ferme sur chaque etage de chaque batiment de la derniere
+      // scene : une piece par lot, chaque agent de l'etage a la piece de son lot ou sur le palier
+      const derniere = lisScene(scenes[scenes.length - 1], connus);
+      for (const b of derniere.batiments)
+        // l'etage d'une application existante (fiche nulle) ne se choisit pas, comme au selecteur d'etages
+        for (const fiche of [undefined, ...(b.etages || []).map((e) => e.fiche).filter((f) => f !== null)]) {
+          const ou = `${nom} : la vue en coupe de ${b.id}${fiche === undefined ? '' : ` (${fiche})`}`;
+          verifie(await carte.ouvreCoupe(b.id, fiche), `${ou} ne s'ouvre pas`);
+          const vue = carte.vueCoupe;
+          const etage = (b.etages || []).find((e) => e.fiche === vue.fiche) || { pieces: [] };
+          verifie(fiche === undefined || vue.fiche === fiche, `${ou} ouvre l'étage ${vue.fiche}`);
+          verifie(vue.rooms.length === (etage.pieces || []).length && vue.rooms.every((r, k) => r.id === etage.pieces[k].lot), `${ou} : les pièces ne sont pas les lots`);
+          for (const p of derniere.personnages.filter((x) => x.batiment === b.id && (x.etage ?? null) === vue.fiche)) {
+            const voulue = (etage.pieces || []).findIndex((x) => x.lot === p.piece);
+            verifie(vue.places[p.id] === (voulue >= 0 ? `room:${voulue + 1}` : 'palier'), `${ou} : ${p.id} est à ${vue.places[p.id]}`);
+          }
+          for (let t = 0; t < 60; t++) carte.update(1 / 30);
+          verifie(carte.compte().chevauchements === 0, `${ou} : des personnes posées l'une sur l'autre`);
+          verifie(!carte.compte().grues.includes(b.id), `${ou} : la grue de la parcelle reste au milieu de la vue`);
+          carte.fermeCoupe();
+          for (let t = 0; t < 90; t++) carte.update(1 / 30);
+          verifie(carte.coupe === null, `${ou} ne se ferme pas`);
+        }
+      // la fiche du catalogue : trois-applications, etape 7, Julie est dans la piece L1 de « Saisir un constat hors ligne »
+      if (nom === 'trois-applications') {
+        await carte.applique(scenes[6], { actions: false });
+        verifie(await carte.ouvreCoupe('terrain'), `${nom} 7 : la vue en coupe du terrain ne s'ouvre pas`);
+        const vue = carte.vueCoupe;
+        verifie(vue.fiche === '002-saisir-un-constat-hors-ligne', `${nom} 7 : la coupe ouvre ${vue.fiche}`);
+        verifie(vue.rooms[0]?.id === 'L1' && vue.rooms[0]?.state === 'building', `${nom} 7 : la pièce L1 n'est pas en travaux (${JSON.stringify(vue.rooms[0])})`);
+        verifie(vue.places['developpeur-base'] === 'room:1', `${nom} 7 : Julie est à ${vue.places['developpeur-base']}, pas dans la pièce L1`);
+        verifie(vue.places.helene === 'palier' && vue.places['expert-securite'] === 'palier', `${nom} 7 : Hélène et Sarah ne sont pas sur le palier`);
         carte.fermeCoupe();
         for (let t = 0; t < 90; t++) carte.update(1 / 30);
-        verifie(carte.coupe === null, `${nom} : la vue en coupe de ${b.id} ne se ferme pas`);
       }
       rapports.push(`${nom} (${reducedMotion ? 'sans animation, basse' : 'haute'}) : ${scenes.length} scènes, jusqu'à ${maxOuvriers} ouvriers${carte.signalements.length ? ', signalé : ' + carte.signalements.join(' ; ') : ''}`);
       carte.dispose();
