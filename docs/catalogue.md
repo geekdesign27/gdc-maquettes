@@ -804,11 +804,11 @@ Une coupe en maison de poupée, comme en 1.0, mais d'un seul étage, celui chois
 
 ### Le fil des déclencheurs (`trigger-feed`)
 
-Une liste, la plus récente en haut ; les actions d'un même instant (ts) sont groupées sous leur heure. Chaque ligne montre la phrase en clair de GDC (phrase), et le portrait de l'agent quand l'action concerne un personnage (ctx.portrait). Les actions du régime du chantier (ouverture, pause, fermeture) font des séparateurs sur toute la largeur. Une ligne qui porte une référence se survole (gdc-hover) et se clique (gdc-select). Fiche validée par Pierre-Alain le 21 octobre 2026.
+Une liste, la plus récente en haut ; les actions d'un même instant (ts) sont groupées sous leur heure. Chaque ligne montre la phrase en clair de GDC (phrase), et le portrait de l'agent quand l'action concerne un personnage (ctx.portrait). Les actions du régime du chantier (ouverture, pause, fermeture) font des séparateurs sur toute la largeur. Une ligne qui porte une référence se survole (gdc-hover) et se clique (gdc-select). Fiche validée par Pierre-Alain le 21 octobre 2026. Dans un instant aussi, la plus récente en haut : l'ordre reçu, retourné ; le changement de régime, que GDC envoie en premier, se retrouve en bas de son instant, et replié sur téléphone on voit la dernière action reçue (décision de Pierre-Alain du 22 octobre 2026).
 
 - Fabriqué par : intégrateur d'interface
 - Élément : `<gdc-trigger-feed>`
-- Entrées (propriété data) : `actions` (liste des actions telle que GDC la rend (gdc scene --avant) : { ts, action, element, id, phrase, ref?, motif? }) ; `limit` (nombre d'actions gardées, défaut 200) ; `highlight` (référence survolée ailleurs ({ application, fiche?, lot? } ou null))
+- Entrées (propriété data) : `actions` (liste des actions telle que GDC la rend (gdc scene --avant) : { ts, action, element, id, phrase, ref?, motif? } ; le fil garde celles qu'il reçoit, jusqu'à limit, sans ajouter deux fois une action identique : GDC peut envoyer le lot du moment comme toute la liste ; le premier data est l'état de départ ; pour vider le fil, on recrée l'élément (décision de Pierre-Alain du 22 octobre 2026)) ; `limit` (nombre d'actions gardées, défaut 200) ; `highlight` (référence survolée ailleurs ({ application, fiche?, lot? } ou null))
 - Sorties (événements) : `gdc-select` (clic sur une action ; detail.id = l'élément de l'action) ; `gdc-hover` (detail.ref = la référence de l'action survolée, ou null)
 - Critères d'acceptation :
   - Tout texte venu du harnais est affiché comme du texte, jamais comme du HTML

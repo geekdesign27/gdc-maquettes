@@ -1757,7 +1757,7 @@
       "category": "interface",
       "name": "Le fil des déclencheurs",
       "purpose": "Lire à gauche ce que le harnais vient de faire, action par action, dans l'ordre.",
-      "description": "Une liste, la plus récente en haut ; les actions d'un même instant (ts) sont groupées sous leur heure. Chaque ligne montre la phrase en clair de GDC (phrase), et le portrait de l'agent quand l'action concerne un personnage (ctx.portrait). Les actions du régime du chantier (ouverture, pause, fermeture) font des séparateurs sur toute la largeur. Une ligne qui porte une référence se survole (gdc-hover) et se clique (gdc-select). Fiche validée par Pierre-Alain le 21 octobre 2026.",
+      "description": "Une liste, la plus récente en haut ; les actions d'un même instant (ts) sont groupées sous leur heure. Chaque ligne montre la phrase en clair de GDC (phrase), et le portrait de l'agent quand l'action concerne un personnage (ctx.portrait). Les actions du régime du chantier (ouverture, pause, fermeture) font des séparateurs sur toute la largeur. Une ligne qui porte une référence se survole (gdc-hover) et se clique (gdc-select). Fiche validée par Pierre-Alain le 21 octobre 2026. Dans un instant aussi, la plus récente en haut : l'ordre reçu, retourné ; le changement de régime, que GDC envoie en premier, se retrouve en bas de son instant, et replié sur téléphone on voit la dernière action reçue (décision de Pierre-Alain du 22 octobre 2026).",
       "acceptance": [
         "Tout texte venu du harnais est affiché comme du texte, jamais comme du HTML",
         "Utilisable au clavier : un seul arrêt de tabulation, flèches, Entrée",
@@ -1770,7 +1770,7 @@
       "status": "à faire",
       "role": "intégrateur d'interface",
       "inputs": {
-        "actions": "liste des actions telle que GDC la rend (gdc scene --avant) : { ts, action, element, id, phrase, ref?, motif? }",
+        "actions": "liste des actions telle que GDC la rend (gdc scene --avant) : { ts, action, element, id, phrase, ref?, motif? } ; le fil garde celles qu'il reçoit, jusqu'à limit, sans ajouter deux fois une action identique : GDC peut envoyer le lot du moment comme toute la liste ; le premier data est l'état de départ ; pour vider le fil, on recrée l'élément (décision de Pierre-Alain du 22 octobre 2026)",
         "limit": "nombre d'actions gardées, défaut 200",
         "highlight": "référence survolée ailleurs ({ application, fiche?, lot? } ou null)"
       },

@@ -6,8 +6,10 @@
 // - L'ordre et les instants viennent de la carte (src/ville/scene-gdc.js, instants), injectes en ctx.instants : la
 //   meme regle de lecture que la carte, ecrite une fois. Le portrait d'un personnage : ctx.agentOf(action), puis
 //   ctx.portrait.
-// - Les instants, du plus recent au plus ancien ; dans un instant, les actions dans l'ordre recu, le changement de
-//   regime du chantier (ouverture, pause, fermeture) en dessous, sur toute la largeur : il separe l'avant de l'apres.
+// - Tout du plus recent au plus ancien, y compris dans un instant : l'ordre recu, retourne (decision de PA du
+//   22 octobre 2026). GDC envoie le changement de regime du chantier (ouverture, pause, fermeture) en premier dans son
+//   instant : il se retrouve en bas, separateur sur toute la largeur entre l'avant et l'apres ; replie sur telephone,
+//   on voit la derniere action recue. L'annonce suit le meme ordre que l'affichage.
 // - Un seul arret de tabulation (tabindex mobile) sur toutes les lignes ; une ligne qui porte une reference se survole
 //   (ctx.hoverLink) et se clique (gdc-select).
 
@@ -289,11 +291,8 @@ export function define(registry, ctx) {
         // deux instants dans la meme seconde : l'heure n'est pas repetee
         heure.hidden = seule === heureAvant;
         heureAvant = seule;
-        // le changement de regime sous les autres actions de son instant : il separe l'avant de l'apres
-        const actions = [
-          ...g.actions.filter((a) => !REGIMES.includes(a.action)),
-          ...g.actions.filter((a) => REGIMES.includes(a.action)),
-        ];
+        // dans l'instant aussi, la plus recente en haut : l'ordre recu, retourne
+        const actions = [...g.actions].reverse();
         place(
           ul,
           actions.map((a) => {
@@ -405,7 +404,7 @@ export function define(registry, ctx) {
         const quand = Number.isFinite(date.getTime())
           ? `${HEURE.format(date)} : `
           : "";
-        return quand + g.actions.map(phraseOf).join(" ; ");
+        return quand + [...g.actions].reverse().map(phraseOf).join(" ; ");
       };
       if (groupes.length > ANNONCES_MAX)
         this.#queue.push(
