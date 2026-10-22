@@ -278,11 +278,11 @@ Une aire de stockage posée sur le terrain de chantier, sans socle : quatre lots
 
 ### Le terrain de chantier (`site-ground`)
 
-Un plateau maquette de 0,60 m en MAT_EARTH (bible, 18.5), arêtes du dessus en C3, de width × depth mètres ; son dessus est à 5 mm sous zéro, pour que les socles des lieux posés dessus se fondent dans la terre. data.zones dessine des dalles de 0,10 m : { x, z, width, depth, surface }, surface concrete (dalle, aire bétonnée) ou asphalt (voie d'accès ou de circulation). C'est GDC qui choisit les zones, par exemple plus de béton quand un bâtiment avance ; le composant ne fait que les dessiner. Il se pose sur le terrain (ground). Fiche validée par Pierre-Alain le 21 octobre 2026.
+Un plateau maquette de 0,60 m en MAT_EARTH (bible, 18.5), arêtes du dessus en C3, de width × depth mètres ; son dessus est à 5 mm sous zéro, pour que les socles des lieux posés dessus se fondent dans la terre. data.zones dessine des dalles de 0,10 m : { x, z, width, depth, surface }, surface concrete (dalle, aire bétonnée) ou asphalt (voie d'accès ou de circulation). C'est GDC qui choisit les zones, par exemple plus de béton quand un bâtiment avance ; le composant ne fait que les dessiner. Il se pose sur le terrain (ground). Fiche validée par Pierre-Alain le 21 octobre 2026. Version 1.1.0 (constat D-2, décision de Pierre-Alain du 22 octobre 2026) : la largeur va jusqu'à 120 m, pour le terrain de trois ou quatre applications.
 
 - Fichier : `components/site/site-ground/index.js`
 - Production : Géométrie générée par le code du composant (paramétrique, liée aux données)
-- Paramètres : `width` (nombre, 8 à 80, défaut 40) ; `depth` (nombre, 8 à 80, défaut 30)
+- Paramètres : `width` (nombre, 8 à 120, défaut 40) ; `depth` (nombre, 8 à 80, défaut 30)
 - États : `default`
 - Ancres : `label`
 - Données reçues par setState : `zones` (liste de { x, z, width, depth, surface: concrete \| asphalt }, en mètres, origine au centre du plateau)
