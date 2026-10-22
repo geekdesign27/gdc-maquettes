@@ -1767,7 +1767,7 @@
         "Repliée sur la dernière action sur téléphone",
         "Lisible en clair et en sombre"
       ],
-      "status": "à faire",
+      "status": "livré",
       "role": "intégrateur d'interface",
       "inputs": {
         "actions": "liste des actions telle que GDC la rend (gdc scene --avant) : { ts, action, element, id, phrase, ref?, motif? } ; le fil garde celles qu'il reçoit, jusqu'à limit, sans ajouter deux fois une action identique : GDC peut envoyer le lot du moment comme toute la liste ; le premier data est l'état de départ ; pour vider le fil, on recrée l'élément (décision de Pierre-Alain du 22 octobre 2026)",
