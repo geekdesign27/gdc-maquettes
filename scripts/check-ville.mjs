@@ -12,6 +12,8 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils.js';
 import { creeChargeur } from '../src/assets.js';
+import { makeContext } from '../src/tokens.js';
+import { measure } from '../src/contract.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -124,6 +126,31 @@ for (const cat of await readdir(join(ROOT, 'components')))
       }
 const chargeur = creeChargeur({ GLTFLoader, SkeletonUtils }, sources);
 const rapports = [];
+
+// --- La coupe (building-interior 2.0.0) tient son budget dans tous les cas : 1 a 12 pieces, chaque stade, des aspects
+// meles, en qualite haute et basse (les donnees d'essai du controle des composants n'ont que deux pieces)
+{
+  const mod = modules['building-interior'];
+  await chargeur.prepare(mod.meta);
+  const assets = await chargeur.assetsPour(mod.meta);
+  const ASPECTS = ['todo', 'preparing', 'building', 'finishing', 'done', 'defect'];
+  const STADES = ['plot', 'excavation', 'foundations', 'structure', 'envelope', 'finishing', 'inspection', 'completed'];
+  let pire = 0;
+  for (const quality of ['high', 'low'])
+    for (let n = 1; n <= 12; n++)
+      for (const stage of STADES)
+        for (let d = 0; d < ASPECTS.length + 1; d++) {
+          // d < 6 : les aspects meles a partir du d-ieme ; d = 6 : toutes les pieces en travaux (le plus lourd)
+          const rooms = Array.from({ length: n }, (_, k) => ({ id: `L${k + 1}`, state: d === 6 ? 'building' : ASPECTS[(k + d) % 6] }));
+          const inst = mod.create(THREE, { rooms: n }, makeContext({ theme: 'light', quality, reducedMotion: true }, assets));
+          inst.setState('default', { floor: { stage }, rooms });
+          const m = measure(inst.root);
+          if (quality === 'high') pire = Math.max(pire, m.triangles);
+          verifie(m.triangles <= mod.meta.budget.triangles && m.materials <= mod.meta.budget.materials, `building-interior : ${m.triangles} triangles, ${m.materials} matériaux (${n} pièces, ${stage}, ${quality})`);
+          inst.dispose();
+        }
+  rapports.push(`coupe : budget tenu de 1 à 12 pièces, huit stades (au plus ${pire} triangles en qualité haute)`);
+}
 for (const [nom, scenes] of Object.entries(sequences))
   for (const reducedMotion of [false, true]) {
     const quality = reducedMotion ? 'low' : 'high';
@@ -183,6 +210,13 @@ for (const [nom, scenes] of Object.entries(sequences))
         verifie(vue.places.helene === 'palier' && vue.places['expert-securite'] === 'palier', `${nom} 7 : Hélène et Sarah ne sont pas sur le palier`);
         carte.fermeCoupe();
         for (let t = 0; t < 90; t++) carte.update(1 / 30);
+        // deux ouvertures qui se chevauchent (un double clic pendant le chargement) : une seule coupe, rien d'orphelin
+        const avant = carte.root.children[0].children.length;
+        const [o1, o2] = await Promise.all([carte.ouvreCoupe('terrain'), carte.ouvreCoupe('bureau')]);
+        verifie(!o1 && o2 && carte.coupe === 'bureau', `${nom} 7 : deux ouvertures qui se chevauchent donnent ${o1}, ${o2}, ${carte.coupe}`);
+        carte.fermeCoupe();
+        for (let t = 0; t < 90; t++) carte.update(1 / 30);
+        verifie(carte.root.children[0].children.length === avant, `${nom} 7 : une coupe orpheline reste sur la carte`);
       }
       rapports.push(`${nom} (${reducedMotion ? 'sans animation, basse' : 'haute'}) : ${scenes.length} scènes, jusqu'à ${maxOuvriers} ouvriers${carte.signalements.length ? ', signalé : ' + carte.signalements.join(' ; ') : ''}`);
       carte.dispose();

@@ -1235,6 +1235,7 @@ export async function creeCarte(THREE, options) {
   // --- l'interface de la carte, pour GDC et la galerie
   let premiere = true;
   let coupe = null;
+  let ouvertures = 0; // le numero de la derniere ouverture ou fermeture de la coupe demandee
 
   const carte = {
     root,
@@ -1445,10 +1446,12 @@ export async function creeCarte(THREE, options) {
       anneau.grand.setState("hidden");
       anneau.petit.setState("hidden");
       if (!ref || !lu) return;
-      if (coupe && ref.fiche !== undefined && ref.fiche === coupe.fiche) {
+      if (coupe && ref.fiche !== undefined && ref.fiche !== null) {
         const b = lu.batiments.find((x) => x.id === coupe.id);
         if ((b.ref?.application || b.id) === ref.application) {
-          // dans la coupe ouverte, l'anneau va a la piece du lot ; la fiche seule n'en pose pas (toute la vue l'est)
+          // dans la coupe ouverte, l'anneau va a la piece du lot ; la fiche seule n'en pose pas (toute la vue l'est),
+          // ni une autre fiche du batiment, cache le temps de la vue
+          if (ref.fiche !== coupe.fiche) return;
           const m = coupe.rooms.findIndex((r) => r.id === ref.lot);
           if (m < 0) return;
           coupe.inst.root.updateMatrix();
@@ -1605,6 +1608,7 @@ export async function creeCarte(THREE, options) {
   }
   async function ouvreCoupe(id, fiche) {
     if (coupe) fermeCoupe(true);
+    const jeton = ++ouvertures;
     const b = lu?.batiments.find((x) => x.id === id);
     const mb = membres.get(`gdc:${id}`);
     if (!b || !mb) return false;
@@ -1612,8 +1616,9 @@ export async function creeCarte(THREE, options) {
     const sesAgents = lu.personnages.filter(
       (p) => p.batiment === id && (p.etage ?? null) === etage.fiche,
     );
-    // les metiers presents par lot, et les lots qu'un defect-sign designe (un defaut sur la fiche seule n'en designe
-    // aucun : decision de Pierre-Alain du 22 octobre 2026)
+    // les metiers presents par lot, et les lots qu'un defect-sign de cette application designe (un defaut sur la fiche
+    // seule n'en designe aucun : decision de Pierre-Alain du 22 octobre 2026)
+    const app = b.ref?.application || b.id;
     const trades = {};
     for (const p of sesAgents)
       if (p.piece)
@@ -1624,14 +1629,24 @@ export async function creeCarte(THREE, options) {
       .filter(
         (x) =>
           x.element === "defect-sign" &&
+          x.ref?.application === app &&
           x.ref?.fiche === etage.fiche &&
           x.ref?.lot,
       )
       .map((x) => x.ref.lot);
-    const rooms = roomsFromPieces(etage.pieces, { defects, trades });
+    // douze pieces au plus (la fiche) : les agents des lots suivants attendent sur le palier
+    const rooms = roomsFromPieces(etage.pieces, { defects, trades }).slice(
+      0,
+      components["building-interior"].meta.params.rooms.max,
+    );
     const inst = await cree("building-interior", {
       rooms: Math.max(rooms.length, 1),
     });
+    // une autre ouverture, ou une fermeture, est passee pendant le chargement : celle-ci n'a plus lieu d'etre
+    if (jeton !== ouvertures) {
+      inst.dispose();
+      return false;
+    }
     inst.root.position.copy(mb.inst.root.position);
     plateau.add(inst.root);
     inst.setState("default", { floor: { stage: etage.stade }, rooms });
@@ -1706,6 +1721,7 @@ export async function creeCarte(THREE, options) {
     return true;
   }
   function fermeCoupe(net = false) {
+    ouvertures++; // annule une ouverture encore en chargement
     if (!coupe) return;
     if (net || !anime) return finitCoupe();
     coupe.inst.setState("hidden");

@@ -362,7 +362,8 @@ export function create(THREE, params, ctx) {
     return out;
   }
 
-  // --- l'allegement : en qualite haute, au-dela du budget, les rangees du fond passent aux pieces _LOW
+  // --- l'allegement : en qualite haute, au-dela du budget (socle compris), les rangees du fond passent aux pieces
+  // _LOW, jusqu'a la rangee de devant s'il le faut
   const coutPieces = new Map();
   const cout = (objet) => {
     if (!coutPieces.has(objet)) coutPieces.set(objet, triangles(objet));
@@ -373,13 +374,13 @@ export function create(THREE, params, ctx) {
     const total = (seuil) =>
       liste.reduce(
         (s, p) => s + cout(source(p, basse || rangee(p.piece) >= seuil)),
-        0,
+        cout(socle),
       );
     let seuil = Infinity;
     if (!basse)
       for (
         let j = plan.rangees - 1;
-        j > 0 && total(seuil) > meta.budget.triangles;
+        j >= 0 && total(seuil) > meta.budget.triangles;
         j--
       )
         seuil = j;
