@@ -1818,7 +1818,7 @@
       "category": "site",
       "name": "Le projecteur de chantier",
       "purpose": "Éclairer le chantier la nuit quand on y travaille.",
-      "description": "Un mât de chantier galvanisé, lesté, avec un ou deux projecteurs LED. Aucune vraie lumière (bible : ni lumière dans le modèle ; et pour la fluidité) : le composant fait briller la tête, dans la couleur des projecteurs de src/lumiere.json, et pose une tache de lumière douce au sol. L'assemblage le pose aux coins du chantier ; allumé la nuit en régime ouvert, éteint sinon, la pause comprise (le chantier est fermé). Fiche validée par Pierre-Alain le 21 octobre 2026.",
+      "description": "Un mât de chantier galvanisé, lesté, avec un ou deux projecteurs LED. Aucune vraie lumière (bible : ni lumière dans le modèle ; et pour la fluidité) : le composant fait briller la tête, dans la couleur des projecteurs de src/lumiere.json, et pose une tache de lumière douce au sol. L'assemblage le pose aux coins du chantier ; allumé la nuit en régime ouvert, éteint sinon, la pause comprise (le chantier est fermé). Fiche validée par Pierre-Alain le 21 octobre 2026. Version 1.0.0 (plan D-2) validée sur planche le 22 octobre 2026 : tout le métal en acier galvanisé (budget de trois matériaux), quatre projecteurs aux coins du chantier, allumage dès le coucher du soleil, extinction directe, tache au sol d'opacité 0,22.",
       "params": {
         "heads": "1 | 2, défaut 2",
         "height": "nombre, 4 à 8, défaut 6"
@@ -1841,7 +1841,7 @@
         "La tache au sol laisse lire les objets dessous",
         "En qualité low, 600 triangles au plus et pas de tache au sol"
       ],
-      "status": "à faire",
+      "status": "livré",
       "role": "modeleur",
       "data": {},
       "production": "blender",

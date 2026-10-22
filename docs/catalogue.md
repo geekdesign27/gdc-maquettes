@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-58 éléments : 49 livré, 7 à faire, 2 exemple ; 3 nouvelle(s) version(s) prévue(s).
+58 éléments : 50 livré, 6 à faire, 2 exemple ; 3 nouvelle(s) version(s) prévue(s).
 
 ## G0 : La ligne graphique
 
@@ -709,7 +709,7 @@ Faire de la carte la visualisation du harnais : relier au survol la carte, le fi
 | 6 | `side-nav` | La navigation | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Aller à un lieu, un agent, un bâtiment, une fiche ou un lot ; la caméra suit. La navigation descend jusqu'aux lots. | livré |
 | 7 | `day-night` | L'heure réelle | Document de référence, pas de code | La carte suit l'heure réelle : le jour, une nuit pas trop sombre, une courte aube et un court crépuscule ; la nuit, les fenêtres disent où l'on travaille. | livré |
 | 7 | `time-of-day` | Le moment de la carte | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Suivre l'heure réelle, ou choisir le jour, l'aube ou la nuit pour y voir plus clair ; l'horaire du soleil de Fribourg. | livré |
-| 8 | `floodlight` | Le projecteur de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Éclairer le chantier la nuit quand on y travaille. | à faire |
+| 8 | `floodlight` | Le projecteur de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Éclairer le chantier la nuit quand on y travaille. | livré |
 | 9 | `character-kit` | Le personnage maître et son équipe (version v003) | Bibliothèque de modèles 3D produite par un script Blender (blender/assets/<id>.py) et réutilisée par plusieurs composants : components/kit/<id>/ | Un squelette, une morphologie et des animations communes pour tous les agents. | à faire |
 | 10 | `character` | Le personnage (un agent) (version 1.2.0) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer qui travaille, où, et dans quel état. | à faire |
 | 11 | `site-fence` | La clôture de chantier (version 1.1.0) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Cloisonner le chantier, comme tout chantier romand. | à faire |
@@ -855,11 +855,12 @@ Fabriqué avec day-night. Un sélecteur à quatre positions, Auto, Jour, Aube et
 
 ### Le projecteur de chantier (`floodlight`)
 
-Un mât de chantier galvanisé, lesté, avec un ou deux projecteurs LED. Aucune vraie lumière (bible : ni lumière dans le modèle ; et pour la fluidité) : le composant fait briller la tête, dans la couleur des projecteurs de src/lumiere.json, et pose une tache de lumière douce au sol. L'assemblage le pose aux coins du chantier ; allumé la nuit en régime ouvert, éteint sinon, la pause comprise (le chantier est fermé). Fiche validée par Pierre-Alain le 21 octobre 2026.
+Un mât de chantier galvanisé, lesté, avec un ou deux projecteurs LED. Aucune vraie lumière (bible : ni lumière dans le modèle ; et pour la fluidité) : le composant fait briller la tête, dans la couleur des projecteurs de src/lumiere.json, et pose une tache de lumière douce au sol. L'assemblage le pose aux coins du chantier ; allumé la nuit en régime ouvert, éteint sinon, la pause comprise (le chantier est fermé). Fiche validée par Pierre-Alain le 21 octobre 2026. Version 1.0.0 (plan D-2) validée sur planche le 22 octobre 2026 : tout le métal en acier galvanisé (budget de trois matériaux), quatre projecteurs aux coins du chantier, allumage dès le coucher du soleil, extinction directe, tache au sol d'opacité 0,22.
 
 - Fichier : `components/site/floodlight/index.js`
 - Fabriqué par : modeleur
 - Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres)
+- Modèles : `ENV_FLOODLIGHT_A_v001.glb`
 - Paramètres : `heads` (1 | 2, défaut 2) ; `height` (nombre, 4 à 8, défaut 6)
 - États : `off`, `on`
 - Ancres : `label`
