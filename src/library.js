@@ -22,5 +22,7 @@ for (const [p, texte] of Object.entries(svgs)) {
 export { tokens, paletteFor, makeContext, cleAsset };
 export { elements, defineElements, interfaceCss, fontFaces, interfaceContext } from './interface.js';
 export { cssVariables } from './tokens.js';
+// l'ombre refaite une image sur deux pendant une animation (plan D-1c) : GDC, qui tient le renderer, l'applique aussi
+export { ombreAlternee } from './ombre.js';
 // la carte vivante (lot G8, fiche city-map) : implantation, chemins, assemblage, actions, vie du chantier
 export * as ville from './ville/index.js';

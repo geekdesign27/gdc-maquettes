@@ -17,6 +17,7 @@ import { creeCarte } from './ville/carte.js';
 import { MOMENTS, recetteDe, regleLumieres, creeVitres, eclaireBatiment, forceDe, ECLAIRABLES } from './ville/heure.js';
 import { defineElements } from './interface.js';
 import { arbreDe } from './arbre.js';
+import { ombreAlternee } from './ombre.js';
 // La ville vivante (fiche city-map) : les sequences de GDC (fixtures/), jouees etape par etape dans la galerie
 const VILLE_ID = 'ville';
 // Les sequences se lisent par leur index.json seulement (plan de l'atelier, I-5) : chaque pas y nomme ses fichiers
@@ -47,6 +48,8 @@ let dirty = true;
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 stage.prepend(renderer.domElement);
+// l'ombre refaite une image sur deux pendant une animation, toujours sur une image isolee (plan D-1c, src/ombre.js)
+const ombre = ombreAlternee(renderer);
 const scene = new THREE.Scene();
 const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 500);
 // reculee quatre fois dans son axe : la vue orthographique ne change pas, mais une grande scene (la scene de reference)
@@ -612,6 +615,7 @@ window.galerie = {
   // Ce que coute une image de ce qui est affiche (plan D-1) : appels de dessin et triangles dessines (ombres
   // comprises), programmes de rendu, puis les triangles et materiaux distincts de l'arbre (measure).
   mesure() {
+    renderer.shadowMap.needsUpdate = true; // l'image la plus chere, ombre refaite (plan D-1c) : comparable aux mesures d'avant
     renderer.render(scene, camera);
     const { calls, triangles } = renderer.info.render;
     return { appels: calls, trianglesDessines: triangles, programmes: renderer.info.programs.length, ...measure(current.inst.root) };
@@ -935,8 +939,12 @@ const clock = new THREE.Clock();
 let rapporte = 0;
 function loop() {
   const dt = Math.min(clock.getDelta(), 0.1);
-  for (const x of [current, ...current.voisins]) if (x.inst && x.inst.update(dt)) dirty = true;
+  let continu = false;
+  for (const x of [current, ...current.voisins]) if (x.inst && x.inst.update(dt)) continu = true;
+  // une animation qui s'arrete sur une image sans ombre refaite : une image de plus, qui la refait
+  if (continu || ombre.enRetard) dirty = true;
   if (dirty) {
+    ombre.avant(continu);
     renderer.render(scene, camera);
     if (current.mod === etalon && !options.silhouette) rapportEtalon(etalon.mesureFaces(THREE, renderer, camera, current.inst.root));
     drawAnchors();

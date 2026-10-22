@@ -470,6 +470,22 @@ for (const [nom, scenes] of Object.entries(sequences))
   rapports.push('projecteurs : quatre par chantier, hors des voies, des clôtures et des parcelles ; allumés la nuit en régime ouvert seulement');
 }
 
+// --- L'ombre de l'hote (plan D-1c) : une image sur deux pendant une animation, toujours sur une image isolee
+{
+  const { ombreAlternee } = await import('../src/ombre.js');
+  const r = { shadowMap: { autoUpdate: true, needsUpdate: false } };
+  const o = ombreAlternee(r);
+  const suite = [];
+  for (const continu of [true, true, true, true, true]) { o.avant(continu); suite.push(r.shadowMap.needsUpdate); }
+  verifie(r.shadowMap.autoUpdate === false, "ombre : l'hôte refait encore l'ombre à chaque image");
+  verifie(suite.join() === 'true,false,true,false,true', `ombre : pendant une animation, ${suite.join()} au lieu d'une image sur deux`);
+  o.avant(true);
+  verifie(o.enRetard, "ombre : une animation arrêtée sur une image sautée ne demande pas d'image de plus");
+  o.avant(false);
+  verifie(r.shadowMap.needsUpdate && !o.enRetard, "ombre : une image isolée ne refait pas l'ombre");
+  rapports.push("ombre de l'hôte : refaite une image sur deux pendant une animation, toujours sur une image isolée");
+}
+
 // --- Le verdict
 if (erreurs.length) {
   console.error(`Carte vivante : ${erreurs.length} erreur(s) sur ${verifies} vérifications`);
