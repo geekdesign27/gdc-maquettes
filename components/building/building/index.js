@@ -19,8 +19,13 @@
 // Pour l'assemblage (survol partage, heure reelle) : un groupe FLOOR_n par etage visible (userData.floor), un groupe
 // ROOM_n_m par piece (userData.room), les vitres de chaque etage nommees GLASS_FLOOR_n. Le composant ne gere aucun
 // evenement : les identifiants viennent de data.floors, il les repete sans les interpreter.
-// Les modeles sont partages entre instances : on ne libere jamais leurs geometries ni leurs materiaux ici ; seul le
-// verre eclaire, cree par ce composant, est libere. Aucune couleur d'etat dans la scene ; aucun texte.
+// Version 2.1.0 (plan D-1b, decision de Pierre-Alain du 22 octobre 2026) : moins d'appels de dessin. A chaque
+// construction, les pieces posees dans un meme groupe (la parcelle, un etage, une piece, la toiture) sont fusionnees
+// par materiau : un maillage par materiau et par groupe au lieu d'un par piece. Les groupes, leurs noms, leurs
+// userData, les ancres et les transitions ne changent pas ; la pelleteuse, animee, reste a part.
+// Les modeles sont partages entre instances : on ne libere jamais leurs geometries ni leurs materiaux ici ; seuls le
+// verre eclaire et les geometries fusionnees, crees par ce composant, sont liberes. Aucune couleur d'etat dans la
+// scene ; aucun texte.
 
 const KIT = "kit:building-kit/BLD_KIT_A_v003.glb";
 const PARCELLE = "BLD_SITEWORK_A_v002.glb";
@@ -61,7 +66,7 @@ const R = Object.fromEntries(STADES.map((s, i) => [s, i]));
 
 export const meta = {
   id: "building",
-  version: "2.0.0",
+  version: "2.1.0",
   category: "building",
   states: [
     "plot",
@@ -174,7 +179,11 @@ export function create(THREE, params, ctx) {
   // cones et du crepi, MAT_EARTH du socle et du godet) ; le batiment n'en garde qu'une, celle du premier modele qui
   // l'a. Ce sont toujours des materiaux des modeles, partages, jamais liberes ici.
   const parNom = new Map();
-  for (const modele of [ctx.assets[KIT].scene, ctx.assets[PARCELLE].scene, pelle])
+  for (const modele of [
+    ctx.assets[KIT].scene,
+    ctx.assets[PARCELLE].scene,
+    pelle,
+  ])
     modele.traverse((o) => {
       if (o.isMesh && !parNom.has(o.material.name))
         parNom.set(o.material.name, o.material);
@@ -549,7 +558,13 @@ export function create(THREE, params, ctx) {
         if (!echafaude(visibles[k]) || echafaude(visibles[k - 1])) continue;
         let a = k;
         while (echafaude(visibles[a])) a++;
-        echafaudage(k, a, Object.keys(t.facades), null, (n) => `F${visibles[n].index}`);
+        echafaudage(
+          k,
+          a,
+          Object.keys(t.facades),
+          null,
+          (n) => `F${visibles[n].index}`,
+        );
       }
     }
     return { poses, salles, toit, rezStade };
@@ -590,6 +605,86 @@ export function create(THREE, params, ctx) {
     return poses.map((p) => source(p, basse || p.niveau >= seuil));
   };
 
+  // --- la fusion (2.1.0) : dans un groupe, chaque piece posee (copie d'une piece du modele) est remplacee par un
+  // maillage par materiau, ses sommets portes dans le repere du groupe. Les vitres d'un etage restent entre elles (leur
+  // nom GLASS_FLOOR_n et leur userData.glass servent a l'heure reelle).
+  let fusions = []; // les geometries fusionnees de la construction en cours
+  const libereFusions = () => {
+    for (const g of fusions) g.dispose();
+    fusions = [];
+  };
+  // la matrice d'un maillage dans le repere de son groupe (matrices locales a jour)
+  const dansLeGroupe = (o, conteneur) => {
+    const m = new THREE.Matrix4();
+    for (let x = o; x !== conteneur; x = x.parent) m.premultiply(x.matrix);
+    return m;
+  };
+  const fusionne = (conteneur, apart) => {
+    const lots = new Map(); // materiau et nom -> { exemple, parties : [{ geometrie, matrice }] }
+    const pieces = conteneur.children.filter((c) => !apart.has(c));
+    for (const piece of pieces)
+      piece.traverse((o) => {
+        if (!o.isMesh || !o.visible) return;
+        const cle = `${o.material.uuid}|${o.userData.glass ? o.name : ""}`;
+        if (!lots.has(cle)) lots.set(cle, { exemple: o, parties: [] });
+        lots.get(cle).parties.push({
+          geometrie: o.geometry,
+          matrice: dansLeGroupe(o, conteneur),
+        });
+      });
+    for (const piece of pieces) conteneur.remove(piece);
+    const v = new THREE.Vector3();
+    const normales = new THREE.Matrix3();
+    for (const { exemple, parties } of lots.values()) {
+      let sommets = 0;
+      let indices = 0;
+      for (const { geometrie: g } of parties) {
+        sommets += g.attributes.position.count;
+        indices += g.index ? g.index.count : g.attributes.position.count;
+      }
+      const position = new Float32Array(sommets * 3);
+      const normal = new Float32Array(sommets * 3);
+      const index = new (sommets > 65535 ? Uint32Array : Uint16Array)(indices);
+      let s = 0;
+      let i = 0;
+      for (const { geometrie: g, matrice } of parties) {
+        normales.getNormalMatrix(matrice);
+        const p = g.attributes.position;
+        const n = g.attributes.normal;
+        for (let k = 0; k < p.count; k++) {
+          v.fromBufferAttribute(p, k)
+            .applyMatrix4(matrice)
+            .toArray(position, (s + k) * 3);
+          v.fromBufferAttribute(n, k)
+            .applyMatrix3(normales)
+            .normalize()
+            .toArray(normal, (s + k) * 3);
+        }
+        if (g.index)
+          for (let k = 0; k < g.index.count; k++)
+            index[i++] = g.index.getX(k) + s;
+        else for (let k = 0; k < p.count; k++) index[i++] = k + s;
+        s += p.count;
+      }
+      const geometrie = new THREE.BufferGeometry();
+      geometrie.setAttribute(
+        "position",
+        new THREE.BufferAttribute(position, 3),
+      );
+      geometrie.setAttribute("normal", new THREE.BufferAttribute(normal, 3));
+      geometrie.setIndex(new THREE.BufferAttribute(index, 1));
+      fusions.push(geometrie);
+      const maillage = new THREE.Mesh(geometrie, exemple.material);
+      maillage.name = exemple.userData.glass
+        ? exemple.name
+        : `${conteneur.name}_${exemple.material.name}`;
+      if (exemple.userData.glass)
+        maillage.userData.glass = { ...exemple.userData.glass };
+      maillage.castShadow = maillage.receiveShadow = !basse;
+      conteneur.add(maillage);
+    }
+  };
+
   const ancres = {};
   const groupes = new Map(); // cle -> THREE.Group, a chaque construction
   let precedent = null; // la signature de chaque etage a la construction precedente
@@ -598,6 +693,7 @@ export function create(THREE, params, ctx) {
 
   const construit = (state, floors, anime) => {
     root.clear();
+    libereFusions();
     groupes.clear();
     transitions.clear();
     const visibles = etages(state, floors);
@@ -708,6 +804,11 @@ export function create(THREE, params, ctx) {
       );
     }
 
+    // la fusion, apres les ancres (calculees sur les pieces posees) et avant les transitions (qui bougent les groupes)
+    const apart = new Set([...groupes.values(), pelle]);
+    for (const conteneur of [root, ...groupes.values()])
+      fusionne(conteneur, apart);
+
     // les transitions : un etage qui change monte depuis sa dalle ; la toiture remonte d'ou elle etait
     const signature = new Map(
       visibles.map((f) => [
@@ -723,7 +824,8 @@ export function create(THREE, params, ctx) {
       }
       const g = groupes.get("TOIT");
       // une toiture qui n'a jamais ete posee arrive avec son etage, d'un niveau plus bas
-      const depart = dernierToit === null ? toit && toit.z - ETAGE : dernierToit;
+      const depart =
+        dernierToit === null ? toit && toit.z - ETAGE : dernierToit;
       if (g && depart !== toit.z)
         transitions.set(g, { t: 0, de: depart - toit.z });
       applique(0);
@@ -803,6 +905,7 @@ export function create(THREE, params, ctx) {
       mixer.stopAllAction();
       mixer.uncacheRoot(pelle);
       root.clear();
+      libereFusions();
       verreEclaire.dispose();
     },
   };
