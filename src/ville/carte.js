@@ -242,6 +242,7 @@ export async function creeCarte(THREE, options) {
             : "aube";
     if (j === jour) return false;
     jour = j;
+    for (const m of membres.values()) if (m.id === "floodlight") projecteurDe(m);
     const r = recetteDe(j, fondTheme);
     if (options.lumieres) regleLumieres(options.lumieres, r);
     vitres.regle(r.fenetres);
@@ -249,6 +250,7 @@ export async function creeCarte(THREE, options) {
   }
   // une zone grise n'a pas de fenetre eclairee ; une zone qui se colore s'eclaire a la fin de son fondu
   function fenetresDe(m) {
+    if (m.id === "floodlight") return projecteurDe(m);
     if (!ECLAIRABLES.has(m.id)) return;
     const z = m.zone && gris[m.zone];
     if (z && (!z.actif || z.fondu !== null)) return;
@@ -261,6 +263,22 @@ export async function creeCarte(THREE, options) {
           agent: lieuxOccupes.has(m.cle),
         }),
       );
+  }
+
+  // les projecteurs du chantier (floodlight, plan D-2) : allumes la nuit (des le coucher du soleil, quand le jour passe
+  // sous 0,5), en regime ouvert, dans une zone en couleur comme les fenetres ; eteints sinon, la pause comprise. Le
+  // composant joue son fondu d'allumage
+  function projecteurDe(m) {
+    const z = m.zone && gris[m.zone];
+    const allume =
+      regime === "ouvert" &&
+      jour !== null &&
+      jour < 0.5 &&
+      !(z && (!z.actif || z.fondu !== null));
+    const s = allume ? "on" : "off";
+    if (m.state === s) return;
+    m.inst.setState(s);
+    m.state = s;
   }
 
   // --- les membres : une instance chacun, avec sa zone et, pour un element de GDC, l'element recu
@@ -338,7 +356,7 @@ export async function creeCarte(THREE, options) {
       if (o.isMesh) o.raycast = () => {};
     });
     fixes.push("site-ground");
-    for (const c of [...imp.clotures, ...imp.decor]) {
+    for (const c of [...imp.clotures, ...imp.decor, ...imp.projecteurs]) {
       const inst = await cree(c.id, c.params);
       etat(
         pose(c.cle, c.id, inst, c.position, c.rotation || 0),
@@ -824,6 +842,8 @@ export async function creeCarte(THREE, options) {
   function vie(scene, transition) {
     const ancien = regime;
     regime = scene.regime;
+    if (ancien !== regime)
+      for (const m of membres.values()) if (m.id === "floodlight") projecteurDe(m);
     const specs = new Map(voulusPar(scene).map((s) => [s.cle, s]));
     let k = 0;
     for (const [cle, v] of [...vivants]) {

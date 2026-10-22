@@ -247,6 +247,25 @@ export function implantation(applications = 1, types = null) {
     })),
   ];
 
+  // Les projecteurs de chantier (floodlight, plan D-2) : aux quatre coins du chantier, a 1,2 m des clotures, tournes
+  // vers son centre (leur avant est +Z). La carte seule les pose et les allume : la scene de reference ne les a pas.
+  const RETRAIT_PROJECTEUR = 1.2;
+  const projecteurs = [
+    ["fond-gauche", 0, 0],
+    ["fond-droite", 1, 0],
+    ["avant-gauche", 0, 1],
+    ["avant-droite", 1, 1],
+  ].map(([coin, i, j]) => {
+    const x = CHANTIER.x[i] + (i ? -1 : 1) * RETRAIT_PROJECTEUR;
+    const z = CHANTIER.z[j] + (j ? -1 : 1) * RETRAIT_PROJECTEUR;
+    return {
+      cle: `floodlight:${coin}`,
+      id: "floodlight",
+      position: [x, 0, z],
+      rotation: Math.atan2(centre(CHANTIER.x) - x, centre(CHANTIER.z) - z),
+    };
+  });
+
   // Une parcelle par application, de gauche a droite le long de l'allee : le batiment au centre, ses gabarits, sa grue,
   // la place du camion de livraison et sa porte sur l'allee.
   const parcelles = [];
@@ -283,6 +302,7 @@ export function implantation(applications = 1, types = null) {
     dalles,
     clotures,
     decor,
+    projecteurs,
     lieux,
     parcelles,
     points,
