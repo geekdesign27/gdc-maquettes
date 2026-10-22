@@ -1,13 +1,13 @@
 {
-  "nom": "BLD_INTERIOR_A_v001",
+  "nom": "BLD_INTERIOR_A_v002",
   "id": "building-interior",
   "bible": "WORKSITE 1.2",
   "blender": "5.3.0 Beta",
   "script": "blender/assets/building-interior.py",
-  "script_sha256": "66f99908c5fad351247d3615c43cc705589a7d4fcfabe1f1004a507981c19b8a",
+  "script_sha256": "6c70d01085d0d9556b6422bd5d0c83bc3db8759b93044886beec796adbc83df7",
   "commun_sha256": "e8cb480c62b7bdb8b54460ec91e343989e89e93987616cc2711afd5dbcdf2f80",
   "palette_sha256": "1d680d9cdb1b8f17d1781232af4cc0f9e61120093db3153769da181b2d11293c",
-  "glb_sha256": "351c0d3664b16b1a4377fa7562066e9ece24ffc32de18f8a210e12f6d7063f9f",
+  "glb_sha256": "d0041ccdb7a09fa16d3e94eb763b5d826d95509c5a3d6b43e6b1c79c486b4f7d",
   "animations": [],
   "statut": "a valider"
 }

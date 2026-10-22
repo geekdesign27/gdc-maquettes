@@ -1,5 +1,5 @@
 """L'interieur d'un batiment (catalogue : building-interior, production mixte). Brief valide par Pierre-Alain le
-20 octobre 2026.
+20 octobre 2026 ; version 2 (building-interior 2.0.0, lot G8), decisions de Pierre-Alain du 22 octobre 2026.
 
 La vue micro : une piece de 6 x 3 m par fiche, de plain-pied, en maison de poupee comme les bureaux en conteneur
 (direction artistique, 19 octobre 2026) : pas de toit, murs cote camera et cloisons coupes a l'allege (0,90 m), murs du
@@ -13,6 +13,11 @@ livre (building-kit, BLD_KIT_A_v003), sans le modifier. Ce modele ne porte que c
 - FLOOR_WOOD : le parquet d'une case de 3 x 3 m (piece finie) ;
 - le mobilier des aspects : SCAFFOLD_TOWER (echafaudage roulant), PALLET (palette de sacs), BUCKET (seau) pour les
   travaux ; TABLE pour la piece finie ; STEPLADDER (escabeau) et TARP (bache) pour le defaut.
+Version 2 (2.0.0 : un etage ouvert, une piece par lot, l'etape du lot) ajoute ce que demandent les nouveaux aspects :
+- FLOOR_MARK : le tracage au sol d'un cote de piece (0,15 m, le detail minimal, en graphite), la ou la cloison montera (piece en
+  preparation) ; le meme trace dessine l'emprise d'un etage encore en plot ;
+- SERVICE_STUBS : les attentes d'une piece en preparation, trois gaines qui sortent de la dalle ;
+- PLANK_STACK : la pile de lames de parquet d'une piece en finitions, a cote du parquet a moitie pose.
 Origine de chaque piece : son point d'assemblage, a sa base (z = 0 sur le dessus de la dalle). Avant vers -Y.
 
 Qualite basse (bible 18.3) : <PIECE>_LOW aux aretes vives ; tubes, lisses et barreaux fusionnes en panneaux pleins.
@@ -20,7 +25,7 @@ Qualite basse (bible 18.3) : <PIECE>_LOW aux aretes vives ; tubes, lisses et bar
 
 import math
 
-ASSET = {"id": "building-interior", "categorie": "interior", "nom": "BLD_INTERIOR_A_v001"}
+ASSET = {"id": "building-interior", "categorie": "interior", "nom": "BLD_INTERIOR_A_v002"}
 
 P = "BLD_INTERIOR_A_"
 TRAME = 3.0
@@ -159,6 +164,44 @@ def _table(c, basse):
     return _piece(c, nom, m)
 
 
+def _trace(c, basse):
+    """Le trace d'un cote de piece : une bande graphite de 2,70 m (entre deux poteaux), affleurant la dalle ; elargie a
+    0,30 m en qualite basse (bible 18.3), comme le tracage de facade du batiment. Graphite et non clair : un trait clair
+    se perd sur le beton de la dalle."""
+    nom = "FLOOR_MARK" + ("_LOW" if basse else "")
+    return _piece(c, nom, [c.boite(P + nom, (LONG_MUR, 0.30 if basse else 0.15, 0.01), mat="MAT_PAINTED_METAL_GRAPHITE")])
+
+
+def _attentes(c, basse):
+    """Les attentes d'une piece en preparation : trois gaines graphite de 0,10 m qui sortent de la dalle, 0,45 a 0,70 m
+    de haut, sur un socle de mortier ; en qualite basse, un seul bloc (sous 0,30 m, on fusionne)."""
+    nom = "SERVICE_STUBS" + ("_LOW" if basse else "")
+    m = [c.boite(P + nom, (0.50, 0.30, 0.06), mat="MAT_CONCRETE", chanfrein=0 if basse else C1, segments=2)]
+    if basse:
+        m.append(c.boite(P + nom + "_PIPES", (0.40, 0.12, 0.60), (0, 0, 0.06), mat="MAT_PAINTED_METAL_GRAPHITE"))
+        return _piece(c, nom, m)
+    for k, (x, h) in enumerate(((-0.15, 0.70), (0.0, 0.55), (0.15, 0.45))):
+        m.append(c.cylindre(P + nom + "_PIPE_" + str(k), 0.05, h, (x, 0, 0.06), mat="MAT_PAINTED_METAL_GRAPHITE", cotes=8))
+    return _piece(c, nom, m)
+
+
+def _lames(c, basse):
+    """La pile de lames de parquet d'une piece en finitions : 1,20 x 0,60 m, huit paquets en trois lits sur deux cales."""
+    nom = "PLANK_STACK" + ("_LOW" if basse else "")
+    if basse:
+        return _piece(c, nom, [c.boite(P + nom, (1.20, 0.60, 0.40), mat="MAT_WOOD")])
+    m = [c.boite(P + nom + ("" if k == 0 else "_BATTEN_1"), (0.10, 0.60, 0.08), (x, 0, 0), mat="MAT_PAINTED_METAL_GRAPHITE")
+         for k, x in enumerate((-0.40, 0.40))]
+    # des paquets de lames en long, un peu decales : la pile se lit comme des lames, pas comme un bloc ; un seul pan de
+    # chanfrein, la piece se repete dans chaque piece en finitions
+    for lit, n in enumerate((3, 3, 2)):
+        for k in range(n):
+            y = (k - (n - 1) / 2) * 0.20
+            m.append(c.boite(P + nom + "_PACK_%d_%d" % (lit, k), (1.20 - 0.06 * lit, 0.18, 0.10),
+                             (0.03 * (lit % 2), y, 0.08 + lit * 0.10), mat="MAT_WOOD", chanfrein=C1, segments=1))
+    return _piece(c, nom, m)
+
+
 def construit(c):
     _murs(c, False)
     _murs(c, True)
@@ -168,9 +211,12 @@ def construit(c):
         _palette(c, basse)
         _escabeau(c, basse)
         _table(c, basse)
+        _trace(c, basse)
+        _attentes(c, basse)
+        _lames(c, basse)
     # le seau : 0,32 m de haut, au-dessus du detail minimal ; la meme piece en qualite basse
     _piece(c, "BUCKET", [c.cylindre(P + "BUCKET", 0.16, 0.32, mat="MAT_PAINTED_METAL_GRAPHITE", cotes=12)])
     # la bache au sol du defaut : un drap clair plie une fois
     _piece(c, "TARP", [c.boite(P + "TARP", (1.80, 1.20, 0.02), mat="MAT_SURFACE"),
                        c.boite(P + "TARP_FOLD", (1.80, 0.30, 0.05), (0, 0.45, 0.02), mat="MAT_SURFACE")])
-    return {"triangles_vises": 4000, "animations": []}
+    return {"triangles_vises": 4500, "animations": []}

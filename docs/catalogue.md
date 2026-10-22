@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-55 éléments : 45 livré, 8 à faire, 2 exemple ; 5 nouvelle(s) version(s) prévue(s).
+55 éléments : 44 livré, 9 à faire, 2 exemple ; 4 nouvelle(s) version(s) prévue(s).
 
 ## G0 : La ligne graphique
 
@@ -448,27 +448,7 @@ Au clic, entrer dans un bâtiment ou un bureau : une pièce par fiche, les ouvri
 
 | Ordre | Identifiant | Nom | Nature | But | Statut |
 |---|---|---|---|---|---|
-| 1 | `building-interior` | L'intérieur d'un bâtiment | Composant 3D Three.js, conforme à docs/contrat-composant.md | La vue micro : une pièce par fiche, et les ouvriers au travail dans chacune. | livré |
 | 2 | `office-interior` | La salle de brainstorming | Composant 3D Three.js, conforme à docs/contrat-composant.md | La vue rapprochée d'une séance de brainstorming : les gens autour de la table, les idées au tableau. | livré |
-
-### L'intérieur d'un bâtiment (`building-interior`)
-
-Une coupe du bâtiment en pièces, de plain-pied, en maison de poupée comme les bureaux en conteneur (sans toit, murs côté caméra et cloisons coupés à l'allège) ; une pièce de 6 × 3 m par fiche, en grappe, jamais en ligne. data.rooms donne, pour chaque pièce, son état (study, waiting, construction, reception, done, defect) et les métiers présents ; quatre aspects (décision de Pierre-Alain du 20 octobre 2026) : study et waiting vides, construction en travaux, reception et done finies, defect avec un défaut visible. Les personnages sont des composants character posés par GDC aux ancres room:n. État default : la vue s'ouvre (les murs montent) ; hidden : elle se ferme (ils redescendent).
-
-- Fichier : `components/interior/building-interior/index.js`
-- Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `building-kit`
-- Modèles : `BLD_INTERIOR_A_v001.glb`, `kit:building-kit/BLD_KIT_A_v003.glb`
-- Paramètres : `rooms` (nombre, 1 à 12, défaut 4)
-- États : `default`, `hidden`
-- Ancres : `label`, `room:*`
-- Données reçues par setState : `rooms` (liste, une entrée par fiche : { state: study \| waiting \| construction \| reception \| done \| defect, trades: [métiers présents] })
-- Budget : 20000 triangles, 10 matériaux
-- Critères d'acceptation :
-  - Chaque pièce lisible et désignable (ancre room:n)
-  - L'état d'une pièce se voit à son aménagement : vide, en travaux, finie, défaut
-  - Transition d'entrée et de sortie douce, figée si reducedMotion
-
-Nouvelle version prévue : 2.0.0, au lot G8 (à faire).
 
 ### La salle de brainstorming (`office-interior`)
 
@@ -738,7 +718,7 @@ Faire de la carte la visualisation du harnais : relier au survol la carte, le fi
 | 1 | `hover-link` | Le survol partagé | Document de référence, pas de code | Relier au survol, dans les deux sens, la carte, le fil des déclencheurs à gauche et l'arbre des fiches à droite. | livré |
 | 2 | `building` | Le bâtiment (une application) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer l'avancement d'une application étage par étage : une fiche par étage, un lot par pièce. | livré |
 | 3 | `floor-selector` | Le sélecteur d'étages | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Choisir l'étage d'un bâtiment, c'est-à-dire la fiche à regarder ; la vue en coupe s'ouvre sur cet étage. | livré |
-| 4 | `building-interior` | L'intérieur d'un bâtiment (version 2.0.0) | Composant 3D Three.js, conforme à docs/contrat-composant.md | La vue micro : un étage ouvert, c'est-à-dire une fiche, avec une pièce par lot, l'étape où en est chaque lot et les experts au travail. | à faire |
+| 4 | `building-interior` | L'intérieur d'un bâtiment | Composant 3D Three.js, conforme à docs/contrat-composant.md | La vue micro : un étage ouvert, c'est-à-dire une fiche, avec une pièce par lot, l'étape où en est chaque lot et les experts au travail. | à faire |
 | 5 | `trigger-feed` | Le fil des déclencheurs | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Lire à gauche ce que le harnais vient de faire, action par action, dans l'ordre. | à faire |
 | 6 | `side-nav` | La navigation (version 2.0.0) | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Aller à un lieu, un agent, un bâtiment, une fiche ou un lot ; la caméra suit. La navigation descend jusqu'aux lots. | à faire |
 | 7 | `day-night` | L'heure réelle | Document de référence, pas de code | La carte suit l'heure réelle : le jour, une nuit pas trop sombre, une courte aube et un court crépuscule ; la nuit, les fenêtres disent où l'on travaille. | à faire |
@@ -801,6 +781,26 @@ Un panneau d'ascenseur, l'étage du haut en haut. Chaque bouton porte le niveau 
   - Émet gdc-hover et lit highlight (le survol partagé)
   - Devient une rangée sur téléphone
   - Lisible en clair et en sombre
+
+### L'intérieur d'un bâtiment (`building-interior`)
+
+Une coupe en maison de poupée, comme en 1.0, mais d'un seul étage, celui choisi au sélecteur d'étages (floor-selector). Une pièce de 6 × 3 m par lot, en grappe, jamais en ligne ; l'enveloppe suit le stade de l'étage (data.floor.stage). Chaque pièce montre où en est son lot par un aspect : todo (vide : à faire, cadre, explore, plan), preparing (traçage au sol, attentes : tests), building (en travaux : code, verifie, securite, ou en_cours sans phase), finishing (finitions : relis, corrige), done (finie : prouve, livre, fini), defect (un défaut visible, comme en 1.0). La traduction de la phase du lot (pieces[].phase de GDC, les phases du run) en aspect est faite par l'assemblage, sur le modèle du regroupement des étages de GDC ; quand phase manque, il se rabat sur statut. Le nom de la phase s'affiche au survol, dans l'interface, jamais dans la 3D. Les agents sont des composants character posés par GDC à l'ancre de leur pièce (piece du personnage). État default : la vue s'ouvre ; hidden : elle se ferme. Fiche validée par Pierre-Alain le 21 octobre 2026. Décisions du 22 octobre 2026 : une pièce n'est defect que si un defect-sign porte son lot (ref.lot), un défaut sur la fiche seule ne touche aucune pièce ; les agents de l'étage sans pièce attendent sur le palier, devant ; un clic sur un étage du bâtiment ouvre cet étage (sur le rez regroupé ou le bâtiment : l'étage en chantier le plus haut, sinon le dernier) ; abandonne donne todo, lecon, deploie et retour donnent done.
+
+- Fichier : `components/interior/building-interior/index.js`
+- Fabriqué par : modeleur
+- Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `building-kit`
+- Modèles : `BLD_INTERIOR_A_v002.glb`, `kit:building-kit/BLD_KIT_A_v003.glb`
+- Paramètres : `rooms` (nombre de lots, 1 à 12, défaut 4)
+- États : `default`, `hidden`
+- Ancres : `label`, `room:*`
+- Données reçues par setState : `floor` ({ stage : un des huit états de building } : l'enveloppe de l'étage) ; `rooms` (liste, une entrée par lot : { id, state: todo \| preparing \| building \| finishing \| done \| defect, trades: [métiers présents] })
+- Budget : 20000 triangles, 10 matériaux
+- Critères d'acceptation :
+  - Chaque aspect de pièce se reconnaît sans légende
+  - La vue s'ouvre depuis le sélecteur d'étages, sur l'étage choisi
+  - fixtures/trois-applications, étape 7 : Julie est dans la pièce L1 de « Saisir un constat hors ligne »
+  - Transition d'entrée et de sortie douce, figée si reducedMotion
+  - Ligne au journal des versions
 
 ### Le fil des déclencheurs (`trigger-feed`)
 
@@ -966,25 +966,6 @@ Deux métiers de plus, qui ne sont pas des agents : worker (l'ouvrier, de l'équ
 - Critères d'acceptation :
   - worker et civilian se lisent à la tenue, sans badge ni nom
   - headlamp : la lentille brille sans vraie lumière ; le client n'a pas de casque, donc pas de lampe
-  - Ligne au journal des versions
-
-### L'intérieur d'un bâtiment (`building-interior`), version 2.0.0
-
-Une coupe en maison de poupée, comme en 1.0, mais d'un seul étage, celui choisi au sélecteur d'étages (floor-selector). Une pièce de 6 × 3 m par lot, en grappe, jamais en ligne ; l'enveloppe suit le stade de l'étage (data.floor.stage). Chaque pièce montre où en est son lot par un aspect : todo (vide : à faire, cadre, explore, plan), preparing (traçage au sol, attentes : tests), building (en travaux : code, verifie, securite, ou en_cours sans phase), finishing (finitions : relis, corrige), done (finie : prouve, livre, fini), defect (un défaut visible, comme en 1.0). La traduction de la phase du lot (pieces[].phase de GDC, les phases du run) en aspect est faite par l'assemblage, sur le modèle du regroupement des étages de GDC ; quand phase manque, il se rabat sur statut. Le nom de la phase s'affiche au survol, dans l'interface, jamais dans la 3D. Les agents sont des composants character posés par GDC à l'ancre de leur pièce (piece du personnage). État default : la vue s'ouvre ; hidden : elle se ferme. Fiche validée par Pierre-Alain le 21 octobre 2026.
-
-- Fichier : `components/interior/building-interior/index.js`
-- Fabriqué par : modeleur
-- Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; kit `building-kit`
-- Paramètres : `rooms` (nombre de lots, 1 à 12, défaut 4)
-- États : `default`, `hidden`
-- Ancres : `label`, `room:*`
-- Données reçues par setState : `floor` ({ stage : un des huit états de building } : l'enveloppe de l'étage) ; `rooms` (liste, une entrée par lot : { id, state: todo \| preparing \| building \| finishing \| done \| defect, trades: [métiers présents] })
-- Budget : 20000 triangles, 10 matériaux
-- Critères d'acceptation :
-  - Chaque aspect de pièce se reconnaît sans légende
-  - La vue s'ouvre depuis le sélecteur d'étages, sur l'étage choisi
-  - fixtures/trois-applications, étape 7 : Julie est dans la pièce L1 de « Saisir un constat hors ligne »
-  - Transition d'entrée et de sortie douce, figée si reducedMotion
   - Ligne au journal des versions
 
 ### La navigation (`side-nav`), version 2.0.0

@@ -1,16 +1,18 @@
-// L'interieur d'un batiment : la vue micro, une piece par fiche et les ouvriers au travail (catalogue : building-interior).
-// Production mixte, brief valide par Pierre-Alain le 20 octobre 2026 :
+// L'interieur d'un batiment : la vue micro, un etage ouvert (une fiche), une piece par lot et l'etape ou en est chaque
+// lot (catalogue : building-interior 2.0.0, lot G8). Fiche validee par Pierre-Alain le 21 octobre 2026, decisions du
+// 22 octobre 2026 ; la 1.0 (une piece par fiche) avait son brief valide le 20 octobre 2026.
 // - une coupe de plain-pied en maison de poupee, comme les bureaux en conteneur : pas de toit, murs cote camera (avant
-//   et droite) et cloisons coupes a l'allege, murs du fond (arriere et gauche) pleins, avec leurs fenetres ;
-// - une piece de 6 x 3 m (2 x 1 trames) par fiche, en grappe, jamais en ligne : colonnes = ceil(racine(n / 2)),
-//   rangees = ceil(n / colonnes), numerotees du devant vers le fond, de gauche a droite ; une case vide de la derniere
-//   rangee reste sans dalle ;
-// - quatre aspects pour les six etats d'une piece (data.rooms[n].state) : study et waiting vides (dalle nue, brique),
-//   construction en travaux (echafaudage roulant, palette, seau), reception et done finies (crepi, fenetres, parquet,
-//   table), defect finie mais rouverte (brique au fond, bache, escabeau, seau) ; GDC pose survey-poles, defect-sign et
-//   les badges, et les personnages (character) aux ancres room:n ;
-// - dalles, rives, poteaux pleins et murs du fond viennent du kit livre building-kit (v003) ; murs coupes, cloisons,
-//   parquet et mobilier de BLD_INTERIOR_A_v001 (blender/assets/building-interior.py) ;
+//   et droite) et cloisons coupes a l'allege, murs du fond (arriere et gauche) pleins ;
+// - une piece de 6 x 3 m (2 x 1 trames) par lot, en grappe, jamais en ligne : colonnes = ceil(racine(n / 2)),
+//   rangees = ceil(n / colonnes), numerotees du devant vers le fond, de gauche a droite ;
+// - l'enveloppe suit le stade de l'etage (data.floor.stage) : facades, poteaux, dalle, garde-corps (ENVELOPPES) ;
+// - l'interieur de chaque piece suit l'aspect de son lot (data.rooms[n].state) : cloisons, sol et mobilier (todo vide,
+//   preparing trace et attentes, building en travaux, finishing crepi et parquet a moitie pose, done finie, defect
+//   rouverte jusqu'a la brique). La traduction de la phase du lot en aspect est faite par l'assemblage
+//   (src/etages.js, roomsFromPieces) ; le nom de la phase s'affiche au survol, dans l'interface ;
+// - dalles, rives, poteaux, murs du fond, fenetres, attentes d'armatures et garde-corps viennent du kit livre
+//   building-kit (v003) ; murs coupes, cloisons, parquet, traces et mobilier de BLD_INTERIOR_A_v002 ;
+// - groupes ROOM_n (userData.room = { index, id }) pour le survol de l'assemblage ; ancres room:n et label ;
 // - etat default : la vue s'ouvre, les murs et le mobilier montent du sol piece apres piece ; hidden : ils
 //   redescendent, puis la vue disparait ; image fixe avec reducedMotion ;
 // - qualite basse : les pieces _LOW des deux modeles ; qualite haute : au-dela du budget, les rangees du fond passent
@@ -19,29 +21,44 @@
 // socle et son materiau, crees par ce composant, sont liberes. Aucune couleur d'etat dans la scene ; aucun texte.
 
 const KIT = "kit:building-kit/BLD_KIT_A_v003.glb";
-const INTERIEUR = "BLD_INTERIOR_A_v001.glb";
+const INTERIEUR = "BLD_INTERIOR_A_v002.glb";
 const K = "BLD_KIT_A_";
 const I = "BLD_INTERIOR_A_";
 const TRAME = 3.0;
 const LARGE = 2 * TRAME; // une piece : deux trames de large, une de profondeur
 const DALLE = 0.3;
 const PARQUET = 0.03;
-const MARGE = 1.2; // du nu des pieces au bord du socle
+const MARGE = 1.2; // du nu des pieces au bord du socle (le palier, devant)
 const SOCLE = { epaisseur: 0.6, chanfrein: 0.1 }; // bible 18.5
 const OUVERTURE = 0.8; // secondes, pour toute la vue
 const MONTEE = 0.4; // secondes, pour une piece
-const ASPECTS = {
-  study: "empty",
-  waiting: "empty",
-  construction: "works",
-  reception: "finished",
-  done: "finished",
-  defect: "defect",
+const ASPECTS = [
+  "todo",
+  "preparing",
+  "building",
+  "finishing",
+  "done",
+  "defect",
+];
+// L'enveloppe de l'etage, par stade (le vocabulaire de building 2.0.0) :
+// dalle : la dalle est coulee ; poteaux : aucun, les attentes d'armatures, ou les poteaux ; facades : aucune, ouvertes
+// (garde-corps de rive ; une piece dont le lot est fini se ferme en brique), brique a baies brutes, brique et
+// fenetres posees, crepi et fenetres.
+const ENVELOPPES = {
+  plot: { dalle: false, poteaux: "none", facades: "none" },
+  excavation: { dalle: true, poteaux: "none", facades: "none" },
+  foundations: { dalle: true, poteaux: "starter", facades: "none" },
+  structure: { dalle: true, poteaux: "column", facades: "open" },
+  envelope: { dalle: true, poteaux: "column", facades: "brick" },
+  finishing: { dalle: true, poteaux: "column", facades: "window" },
+  inspection: { dalle: true, poteaux: "column", facades: "render" },
+  completed: { dalle: true, poteaux: "column", facades: "render" },
 };
+const STADE_PAR_DEFAUT = "completed"; // sans data.floor : l'enveloppe finie, seuls les aspects parlent
 
 export const meta = {
   id: "building-interior",
-  version: "1.0.0",
+  version: "2.0.0",
   category: "interior",
   states: ["default", "hidden"],
   params: { rooms: { type: "number", default: 4, min: 1, max: 12 } },
@@ -55,6 +72,9 @@ const versThree = (x, y, z) => [x, z, -y];
 const borne = (v, p) =>
   Math.round(Math.min(Math.max(Number(v) || p.default, p.min), p.max));
 const adoucit = (u) => 1 - (1 - u) ** 3;
+const rad = (deg) => (deg * Math.PI) / 180;
+// la normale vers l'interieur de la piece d'un cote pose a rot degres (l'epaisseur des pieces du kit, +Y local)
+const dedans = (rot) => [-Math.sin(rad(rot)), Math.cos(rad(rot))];
 
 // Les triangles d'une piece du modele (toutes ses primitives).
 function triangles(objet) {
@@ -149,9 +169,15 @@ export function create(THREE, params, ctx) {
     return objet;
   };
 
+  const aspectDe = (room) =>
+    ASPECTS.includes(room && room.state) ? room.state : "todo";
+  const enveloppeDe = (floor) =>
+    ENVELOPPES[floor && floor.stage] || ENVELOPPES[STADE_PAR_DEFAUT];
+
   // --- le plan d'une vue : une liste de poses { modele, nom, x, y, z, rot, echelle, piece, leve }
-  // piece : l'indice de la piece (pour la transition et l'allegement) ; leve : monte et descend avec la transition.
-  function poses(rooms) {
+  // piece : l'indice de la piece (son groupe, la transition et l'allegement) ; leve : monte et descend avec la
+  // transition.
+  function poses(rooms, env) {
     const out = [];
     const pose = (modele, nom, x, y, z, rot, piece, extra = {}) =>
       out.push({
@@ -166,6 +192,7 @@ export function create(THREE, params, ctx) {
         echelle: [1, 1, 1],
         ...extra,
       });
+    const z0 = env.dalle ? DALLE : 0; // le dessus de la dalle, ou le socle d'un etage encore en plot
     const poteaux = new Map(); // "x,y" -> { piece, plein }
     const poteau = (x, y, piece, plein) => {
       const cle = `${x},${y}`;
@@ -174,79 +201,126 @@ export function create(THREE, params, ctx) {
       poteaux.set(cle, p);
     };
     for (const p of plan.pieces) {
-      const aspect = ASPECTS[(rooms[p.k] || {}).state] || "empty";
-      const fini = aspect === "finished" || aspect === "defect";
-      const sol = DALLE + (fini ? PARQUET : 0);
+      const aspect = aspectDe(rooms[p.k]);
+      const fini = aspect === "done" || aspect === "defect";
+      const sol = z0 + (fini ? PARQUET : 0);
       // la dalle, ses rives sur les cotes de facade et ses angles saillants
-      pose("kit", "SLAB", p.cx, p.cy, 0, 0, p.k, {
-        leve: false,
-        echelle: [2, 1, 1],
-      });
-      for (const [cle, c] of Object.entries(p.cotes)) {
-        if (c.voisin) continue;
-        pose("kit", "SLAB_EDGE", ...c.axe, 0, c.rot, p.k, {
+      if (env.dalle) {
+        pose("kit", "SLAB", p.cx, p.cy, 0, 0, p.k, {
           leve: false,
-          echelle: [c.segments.length, 1, 1],
+          echelle: [2, 1, 1],
         });
+        for (const c of Object.values(p.cotes))
+          if (!c.voisin)
+            pose("kit", "SLAB_EDGE", ...c.axe, 0, c.rot, p.k, {
+              leve: false,
+              echelle: [c.segments.length, 1, 1],
+            });
+        const { avant, droite, arriere, gauche } = p.cotes;
+        for (const [a, b, x, y, rot] of [
+          [avant, gauche, p.cx - LARGE / 2, p.cy - TRAME / 2, 0],
+          [avant, droite, p.cx + LARGE / 2, p.cy - TRAME / 2, 90],
+          [arriere, droite, p.cx + LARGE / 2, p.cy + TRAME / 2, 180],
+          [arriere, gauche, p.cx - LARGE / 2, p.cy + TRAME / 2, 270],
+        ])
+          if (!a.voisin && !b.voisin)
+            pose("kit", "SLAB_CORNER", x, y, 0, rot, p.k, { leve: false });
       }
-      const { avant, droite, arriere, gauche } = p.cotes;
-      for (const [a, b, x, y, rot] of [
-        [avant, gauche, p.cx - LARGE / 2, p.cy - TRAME / 2, 0],
-        [avant, droite, p.cx + LARGE / 2, p.cy - TRAME / 2, 90],
-        [arriere, droite, p.cx + LARGE / 2, p.cy + TRAME / 2, 180],
-        [arriere, gauche, p.cx - LARGE / 2, p.cy + TRAME / 2, 270],
-      ])
-        if (!a.voisin && !b.voisin)
-          pose("kit", "SLAB_CORNER", x, y, 0, rot, p.k, { leve: false });
-      if (fini)
-        for (const dx of [-TRAME / 2, TRAME / 2])
-          pose("interieur", "FLOOR_WOOD", p.cx + dx, p.cy, DALLE, 0, p.k, {
+      // le sol : le parquet d'une piece finie ; en finitions, sur la case de gauche seulement
+      if (fini || aspect === "finishing")
+        for (const dx of fini ? [-TRAME / 2, TRAME / 2] : [-TRAME / 2])
+          pose("interieur", "FLOOR_WOOD", p.cx + dx, p.cy, z0, 0, p.k, {
             leve: false,
           });
 
-      // les murs : la finition suit l'aspect ; en defaut, le fond est rouvert jusqu'a la brique
+      // les cotes : facades selon le stade de l'etage, cloisons selon l'aspect de la piece
+      const ferme = env.facades === "open" && aspect === "done"; // la travee d'un lot fini se ferme (building)
+      const facades = ferme ? "brick" : env.facades;
+      const cloison = {
+        building: "BRICK",
+        finishing: "RENDER",
+        done: "RENDER",
+        defect: "RENDER",
+      }[aspect];
       for (const [cle, c] of Object.entries(p.cotes)) {
-        const brique = !fini || (aspect === "defect" && cle === "arriere");
-        const finition = brique ? "BRICK" : "RENDER";
         c.segments.forEach(([x, y], s) => {
           // la porte de chaque piece : dans la travee droite de son cote avant, et en face chez la piece de devant
-          const porte =
-            s === 1 && (cle === "avant" || (cle === "arriere" && c.voisin));
-          const d = porte ? "_DOOR" : "";
-          if (c.voisin)
-            pose(
-              "interieur",
-              `PARTITION_${finition}${d}`,
-              x,
-              y,
-              DALLE,
-              c.rot,
-              p.k,
-            );
-          else if (!c.plein)
-            pose(
-              "interieur",
-              `WALL_${finition}_CUT${d}`,
-              x,
-              y,
-              DALLE,
-              c.rot,
-              p.k,
-            );
-          else {
-            pose(
-              "kit",
-              brique ? "WALL_BRICK_WINDOW" : "WALL_RENDER_WINDOW",
-              x,
-              y,
-              DALLE,
-              c.rot,
-              p.k,
-            );
-            if (aspect === "defect")
-              pose("kit", "WINDOW", x, y, DALLE, c.rot, p.k);
+          const d =
+            s === 1 && (cle === "avant" || (cle === "arriere" && c.voisin))
+              ? "_DOOR"
+              : "";
+          const [nx, ny] = dedans(c.rot);
+          let mur = true;
+          if (c.voisin) {
+            if (cloison)
+              pose(
+                "interieur",
+                `PARTITION_${cloison}${d}`,
+                x,
+                y,
+                z0,
+                c.rot,
+                p.k,
+              );
+            else mur = false;
+          } else if (facades === "none" || facades === "open") {
+            mur = false;
+            // une rive ouverte : le garde-corps (protection laterale) ; un etage en plot : le trace de son emprise
+            if (facades === "open")
+              pose("kit", "GUARDRAIL", x, y, z0, c.rot, p.k);
+            else if (!env.dalle)
+              // la trame entiere (3 m au lieu des 2,70 m entre poteaux) : un trait continu, qui se rejoint aux angles
+              pose(
+                "interieur",
+                "FLOOR_MARK",
+                x + nx * 0.075,
+                y + ny * 0.075,
+                0,
+                c.rot,
+                p.k,
+                { echelle: [TRAME / (TRAME - 0.3), 1, 1] },
+              );
+          } else {
+            const crepi =
+              facades === "render" &&
+              !(aspect === "defect" && cle === "arriere");
+            if (!c.plein)
+              pose(
+                "interieur",
+                `WALL_${crepi ? "RENDER" : "BRICK"}_CUT${d}`,
+                x,
+                y,
+                z0,
+                c.rot,
+                p.k,
+              );
+            else {
+              pose(
+                "kit",
+                crepi ? "WALL_RENDER_WINDOW" : "WALL_BRICK_WINDOW",
+                x,
+                y,
+                z0,
+                c.rot,
+                p.k,
+              );
+              // fenetres posees a partir des finitions (dans la brique, ou dans le pan rouvert d'un defaut)
+              if (!crepi && facades !== "brick")
+                pose("kit", "WINDOW", x, y, z0, c.rot, p.k);
+            }
           }
-          // les poteaux aux deux bouts du segment : pleins si un mur plein les tient
+          // en preparation, le trace des cloisons a venir, la ou aucun mur ne se tient encore
+          if (aspect === "preparing" && !mur && env.dalle)
+            pose(
+              "interieur",
+              "FLOOR_MARK",
+              x + nx * 0.25,
+              y + ny * 0.25,
+              z0,
+              c.rot,
+              p.k,
+            );
+          // les poteaux aux deux bouts du segment : pleins si un mur plein du fond les tient
           const [ux, uy] = c.rot % 180 === 0 ? [TRAME / 2, 0] : [0, TRAME / 2];
           const plein = c.plein && !c.voisin;
           poteau(x - ux, y - uy, p.k, plein);
@@ -257,11 +331,16 @@ export function create(THREE, params, ctx) {
       // le mobilier de l'aspect, contre le fond de la piece ; le milieu reste aux personnages (ancre room:n)
       const meuble = (nom, dx, dy, z = sol, rot = 0) =>
         pose("interieur", nom, p.cx + dx, p.cy + dy, z, rot, p.k);
-      if (aspect === "works") {
+      if (aspect === "preparing") {
+        meuble("SERVICE_STUBS", -1.7, 0.9);
+        meuble("SERVICE_STUBS", 1.9, 0.9);
+      } else if (aspect === "building") {
         meuble("SCAFFOLD_TOWER", -1.7, 0.75);
         meuble("PALLET", 1.6, 0.75);
         meuble("BUCKET", 0.55, 1.0);
-      } else if (aspect === "finished") {
+      } else if (aspect === "finishing") {
+        meuble("PLANK_STACK", 1.6, 0.8);
+      } else if (aspect === "done") {
         meuble("TABLE", 1.5, 0.7);
       } else if (aspect === "defect") {
         meuble("TARP", -1.5, 0.55);
@@ -269,16 +348,17 @@ export function create(THREE, params, ctx) {
         meuble("BUCKET", -0.55, 0.95, sol + 0.02);
       }
     }
-    for (const c of poteaux.values())
-      pose(
-        c.plein ? "kit" : "interieur",
-        c.plein ? "COLUMN" : "COLUMN_CUT",
-        c.x,
-        c.y,
-        DALLE,
-        0,
-        c.piece,
-      );
+    // les poteaux, ou leurs attentes d'armatures en fondations
+    if (env.poteaux !== "none")
+      for (const c of poteaux.values()) {
+        const [modele, nom] =
+          env.poteaux === "starter"
+            ? ["kit", "COLUMN_STARTER"]
+            : c.plein
+              ? ["kit", "COLUMN"]
+              : ["interieur", "COLUMN_CUT"];
+        pose(modele, nom, c.x, c.y, z0, 0, c.piece);
+      }
     return out;
   }
 
@@ -334,18 +414,31 @@ export function create(THREE, params, ctx) {
   });
   const socle = new THREE.Mesh(geometrieSocle, materiauSocle);
 
-  // --- la vue : reconstruite a chaque setState ; leves[k] : ce qui monte avec la piece k
+  // --- la vue : reconstruite a chaque setState ; un groupe ROOM_n par piece ; leves[k] : ce qui monte avec la piece k
   let leves = [];
-  const construit = (rooms) => {
+  const ancres = {};
+  const construit = (rooms, floor) => {
     root.clear();
     root.add(socle);
+    const env = enveloppeDe(floor);
+    const groupes = plan.pieces.map((p) => {
+      const g = new THREE.Group();
+      g.name = `ROOM_${p.k + 1}`;
+      const room = rooms[p.k];
+      g.userData.room = {
+        index: p.k + 1,
+        id: room && room.id !== undefined ? room.id : null,
+      };
+      root.add(g);
+      return g;
+    });
     leves = plan.pieces.map(() => []);
-    const liste = poses(rooms);
+    const liste = poses(rooms, env);
     const objets = choisit(liste);
     liste.forEach((p, i) => {
       const piece = objets[i].clone(); // partage la geometrie et les materiaux du modele
       piece.position.set(...versThree(p.x, p.y, p.z));
-      piece.rotation.set(0, THREE.MathUtils.degToRad(p.rot), 0);
+      piece.rotation.set(0, rad(p.rot), 0);
       piece.scale.set(p.echelle[0], p.echelle[2], p.echelle[1]);
       if (p.modele === "interieur")
         piece.traverse((o) => {
@@ -355,12 +448,20 @@ export function create(THREE, params, ctx) {
             : materiauxKit.get(o.material.name) || o.material;
         });
       if (p.leve) leves[p.piece].push(piece);
-      root.add(piece);
+      groupes[p.piece].add(piece);
     });
     root.traverse((o) => {
       if (o.isMesh) o.castShadow = o.receiveShadow = !basse;
     });
     socle.castShadow = false;
+    // les ancres suivent la hauteur du sol de chaque piece
+    const z0 = env.dalle ? DALLE : 0;
+    ancres.label = versThree(0, (plan.rangees * TRAME) / 2, z0 + 3.6);
+    for (const p of plan.pieces) {
+      const a = aspectDe(rooms[p.k]);
+      const sol = z0 + (a === "done" || a === "defect" ? PARQUET : 0);
+      ancres[`room:${p.k + 1}`] = versThree(p.cx, p.cy, sol);
+    }
   };
 
   // --- la transition : t va de 0 (ferme) a OUVERTURE (ouvert) ; la piece k monte apres un delai, en MONTEE secondes
@@ -377,14 +478,10 @@ export function create(THREE, params, ctx) {
     root.visible = state === "default" || t > 0;
   };
 
-  const yFond = (plan.rangees * TRAME) / 2;
-  const ancres = { label: versThree(0, yFond, DALLE + 3.6) };
-  for (const p of plan.pieces)
-    ancres[`room:${p.k + 1}`] = versThree(p.cx, p.cy, DALLE);
-
   let state = "default";
   let rooms = [];
-  construit(rooms);
+  let floor = null;
+  construit(rooms, floor);
   if (ctx.reducedMotion) t = OUVERTURE;
   applique();
 
@@ -394,9 +491,10 @@ export function create(THREE, params, ctx) {
       if (!meta.states.includes(next))
         throw new Error(`état inconnu : ${next}`);
       state = next;
-      // sans data.rooms, les pieces gardent leur aspect (la fermeture n'a pas besoin de les redire)
+      // sans data.rooms ni data.floor, la vue garde ce qu'elle montre (la fermeture n'a pas besoin de le redire)
       if (Array.isArray(data.rooms)) rooms = data.rooms;
-      construit(rooms);
+      if (data.floor && typeof data.floor === "object") floor = data.floor;
+      construit(rooms, floor);
       if (ctx.reducedMotion) t = state === "default" ? OUVERTURE : 0;
       applique();
     },

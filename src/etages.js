@@ -87,6 +87,59 @@ export function anchorFor(visible, buildingRef, ref) {
   return `floor:${floor.index}`;
 }
 
+// Les six aspects d'une piece de la vue en coupe (building-interior 2.0.0), et la phase du run d'un lot (PHASES de
+// GDC) qui donne chacun. Fiche validee par Pierre-Alain le 21 octobre 2026 ; lecon, deploie et retour (apres livre) et
+// abandonne : decisions du 22 octobre 2026.
+export const ROOM_STATES = [
+  "todo",
+  "preparing",
+  "building",
+  "finishing",
+  "done",
+  "defect",
+];
+const ASPECT_DE_PHASE = {
+  cadre: "todo",
+  explore: "todo",
+  plan: "todo",
+  tests: "preparing",
+  code: "building",
+  verifie: "building",
+  securite: "building",
+  relis: "finishing",
+  corrige: "finishing",
+  prouve: "done",
+  livre: "done",
+  lecon: "done",
+  deploie: "done",
+  retour: "done",
+};
+
+// L'aspect de la piece d'un lot (pieces[] d'un etage de GDC : { lot, statut, phase }). Un lot fini est fini et un lot
+// abandonne reste vide, quelle que soit la phase de son run (comme building, ou seul fini ferme la travee) ; sinon la
+// phase donne l'aspect, et sans phase le statut (en_cours : en travaux ; prevu : vide). defect : un defect-sign porte
+// ce lot (ref.lot) ; un defaut sur la fiche seule ne touche aucune piece.
+export function roomState(piece, defect = false) {
+  if (defect) return "defect";
+  const statut = piece && piece.statut;
+  if (statut === "fini") return "done";
+  if (statut === "abandonne") return "todo";
+  const parPhase = piece && ASPECT_DE_PHASE[piece.phase];
+  if (parPhase) return parPhase;
+  return statut === "en_cours" ? "building" : "todo";
+}
+
+// Les pieces d'un etage de GDC vers data.rooms de building-interior : { id, state, trades }, dans l'ordre des lots.
+// defects : les lots qu'un defect-sign designe ; trades : les metiers presents, par lot (l'assemblage les tire des
+// personnages). Un etage sans lot donne une liste vide (la coupe montre alors une piece vide).
+export function roomsFromPieces(pieces, { defects = [], trades = {} } = {}) {
+  return (Array.isArray(pieces) ? pieces : []).map((p) => ({
+    id: p.lot,
+    state: roomState(p, defects.includes(p.lot)),
+    trades: trades[p.lot] || [],
+  }));
+}
+
 // Les etages d'un batiment de la scene de GDC (schema 3 : etages, pieces) vers data.floors de building. occupied :
 // les fiches ou un agent travaille (lieu batiment:<id>, etage), que l'assemblage tire des personnages.
 export function floorsFromEtages(etages, occupied = []) {

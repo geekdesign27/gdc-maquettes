@@ -69,7 +69,9 @@ function collectDisposables(root) {
 
 // Des données d'essai pour setState : une valeur plausible par clé de la fiche.
 export function sampleData(entry) {
-  const sample = { progress: 0.5, count: 3, facing: 0.8, activeDesks: 2, rooms: [{ state: 'construction', trades: ['mason'] }, { state: 'done', trades: [] }],
+  const sample = { progress: 0.5, count: 3, facing: 0.8, activeDesks: 2, rooms: [{ id: 'L1', state: 'building', trades: ['mason'] }, { id: 'L2', state: 'done', trades: [] }],
+    // building-interior 2.0.0 : l'enveloppe de l'etage ouvert
+    floor: { stage: 'structure' },
     zones: [{ x: -8, z: 0, width: 14, depth: 12, surface: 'concrete' }, { x: 6, z: 0, width: 5, depth: 28, surface: 'asphalt' }],
     // building 2.0.0 : un etage sans stade prend l'etat essaye ; deux lots, l'un fini
     floors: [{ id: '001-essai', rooms: [{ id: 'L1', done: true }, { id: 'L2', done: false }] }] };

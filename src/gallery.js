@@ -337,9 +337,9 @@ async function seance(x) {
 }
 
 // Les ouvriers d'un interieur : pour chaque piece de data.rooms, la premiere personne d'equipe.json de chaque metier
-// present, ecartes de 0,9 m autour de l'ancre room:n, comme GDC les posera. Ils travaillent en travaux et en defaut,
-// controlent en reception, attendent ailleurs.
-const ETAT_PIECE = { construction: 'work', defect: 'work', reception: 'inspect' };
+// present, ecartes de 0,9 m autour de l'ancre room:n, comme GDC les posera. Ils travaillent du trace aux finitions et en
+// defaut, controlent une piece finie, attendent dans une piece vide (building-interior 2.0.0).
+const ETAT_PIECE = { preparing: 'work', building: 'work', finishing: 'work', defect: 'work', done: 'inspect' };
 async function ouvriers(x) {
   const out = [];
   const rooms = donnees(x.entry).rooms || [];

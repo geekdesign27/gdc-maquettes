@@ -1095,15 +1095,15 @@
     },
     {
       "id": "building-interior",
-      "lot": "G4",
-      "order": 1,
+      "lot": "G8",
+      "order": 4,
       "kind": "component",
       "category": "interior",
       "name": "L'intérieur d'un bâtiment",
-      "purpose": "La vue micro : une pièce par fiche, et les ouvriers au travail dans chacune.",
-      "description": "Une coupe du bâtiment en pièces, de plain-pied, en maison de poupée comme les bureaux en conteneur (sans toit, murs côté caméra et cloisons coupés à l'allège) ; une pièce de 6 × 3 m par fiche, en grappe, jamais en ligne. data.rooms donne, pour chaque pièce, son état (study, waiting, construction, reception, done, defect) et les métiers présents ; quatre aspects (décision de Pierre-Alain du 20 octobre 2026) : study et waiting vides, construction en travaux, reception et done finies, defect avec un défaut visible. Les personnages sont des composants character posés par GDC aux ancres room:n. État default : la vue s'ouvre (les murs montent) ; hidden : elle se ferme (ils redescendent).",
+      "purpose": "La vue micro : un étage ouvert, c'est-à-dire une fiche, avec une pièce par lot, l'étape où en est chaque lot et les experts au travail.",
+      "description": "Une coupe en maison de poupée, comme en 1.0, mais d'un seul étage, celui choisi au sélecteur d'étages (floor-selector). Une pièce de 6 × 3 m par lot, en grappe, jamais en ligne ; l'enveloppe suit le stade de l'étage (data.floor.stage). Chaque pièce montre où en est son lot par un aspect : todo (vide : à faire, cadre, explore, plan), preparing (traçage au sol, attentes : tests), building (en travaux : code, verifie, securite, ou en_cours sans phase), finishing (finitions : relis, corrige), done (finie : prouve, livre, fini), defect (un défaut visible, comme en 1.0). La traduction de la phase du lot (pieces[].phase de GDC, les phases du run) en aspect est faite par l'assemblage, sur le modèle du regroupement des étages de GDC ; quand phase manque, il se rabat sur statut. Le nom de la phase s'affiche au survol, dans l'interface, jamais dans la 3D. Les agents sont des composants character posés par GDC à l'ancre de leur pièce (piece du personnage). État default : la vue s'ouvre ; hidden : elle se ferme. Fiche validée par Pierre-Alain le 21 octobre 2026. Décisions du 22 octobre 2026 : une pièce n'est defect que si un defect-sign porte son lot (ref.lot), un défaut sur la fiche seule ne touche aucune pièce ; les agents de l'étage sans pièce attendent sur le palier, devant ; un clic sur un étage du bâtiment ouvre cet étage (sur le rez regroupé ou le bâtiment : l'étage en chantier le plus haut, sinon le dernier) ; abandonne donne todo, lecon, deploie et retour donnent done.",
       "params": {
-        "rooms": "nombre, 1 à 12, défaut 4"
+        "rooms": "nombre de lots, 1 à 12, défaut 4"
       },
       "states": [
         "default",
@@ -1118,55 +1118,25 @@
         "materials": 10
       },
       "acceptance": [
-        "Chaque pièce lisible et désignable (ancre room:n)",
-        "L'état d'une pièce se voit à son aménagement : vide, en travaux, finie, défaut",
-        "Transition d'entrée et de sortie douce, figée si reducedMotion"
+        "Chaque aspect de pièce se reconnaît sans légende",
+        "La vue s'ouvre depuis le sélecteur d'étages, sur l'étage choisi",
+        "fixtures/trois-applications, étape 7 : Julie est dans la pièce L1 de « Saisir un constat hors ligne »",
+        "Transition d'entrée et de sortie douce, figée si reducedMotion",
+        "Ligne au journal des versions"
       ],
-      "status": "livré",
+      "status": "à faire",
       "data": {
-        "rooms": "liste, une entrée par fiche : { state: study | waiting | construction | reception | done | defect, trades: [métiers présents] }"
+        "floor": "{ stage : un des huit états de building } : l'enveloppe de l'étage",
+        "rooms": "liste, une entrée par lot : { id, state: todo | preparing | building | finishing | done | defect, trades: [métiers présents] }"
       },
       "production": "mixte",
       "kit": "building-kit",
       "assets": [
-        "BLD_INTERIOR_A_v001.glb",
+        "BLD_INTERIOR_A_v002.glb",
         "kit:building-kit/BLD_KIT_A_v003.glb"
       ],
-      "next": {
-        "version": "2.0.0",
-        "lot": "G8",
-        "order": 4,
-        "status": "à faire",
-        "role": "modeleur",
-        "purpose": "La vue micro : un étage ouvert, c'est-à-dire une fiche, avec une pièce par lot, l'étape où en est chaque lot et les experts au travail.",
-        "description": "Une coupe en maison de poupée, comme en 1.0, mais d'un seul étage, celui choisi au sélecteur d'étages (floor-selector). Une pièce de 6 × 3 m par lot, en grappe, jamais en ligne ; l'enveloppe suit le stade de l'étage (data.floor.stage). Chaque pièce montre où en est son lot par un aspect : todo (vide : à faire, cadre, explore, plan), preparing (traçage au sol, attentes : tests), building (en travaux : code, verifie, securite, ou en_cours sans phase), finishing (finitions : relis, corrige), done (finie : prouve, livre, fini), defect (un défaut visible, comme en 1.0). La traduction de la phase du lot (pieces[].phase de GDC, les phases du run) en aspect est faite par l'assemblage, sur le modèle du regroupement des étages de GDC ; quand phase manque, il se rabat sur statut. Le nom de la phase s'affiche au survol, dans l'interface, jamais dans la 3D. Les agents sont des composants character posés par GDC à l'ancre de leur pièce (piece du personnage). État default : la vue s'ouvre ; hidden : elle se ferme. Fiche validée par Pierre-Alain le 21 octobre 2026.",
-        "params": {
-          "rooms": "nombre de lots, 1 à 12, défaut 4"
-        },
-        "states": [
-          "default",
-          "hidden"
-        ],
-        "anchors": [
-          "label",
-          "room:*"
-        ],
-        "budget": {
-          "triangles": 20000,
-          "materials": 10
-        },
-        "data": {
-          "floor": "{ stage : un des huit états de building } : l'enveloppe de l'étage",
-          "rooms": "liste, une entrée par lot : { id, state: todo | preparing | building | finishing | done | defect, trades: [métiers présents] }"
-        },
-        "acceptance": [
-          "Chaque aspect de pièce se reconnaît sans légende",
-          "La vue s'ouvre depuis le sélecteur d'étages, sur l'étage choisi",
-          "fixtures/trois-applications, étape 7 : Julie est dans la pièce L1 de « Saisir un constat hors ligne »",
-          "Transition d'entrée et de sortie douce, figée si reducedMotion",
-          "Ligne au journal des versions"
-        ]
-      }
+      "role": "modeleur",
+      "version": "2.0.0"
     },
     {
       "id": "office-interior",
