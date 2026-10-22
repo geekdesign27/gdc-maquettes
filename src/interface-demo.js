@@ -3,6 +3,7 @@
 import catalogue from "../catalogue.json" with { type: "json" };
 import { defineElements, elements, interfaceContext } from "./interface.js";
 import { arbreDe } from "./arbre.js";
+import { horaireDe } from "./ville/heure.js";
 
 defineElements();
 const $ = (id) => document.getElementById(id);
@@ -147,7 +148,21 @@ const arbreLimites = {
 
 // Les variantes montrees pour chaque element : { titre, data }. Les donnees suivent la fiche du catalogue.
 const minutes = (n) => new Date(Date.now() - n * 60000).toISOString();
+// Le moment de la carte (time-of-day) : l'horaire que la carte donne a GDC, a quelques heures du 22 octobre 2026
+const horaireA = (iso, mode = "auto", fin = null) => ({
+  ...horaireDe(new Date(iso).getTime()),
+  mode,
+  fin: fin === null ? null : new Date(fin).getTime(),
+});
+
 export const variantes = {
+  "time-of-day": [
+    { titre: "Auto, au crépuscule : la nuit arrive", data: { horaire: horaireA("2026-10-22T18:42:00") } },
+    { titre: "Auto, en plein jour", data: { horaire: horaireA("2026-10-22T11:05:00") } },
+    { titre: "Jour choisi la nuit : il retombe au prochain passage", data: { horaire: horaireA("2026-10-22T22:10:00", "jour", horaireDe(new Date("2026-10-22T22:10:00").getTime()).prochain.instant) } },
+    { titre: "Nuit gardée pour une revue : sans fin", data: { horaire: horaireA("2026-10-22T14:00:00", "nuit") } },
+    { titre: "Sans horaire : Auto, rien d'autre", data: {} },
+  ],
   "top-bar": [
     {
       titre: "Données fraîches, deux décisions",

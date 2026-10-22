@@ -209,6 +209,28 @@ function retireArbre() {
   arbreVille?.remove();
   arbreVille = null;
 }
+// Le moment de la carte (time-of-day, avec day-night), en bas de la carte : le choix va a carte.regleHeure, qui regle
+// les lumieres de la galerie ; l'horaire est relu a chaque choix et toutes les 20 secondes, comme GDC le fera.
+let heureVille = null;
+let relitHeure = null;
+function poseHeure(carte) {
+  retireHeure();
+  heureVille = document.createElement('gdc-time-of-day');
+  heureVille.className = 'heure-ville';
+  const relit = () => { heureVille.data = { horaire: carte.horaire() }; };
+  heureVille.addEventListener('gdc-select', (e) => {
+    if (carte.regleHeure(e.detail.id === 'auto' ? null : e.detail.id)) dirty = true;
+    relit();
+  });
+  relit();
+  relitHeure = setInterval(relit, 20000);
+  stage.append(heureVille);
+}
+function retireHeure() {
+  clearInterval(relitHeure);
+  heureVille?.remove();
+  heureVille = null;
+}
 // Le survol partage entre la carte, le fil et l'arbre, comme GDC le fera : chaque source garde sa derniere reference ;
 // le highlight est la plus recente qui n'est pas null, renvoye au fil et a l'arbre (l'emetteur compris) et pose sur la
 // carte.
@@ -228,12 +250,15 @@ async function instanceVille(id, state) {
   const etapes = index.etapes.map((e) => String(e.numero).padStart(2, '0'));
   const sceneDe = (s) => SCENES_GDC[`../fixtures/${nom}/${index.etapes[etapes.indexOf(s)].fichier}`];
   const q = new URLSearchParams(location.search);
-  const carte = await creeCarte(THREE, { components: byId, chargeur: charge, ...options, force: q.get('ouvriers') === 'max' });
+  // la carte regle elle-meme la lumiere sur l'heure (le moment de la bascule, ou celui que l'on choisit en bas)
+  const lumieres = { ciel, soleil: sun, scene: options.silhouette ? null : scene };
+  const carte = await creeCarte(THREE, { components: byId, chargeur: charge, ...options, lumieres, force: q.get('ouvriers') === 'max' });
   const premier = etapes.includes(state) ? state : etapes[0];
   await carte.applique(sceneDe(premier));
   const actionsJusqua = (s) => etapes.slice(0, etapes.indexOf(s) + 1).flatMap((x) => sceneDe(x).actions || []);
   poseFil(actionsJusqua(premier));
   poseArbre(sceneDe(premier), nom);
+  poseHeure(carte);
   let etape = premier;
   const inst = {
     root: carte.root,
@@ -353,7 +378,7 @@ function parametresAdresse(meta) {
     }));
 }
 
-function retire(x) { if (x && x.ville) { retireFil(); retireArbre(); } if (x && x.ville?.lecture) clearInterval(x.ville.lecture); if (x && x.inst) { scene.remove(x.inst.root); x.inst.dispose(); } }
+function retire(x) { if (x && x.ville) { retireFil(); retireArbre(); retireHeure(); applyTheme(); } if (x && x.ville?.lecture) clearInterval(x.ville.lecture); if (x && x.inst) { scene.remove(x.inst.root); x.inst.dispose(); } }
 
 // Un signal (lot G5) se juge a cote des lieux ou il apparait (signaletique) : ses voisins de planche, poses tout pres
 // (ECART_SIGNAL entre les emprises), et non les deux premiers modeles livres ; « id/etat » pose un voisin dans cet etat.

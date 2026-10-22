@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-55 éléments : 46 livré, 7 à faire, 2 exemple ; 3 nouvelle(s) version(s) prévue(s).
+56 éléments : 46 livré, 8 à faire, 2 exemple ; 3 nouvelle(s) version(s) prévue(s).
 
 ## G0 : La ligne graphique
 
@@ -708,6 +708,7 @@ Faire de la carte la visualisation du harnais : relier au survol la carte, le fi
 | 5 | `trigger-feed` | Le fil des déclencheurs | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Lire à gauche ce que le harnais vient de faire, action par action, dans l'ordre. | livré |
 | 6 | `side-nav` | La navigation | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Aller à un lieu, un agent, un bâtiment, une fiche ou un lot ; la caméra suit. La navigation descend jusqu'aux lots. | livré |
 | 7 | `day-night` | L'heure réelle | Document de référence, pas de code | La carte suit l'heure réelle : le jour, une nuit pas trop sombre, une courte aube et un court crépuscule ; la nuit, les fenêtres disent où l'on travaille. | à faire |
+| 7 | `time-of-day` | Le moment de la carte | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Suivre l'heure réelle, ou choisir le jour, l'aube ou la nuit pour y voir plus clair ; l'horaire du soleil de Fribourg. | à faire |
 | 8 | `floodlight` | Le projecteur de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Éclairer le chantier la nuit quand on y travaille. | à faire |
 | 9 | `character-kit` | Le personnage maître et son équipe (version v003) | Bibliothèque de modèles 3D produite par un script Blender (blender/assets/<id>.py) et réutilisée par plusieurs composants : components/kit/<id>/ | Un squelette, une morphologie et des animations communes pour tous les agents. | à faire |
 | 10 | `character` | Le personnage (un agent) (version 1.2.0) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer qui travaille, où, et dans quel état. | à faire |
@@ -833,6 +834,21 @@ Pas un composant. 1. src/lumiere.json gagne une recette de nuit (ciel, lune à l
   - L'aube et le crépuscule durent 30 minutes chacun, centrés sur le lever et le coucher du soleil à Fribourg
   - Aucune horloge du réseau : l'heure du poste
   - Le passage est trop lent pour être une animation : rien de particulier avec moins d'animations
+
+### Le moment de la carte (`time-of-day`)
+
+Fabriqué avec day-night. Un sélecteur à quatre positions, Auto, Jour, Aube et Nuit, que GDC pose sur la carte. Il montre aussi l'horaire : l'heure du poste, le moment et le prochain passage (« 18:42 · Crépuscule · nuit à 18:48 »), ainsi que le lever et le coucher du soleil à Fribourg. Auto suit le soleil. Un moment choisi retombe de lui-même au prochain passage, et l'élément l'annonce (« Jour choisi · heure réelle à 07:44 »). L'élément n'interprète rien : GDC lui donne carte.horaire() et transmet le choix à carte.regleHeure. Décisions de Pierre-Alain du 22 octobre 2026 : un sélecteur, une durée jusqu'au prochain passage, l'horaire affiché.
+
+- Fabriqué par : intégrateur d'interface
+- Élément : `<gdc-time-of-day>`
+- Entrées (propriété data) : `horaire` (carte.horaire() : { mode, moment, maintenant, lever, coucher, prochain: { instant, moment }, fin }. mode vaut auto, jour, aube ou nuit ; moment vaut jour, aube, crepuscule ou nuit ; les instants sont en millisecondes. GDC le relit à chaque update de la carte qui rend true, et au moins une fois par minute pour l'heure affichée.)
+- Sorties (événements) : `gdc-select` (detail.id = auto \| jour \| aube \| nuit, le mode choisi, à transmettre à carte.regleHeure (null pour auto))
+- Critères d'acceptation :
+  - Utilisable au clavier comme un groupe de boutons radio : flèches, Début, Fin, un seul arrêt de tabulation
+  - Le mode choisi se lit sans la couleur, et aucune couleur d'état n'est utilisée
+  - L'horaire dit le moment et le prochain passage ; pour un choix, il dit quand la carte reprend l'heure réelle
+  - Lisible en clair et en sombre, ainsi que sur téléphone
+  - Ligne au journal des versions
 
 ### Le projecteur de chantier (`floodlight`)
 
