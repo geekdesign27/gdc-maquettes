@@ -35,7 +35,7 @@ import {
 } from "./equipe.js";
 import { alea } from "./graine.js";
 import { groupFloors, anchorFor, refOf } from "../etages.js";
-import { tokens, makeContext } from "../tokens.js";
+import { tokens, makeContext, paletteFor } from "../tokens.js";
 
 // Les remplacants, en attendant character 1.2.0 (worker et civilian) : la carte recolore des copies des materiaux de la
 // tenue du chef d'equipe (casque et gilet) et de la tenue de ville du client. A retirer avec la 1.2.0 (fiche city-map).
@@ -47,6 +47,19 @@ export const REMPLACANTS = {
 const RECUL = 2; // comme la scene de reference : la carte descend d'environ 1,6 m a l'ecran
 const FONDU_ZONE = 1.5; // s, la couleur qui arrive une fois
 const IMPULSION = 0.4; // s, un element qui apparait ou s'efface
+const MONTAGE_GRUE = 1.5; // s, la grue qui se monte ou se demonte
+const VITESSE_CAMION = 6; // m/s
+const ROULE_MAX = 6; // s, le plafond d'un trajet de camion
+const ECART_PERSONNES = 0.75; // m, deux personnes ne se posent jamais plus pres
+// Les phases du gros oeuvre, ou la grue est montee sur la parcelle (docs/ville.md : la structure et ses echafaudages,
+// la grue) ; GDC la fait lever (lifting) a la fusion vers dev, et la pose meme hors de ces phases.
+const PHASES_GRUE = ["structure", "envelope"];
+// Une zone jamais activee : en niveaux de gris, et lavee vers le fond, pour qu'elle se lise « pas encore la » sur une
+// carte dont le monde est deja peu colore (retour de Pierre-Alain du 22 octobre 2026).
+const LAVIS = { light: 0.45, dark: 0.3 };
+// Le sol d'une zone grise (la terre du chantier, l'enrobe : un seul terrain pour toutes les zones) : un voile du fond,
+// pose juste au-dessus des dalles, sous les bordures et les objets ; il s'efface avec la couleur.
+const VOILE = { opacite: 0.6, hauteur: 0.06 };
 const ENTRE_INSTANTS = 0.25; // s, un souffle entre deux instants de GDC
 const PAS_DE_PORTE = 1.2; // s au plus, de la porte au poste
 const ANGLE_DEHORS = Math.PI / 4; // face a la camera
@@ -126,6 +139,8 @@ export async function creeCarte(THREE, options) {
       { actif: false, clones: new Map(), fondu: null },
     ]),
   );
+  const fondTheme = ctxOptions.theme === "dark" ? "dark" : "light";
+  const fond = new THREE.Color(paletteFor(fondTheme).paper);
   function copieGrise(zone, m) {
     if (m.userData.villeCopie) return m;
     const z = gris[zone];
@@ -134,7 +149,7 @@ export async function creeCarte(THREE, options) {
       c.userData = { villeCopie: true, origine: m };
       if (c.color) {
         const v = 0.2126 * c.color.r + 0.7152 * c.color.g + 0.0722 * c.color.b;
-        c.userData.gris = new THREE.Color(v, v, v);
+        c.userData.gris = new THREE.Color(v, v, v).lerp(fond, LAVIS[fondTheme]);
         c.color.copy(c.userData.gris);
       }
       z.clones.set(m, c);
@@ -186,6 +201,7 @@ export async function creeCarte(THREE, options) {
     const m = membres.get(cle);
     if (!m) return;
     acteurs.delete(cle); // une personne qui s'en va marche jusqu'a sa porte, puis seulement elle est retiree
+    places.delete(cle);
     colore(m.inst.root); // les copies grises restent a la zone, qui les libere
     m.inst.root.removeFromParent();
     m.inst.dispose();
@@ -203,6 +219,7 @@ export async function creeCarte(THREE, options) {
   let fixes = [];
   const peintures = [];
   const cube = new THREE.BoxGeometry(1, 1, 1);
+  const plan = new THREE.PlaneGeometry(1, 1);
   // types : le type de chaque parcelle (house, block, hall) ; la couche se refait quand ils changent
   async function coucheFixe(types) {
     const cle = types.slice(0, 4).join(",");
@@ -212,6 +229,7 @@ export async function creeCarte(THREE, options) {
       b.removeFromParent();
       b.material.dispose();
     }
+    for (const z of Object.values(gris)) retireVoile(z);
     imp = implantation(types.length, types);
     imp.types = cle;
     chemins = creeChemins(imp.voies);
@@ -276,6 +294,20 @@ export async function creeCarte(THREE, options) {
       }
     }
     for (const b of peintures) grise(b, b.userData.zone);
+    // le voile du sol de chaque zone encore grise
+    for (const [cle, { x, z }] of Object.entries(imp.cadres)) {
+      if (gris[cle].actif) continue;
+      const voile = new THREE.Mesh(
+        plan,
+        new THREE.MeshBasicMaterial({ color: fond, transparent: true, opacity: VOILE.opacite, depthWrite: false }),
+      );
+      voile.rotation.x = -Math.PI / 2;
+      voile.scale.set(x[1] - x[0], z[1] - z[0], 1);
+      voile.position.set((x[0] + x[1]) / 2, VOILE.hauteur, (z[0] + z[1]) / 2);
+      voile.userData.villePropre = true;
+      plateau.add(voile);
+      gris[cle].voile = voile;
+    }
     // le plateau recentre sur le terrain, avance vers la camera
     plateau.position.set(RECUL - centre[0], 0, RECUL - centre[2]);
     plateau.updateMatrix();
@@ -510,13 +542,30 @@ export async function creeCarte(THREE, options) {
     }
     return r;
   }
+  // Personne ne se pose sur un autre (retour de Pierre-Alain du 22 octobre 2026 : a l'etape 15, deux ouvriers tiraient le
+  // meme point d'echafaudage et n'en faisaient qu'un) : chacun retient sa place, agent, ouvrier ou usager ; une place prise
+  // fait tourner autour d'elle jusqu'a une place libre.
+  const places = new Map(); // cle du membre -> { pos, y }
+  function placeLibre(cle, voulue, y) {
+    const autres = [...places].filter(([c]) => c !== cle).map(([, q]) => q);
+    const pris = (pos) => autres.some((q) => Math.abs(q.y - y) < 1 && dist(q.pos, pos) < ECART_PERSONNES);
+    let pos = voulue;
+    for (let k = 1; k < 16 && pris(pos); k++) {
+      const r = ECART_PERSONNES * (1 + Math.floor((k - 1) / 6) * 0.8);
+      pos = [voulue[0] + Math.cos(k * 1.05) * r, voulue[1] + Math.sin(k * 1.05) * r];
+    }
+    places.set(cle, { pos, y });
+    return pos;
+  }
+  // Le poste d'un agent, a une place libre.
   function posteAgent(p) {
-    const poste = posteDe(p, rangsAgents.get(p.id) || 0);
-    if (!poste)
+    const brut = posteDe(p, rangsAgents.get(p.id) || 0);
+    if (!brut)
       signale(
         `${p.nom || p.id} : lieu ${p.lieu} inconnu de la carte, posé au carrefour`,
       );
-    return poste || { pos: [27, 26], y: 0, facing: ANGLE_DEHORS };
+    const poste = brut || { pos: [27, 26], y: 0, facing: ANGLE_DEHORS };
+    return { ...poste, pos: placeLibre(`gdc:${p.id}`, poste.pos, poste.y) };
   }
   function installeAgent(a, p) {
     const poste = posteAgent(p);
@@ -587,8 +636,10 @@ export async function creeCarte(THREE, options) {
           porte: porteBatiment(spec.batiment),
         });
     v.n++;
+    const y = t.echafaudage ? hauteurEtage(spec.batiment, t.echafaudage) : 0;
+    if (t.dedans) places.delete(spec.cle);
+    else t.vers = placeLibre(spec.cle, t.vers, y);
     const arrive = () => {
-      const y = t.echafaudage ? hauteurEtage(spec.batiment, t.echafaudage) : 0;
       placeActeur(a, a.pos, y);
       a.m.inst.root.visible = !t.dedans;
       etat(a.m, t.etat, {
@@ -605,7 +656,7 @@ export async function creeCarte(THREE, options) {
     } else marche(a, trajet(a, t.vers, pa), arrive);
   }
   function pause(v, k) {
-    const place = placeDePause(v.spec, k, imp.points.rassemblement);
+    const place = placeLibre(v.spec.cle, placeDePause(v.spec, k, imp.points.rassemblement), 0);
     const reste = () => {
       const e = etatDePause(v.spec, v.n++);
       placeActeur(v.a, v.a.pos, 0);
@@ -726,6 +777,10 @@ export async function creeCarte(THREE, options) {
       e.m.inst.root.scale.setScalar(1);
       e.fin?.();
     }
+    for (const r of roulages.splice(0)) {
+      if (r.rotation !== undefined) r.m.inst.root.rotation.y = r.rotation;
+      r.fin?.();
+    }
     concilie(lu, false);
     vie(lu, false);
   }
@@ -742,6 +797,10 @@ export async function creeCarte(THREE, options) {
     const placeRangs = new Map();
     for (const el of scene.elements.values()) {
       if (el.element === "ground") continue;
+      if (el.element === "crane") {
+        grueDe.set(el.id, el.ancre); // la grue de sa parcelle (grues)
+        continue;
+      }
       const cle = `gdc:${el.id}`;
       if (el.element === "character") {
         if (!membres.has(cle)) {
@@ -794,35 +853,126 @@ export async function creeCarte(THREE, options) {
       m.inst.root.position.set(...place.position); // un panneau peut changer de rang
       m.zone = zoneDe(imp.cadres, place.position[0], place.position[2]);
     }
+    for (const b of scene.batiments) {
+      const cle = `grue:${b.id}`;
+      const pa = parcelleDe(b.id);
+      if (!pa || membres.has(cle) || !veutGrue(b, scene)) continue;
+      const m = pose(cle, "crane", await cree("crane"), pa.grue.position, pa.grue.rotation);
+      m.inst.root.visible = false;
+      m.batiment = b.id;
+    }
+  }
+
+  // --- la grue de chaque parcelle : montee pendant le gros oeuvre, ou quand GDC la pose (lifting, la fusion vers dev) ;
+  // elle se monte et se demonte (retour de Pierre-Alain du 22 octobre 2026 : elle apparaissait « comme par magie »)
+  const grueDe = new Map(); // identifiant de la grue de GDC -> batiment
+  const grueGdc = (b, scene) =>
+    [...scene.elements.values()].find((e) => e.element === "crane" && e.ancre === b.id) || null;
+  const veutGrue = (b, scene) => Boolean(grueGdc(b, scene)) || PHASES_GRUE.includes(b.phase);
+  function grues(scene, doucement) {
+    let duree = 0;
+    for (const [cle, m] of [...membres]) {
+      if (!cle.startsWith("grue:")) continue;
+      const b = scene.batiments.find((x) => x.id === m.batiment);
+      if (!b || !veutGrue(b, scene)) {
+        if (!m.inst.root.visible || m.demonte) continue;
+        m.demonte = true;
+        if (doucement && anime) {
+          impulsion(m, 1, 0, () => retire(cle), "y", MONTAGE_GRUE);
+          duree = MONTAGE_GRUE;
+        } else retire(cle);
+        continue;
+      }
+      const el = grueGdc(b, scene);
+      m.el = el;
+      etat(m, el && components.crane.meta.states.includes(el.etat) ? el.etat : "idle", {});
+      if (!m.inst.root.visible) {
+        m.inst.root.visible = true;
+        if (doucement && anime) {
+          impulsion(m, 0, 1, null, "y", MONTAGE_GRUE);
+          duree = MONTAGE_GRUE;
+        }
+      }
+    }
+    return duree;
+  }
+
+  // --- le camion de livraison : il arrive par la voie et le portail jusqu'a sa place sur la parcelle, et repart par le
+  // meme chemin (retour de Pierre-Alain du 22 octobre 2026 : il apparaissait « comme par miracle »)
+  let roulages = []; // { m, chemin, duree, t, fin, rotation }
+  function trajetCamion(m) {
+    const pa = parcelleDe(m.el?.ancre);
+    if (!pa) return null;
+    const [x, , z] = pa.camion.position;
+    const voie = imp.voies.points["voie:entree"];
+    const dehors = [voie.x, imp.terrain.z[1] - 0.4];
+    const c = chemins.chemin(dehors, `allee:${pa.index + 1}`);
+    return [dehors, ...(c ? c.points.slice(1) : []), [x - 6, z - 3.4], [x - 4, z], [x, z]];
+  }
+  function roule(m, points, fin, rotationFinale) {
+    if (!points || !anime) {
+      fin?.();
+      return 0;
+    }
+    const chemin = mesure(points);
+    const duree = Math.min(Math.max(chemin.longueur / VITESSE_CAMION, 1.5), ROULE_MAX);
+    m.inst.root.visible = true;
+    m.inst.root.position.set(points[0][0], 0, points[0][1]);
+    roulages.push({ m, chemin, duree, t: 0, fin, rotation: rotationFinale });
+    return duree;
+  }
+  function arriveCamion(m) {
+    const pa = parcelleDe(m.el?.ancre);
+    return roule(m, trajetCamion(m), () => {
+      if (pa) m.inst.root.position.set(...pa.camion.position);
+    }, pa?.camion.rotation);
+  }
+  function repartCamion(m) {
+    m.part = true;
+    const t = trajetCamion(m);
+    if (!t || !anime) {
+      retire(m.cle);
+      return 0;
+    }
+    return roule(m, t.reverse(), () => retire(m.cle));
   }
 
   // l'etat recu : chaque element a sa place et son etat ; ce qui n'est plus dans la scene s'en va
   function concilie(scene, doucement) {
+    // les objets d'abord (un batiment change d'etage, et ses ancres avec), puis les agents a leur poste
+    const agents = [];
     for (const [cle, m] of [...membres]) {
       if (!cle.startsWith("gdc:")) continue;
       const id = cle.slice(4);
       const el = scene.elements.get(id);
       if (!el) {
         if (m.acteur && m.acteur.marche) continue; // il rentre deja
-        if (doucement && anime && !m.acteur)
+        if (m.part) continue; // le camion repart deja
+        if (m.id === "delivery-truck" && doucement && anime) repartCamion(m);
+        else if (doucement && anime && !m.acteur)
           impulsion(m, 1, 0, () => retire(cle));
         else retire(cle);
         continue;
       }
       if (m.acteur) {
-        if (!m.acteur.marche)
-          installeAgent(
-            m.acteur,
-            scene.personnages.find((p) => p.id === id),
-          );
+        agents.push([m, id]);
         continue;
       }
       if (!m.inst.root.visible) {
         m.inst.root.visible = true;
-        if (doucement && anime) impulsion(m, 0, 1);
+        if (m.id === "delivery-truck" && doucement && anime) arriveCamion(m);
+        else if (doucement && anime) impulsion(m, 0, 1);
       }
       etat(m, etatValide(el), donneesDe(el));
     }
+    for (const c of [...places.keys()]) if (c.startsWith("gdc:")) places.delete(c); // les postes des agents sont refaits
+    for (const [m, id] of agents)
+      if (!m.acteur.marche)
+        installeAgent(
+          m.acteur,
+          scene.personnages.find((p) => p.id === id),
+        );
+    grues(scene, doucement);
     for (const id of Object.keys(imp.lieux)) {
       const m = membres.get(id);
       if (!m) continue;
@@ -841,17 +991,30 @@ export async function creeCarte(THREE, options) {
     if (doucement && anime) z.fondu = 0;
     else finitFondu(zone);
   }
+  function retireVoile(z) {
+    if (!z.voile) return;
+    z.voile.removeFromParent();
+    z.voile.material.dispose();
+    z.voile = null;
+  }
   function finitFondu(zone) {
     const z = gris[zone];
+    retireVoile(z);
     for (const m of membres.values()) if (m.zone === zone) colore(m.inst.root);
     for (const b of peintures) if (b.userData.zone === zone) colore(b);
     for (const c of z.clones.values()) c.dispose();
     z.clones.clear();
     z.fondu = null;
   }
-  function impulsion(m, de, vers, fin) {
-    m.inst.root.scale.setScalar(de || 0.001);
-    effets.push({ m, de, vers, t: 0, fin });
+  // une impulsion : l'echelle de de a vers ; axe « y » : seulement la hauteur (une grue qui se monte)
+  function impulsion(m, de, vers, fin, axe = "tout", duree = IMPULSION) {
+    effets.push({ m, de, vers, t: 0, fin, axe, duree });
+    echelle(m, de, axe);
+  }
+  function echelle(m, v, axe) {
+    const k = Math.max(v, 0.001);
+    if (axe === "y") m.inst.root.scale.set(1, k, 1);
+    else m.inst.root.scale.setScalar(k);
   }
 
   // un instant de GDC : ses actions ensemble ; rend sa duree (la plus longue marche)
@@ -878,6 +1041,7 @@ export async function creeCarte(THREE, options) {
       return IMPULSION;
     }
     if (PROPOSEES.includes(a.action)) return actionProposee(a, scene);
+    if (a.element === "crane") return grues(scene, true); // elle se monte, leve ou se demonte avec sa parcelle
     if (!connus.has(a.element)) {
       signale(
         `action ${a.action} sur ${a.element} « ${a.id} » : composant absent du catalogue, ignorée`,
@@ -928,6 +1092,7 @@ export async function creeCarte(THREE, options) {
       if (!m.inst.root.visible) {
         m.inst.root.visible = true;
         if (el) etat(m, etatValide(el), donneesDe(el));
+        if (m.id === "delivery-truck") return arriveCamion(m);
         if (anime) impulsion(m, 0, 1);
       }
       return IMPULSION;
@@ -935,6 +1100,8 @@ export async function creeCarte(THREE, options) {
     if (a.action === "change" && el) {
       const states = components[m.id].meta.states;
       etat(m, states.includes(a.vers) ? a.vers : etatValide(el), donneesDe(el));
+      // un batiment qui entre dans le gros oeuvre, ou qui en sort : sa grue se monte ou se demonte avec lui
+      if (m.id === "building") return Math.max(IMPULSION, grues(scene, true));
       return IMPULSION;
     }
     if (a.action === "quantite") {
@@ -945,6 +1112,7 @@ export async function creeCarte(THREE, options) {
       return IMPULSION;
     }
     if (a.action === "disparait") {
+      if (m.id === "delivery-truck") return repartCamion(m);
       if (anime) impulsion(m, 1, 0, () => retire(m.cle));
       else retire(m.cle);
       return IMPULSION;
@@ -1047,14 +1215,24 @@ export async function creeCarte(THREE, options) {
         }
       }
       for (const a of [...acteurs.values()]) if (avance(a, dt)) encore = true;
+      for (const r of [...roulages]) {
+        encore = true;
+        r.t += dt;
+        const f = Math.min(r.t / r.duree, 1);
+        const [x, z, cap] = positionSur(r.chemin, f * f * (3 - 2 * f));
+        r.m.inst.root.position.set(x, 0, z);
+        r.m.inst.root.rotation.y = f >= 1 && r.rotation !== undefined ? r.rotation : cap;
+        if (f >= 1) {
+          roulages.splice(roulages.indexOf(r), 1);
+          r.fin?.();
+        }
+      }
       if (effets.length) {
         encore = true;
         for (const e of [...effets]) {
           e.t += dt;
-          const f = Math.min(e.t / IMPULSION, 1);
-          e.m.inst.root.scale.setScalar(
-            Math.max(lerp(e.de, e.vers, f * f * (3 - 2 * f)), 0.001),
-          );
+          const f = Math.min(e.t / e.duree, 1);
+          echelle(e.m, lerp(e.de, e.vers, f * f * (3 - 2 * f)), e.axe);
           if (f >= 1) {
             effets.splice(effets.indexOf(e), 1);
             e.m.inst.root.scale.setScalar(1);
@@ -1070,6 +1248,7 @@ export async function creeCarte(THREE, options) {
         for (const c of z.clones.values())
           if (c.userData.gris)
             c.color.copy(c.userData.gris).lerp(c.userData.origine.color, f);
+        if (z.voile) z.voile.material.opacity = VOILE.opacite * (1 - f);
         if (f >= 1) finitFondu(zone);
       }
       for (const m of membres.values())
@@ -1231,6 +1410,17 @@ export async function creeCarte(THREE, options) {
         usagers: gens,
         agents: [...membres.values()].filter((m) => m.acteur && !m.vie).length,
         personnes: [...membres.values()].filter((m) => m.id === "character").length, // tous ceux qui sont poses
+        // les grues montees, par batiment
+        grues: [...membres.values()].filter((m) => m.batiment && m.id === "crane" && m.inst.root.visible).map((m) => m.batiment),
+        // les paires de personnes arretees trop pres l'une de l'autre (au meme niveau)
+        chevauchements: (() => {
+          const poses = [...membres.values()].filter((m) => m.acteur && !m.acteur.marche && m.inst.root.visible).map((m) => m.inst.root.position);
+          let n = 0;
+          for (let i = 0; i < poses.length; i++)
+            for (let j = i + 1; j < poses.length; j++)
+              if (Math.abs(poses[i].y - poses[j].y) < 1 && Math.hypot(poses[i].x - poses[j].x, poses[i].z - poses[j].z) < ECART_PERSONNES - 0.05) n++;
+          return n;
+        })(),
       };
     },
     dispose() {
@@ -1239,6 +1429,7 @@ export async function creeCarte(THREE, options) {
       for (const cle of [...membres.keys()]) retire(cle);
       for (const z of Object.keys(gris)) finitFondu(z);
       for (const b of peintures) b.material.dispose();
+      plan.dispose();
       cube.dispose();
       if (anneau) for (const r of Object.values(anneau)) r.dispose();
     },

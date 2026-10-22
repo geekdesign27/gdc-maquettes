@@ -112,6 +112,12 @@ await carte.applique(sceneDeGdc);               // gdc scene --avant : plan, ele
 
 **Ce que la carte fait des actions** : `apparait` (un agent sort de la porte de son lieu ; un objet arrive d'une impulsion), `deplace` (de porte à porte par les voies, puis son poste et son état), `change`, `quantite`, `disparait` (l'agent rentre par sa porte ; l'objet s'efface), `ouverture`, `pause`, `fermeture` (le régime). Les actions proposées à GDC (`consulte`, `controle`, `question`, `reunion`, `remise`, `demande`, `docs/demandes-a-gdc.md`) sont lues si elles arrivent : les agents nommés (`id`, `participants`) vont au lieu (`vers`, `lieu`, `aupres`, `batiment` ; la cabane des clés pour `remise`).
 
+**Retours de Pierre-Alain du 22 octobre 2026** :
+- une zone jamais activée est en niveaux de gris **lavés vers le fond**, et un voile du fond couvre son sol (la terre du chantier, l'enrobe) ; le voile s'efface avec le fondu de la couleur ;
+- personne ne se pose sur un autre : agents, ouvriers et usagers retiennent leur place, et une place prise fait tourner autour d'elle (0,75 m au moins entre deux personnes au même niveau) ;
+- le camion de livraison arrive par la voie verticale et le portail jusqu'à sa place sur la parcelle, et repart par le même chemin ;
+- la grue est montée sur sa parcelle pendant le gros œuvre (`structure`, `envelope`, au repos) et quand GDC la pose (`lifting`, la fusion vers dev) ; elle se monte et se démonte en 1,5 s, avec le bâtiment qui entre dans le gros œuvre ou en sort. C'est une lecture de la phase, comme les échafaudages : elle ne lève que sur l'action de GDC.
+
 **Les postes des agents** : à un bureau, le poste `desk:n` (puis `crew:n` à la baraque), dans l'ordre de la scène ; à une cabane, devant son entrée ; à un panneau, en arc devant lui ; sur une parcelle, la pièce de son lot ou l'étage de sa fiche (`building` 2.0.0), sinon au pied du bâtiment.
 
 **Les remplaçants, en attendant leurs fiches** : l'ouvrier est la tenue du chef d'équipe recolorée par la carte (casque gris #8E959C, gilet jaune fluo #D7EC23), l'usager la tenue de ville du client recolorée en trois coloris provisoires (`ville.REMPLACANTS`), jusqu'à `character` 1.2.0 ; le portail reste ouvert jusqu'à `site-fence` 1.1.0 ; en pause, les ouvriers se rassemblent près de la baraque, là où viendra le cabanon `party-shed` ; aucune voiture avant `city-car`.

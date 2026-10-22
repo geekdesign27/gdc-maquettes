@@ -141,6 +141,11 @@ for (const [nom, scenes] of Object.entries(sequences))
         verifie(c.ouvriers <= PLAFONDS[quality].carte, `${nom} ${i + 1} : ${c.ouvriers} ouvriers sur la carte`);
         verifie(lu.regime !== 'ferme' || c.ouvriers + c.usagers === 0, `${nom} ${i + 1} : du monde sur un chantier fermé`);
         verifie(c.personnes === c.agents + c.ouvriers + c.usagers, `${nom} ${i + 1} : ${c.personnes - c.agents - c.ouvriers - c.usagers} personne(s) restée(s) sur la carte`);
+        verifie(c.chevauchements === 0, `${nom} ${i + 1} : ${c.chevauchements} paire(s) de personnes posées l'une sur l'autre`);
+        for (const b of lu.batiments) {
+          const voulue = ['structure', 'envelope'].includes(b.phase) || [...lu.elements.values()].some((e) => e.element === 'crane' && e.ancre === b.id);
+          verifie(voulue === c.grues.includes(b.id), `${nom} ${i + 1} : la grue de ${b.id} ${voulue ? 'manque' : 'reste montée'} (phase ${b.phase})`);
+        }
         verifie(c.agents === lu.personnages.length, `${nom} ${i + 1} : ${c.agents} agents posés pour ${lu.personnages.length} dans la scène`);
         for (const [zone, oui] of Object.entries(lu.zones)) if (oui) verifie(carte.cadres().find((z) => z.cle === zone).activee, `${nom} ${i + 1} : la zone ${zone} reste grise`);
       }
