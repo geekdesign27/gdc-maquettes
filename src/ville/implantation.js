@@ -178,7 +178,10 @@ function cloture(enceinte, cle, bord, [a, b], gate = false) {
 // lieux fixes, decor du chantier, parcelles, points de la vie du chantier et voies. types : le type de chaque batiment
 // (house, block, hall), dans l'ordre des parcelles ; chaque parcelle prend alors la largeur de son socle. Sans types,
 // les parcelles sont au pas de 14 m (la scene de reference).
-export function implantation(applications = 1, types = null) {
+// La densite des projecteurs (V-2) : sobre, moyenne ou dense.
+export const DENSITE_PROJECTEURS = "moyenne";
+
+export function implantation(applications = 1, types = null, densite = DENSITE_PROJECTEURS) {
   const apps = Math.min(
     Math.max(Math.round(Number(types ? types.length : applications)) || 1, 1),
     MAX_APPLICATIONS,
@@ -247,30 +250,62 @@ export function implantation(applications = 1, types = null) {
     })),
   ];
 
-  // Les projecteurs de chantier (floodlight, plan D-2) : aux quatre coins du chantier, tournes vers son centre (leur
-  // avant est +Z), de la zone du chantier (gris avec elle). La carte seule les pose et les allume : la scene de reference
-  // ne les a pas. Retrait du mat depuis chacune des deux clotures de son coin : 0,75 m (le lest de 0,80 m, tourne vers
-  // le centre, deborde de 0,57 m au plus : il laisse 0,03 m aux plots), vers l'interieur, ou derriere la cloture (-),
-  // dans la marge de 1,5 m du terrain ou rien ne passe (constat D-2, B1 et B2) : a droite, l'allee longe la cloture a
-  // 1,2 m ; a l'avant, les camions balaient le coin en tournant vers le portail et en reculant hors de leur parcelle.
-  // Au fond a gauche, la route est derriere la cloture : le mat reste dedans.
+  // Les projecteurs (floodlight, plan D-2, puis V-2) : la carte seule les pose et les allume, la scene de reference ne
+  // les a pas. Tous dans la cloture du chantier ou dans une zone, chacun de la zone ou il est (gris avec elle), tourne
+  // vers ce qu'il eclaire (son avant est +Z), hors des voies, des parcelles et du balayage des camions (constat D-2).
+  // Le lest de 0,80 m, tourne, deborde de 0,57 m au plus : a 0,75 m d'une cloture, il laisse 0,03 m a ses plots.
+  // Trois densites (V-2, decision de Pierre-Alain sur planche) : sobre, les quatre coins du chantier et un projecteur par
+  // baraquement (la baraque du conducteur, les bureaux, la remise, les transformations) ; moyenne, un de plus entre deux
+  // parcelles au fond du chantier et un second par zone ; dense, un sur le bureau de controle et un troisieme aux
+  // bureaux (entre deux parcelles a l'avant, les camions des maisons depassent leur parcelle : pas de mat).
   const R = 0.75;
-  const projecteurs = [
-    ["fond-gauche", 0, 0, R, R],
-    ["fond-droite", 1, 0, -R, R],
-    ["avant-gauche", 0, 1, R, -R],
-    ["avant-droite", 1, 1, R, -R],
-  ].map(([coin, i, j, rx, rz]) => {
-    const x = CHANTIER.x[i] + (i ? -1 : 1) * rx;
-    const z = CHANTIER.z[j] + (j ? -1 : 1) * rz;
-    return {
-      cle: `floodlight:${coin}`,
-      id: "floodlight",
-      zone: "chantier",
-      position: [x, 0, z],
-      rotation: Math.atan2(centre(CHANTIER.x) - x, centre(CHANTIER.z) - z),
-    };
+  const [X0, X1] = CHANTIER.x;
+  const [Z0, Z1] = CHANTIER.z;
+  const pose = (cle, zone, [x, z], [vx, vz]) => ({
+    cle: `floodlight:${cle}`,
+    id: "floodlight",
+    zone,
+    position: [x, 0, z],
+    rotation: Math.atan2(vx - x, vz - z),
   });
+  const milieu = [centre(CHANTIER.x), centre(CHANTIER.z)];
+  // les ecarts entre deux socles voisins : le milieu de chacun
+  const ecarts = [];
+  for (let k = 0; k + 1 < apps; k++) {
+    const l = (n) => (types ? SOCLES[types[n]] || SOCLES.block : PAS_PARCELLE - ECART_SOCLES);
+    ecarts.push((centres[k] + l(k) / 2 + centres[k + 1] - l(k + 1) / 2) / 2);
+  }
+  const densites = {
+    sobre: [
+      pose("fond-gauche", "chantier", [X0 + R, Z0 + R], milieu),
+      // au fond a droite, l'allee longe les deux clotures a 1,2 m du coin jusqu'au portail de sortie : le mat est sur la
+      // cloture du fond, a gauche du portail et de ses vantaux
+      pose("fond-droite", "chantier", [X1 - 11, Z0 + R], milieu),
+      // a l'avant gauche, hors du virage des camions vers le portail : derriere le stock de materiaux
+      pose("avant-gauche", "chantier", [33.5, Z1 - R], milieu),
+      pose("avant-droite", "chantier", [X1 - R, Z1 - R], milieu),
+      // la baraque du conducteur et le bureau de controle, depuis l'autre cote du chemin des experts
+      pose("baraque", "chantier", [41.75, 41.5], [35.5, 38]),
+      pose("bureaux", "bureaux", [5, 41], [12, 40]),
+      pose("remise", "remise", [40.5, 21.5], [41, 17]),
+      pose("transformations", "transformations", [13.75, 21.5], [13.75, 17]),
+    ],
+    moyenne: [
+      ...ecarts.map((x, k) => pose(`fond-${k + 1}`, "chantier", [x, Z0 + R], [x, Z0 + 8])),
+      pose("bureaux-2", "bureaux", [5, 50], [12, 48]),
+      pose("remise-2", "remise", [57.75, 21.5], [53.5, 17]),
+      pose("transformations-2", "transformations", [23.75, 21.5], [18, 17]),
+    ],
+    dense: [
+      pose("controle", "chantier", [41.75, 30], [35, 32.5]),
+      pose("bureaux-3", "bureaux", [23.75, 41], [18, 46]),
+    ],
+  };
+  const projecteurs = [
+    ...densites.sobre,
+    ...(densite !== "sobre" ? densites.moyenne : []),
+    ...(densite === "dense" ? densites.dense : []),
+  ];
 
   // Une parcelle par application, de gauche a droite le long de l'allee : le batiment au centre, ses gabarits, sa grue,
   // la place du camion de livraison et sa porte sur l'allee.

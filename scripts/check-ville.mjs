@@ -1,6 +1,6 @@
 // Le controle de la carte vivante (fiche city-map) : les chemins, la lecture des actions et la vie du chantier, sans
 // navigateur, sur l'implantation et sur les sequences reelles de GDC (fixtures/). Lance par « npm run check ».
-import { implantation } from '../src/ville/implantation.js';
+import { implantation, zoneDe, SOCLES, PAS_PARCELLE, DENSITE_PROJECTEURS } from '../src/ville/implantation.js';
 import { creeChemins, positionSur, MARCHE_MAX } from '../src/ville/chemins.js';
 import { lisScene } from '../src/ville/scene-gdc.js';
 import { equipes, usagers, PLAFONDS } from '../src/ville/vie.js';
@@ -415,59 +415,72 @@ for (const [nom, scenes] of Object.entries(sequences))
   rapports.push(`heure réelle : Fribourg le 22 octobre 2026, lever ${new Date(s.lever).toISOString().slice(11, 16)} et coucher ${new Date(s.coucher).toISOString().slice(11, 16)} UTC ; la nuit, fenêtres faibles et franches vérifiées`);
 }
 
-// --- Les projecteurs (floodlight, plan D-2) : a chaque coin, dans le terrain, hors des voies, des clotures et des
-// parcelles ; allumes la nuit en regime ouvert dans un chantier en couleur, eteints sinon (constat D-2)
+// --- Les projecteurs (floodlight, plan D-2, puis V-2) : pour chaque densite, dans leur zone (le chantier dans sa
+// cloture), hors des voies, des clotures et des parcelles ; allumes la nuit en regime ouvert dans une zone en couleur,
+// eteints sinon (constat D-2)
 {
   const LEST = 0.57; // le demi-lest de 0,80 m, en diagonale
   const auSegment = (x, z, A, B) => {
     const t = Math.max(0, Math.min(1, ((x - A.x) * (B.x - A.x) + (z - A.z) * (B.z - A.z)) / ((B.x - A.x) ** 2 + (B.z - A.z) ** 2 || 1)));
     return Math.hypot(A.x + t * (B.x - A.x) - x, A.z + t * (B.z - A.z) - z);
   };
-  for (const types of [null, ['house'], ['hall'], ['block', 'hall'], ['house', 'house', 'house'], ['hall', 'hall', 'hall', 'house']])
-    for (const apps of types ? [types.length] : [1, 2, 3, 4]) {
-      const imp = implantation(apps, types);
-      const nom = `projecteurs, ${apps} app.${types ? ' ' + types.join(',') : ''}`;
-      verifie(imp.projecteurs.length === 4, `${nom} : ${imp.projecteurs.length} projecteurs`);
-      const T = imp.terrain;
-      for (const p of imp.projecteurs) {
-        const [x, , z] = p.position;
-        verifie(p.zone === 'chantier', `${nom} : ${p.cle} hors de la zone du chantier`);
-        verifie(x - LEST > T.x[0] && x + LEST < T.x[1] && z - LEST > T.z[0] && z + LEST < T.z[1], `${nom} : ${p.cle} déborde du terrain`);
-        for (const [a, b] of imp.voies.segments)
-          verifie(auSegment(x, z, imp.voies.points[a], imp.voies.points[b]) >= 0.7, `${nom} : la voie ${a} → ${b} passe sur ${p.cle}`);
-        // les clotures : leurs plots debordent de 0,15 m de leur ligne
-        for (const c of imp.clotures) {
-          const L = c.params.length / 2;
-          const [A, B] = Math.abs(Math.sin(c.rotation)) > 0.5
-            ? [{ x: c.position[0], z: c.position[2] - L }, { x: c.position[0], z: c.position[2] + L }]
-            : [{ x: c.position[0] - L, z: c.position[2] }, { x: c.position[0] + L, z: c.position[2] }];
-          verifie(auSegment(x, z, A, B) >= LEST + 0.15, `${nom} : ${p.cle} touche la clôture ${c.cle}`);
+  for (const densite of ['sobre', 'moyenne', 'dense'])
+    for (const types of [null, ['house'], ['hall'], ['block', 'hall'], ['house', 'house', 'house'], ['hall', 'hall', 'hall', 'house']])
+      for (const apps of types ? [types.length] : [1, 2, 3, 4]) {
+        const imp = implantation(apps, types, densite);
+        const nom = `projecteurs ${densite}, ${apps} app.${types ? ' ' + types.join(',') : ''}`;
+        const attendu = { sobre: 8, moyenne: 11 + apps - 1, dense: 13 + apps - 1 }[densite];
+        verifie(imp.projecteurs.length === attendu, `${nom} : ${imp.projecteurs.length} projecteurs au lieu de ${attendu}`);
+        for (const p of imp.projecteurs) {
+          const [x, , z] = p.position;
+          const c = imp.cadres[p.zone];
+          // dans sa zone, assez loin du bord pour que le lest tourne et laisse sa place aux plots d'une cloture
+          verifie(c && zoneDe(imp.cadres, x, z) === p.zone && x - LEST - 0.15 >= c.x[0] && x + LEST + 0.15 <= c.x[1] && z - LEST - 0.15 >= c.z[0] && z + LEST + 0.15 <= c.z[1], `${nom} : ${p.cle} hors de sa zone ${p.zone}`);
+          for (const [a, b] of imp.voies.segments)
+            verifie(auSegment(x, z, imp.voies.points[a], imp.voies.points[b]) >= 0.7, `${nom} : la voie ${a} → ${b} passe sur ${p.cle}`);
+          // les clotures : leurs plots debordent de 0,15 m de leur ligne
+          for (const cl of imp.clotures) {
+            const L = cl.params.length / 2;
+            const [A, B] = Math.abs(Math.sin(cl.rotation)) > 0.5
+              ? [{ x: cl.position[0], z: cl.position[2] - L }, { x: cl.position[0], z: cl.position[2] + L }]
+              : [{ x: cl.position[0] - L, z: cl.position[2] }, { x: cl.position[0] + L, z: cl.position[2] }];
+            verifie(auSegment(x, z, A, B) >= LEST + 0.15, `${nom} : ${p.cle} touche la clôture ${cl.cle}`);
+          }
+          for (const pa of imp.parcelles) {
+            const demi = (types ? SOCLES[types[pa.index]] : PAS_PARCELLE - 2) / 2;
+            verifie(Math.abs(x - pa.position[0]) >= demi + LEST || z + LEST <= 31 || z - LEST >= 43, `${nom} : ${p.cle} sur la parcelle ${pa.index + 1}`);
+          }
         }
-        for (const pa of imp.parcelles)
-          verifie(Math.abs(x - pa.position[0]) > 7.5 + LEST || z + LEST < 31 || z - LEST > 43, `${nom} : ${p.cle} sur la parcelle ${pa.index + 1}`);
       }
-    }
   const allumes = (carte) => {
     let n = 0;
     carte.root.traverse((o) => { if (o.isMesh && o.material.name === 'FLOODLIGHT_LENS_LIT') n++; });
     return n;
   };
+  // ceux qui doivent s'allumer la nuit en regime ouvert : ceux des zones en couleur
+  const attendus = (carte, scene) => {
+    const lu = lisScene(scene, connus);
+    const actives = new Set(carte.cadres().filter((z) => z.activee).map((z) => z.cle));
+    return implantation(lu.applications, lu.types).projecteurs.filter((p) => actives.has(p.zone)).length;
+  };
   const s8 = sequences['trois-applications'][7];
   const nuit = await creeCarte(THREE, { components: modules, chargeur, theme: 'light', quality: 'high', reducedMotion: true, heure: 'nuit' });
   await nuit.applique(s8);
-  verifie(allumes(nuit) === 4, `projecteurs : la nuit, en régime ouvert, ${allumes(nuit)} allumé(s) sur 4`);
+  const n8 = attendus(nuit, s8);
+  verifie(n8 > 4 && allumes(nuit) === n8, `projecteurs : la nuit, en régime ouvert, ${allumes(nuit)} allumé(s) au lieu de ${n8}`);
   nuit.regleHeure('jour');
   verifie(allumes(nuit) === 0, 'projecteurs : allumés de jour');
   nuit.regleHeure('nuit');
   await nuit.applique({ ...s8, chantier: { ...s8.chantier, regime: 'pause' } }, { actions: false });
   verifie(allumes(nuit) === 0, 'projecteurs : allumés pendant la pause');
   nuit.dispose();
-  // un chantier encore gris (projet-type 2, ouvert, seuls les bureaux ont servi) : eteints
+  // projet-type 2 : ouvert, seuls les bureaux ont servi ; ceux des bureaux s'allument, ceux du chantier encore gris non
   const gris = await creeCarte(THREE, { components: modules, chargeur, theme: 'light', quality: 'low', reducedMotion: true, heure: 'nuit' });
   await gris.applique(sequences['projet-type'][1]);
-  verifie(allumes(gris) === 0, 'projecteurs : allumés dans un chantier encore gris');
+  const n2 = attendus(gris, sequences['projet-type'][1]);
+  verifie(allumes(gris) === n2 && !gris.cadres().find((z) => z.cle === 'chantier').activee, `projecteurs : dans une carte au chantier encore gris, ${allumes(gris)} allumé(s) au lieu de ${n2}`);
   gris.dispose();
-  rapports.push('projecteurs : quatre par chantier, hors des voies, des clôtures et des parcelles ; allumés la nuit en régime ouvert seulement');
+  rapports.push(`projecteurs : ${implantation(3, ['house', 'block', 'hall']).projecteurs.length} pour trois applications (densité ${DENSITE_PROJECTEURS}), dans leur zone, hors des voies, des clôtures et des parcelles ; allumés la nuit en régime ouvert dans une zone en couleur`);
 }
 
 // --- L'ombre de l'hote (plan D-1c) : une image sur deux pendant une animation, toujours sur une image isolee
