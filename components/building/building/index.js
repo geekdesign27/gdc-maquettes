@@ -619,14 +619,39 @@ export function create(THREE, params, ctx) {
     for (let x = o; x !== conteneur; x = x.parent) m.premultiply(x.matrix);
     return m;
   };
+  // ce que la fusion sait reporter : un maillage simple, d'un materiau, sommets, normales et uv seulement (les uv, quand
+  // le materiau a une texture : le kit n'en a pas) ; une piece qui a autre chose (squelette, morphes, couleurs de
+  // sommets, texture sans uv...) reste telle quelle
+  const texture = (m) => Object.values(m).some((v) => v && v.isTexture);
+  const ATTRIBUTS = new Set(["position", "normal", "uv"]);
+  const fusionnable = (o) =>
+    !o.isSkinnedMesh &&
+    !o.isInstancedMesh &&
+    !Array.isArray(o.material) &&
+    o.geometry.attributes.normal &&
+    !Object.keys(o.geometry.morphAttributes).length &&
+    (!texture(o.material) || o.geometry.attributes.uv) &&
+    Object.keys(o.geometry.attributes).every((a) => ATTRIBUTS.has(a));
+  const affiche = (o, conteneur) => {
+    for (let x = o; x !== conteneur; x = x.parent) if (!x.visible) return false;
+    return true;
+  };
   const fusionne = (conteneur, apart) => {
-    const lots = new Map(); // materiau et nom -> { exemple, parties : [{ geometrie, matrice }] }
-    const pieces = conteneur.children.filter((c) => !apart.has(c));
+    const lots = new Map(); // materiau et nom -> { exemple, uv, parties : [{ geometrie, matrice }] }
+    const pieces = conteneur.children.filter((c) => {
+      if (apart.has(c)) return false;
+      let ok = true;
+      c.traverse((o) => {
+        if (o.isMesh && !fusionnable(o)) ok = false;
+      });
+      return ok;
+    });
     for (const piece of pieces)
       piece.traverse((o) => {
-        if (!o.isMesh || !o.visible) return;
+        if (!o.isMesh || !affiche(o, conteneur)) return;
+        const uv = texture(o.material);
         const cle = `${o.material.uuid}|${o.userData.glass ? o.name : ""}`;
-        if (!lots.has(cle)) lots.set(cle, { exemple: o, parties: [] });
+        if (!lots.has(cle)) lots.set(cle, { exemple: o, uv, parties: [] });
         lots.get(cle).parties.push({
           geometrie: o.geometry,
           matrice: dansLeGroupe(o, conteneur),
@@ -635,7 +660,7 @@ export function create(THREE, params, ctx) {
     for (const piece of pieces) conteneur.remove(piece);
     const v = new THREE.Vector3();
     const normales = new THREE.Matrix3();
-    for (const { exemple, parties } of lots.values()) {
+    for (const { exemple, uv, parties } of lots.values()) {
       let sommets = 0;
       let indices = 0;
       for (const { geometrie: g } of parties) {
@@ -644,11 +669,13 @@ export function create(THREE, params, ctx) {
       }
       const position = new Float32Array(sommets * 3);
       const normal = new Float32Array(sommets * 3);
+      const coords = uv ? new Float32Array(sommets * 2) : null;
       const index = new (sommets > 65535 ? Uint32Array : Uint16Array)(indices);
       let s = 0;
       let i = 0;
       for (const { geometrie: g, matrice } of parties) {
         normales.getNormalMatrix(matrice);
+        const miroir = matrice.determinant() < 0; // une piece en miroir : ses triangles changent de sens
         const p = g.attributes.position;
         const n = g.attributes.normal;
         for (let k = 0; k < p.count; k++) {
@@ -659,11 +686,18 @@ export function create(THREE, params, ctx) {
             .applyMatrix3(normales)
             .normalize()
             .toArray(normal, (s + k) * 3);
+          if (uv) {
+            coords[(s + k) * 2] = g.attributes.uv.getX(k);
+            coords[(s + k) * 2 + 1] = g.attributes.uv.getY(k);
+          }
         }
-        if (g.index)
-          for (let k = 0; k < g.index.count; k++)
-            index[i++] = g.index.getX(k) + s;
-        else for (let k = 0; k < p.count; k++) index[i++] = k + s;
+        const nb = g.index ? g.index.count : p.count;
+        const sommet = (k) => (g.index ? g.index.getX(k) : k) + s;
+        for (let k = 0; k < nb; k += 3) {
+          index[i++] = sommet(k);
+          index[i++] = sommet(miroir ? k + 2 : k + 1);
+          index[i++] = sommet(miroir ? k + 1 : k + 2);
+        }
         s += p.count;
       }
       const geometrie = new THREE.BufferGeometry();
@@ -672,6 +706,7 @@ export function create(THREE, params, ctx) {
         new THREE.BufferAttribute(position, 3),
       );
       geometrie.setAttribute("normal", new THREE.BufferAttribute(normal, 3));
+      if (uv) geometrie.setAttribute("uv", new THREE.BufferAttribute(coords, 2));
       geometrie.setIndex(new THREE.BufferAttribute(index, 1));
       fusions.push(geometrie);
       const maillage = new THREE.Mesh(geometrie, exemple.material);
