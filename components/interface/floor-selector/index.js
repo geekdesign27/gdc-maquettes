@@ -185,9 +185,13 @@ export function define(registry, ctx) {
       liste.replaceChildren(ul);
       vide.hidden = visibles.length > 0;
       liste.hidden = !visibles.length;
-      // le focus d'abord : #mark garde l'arret de tabulation sur le bouton qui l'a
-      if (focusKey) this.#button(focusKey)?.focus({ preventScroll: true });
+      // le focus d'abord : #mark garde l'arret de tabulation sur le bouton qui l'a ; si son etage a disparu, il va
+      // a l'arret de tabulation, pour ne pas se perdre dans la page
+      const garde = focusKey ? this.#button(focusKey) : null;
+      garde?.focus({ preventScroll: true });
       this.#mark();
+      if (focusKey && !garde)
+        this.#visibles().find((b) => b.tabIndex === 0)?.focus({ preventScroll: true });
       this.#reveal();
     }
 
@@ -255,6 +259,10 @@ export function define(registry, ctx) {
 
     #press(b) {
       if (b.dataset.key === "rez") {
+        // replier cache la fiche qui a peut-etre le focus (un clic qui ne prend pas le focus, sous Safari) : il
+        // revient d'abord au rez
+        if (this.#open && this.shadowRoot.activeElement?.closest(".regroupees"))
+          b.focus({ preventScroll: true });
         this.#open = !this.#open;
         b.setAttribute("aria-expanded", String(this.#open));
         this.#els.liste.querySelector(".regroupees").hidden = !this.#open;
