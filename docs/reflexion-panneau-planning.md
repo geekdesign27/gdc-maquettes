@@ -7,6 +7,8 @@ Demande de Pierre-Alain du 22 octobre 2026. Ce document est une réflexion de l'
 1. **Inverser les panneaux latéraux** : l'arbre des fiches et des lots (`side-nav` 2.0.0), aujourd'hui à droite, passe à gauche ; le fil des déclencheurs (`trigger-feed`), aujourd'hui à gauche, passe à droite.
 2. **Pouvoir fermer les panneaux latéraux.**
 3. **Un panneau en bas avec un planning de type Gantt** : l'avancement des travaux, les étapes réalisées ou non, et la possibilité de naviguer depuis ce planning.
+4. **Le planning est lié aux déclencheurs de la plateforme** : on navigue d'étape en étape, comme si on construisait un bâtiment. Le planning doit se voir.
+5. **Le temps est raccordé à aujourd'hui**, le jour du développement ; les longues périodes sans activité se replient.
 
 ## Qui fait quoi
 
@@ -30,7 +32,7 @@ Sur téléphone, les deux panneaux sont déjà repliables (`trigger-feed` montre
 
 **Les lignes** : une par application, qui se déplie en fiches (une fiche est un étage), puis en lots (une pièce par lot). C'est la même hiérarchie que l'arbre, avec les mêmes identifiants et la même `ref` (`application`, `fiche`, `lot`).
 
-**Les colonnes** : le temps, en jours, avec une ligne « maintenant ».
+**Les colonnes : le temps du développement, raccordé à aujourd'hui** (précision de Pierre-Alain du 22 octobre 2026). L'axe compte en jours réels, et son bord droit est le jour où l'on est. Les jours sans aucune activité ne prennent presque pas de place : une longue période où rien n'a été développé (un projet laissé de côté) se replie en une fine bande hachurée, qui porte au survol « 12 jours sans activité » et se déplie au clic. Les jours actifs gardent tous la même largeur. Ainsi, le planning se lit comme un chantier qui avance, sans grands vides. Un jour est actif dès qu'une action de GDC y est horodatée.
 
 **Les barres** : une barre par fiche, découpée selon les dix étapes de GDC (`idee` à `transformations`).
 - Une étape faite est pleine, dans un ton neutre ; l'icône de l'étape (`step-icons` 2.0) la nomme au survol et dans la version tableau.
@@ -40,6 +42,14 @@ Sur téléphone, les deux panneaux sont déjà repliables (`trigger-feed` montre
 **Les jalons** : tes décisions (on continue, le permis, le feu vert, la réception, la remise des clés) sont des jalons sur la ligne de leur fiche, avec la forme du panneau de décision. Une décision qui t'attend se voit tout de suite.
 
 **Les pauses du chantier** (`chantier.regime`) : une bande grise discrète sur toute la hauteur.
+
+**Les déclencheurs sur le planning** (précision de Pierre-Alain du 22 octobre 2026) : le planning est lié aux déclencheurs de la plateforme, comme le fil (`trigger-feed`). Chaque action de GDC porte `ts` et `ref` : elle se pose comme un petit trait sur la barre de sa fiche, à sa date. On voit ainsi où le travail s'est fait, et chaque passage d'étape est un déclencheur qu'on peut viser.
+- Cliquer sur un trait, ou sur un passage d'étape, sélectionne cette action : le fil défile jusqu'à elle, la carte va au bâtiment et à l'étage concernés.
+- Cliquer sur une ligne du fil fait l'inverse : le planning défile jusqu'à l'action et la marque.
+- On navigue d'étape en étape au clavier, d'un passage à l'autre, comme on suit un chantier.
+- Les traits d'un même instant se regroupent, et beaucoup de traits rapprochés se fondent en une densité, pour rester lisibles.
+
+Le planning et le fil lisent donc les mêmes actions. Ce qui les relie reste le survol partagé (`hover-link`) et l'événement `gdc-select`, déjà livrés : aucune règle n'est écrite deux fois.
 
 **La navigation** :
 - Survoler une barre émet `gdc-hover` : la carte, l'arbre et le fil s'éclairent sur la même fiche.
@@ -59,6 +69,8 @@ Sur téléphone, les deux panneaux sont déjà repliables (`trigger-feed` montre
 5. **Rejouer une date passée** : `gdc scene` peut-il rendre la scène telle qu'elle était à un `ts` donné ? C'est la condition du curseur de temps.
 6. **La mise en page** : confirmer que la disposition, les poignées et la mémoire des panneaux sont dans le panneau de GDC.
 7. **Les volumes réels** : combien d'applications, de fiches et de lots, sur combien de semaines, pour régler l'échelle et la lisibilité.
+8. **Toutes les actions depuis le début du projet**, pas seulement celles du moment (`gdc scene --avant`) : le planning pose chaque déclencheur à sa date et calcule les jours actifs à partir d'elles. Si l'historique complet est trop lourd, GDC peut fournir à la place la liste des jours actifs et, pour les jours lointains, un résumé par jour.
+9. **Le jour de référence** : l'heure de la machine de GDC fait foi pour « aujourd'hui », pour que la maquette et le harnais tombent sur le même jour.
 
 ## Ce que Pierre-Alain aura à trancher
 
@@ -67,6 +79,7 @@ Sur téléphone, les deux panneaux sont déjà repliables (`trigger-feed` montre
 3. **Le curseur de temps** : dès la première version, ou dans une seconde (ma recommandation) ?
 4. **Un panneau latéral fermé** : complètement caché avec un onglet, ou réduit à un rail fin qui garde ses badges ?
 5. **Le panneau du bas au démarrage** : fermé ou ouvert à hauteur réduite ?
+6. **Le seuil d'une période repliée** : à partir de combien de jours sans activité on replie (ma recommandation : deux jours et plus ; un jour isolé reste à sa largeur) ?
 
 ## La suite côté atelier
 
