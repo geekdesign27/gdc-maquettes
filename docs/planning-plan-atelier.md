@@ -78,6 +78,7 @@ Deux pistes. Chaque élément est fabriqué dans sa propre session, avec le cont
 | # | Élément | Quand | Ce qui est fini |
 |---|---|---|---|
 | D-1 | Le registre des matériaux et les instances | Maintenant | La mesure avant et après (appels de dessin, matériaux, triangles, images par seconde, processeur ralenti) sur `trois-applications`, puis sur `volume` dès sa livraison ; une nouvelle version pour chaque composant livré touché |
+| D-1b | `building` 2.1.0 : moins d'appels de dessin | Après D-1, avant D-2 (décision de Pierre-Alain du 22 octobre 2026) | D-1 a ramené les matériaux de 166 à 59 et passé de 62 à 74 images/s, mais la scène reste à 17 images/s processeur ralenti : le coût est dans les appels de dessin (1 579), `building` en tête avec 226 maillages. Ses pièces répétées sont fusionnées ou instanciées, sans changement à l'écran ; la mesure avant et après est jointe |
 | D-2 | `floodlight`, le projecteur | Après D-1 | Livré |
 | D-3 | `character-kit` v003 et `character` 1.2.0 | Après D-1 | L'ouvrier, la tenue de ville, la lampe frontale, l'animation « porter » |
 | D-4 | `site-fence` 1.1.0, `party-shed`, `city-car` | Ensuite | Le portail fermé, le cabanon de la fête, les voitures |
