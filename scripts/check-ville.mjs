@@ -126,6 +126,8 @@ for (const cat of await readdir(join(ROOT, 'components')))
       }
 const chargeur = creeChargeur({ GLTFLoader, SkeletonUtils }, sources);
 const rapports = [];
+// la direction de visee de la camera isometrique de la galerie, a peu pres : de haut et de biais
+const ISO = new THREE.Vector3(-1, -1.15, -1).normalize();
 
 // --- La coupe (building-interior 2.0.0) tient son budget dans tous les cas : 1 a 12 pieces, chaque stade, des aspects
 // meles, en qualite haute et basse (les donnees d'essai du controle des composants n'ont que deux pieces)
@@ -174,6 +176,23 @@ for (const [nom, scenes] of Object.entries(sequences))
           verifie(voulue === c.grues.includes(b.id), `${nom} ${i + 1} : la grue de ${b.id} ${voulue ? 'manque' : 'reste montée'} (phase ${b.phase})`);
         }
         verifie(c.agents === lu.personnages.length, `${nom} ${i + 1} : ${c.agents} agents posés pour ${lu.personnages.length} dans la scène`);
+        // un clic sur un batiment le designe, a tous les stades : en fouille et en fondations, sa parcelle creusee est
+        // sous le terrain, que le rayon traverse, comme les ouvriers qui s'y tiennent (carte.designe)
+        carte.root.updateMatrixWorld(true);
+        const visible = (o) => { for (let x = o; x; x = x.parent) if (!x.visible) return false; return true; };
+        carte.root.traverse((o) => {
+          if (o.userData.component !== 'building' || !visible(o)) return;
+          const centre = o.getWorldPosition(new THREE.Vector3());
+          for (const [dx, dz] of [[0, 0], [2.5, 1.5], [-2.5, -1.5], [3, -2]]) {
+            const vise = new THREE.Vector3(centre.x + dx, 0.05, centre.z + dz);
+            const rayon = new THREE.Raycaster(vise.clone().sub(ISO.clone().multiplyScalar(60)), ISO);
+            const h = carte.designe(rayon.intersectObject(carte.root, true).filter((x) => visible(x.object)).map((x) => x.object));
+            // les gabarits posés sur ce batiment valent le batiment (la galerie ouvre l'etage de leur fiche)
+            const t = h && carte.cible(h);
+            const id = carte.cible(o)?.id;
+            verifie(t && (t.element === 'building' || (t.element === 'survey-poles' && t.ancre === id)), `${nom} ${i + 1} : un clic sur le bâtiment en ${centre.x.toFixed(0)} touche ${h ? h.name || h.parent?.name || 'un objet sans nom' : 'rien'}`);
+          }
+        });
         for (const [zone, oui] of Object.entries(lu.zones)) if (oui) verifie(carte.cadres().find((z) => z.cle === zone).activee, `${nom} ${i + 1} : la zone ${zone} reste grise`);
       }
       // la vue en coupe (building-interior 2.0.0) s'ouvre et se ferme sur chaque etage de chaque batiment de la derniere

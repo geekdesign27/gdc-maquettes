@@ -254,6 +254,11 @@ export async function creeCarte(THREE, options) {
     ms.zone = null; // le sol couvre toutes les zones : il reste dans ses couleurs (terre, beton, enrobe)
     colore(sol.root);
     etat(ms, "default", { zones: imp.dalles });
+    // le terrain et ses dalles ne se designent pas : un rayon (clic, survol) les traverse. Leur dessus, a 5 mm sous zero,
+    // recouvre la parcelle creusee d'un batiment en fouille ou en fondations : sans cela, on ne pourrait pas la cliquer
+    sol.root.traverse((o) => {
+      if (o.isMesh) o.raycast = () => {};
+    });
     fixes.push("site-ground");
     for (const c of [...imp.clotures, ...imp.decor]) {
       const inst = await cree(c.id, c.params);
@@ -315,6 +320,7 @@ export async function creeCarte(THREE, options) {
       voile.scale.set(x[1] - x[0], z[1] - z[0], 1);
       voile.position.set((x[0] + x[1]) / 2, VOILE.hauteur, (z[0] + z[1]) / 2);
       voile.userData.villePropre = true;
+      voile.raycast = () => {}; // comme le terrain, il ne se designe pas : un clic le traverse jusqu'aux lieux de la zone
       plateau.add(voile);
       gris[cle].voile = voile;
     }
@@ -1395,12 +1401,26 @@ export async function creeCarte(THREE, options) {
         ),
       }));
     },
-    // L'element de GDC sous un objet touche (le clic de GDC) : { element, id, ref } ; null pour le decor, les ouvriers
-    // et les usagers, qui ne s'ouvrent pas.
+    // L'element de GDC sous un objet touche (le clic de GDC) : { element, id, ref, ancre } ; ancre, le batiment ou le lieu
+    // sur lequel GDC l'a pose (les gabarits d'un batiment en plot), ou null. null pour le decor, les ouvriers et les
+    // usagers, qui ne s'ouvrent pas.
     cible(objet) {
       const m = membreDe(objet);
       if (!m || !m.el) return null;
-      return { element: m.el.element, id: m.el.id, ref: m.el.ref || null };
+      return {
+        element: m.el.element,
+        id: m.el.id,
+        ref: m.el.ref || null,
+        ancre: m.el.ancre || null,
+      };
+    },
+    // Parmi les objets qu'un rayon touche (le clic ou le survol de GDC : intersectObject sur root, du plus proche au plus
+    // loin, les objets visibles), le premier qui designe un element de GDC ou une piece de la coupe ; null sinon. Le
+    // rayon traverse ainsi les ouvriers, les usagers et le decor poses devant ou sur un batiment.
+    designe(objets) {
+      return (
+        objets.find((o) => carte.cible(o) || carte.refSous(o)) || null
+      );
     },
     // La reference survolee sous un objet (le survol partage) : le batiment, l'etage ou la piece ; null ailleurs.
     refSous(objet) {

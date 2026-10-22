@@ -462,8 +462,9 @@ function sousPointeur(ev) {
   const r = renderer.domElement.getBoundingClientRect();
   pointeur.set(((ev.clientX - r.left) / r.width) * 2 - 1, -((ev.clientY - r.top) / r.height) * 2 + 1);
   rayon.setFromCamera(pointeur, camera);
-  const touche = rayon.intersectObject(current.inst.root, true).find((h) => visible(h.object));
-  return touche ? touche.object : null;
+  const touches = rayon.intersectObject(current.inst.root, true).filter((h) => visible(h.object)).map((h) => h.object);
+  // le premier element de GDC sous le pointeur : un ouvrier ou un usager qui passe devant un batiment ne le cache pas
+  return current.ville ? current.ville.carte.designe(touches) : touches[0] || null;
 }
 let appui = null;
 let survolVille = 'null';
@@ -473,9 +474,16 @@ renderer.domElement.addEventListener('pointerup', async (ev) => {
   const { carte } = current.ville;
   const objet = sousPointeur(ev);
   const cible = carte.cible(objet);
-  // l'etage touche s'ouvre ; le rez regroupe ou le batiment : l'etage en chantier le plus haut (building-interior 2.0.0)
-  if (cible && cible.element === 'building' && carte.coupe !== cible.id) await carte.ouvreCoupe(cible.id, carte.refSous(objet)?.fiche);
+  // l'etage touche s'ouvre ; le rez regroupe ou le batiment : l'etage en chantier le plus haut (building-interior 2.0.0).
+  // Les gabarits d'un batiment en plot valent son etage : ils couvrent sa parcelle, au ras du sol
+  const gabarits = cible?.element === 'survey-poles' && cible.ancre;
+  const batiment = cible?.element === 'building' ? cible.id : gabarits ? cible.ancre : null;
+  const fiche = gabarits ? cible.ref?.fiche : carte.refSous(objet)?.fiche;
+  if (batiment && carte.coupe !== batiment) await carte.ouvreCoupe(batiment, fiche);
   else carte.fermeCoupe();
+  // l'anneau du survol d'avant le clic tombait sur le batiment, cache le temps de la coupe : le survol suivant le repose
+  survolVille = 'null';
+  await carte.surligne(null);
   dirty = true;
 });
 renderer.domElement.addEventListener('pointermove', (ev) => {
