@@ -46,6 +46,7 @@ import { tokens, makeContext, paletteFor } from "../tokens.js";
 import {
   MOMENTS,
   momentDe,
+  horaireDe,
   recetteDe,
   regleLumieres,
   creeVitres,
@@ -207,6 +208,9 @@ export async function creeCarte(THREE, options) {
   const vitres = creeVitres();
   const maintenant = options.maintenant || Date.now;
   let heureFixe = options.heure ?? null;
+  // un moment choisi par l'utilisateur tombe au prochain passage (decision de Pierre-Alain du 22 octobre 2026) ;
+  // celui de l'option heure (les revues) reste
+  let finChoix = null;
   let jour = null;
   let moment = null; // le nom du moment de la lumiere posee
   let horloge = 0;
@@ -220,6 +224,10 @@ export async function creeCarte(THREE, options) {
           ? MOMENTS[heureFixe]
           : 1;
   function majHeure() {
+    if (finChoix !== null && maintenant() >= finChoix) {
+      heureFixe = null;
+      finChoix = null;
+    }
     const j = jourDe();
     moment =
       heureFixe === null
@@ -1587,10 +1595,26 @@ export async function creeCarte(THREE, options) {
     get heure() {
       return { moment, jour };
     },
-    regleHeure(h) {
+    regleHeure(h, { garde = false } = {}) {
       heureFixe = h ?? null;
+      finChoix =
+        heureFixe === null || garde
+          ? null
+          : (horaireDe(maintenant()).prochain?.instant ?? null);
       horloge = 0;
       return majHeure();
+    },
+    // L'horaire, pour le selecteur de l'interface (time-of-day) : mode ("auto", ou le moment choisi), le moment reel,
+    // le lever et le coucher du jour a Fribourg, le prochain passage, et fin, l'instant ou le choix retombe en auto.
+    horaire() {
+      const h = horaireDe(maintenant());
+      const mode =
+        heureFixe === null
+          ? "auto"
+          : typeof heureFixe === "number"
+            ? moment
+            : heureFixe;
+      return { ...h, mode, fin: finChoix };
     },
     recette: () => recetteDe(jour, fondTheme),
     ouvreCoupe: (id, fiche) => ouvreCoupe(id, fiche),

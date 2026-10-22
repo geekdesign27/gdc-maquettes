@@ -14,7 +14,7 @@ import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils.js';
 import { creeChargeur } from '../src/assets.js';
 import { makeContext } from '../src/tokens.js';
 import { measure } from '../src/contract.js';
-import { soleilDe, momentDe, recetteDe, lumiere } from '../src/ville/heure.js';
+import { soleilDe, momentDe, recetteDe, passages, lumiere } from '../src/ville/heure.js';
 import palette from '../src/palette.json' with { type: 'json' };
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -382,6 +382,22 @@ for (const [nom, scenes] of Object.entries(sequences))
   t = s.coucher + 3 * 3600000;
   suit.update(25);
   verifie(suit.heure.moment === 'nuit' && suit.recette().fenetres === 1, "heure : la carte ne passe pas à la nuit");
+  // un moment choisi tombe au prochain passage, puis la carte reprend l'heure reelle
+  t = s.coucher + 3 * 3600000; // la nuit
+  verifie(suit.regleHeure('jour') && suit.heure.moment === 'jour', "heure : le choix du jour n'est pas posé");
+  let h = suit.horaire();
+  verifie(h.mode === 'jour' && h.moment === 'nuit' && h.fin === h.prochain.instant && h.prochain.moment === 'aube', `heure : l'horaire d'un choix est faux (${JSON.stringify({ mode: h.mode, moment: h.moment, prochain: h.prochain?.moment })})`);
+  t = h.fin - 60000;
+  suit.update(25);
+  verifie(suit.heure.moment === 'jour', 'heure : le choix tombe avant le prochain passage');
+  t = h.fin + 60000;
+  suit.update(25);
+  verifie(suit.horaire().mode === 'auto' && suit.heure.moment === 'aube', "heure : le choix ne tombe pas au prochain passage");
+  verifie(suit.regleHeure('nuit', { garde: true }) && suit.horaire().fin === null, 'heure : un moment gardé a une fin');
+  suit.regleHeure(null);
+  verifie(suit.horaire().mode === 'auto', "heure : regleHeure(null) ne revient pas à l'heure réelle");
+  const p = passages(s.lever);
+  verifie(p.every((x, i) => i === 0 || x.instant > p[i - 1].instant) && p.length === 12, 'heure : les passages ne se suivent pas');
   suit.dispose();
   rapports.push(`heure réelle : Fribourg le 22 octobre 2026, lever ${new Date(s.lever).toISOString().slice(11, 16)} et coucher ${new Date(s.coucher).toISOString().slice(11, 16)} UTC ; la nuit, fenêtres faibles et franches vérifiées`);
 }

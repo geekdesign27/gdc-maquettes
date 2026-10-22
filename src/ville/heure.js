@@ -73,6 +73,38 @@ export function momentDe(date = Date.now(), lieu = lumiere.heure.lieu) {
   };
 }
 
+// Les passages autour d'un instant : le debut et la fin de l'aube et du crepuscule, de la veille au lendemain, du plus
+// tot au plus tard ; chacun dit le moment qui commence ({ instant, moment }).
+export function passages(date = Date.now(), lieu = lumiere.heure.lieu) {
+  const t = new Date(date).getTime();
+  const demi = (lumiere.heure.transition * 60000) / 2;
+  const liste = [];
+  for (const k of [-1, 0, 1]) {
+    const { lever, coucher } = soleilDe(t + k * JOUR_MS, lieu);
+    if (lever === null) continue;
+    liste.push(
+      { instant: lever - demi, moment: "aube" },
+      { instant: lever + demi, moment: "jour" },
+      { instant: coucher - demi, moment: "crepuscule" },
+      { instant: coucher + demi, moment: "nuit" },
+    );
+  }
+  return liste.sort((a, b) => a.instant - b.instant);
+}
+
+// L'horaire d'un instant, pour l'interface : le moment, le lever et le coucher du jour, le prochain passage (ou null).
+export function horaireDe(date = Date.now(), lieu = lumiere.heure.lieu) {
+  const t = new Date(date).getTime();
+  const { lever, coucher } = soleilDe(t, lieu);
+  return {
+    maintenant: t,
+    ...momentDe(t, lieu),
+    lever,
+    coucher,
+    prochain: passages(t, lieu).find((p) => p.instant > t) || null,
+  };
+}
+
 // Les trois bascules de la galerie, pour les revues : jour, aube (le milieu d'une transition) et nuit.
 export const MOMENTS = { jour: 1, aube: 0.5, nuit: 0 };
 
