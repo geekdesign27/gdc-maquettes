@@ -169,7 +169,98 @@ function buildList() {
 
 // La ville : la carte vivante (src/ville/carte.js) sur une sequence de fixtures/ ; les etats sont les etapes de la
 // sequence. Passer a l'etape suivante joue ses actions, comme GDC le fera ; sauter plus loin pose la scene telle quelle.
-// Le fil des declencheurs (trigger-feed), a gauche de la carte comme dans GDC : les actions des etapes jouees. Passer a
+// Les panneaux de la ville, disposes comme dans GDC (derniere passe de GDC, section 6) : l'arbre a gauche, le fil a
+// droite, le planning en bas, la carte au centre ; chaque panneau se ferme en rail fin (panel-rail). La galerie joue GDC :
+// elle garde l'etat de chaque panneau et la hauteur du planning (une variable, sans stockage), les renvoie aux rails et
+// masque un panneau ferme sans le retirer, pour qu'il garde son etat. Sur telephone, un seul panneau ouvert a la fois.
+// Le badge du rail de l'arbre compte les noeuds qui attendent une decision, sont en erreur ou bloques ; le fil et le
+// planning n'en ont pas (decision de Pierre-Alain du 22 octobre 2026).
+const PANNEAUX = {
+  arbre: { name: "L'arbre des fiches", icon: 'tree', side: 'left' },
+  fil: { name: 'Le fil des déclencheurs', icon: 'feed', side: 'right' },
+  planning: { name: 'Le planning du chantier', icon: 'schedule', side: 'bottom' },
+};
+const PLANNING = { min: 72, max: 320 }; // la hauteur du planning ouvert, en pixels
+const ouverts = { arbre: true, fil: true, planning: true };
+let taillePlanning = 120; // la hauteur reduite : l'en-tete des jours et trois lignes, en attendant site-schedule
+let comptesArbre = {};
+const telephone = matchMedia('(max-width: 600px)');
+let disposition = null;
+function poseDisposition() {
+  if (disposition) return disposition;
+  const grille = document.createElement('div');
+  grille.className = 'panneaux-ville';
+  const centre = document.createElement('div');
+  centre.className = 'centre-ville';
+  // le planning n'existe pas encore (site-schedule, a GDC 0.20) : sa place est reservee, et dite telle
+  const planning = document.createElement('section');
+  planning.className = 'planning-ville';
+  planning.setAttribute('aria-label', PANNEAUX.planning.name);
+  planning.textContent = 'Place réservée au planning du chantier : il arrive avec GDC 0.20.';
+  const rails = {};
+  for (const id of Object.keys(PANNEAUX)) {
+    const rail = document.createElement('gdc-panel-rail');
+    rail.className = `rail-ville rail-${id}`;
+    rail.addEventListener('gdc-toggle', (e) => basculePanneau(id, e.detail.open));
+    rail.addEventListener('gdc-resize', (e) => { taillePlanning = e.detail.size; rendDisposition(); });
+    rails[id] = rail;
+  }
+  grille.append(centre, planning, ...Object.values(rails));
+  stage.append(grille);
+  disposition = { grille, centre, rails, panneaux: { planning } };
+  rendDisposition();
+  return disposition;
+}
+function placePanneau(id, element) {
+  const d = poseDisposition();
+  d.panneaux[id] = element;
+  d.grille.append(element);
+  rendDisposition();
+}
+function basculePanneau(id, open) {
+  // sur telephone, ouvrir un panneau ferme les autres
+  if (open && telephone.matches) for (const autre of Object.keys(ouverts)) ouverts[autre] = false;
+  ouverts[id] = open;
+  rendDisposition();
+}
+// passer sur telephone n'en garde qu'un d'ouvert : le fil d'abord, puis l'arbre, puis le planning
+telephone.addEventListener('change', () => {
+  if (!telephone.matches) return;
+  const garde = ['fil', 'arbre', 'planning'].find((id) => ouverts[id]);
+  for (const id of Object.keys(ouverts)) ouverts[id] = id === garde;
+  rendDisposition();
+});
+function rendDisposition() {
+  if (!disposition) return;
+  if (telephone.matches) {
+    const garde = ['fil', 'arbre', 'planning'].find((id) => ouverts[id]);
+    for (const id of Object.keys(ouverts)) ouverts[id] = id === garde;
+  }
+  for (const [id, p] of Object.entries(PANNEAUX)) {
+    disposition.rails[id].data = {
+      panel: { id, name: p.name, icon: p.icon },
+      side: p.side,
+      open: ouverts[id],
+      counts: id === 'arbre' ? comptesArbre : {},
+      resize: id === 'planning' ? { size: taillePlanning, ...PLANNING } : undefined,
+    };
+    if (disposition.panneaux[id]) disposition.panneaux[id].hidden = !ouverts[id];
+  }
+  disposition.grille.style.setProperty('--planning', `${taillePlanning}px`);
+}
+function retireDisposition() {
+  disposition?.grille.remove();
+  disposition = null;
+}
+// les noeuds de l'arbre qui demandent quelque chose, a tous les niveaux : le badge de son rail
+function comptesDe(groupes) {
+  const n = { waiting: 0, error: 0, blocked: 0 };
+  const compte = (items) => { for (const i of items || []) { if (i.state in n) n[i.state] += 1; compte(i.children); } };
+  for (const g of groupes || []) compte(g.items);
+  return n;
+}
+
+// Le fil des declencheurs (trigger-feed), a droite de la carte comme dans GDC : les actions des etapes jouees. Passer a
 // l'etape suivante lui donne ses actions, comme GDC a chaque nouvelle scene ; un saut repart d'un fil neuf.
 let filVille = null;
 function poseFil(actions) {
@@ -178,14 +269,14 @@ function poseFil(actions) {
   filVille.className = 'fil-ville';
   filVille.data = { actions };
   filVille.addEventListener('gdc-hover', (e) => relaieSurvol('fil', e.detail.ref));
-  stage.append(filVille);
+  placePanneau('fil', filVille);
 }
 function retireFil() {
   filVille?.remove();
   filVille = null;
   survolsVille.clear();
 }
-// L'arbre des fiches et des lots (side-nav 2.0.0), a droite de la carte comme dans GDC : tire de la scene de chaque
+// L'arbre des fiches et des lots (side-nav 2.0.0), a gauche de la carte comme dans GDC : tire de la scene de chaque
 // etape (src/arbre.js) ; les batiments se deplient a leur arrivee ; un choix est confirme comme GDC le ferait.
 let arbreVille = null;
 let choixVille = null;
@@ -201,16 +292,18 @@ function poseArbre(scene, sequence) {
       choixVille = e.detail.id;
       arbreVille.data = { ...arbreVille.data, selected: choixVille };
     });
-    stage.append(arbreVille);
+    placePanneau('arbre', arbreVille);
   }
   const batiments = (scene.elements || []).filter((e) => e.element === 'building').map((e) => e.id);
   arbreVille.data = arbreDe(scene, { selected: choixVille, expanded: batiments });
+  comptesArbre = comptesDe(arbreVille.data.groups);
+  rendDisposition();
 }
 function retireArbre() {
   arbreVille?.remove();
   arbreVille = null;
 }
-// Le moment de la carte (time-of-day, avec day-night), en bas de la carte : le choix va a carte.regleHeure, qui regle
+// Le moment de la carte (time-of-day, avec day-night), en bas de la carte, au-dessus du planning : le choix va a carte.regleHeure, qui regle
 // les lumieres de la galerie ; l'horaire est relu a chaque choix et toutes les 20 secondes, comme GDC le fera.
 let heureVille = null;
 let relitHeure = null;
@@ -234,7 +327,7 @@ function poseHeure(carte) {
     dirty = true;
   }, 5000);
   $('heure').disabled = true; // la ville a son propre moment, en bas : la bascule du haut vaut pour le reste
-  stage.append(heureVille);
+  poseDisposition().centre.append(heureVille);
 }
 function retireHeure() {
   clearInterval(relitHeure);
@@ -390,7 +483,7 @@ function parametresAdresse(meta) {
     }));
 }
 
-function retire(x) { if (x && x.ville) { retireFil(); retireArbre(); retireHeure(); applyTheme(); } if (x && x.ville?.lecture) clearInterval(x.ville.lecture); if (x && x.inst) { scene.remove(x.inst.root); x.inst.dispose(); } }
+function retire(x) { if (x && x.ville) { retireFil(); retireArbre(); retireHeure(); retireDisposition(); applyTheme(); } if (x && x.ville?.lecture) clearInterval(x.ville.lecture); if (x && x.inst) { scene.remove(x.inst.root); x.inst.dispose(); } }
 
 // Un signal (lot G5) se juge a cote des lieux ou il apparait (signaletique) : ses voisins de planche, poses tout pres
 // (ECART_SIGNAL entre les emprises), et non les deux premiers modeles livres ; « id/etat » pose un voisin dans cet etat.
