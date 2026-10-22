@@ -14,6 +14,7 @@ import * as kit from './kit.js';
 import * as personnage from './personnage.js';
 import * as reference from './scene-reference.js';
 import { creeCarte } from './ville/carte.js';
+import { MOMENTS, recetteDe, regleLumieres, creeVitres, eclaireBatiment, forceDe, ECLAIRABLES } from './ville/heure.js';
 import { defineElements } from './interface.js';
 import { arbreDe } from './arbre.js';
 // La ville vivante (fiche city-map) : les sequences de GDC (fixtures/), jouees etape par etape dans la galerie
@@ -26,7 +27,9 @@ defineElements(); // le fil des declencheurs et l'arbre, de part et d'autre de l
 const entries = catalogue.items.filter((i) => i.kind === 'component');
 const $ = (id) => document.getElementById(id);
 const stage = $('stage');
-const options = { theme: 'light', quality: 'high', reducedMotion: false, anchors: true, planche: false, silhouette: false, gris: false };
+// heure : jour, aube ou nuit, pour les revues (fiche day-night) ; ?heure=nuit dans l'adresse pour une capture
+const heureDemandee = new URLSearchParams(location.search).get('heure');
+const options = { theme: 'light', quality: 'high', reducedMotion: false, anchors: true, planche: false, silhouette: false, gris: false, heure: heureDemandee in MOMENTS ? heureDemandee : 'jour' };
 let current = { entry: null, inst: null, state: null, voisins: [] };
 let dirty = true;
 
@@ -43,7 +46,8 @@ camera.position.set(...lumiere.camera.position).multiplyScalar(4);
 camera.lookAt(...lumiere.camera.cible);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.addEventListener('change', () => { dirty = true; });
-scene.add(new THREE.HemisphereLight(lumiere.ciel.couleur, lumiere.ciel.sol, lumiere.ciel.intensite));
+const ciel = new THREE.HemisphereLight(lumiere.ciel.couleur, lumiere.ciel.sol, lumiere.ciel.intensite);
+scene.add(ciel);
 const sun = new THREE.DirectionalLight(lumiere.soleil.couleur, lumiere.soleil.intensite);
 sun.position.set(...lumiere.soleil.position);
 sun.shadow.mapSize.set(2048, 2048);
@@ -76,6 +80,10 @@ function applyTheme() {
   else delete document.documentElement.dataset.motion;
   const ctx = makeContext(options);
   scene.background = new THREE.Color(options.silhouette ? '#FFFFFF' : ctx.palette.paper);
+  // l'heure : le ciel, le soleil ou la lune, le fond (de jour, la recette et le fond de toujours) et les fenetres
+  const r = recetteDe(MOMENTS[options.heure], options.theme);
+  regleLumieres({ ciel, soleil: sun, scene: options.silhouette ? null : scene }, r);
+  vitres.regle(r.fenetres);
   // Silhouette : tout en noir sur blanc, sans grille ni etiquettes. Niveaux de gris : les valeurs sans la couleur.
   scene.overrideMaterial = options.silhouette ? silhouette : null;
   grid.visible = !options.silhouette;
@@ -528,9 +536,25 @@ renderer.domElement.addEventListener('pointerleave', () => {
 });
 addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && current.ville) { current.ville.carte.fermeCoupe(); dirty = true; } });
 
+// L'heure de la galerie (fiche day-night) : la nuit, les vitres des batiments et des bureaux s'eclairent comme sur la
+// carte (franchement un etage occupe ou un bureau actif) ; la ville s'en charge elle-meme.
+const vitres = creeVitres();
+function eclaireVitres() {
+  for (const x of [current, ...current.voisins]) {
+    if (!x.inst || x.ville) continue;
+    x.inst.root.traverse((o) => {
+      const id = o.userData.component;
+      if (!ECLAIRABLES.has(id)) return;
+      if (id === 'building') eclaireBatiment(vitres, o);
+      else vitres.pose(o, forceDe(id, { actif: o === x.inst.root && x.state === 'active' }));
+    });
+  }
+}
+
 async function select(id, state) {
   retire(current);
   for (const v of current.voisins) retire(v);
+  vitres.libere();
   const x = await instance(id, state);
   scene.add(x.inst.root);
   const voisins = await occupants(x);
@@ -552,6 +576,7 @@ async function select(id, state) {
     }
   }
   current = { ...x, voisins };
+  eclaireVitres();
   resize(); // le cadrage depend du composant (la scene de reference)
   const projet = new URLSearchParams(location.search).get('applications');
   const choisi = id === reference.SCENE_ID && reference.PROJETS[projet] ? `${id}?${projet}` : id;
@@ -573,6 +598,7 @@ function buildStates() {
       if (current.entry.id in SEANCES) return select(current.entry.id, s); // les participants dependent de l'etat
       current.inst.setState(s, donnees(current.entry));
       current.state = s;
+      eclaireVitres(); // un batiment refait ses vitres a chaque etat
       for (const x of box.children) x.setAttribute('aria-pressed', String(x === b));
       await report();
       dirty = true;
@@ -752,6 +778,8 @@ function rapportEtalon(faces) {
   const verdict = document.createElement('span');
   verdict.className = ecarts.length ? 'ko' : 'ok';
   verdict.textContent = ecarts.length ? `hors tolérance : ${ecarts.join(', ')}` : `conforme à la recette (± ${tolerance})`;
+  // la recette du cube etalon est celle du jour : a l'aube et la nuit, la mesure est indicative
+  if (options.heure !== 'jour') { verdict.className = ''; verdict.textContent = `${options.heure} : mesure indicative, la recette se vérifie de jour`; }
   el.append(verdict);
 }
 
@@ -790,6 +818,21 @@ toggle('showAnchors', 'anchors', true, false);
 toggle('planche', 'planche', true, false);
 toggle('silhouette', 'silhouette', true, false);
 toggle('gris', 'gris', true, false);
+// l'heure : jour, aube, nuit, puis de nouveau le jour
+const NOMS_HEURE = { jour: 'Jour', aube: 'Aube', nuit: 'Nuit' };
+function etiquetteHeure() {
+  $('heure').textContent = NOMS_HEURE[options.heure];
+  $('heure').setAttribute('aria-pressed', String(options.heure !== 'jour'));
+}
+$('heure').addEventListener('click', async () => {
+  const suite = Object.keys(NOMS_HEURE);
+  options.heure = suite[(suite.indexOf(options.heure) + 1) % suite.length];
+  etiquetteHeure();
+  applyTheme();
+  if (current.entry) await select(current.entry.id, current.state);
+  dirty = true;
+});
+etiquetteHeure();
 
 applyTheme();
 buildList();
