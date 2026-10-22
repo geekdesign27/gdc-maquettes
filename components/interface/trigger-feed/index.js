@@ -9,7 +9,8 @@
 // - Tout du plus recent au plus ancien, y compris dans un instant : l'ordre recu, retourne (decision de PA du
 //   22 octobre 2026). GDC envoie le changement de regime du chantier (ouverture, pause, fermeture) en premier dans son
 //   instant : il se retrouve en bas, separateur sur toute la largeur entre l'avant et l'apres ; replie sur telephone,
-//   on voit la derniere action recue. L'annonce suit le meme ordre que l'affichage.
+//   on voit la derniere action recue. L'annonce lit un instant dans l'ordre de l'affichage ; les instants, eux, sont
+//   annonces dans l'ordre ou ils se sont passes.
 // - Un seul arret de tabulation (tabindex mobile) sur toutes les lignes ; une ligne qui porte une reference se survole
 //   (ctx.hoverLink) et se clique (gdc-select).
 
@@ -65,7 +66,7 @@ button.ligne:hover { background: color-mix(in srgb, var(--gdc-ink) 7%, transpare
 .ligne.regime::before, .ligne.regime::after { content: ""; flex: 1 1 0; min-width: 12px; border-top: 1px solid color-mix(in srgb, var(--gdc-ink) 22%, transparent); }
 .ligne.regime .phrase { flex: 0 1 auto; padding: 0; text-align: center; }
 /* une nouvelle action : une seule impulsion douce ; avec moins d'animations, sa duree est nulle */
-.ligne.neuve:not([data-highlight]) { animation: impulsion calc(var(--gdc-motion, 1) * 1400ms) ease-out 1; }
+.ligne.neuve { animation: impulsion calc(var(--gdc-motion, 1) * 1400ms) ease-out 1; }
 @keyframes impulsion { from { background: color-mix(in srgb, var(--gdc-ink) 13%, transparent); } to { background: transparent; } }
 /* « n nouvelles actions » : la liste remontee ne saute pas, ce bouton ramene en haut */
 .nouvelles { position: absolute; z-index: 1; top: 38px; left: 50%; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 6px;
@@ -161,6 +162,9 @@ export function define(registry, ctx) {
         if (b) this.#press(b);
       });
       liste.addEventListener("keydown", (ev) => this.#move(ev));
+      // une seule impulsion : finie, la ligne n'est plus neuve et ne la rejoue jamais
+      for (const fin of ["animationend", "animationcancel"])
+        liste.addEventListener(fin, (ev) => ev.target.classList?.remove("neuve"));
       // l'arret de tabulation suit le focus, d'ou qu'il vienne (fleches, clic)
       liste.addEventListener("focusin", (ev) => {
         const l = ev.target.closest(".ligne");
@@ -253,8 +257,7 @@ export function define(registry, ctx) {
       const actif = this.shadowRoot.activeElement;
       const ligneActive = actif?.classList?.contains("ligne") ? actif : null;
       // replie sur telephone, seule la premiere ligne se voit : mesure avant de changer la liste
-      const replie =
-        !this.#open && getComputedStyle(this.#els.deplie).display !== "none";
+      const replie = !this.#open && Boolean(TELEPHONE?.matches);
       // la liste remontee ne saute pas : la premiere ligne visible garde sa place
       const enHaut = this.#atTop();
       const repere = enHaut ? null : this.#firstVisible();
@@ -266,6 +269,7 @@ export function define(registry, ctx) {
         liste.append(ol);
       }
       const instantsVus = new Map();
+      const retraits = []; // retires a la fin, une fois le focus a l'abri
       const lignesVues = new Map();
       let jourAvant = jourDe(new Date());
       let heureAvant = null;
@@ -294,6 +298,7 @@ export function define(registry, ctx) {
         // dans l'instant aussi, la plus recente en haut : l'ordre recu, retourne
         const actions = [...g.actions].reverse();
         place(
+          retraits,
           ul,
           actions.map((a) => {
             const key = this.#keys.get(a) ?? baseKey(a);
@@ -309,12 +314,15 @@ export function define(registry, ctx) {
         );
         return li;
       });
-      place(ol, items);
-      // replie, une ligne qui avait le focus et n'est plus la premiere va etre cachee : le focus passe a la
-      // premiere avant toute mesure, sinon le navigateur le retire d'abord (gdc-hover null, puis la nouvelle)
+      place(retraits, ol, items);
+      // une ligne qui avait le focus et qui va partir (limit) ou etre cachee (repliee sur telephone, ce n'est plus la
+      // premiere) : le focus passe a la premiere avant le retrait et avant toute mesure, sinon le navigateur le retire
+      // d'abord (gdc-hover null, puis la nouvelle reference)
       const premiere = this.#premiere();
-      if (replie && ligneActive && ligneActive !== premiere)
+      const partante = Boolean(ligneActive) && !lignesVues.has(ligneActive.dataset.key);
+      if (ligneActive && (partante || (replie && ligneActive !== premiere)))
         premiere?.focus({ preventScroll: true });
+      for (const n of retraits) n.remove();
       this.#instantNodes = instantsVus;
       this.#lineNodes = lignesVues;
       vide.hidden = groupes.length > 0;
@@ -541,6 +549,9 @@ export function define(registry, ctx) {
     }
   }
 
+  // la largeur du telephone, la meme que la regle CSS (replie sur la derniere action)
+  const TELEPHONE = globalThis.matchMedia?.("(max-width: 600px)");
+
   const HEURE = new Intl.DateTimeFormat("fr-CH", {
     hour: "2-digit",
     minute: "2-digit",
@@ -586,18 +597,14 @@ export function define(registry, ctx) {
     return li;
   }
 
-  // pose les enfants dans l'ordre voulu sans deplacer ceux qui y sont deja, puis retire les autres
-  function place(parent, enfants) {
+  // pose les enfants dans l'ordre voulu sans deplacer ceux qui y sont deja ; les autres vont dans retraits
+  function place(retraits, parent, enfants) {
     let suivant = parent.firstChild;
     for (const e of enfants) {
       if (e === suivant) suivant = suivant.nextSibling;
       else parent.insertBefore(e, suivant);
     }
-    while (suivant) {
-      const apres = suivant.nextSibling;
-      suivant.remove();
-      suivant = apres;
-    }
+    for (; suivant; suivant = suivant.nextSibling) retraits.push(suivant);
   }
 
   function nombre(n) {
