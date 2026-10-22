@@ -506,6 +506,13 @@ window.galerie = {
     controls.update();
     dirty = true;
   },
+  // Ce que coute une image de ce qui est affiche (plan D-1) : appels de dessin et triangles dessines (ombres
+  // comprises), programmes de rendu, puis les triangles et materiaux distincts de l'arbre (measure).
+  mesure() {
+    renderer.render(scene, camera);
+    const { calls, triangles } = renderer.info.render;
+    return { appels: calls, trianglesDessines: triangles, programmes: renderer.info.programs.length, ...measure(current.inst.root) };
+  },
   // La fluidite : un rendu force a chaque image pendant quelques secondes ; images par seconde et 95e centile (ms).
   fluidite(secondes = 5) {
     return new Promise((ok) => {
