@@ -29,7 +29,7 @@ const $ = (id) => document.getElementById(id);
 const stage = $('stage');
 // heure : jour, aube ou nuit, pour les revues (fiche day-night) ; ?heure=nuit dans l'adresse pour une capture
 const heureDemandee = new URLSearchParams(location.search).get('heure');
-const options = { theme: 'light', quality: 'high', reducedMotion: false, anchors: true, planche: false, silhouette: false, gris: false, heure: heureDemandee in MOMENTS ? heureDemandee : 'jour' };
+const options = { theme: 'light', quality: 'high', reducedMotion: false, anchors: true, planche: false, silhouette: false, gris: false, heure: Object.hasOwn(MOMENTS, heureDemandee ?? '') ? heureDemandee : 'jour' };
 let current = { entry: null, inst: null, state: null, voisins: [] };
 let dirty = true;
 

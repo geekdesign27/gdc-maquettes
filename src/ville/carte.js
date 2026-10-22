@@ -208,6 +208,7 @@ export async function creeCarte(THREE, options) {
   const maintenant = options.maintenant || Date.now;
   let heureFixe = options.heure ?? null;
   let jour = null;
+  let moment = null; // le nom du moment de la lumiere posee
   let horloge = 0;
   const lieuxOccupes = new Set(); // les lieux ou se trouve un agent, selon la derniere scene
   const jourDe = () =>
@@ -215,9 +216,19 @@ export async function creeCarte(THREE, options) {
       ? momentDe(maintenant()).jour
       : typeof heureFixe === "number"
         ? heureFixe
-        : (MOMENTS[heureFixe] ?? 1);
+        : Object.hasOwn(MOMENTS, heureFixe)
+          ? MOMENTS[heureFixe]
+          : 1;
   function majHeure() {
     const j = jourDe();
+    moment =
+      heureFixe === null
+        ? momentDe(maintenant()).moment
+        : j >= 1
+          ? "jour"
+          : j <= 0
+            ? "nuit"
+            : "aube";
     if (j === jour) return false;
     jour = j;
     const r = recetteDe(j, fondTheme);
@@ -1108,6 +1119,7 @@ export async function creeCarte(THREE, options) {
     for (const [zone, oui] of Object.entries(scene.zones))
       if (oui && !actives.has(zone)) active(zone, doucement);
     for (const m of membres.values()) fenetresDe(m);
+    vitres.purge(root); // les copies des membres retires
   }
   function active(zone, doucement) {
     actives.add(zone);
@@ -1573,9 +1585,7 @@ export async function creeCarte(THREE, options) {
     // revues ("jour", "aube", "nuit" ou de 0 a 1 ; null : l'heure du poste) et rend true s'il faut redessiner. recette() :
     // le ciel, le soleil ou la lune, le fond et l'allumage des fenetres de l'instant, pour une page qui regle ses lumieres.
     get heure() {
-      if (heureFixe === null) return momentDe(maintenant());
-      const nom = jour >= 1 ? "jour" : jour <= 0 ? "nuit" : "aube";
-      return { moment: nom, jour };
+      return { moment, jour };
     },
     regleHeure(h) {
       heureFixe = h ?? null;

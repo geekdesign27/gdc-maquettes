@@ -341,6 +341,20 @@ for (const [nom, scenes] of Object.entries(sequences))
   // un agent dans un conteneur : ses fenetres s'allument franchement
   await carte.applique({ ...s8, actions: [], elements: [...s8.elements, { element: 'character', id: 'gardien', role: 'concierge', nom: 'Le concierge', etat: 'idle', lieu: 'cabane-garantie' }] }, { actions: false });
   verifie(compteVitres(carte).conteneur > 0, "heure : le conteneur où se trouve un agent reste éteint");
+  // un batiment qui s'en va n'abandonne aucune copie de vitre : toute copie qui n'est plus sur un maillage est liberee
+  const vues = new Set();
+  const liberees = new Set();
+  const releve = () => carte.root.traverse((o) => {
+    const v = o.isMesh && o.material.userData.vitre && o.material;
+    if (v && !vues.has(v)) { vues.add(v); v.addEventListener('dispose', () => liberees.add(v)); }
+  });
+  releve();
+  const sansBatiments = { ...s8, actions: [], elements: s8.elements.filter((e) => e.element !== 'building' || e.id === 'terrain') };
+  for (const sc of [sansBatiments, s8, sansBatiments, s8]) { await carte.applique(sc, { actions: false }); releve(); }
+  const servies = new Set();
+  carte.root.traverse((o) => { if (o.isMesh && o.material.userData.vitre) servies.add(o.material); });
+  const orphelines = [...vues].filter((v) => !servies.has(v) && !liberees.has(v)).length;
+  verifie(orphelines === 0, `heure : ${orphelines} copie(s) de vitre orpheline(s) après le retrait de bâtiments`);
   // le jour : les vitres d'origine, la recette du jour
   verifie(carte.regleHeure('jour'), 'heure : passer au jour ne demande pas de redessiner');
   let ecart = 0;

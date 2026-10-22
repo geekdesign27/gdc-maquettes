@@ -192,6 +192,21 @@ export function creeVitres() {
         for (const c of Object.values(parForce)) regleCopie(c);
       return true;
     },
+    // libere les copies qu'aucun maillage de racine n'utilise plus (un batiment retire : son verre lui appartenait)
+    purge(racine) {
+      const servies = new Set();
+      racine.traverse((o) => {
+        if (o.isMesh && o.material.userData.vitre) servies.add(o.material);
+      });
+      for (const [m, parForce] of copies) {
+        for (const [force, c] of Object.entries(parForce))
+          if (!servies.has(c)) {
+            c.dispose();
+            delete parForce[force];
+          }
+        if (!Object.keys(parForce).length) copies.delete(m);
+      }
+    },
     libere() {
       for (const parForce of copies.values())
         for (const c of Object.values(parForce)) c.dispose();
