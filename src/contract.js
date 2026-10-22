@@ -59,6 +59,7 @@ function collectDisposables(root) {
   const items = new Set();
   root.traverse((o) => {
     if (o.geometry) items.add(o.geometry);
+    if (o.isInstancedMesh) items.add(o); // ses matrices d'instance : liberees par le composant (InstancedMesh.dispose)
     for (const m of [].concat(o.material || [])) {
       items.add(m);
       for (const v of Object.values(m)) if (v && v.isTexture) items.add(v);
@@ -112,7 +113,7 @@ export function checkInstance(THREE, mod, entry, ctx, partagees = new Set()) {
   for (const d of seen) d.addEventListener('dispose', () => disposed.add(d));
   inst.dispose();
   const left = [...seen].filter((d) => !disposed.has(d) && !partagees.has(d));
-  if (left.length) problems.push(`${label} dispose() laisse ${left.length} géométrie(s), matériau(x) ou texture(s)`);
+  if (left.length) problems.push(`${label} dispose() laisse ${left.length} géométrie(s), matériau(x), texture(s) ou instance(s)`);
   const abimees = [...seen].filter((d) => disposed.has(d) && partagees.has(d));
   if (abimees.length) problems.push(`${label} dispose() libère ${abimees.length} ressource(s) partagée(s) d'un modèle 3D : les autres instances la perdraient`);
   return problems;

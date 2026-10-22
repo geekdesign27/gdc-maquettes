@@ -2,6 +2,7 @@
 // et le nuancier des materiaux MAT_ de src/palette.json, chacun sur un cube. Outil de la galerie seulement :
 // il n'est pas dans la bibliotheque livree a GDC. Il suit la forme du contrat (root, setState, update, anchor, dispose).
 import palette from "./palette.json" with { type: "json" };
+import { nouveauMateriau, couleurPalette } from "./materiaux.js";
 
 export const ETALON_ID = "etalon";
 const COTE = 3; // le cube etalon fait une trame de 3 m et un etage (bible, 18.2)
@@ -20,21 +21,8 @@ export const meta = {
   budget: { triangles: 0, materials: 0 },
 };
 
-// La couleur d'un materiau : une cle de monde, d'equipe ou de personnages (comme commun.couleur cote Blender).
-function couleurPalette(cle) {
-  return palette.monde[cle] ?? palette.equipe[cle] ?? palette.personnages?.[cle] ?? cle;
-}
-
-// Un materiau MAT_ de la palette, tel que le GLB l'apporterait : couleur sRGB, rugosite, metal.
-export function materiauPalette(THREE, nom) {
-  const d = palette.materiaux[nom];
-  return new THREE.MeshStandardMaterial({
-    name: nom,
-    color: new THREE.Color(couleurPalette(d.couleur)),
-    roughness: d.rugosite,
-    metalness: d.metal,
-  });
-}
+// Un materiau MAT_ de la palette, tel que le GLB l'apporterait : couleur sRGB, rugosite, metal (src/materiaux.js).
+export const materiauPalette = nouveauMateriau;
 
 // Le nuancier est pose devant le cube etalon : les colonnes suivent la droite de l'ecran (+X -Z),
 // les rangs descendent vers la camera (+X +Z).

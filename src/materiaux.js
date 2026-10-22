@@ -8,7 +8,7 @@
 import palette from "./palette.json" with { type: "json" };
 
 // La couleur d'un materiau : une cle de monde, d'equipe ou de personnages (comme commun.couleur cote Blender).
-function couleurPalette(cle) {
+export function couleurPalette(cle) {
   return (
     palette.monde[cle] ??
     palette.equipe[cle] ??
@@ -52,6 +52,13 @@ function signature(m) {
     m.depthWrite,
     m.depthTest,
     m.visible,
+    // les materiaux physiques (extensions KHR_materials_*) : aucun GLB n'en a, mais ils ne se fondent pas en silence
+    n(m.transmission),
+    n(m.ior),
+    n(m.specularIntensity),
+    n(m.clearcoat),
+    n(m.sheen),
+    n(m.iridescence),
   ].join("|");
 }
 
@@ -125,7 +132,8 @@ export function creeRegistre() {
     get ecarts() {
       return [...ecarts];
     },
-    // Pour l'hote seulement, quand il quitte la page du chantier.
+    // Pour l'hote seulement, quand il quitte la page du chantier : le chargeur qui le tient ne sert plus ensuite (ses
+    // modeles deja ouverts gardent des materiaux liberes) ; en creer un neuf pour revenir.
     dispose() {
       for (const m of this.materiaux()) m.dispose();
       parSignature.clear();
