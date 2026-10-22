@@ -7,7 +7,10 @@
 // Les panneaux sont de largeur egale, au plus 3,50 m, pour que les deux bouts tombent juste ; chacun prend le remplissage
 // (8, 6 ou 4 mailles) dont la maille, une fois etire, reste au plus pres de 0,45 m. Les vantaux portent une traverse
 // diagonale et pendent a des poteaux de portail plus forts : c'est ce qui dit « portail » et pas « angle de cloture ».
-// Le modele est partage entre instances : on ne libere jamais ses geometries ni ses materiaux ici.
+// Version 1.0.1 (plan D-1, 22 octobre 2026) : chaque piece repetee (plot, poteau, cadre, remplissage) est posee en une
+// seule InstancedMesh par maillage, au lieu d'une copie par panneau ; la cloture se dessine en quelques appels.
+// Le modele est partage entre instances : on ne libere jamais ses geometries ni ses materiaux ici, seulement les
+// InstancedMesh (leurs matrices).
 
 const MODELE = "ENV_SITE_FENCE_A_v001.glb";
 const P = "ENV_SITE_FENCE_A_";
@@ -20,7 +23,7 @@ const HAUT_LABEL = 2.6;
 
 export const meta = {
   id: "site-fence",
-  version: "1.0.0",
+  version: "1.0.1",
   category: "site",
   states: ["default"],
   params: {
@@ -50,6 +53,8 @@ export function create(THREE, params, ctx) {
   );
   const portail = params.gate === true || params.gate === "true"; // la galerie passe les parametres de l'adresse en texte
 
+  // les poses de chaque piece : la place de la piece (sa position, son lacet, son etirement en longueur)
+  const poses = new Map();
   const pose = (nom, x, y = 0, rotation = 0, etire = 1) => {
     // qualite basse (bible 18.3) : le remplissage du treillis, sous 0,30 m, disparait ; trois barres larges le remplacent,
     // pour que le panneau ne devienne pas une rambarde (la forme de la barriere de blocage)
@@ -57,14 +62,45 @@ export function create(THREE, params, ctx) {
       return;
     const source = modele.getObjectByName(P + nom);
     if (!source) throw new Error(`pièce absente du modèle : ${nom}`);
-    const o = source.clone(); // partage la geometrie et le materiau du modele
-    o.position.set(...versThree(x, y, 0));
-    o.rotation.set(0, THREE.MathUtils.degToRad(rotation), 0);
-    o.scale.x = etire;
-    o.traverse((m) => {
-      if (m.isMesh) m.castShadow = m.receiveShadow = !basse;
-    });
-    root.add(o);
+    const place = new THREE.Matrix4().compose(
+      new THREE.Vector3(...versThree(x, y, 0)),
+      new THREE.Quaternion().setFromEuler(
+        new THREE.Euler(0, THREE.MathUtils.degToRad(rotation), 0),
+      ),
+      new THREE.Vector3(etire, source.scale.y, source.scale.z),
+    );
+    if (!poses.has(source)) poses.set(source, []);
+    poses.get(source).push(place);
+  };
+  // une InstancedMesh par maillage de chaque piece, avec la geometrie et le materiau du modele : la place de la piece,
+  // puis celle du maillage dans la piece
+  const instances = [];
+  const instancie = () => {
+    for (const [source, places] of poses) {
+      source.updateMatrixWorld(true);
+      const versPiece = source.matrixWorld.clone().invert();
+      source.traverse((m) => {
+        if (!m.isMesh) return;
+        const dansPiece =
+          m === source
+            ? new THREE.Matrix4()
+            : versPiece.clone().multiply(m.matrixWorld);
+        const im = new THREE.InstancedMesh(
+          m.geometry,
+          m.material,
+          places.length,
+        );
+        im.name = m.name;
+        places.forEach((place, i) =>
+          im.setMatrixAt(i, place.clone().multiply(dansPiece)),
+        );
+        im.instanceMatrix.needsUpdate = true;
+        im.computeBoundingSphere();
+        im.castShadow = im.receiveShadow = !basse;
+        instances.push(im);
+        root.add(im);
+      });
+    }
   };
 
   // un troncon droit de x0 a x1 : des panneaux de largeur egale, un poteau et un plot a chaque jonction ; les bouts
@@ -104,6 +140,7 @@ export function create(THREE, params, ctx) {
       pose("GATE_LEAF_INFILL", x, 0, 90, g / 2);
     }
   }
+  instancie();
 
   return {
     root,
@@ -120,6 +157,7 @@ export function create(THREE, params, ctx) {
     },
     dispose() {
       root.clear();
+      for (const im of instances) im.dispose();
     },
   };
 }
