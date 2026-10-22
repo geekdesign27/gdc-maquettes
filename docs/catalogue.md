@@ -226,7 +226,7 @@ Une aire en plein air sur son socle : un auvent sur quatre poteaux, dessous le p
 
 ### La clôture de chantier (`site-fence`)
 
-Une clôture mobile : panneaux en treillis gris (maille de 0,45 m) sur plots en béton, un poteau rond à chaque jonction, sans orange, pour ne jamais ressembler à la barrière de blocage (bible, 18.8). Posée en ligne droite le long d'une longueur donnée, en panneaux de largeur égale (3,50 m au plus) ; avec gate, un portail ouvert de 4 m au milieu, ses deux vantaux tournés vers l'intérieur (décisions de Pierre-Alain du 20 octobre 2026).
+Une clôture mobile : panneaux en treillis gris (maille de 0,45 m) sur plots en béton, un poteau rond à chaque jonction, sans orange, pour ne jamais ressembler à la barrière de blocage (bible, 18.8). Posée en ligne droite le long d'une longueur donnée, en panneaux de largeur égale (3,50 m au plus) ; avec gate, un portail ouvert de 4 m au milieu, ses deux vantaux tournés vers l'intérieur (décisions de Pierre-Alain du 20 octobre 2026). Version 1.0.1 (plan D-1, 22 octobre 2026) : chaque pièce répétée (plot, poteau, cadre, remplissage, poteau et vantaux du portail) est posée en une seule InstancedMesh par maillage, avec la géométrie et le matériau du modèle, au lieu d'une copie par panneau. Rien ne change à l'écran.
 
 - Fichier : `components/site/site-fence/index.js`
 - Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `ENV_SITE_FENCE_A_v001`
@@ -374,7 +374,7 @@ Nouvelle version prévue : v003, au lot G8 (à faire).
 
 ### Le personnage (un agent) (`character`)
 
-Un personnage par agent, à partir du personnage maître : tenue et outil de son métier, couleur de son équipe. GDC le déplace ; le composant joue l'animation de l'état, sur place. L'apparence de chaque personne (morphologie, peau, coiffure, barbe, lunettes, outil) est dans components/kit/character-kit/equipe.json ; GDC la passe en paramètres (décision de PA du 19 octobre 2026 : chaque personne a son personnage). blocked : posture d'arrêt devant la barrière ; unknown : immobile, matériaux grisés, lisible sans animation.
+Un personnage par agent, à partir du personnage maître : tenue et outil de son métier, couleur de son équipe. GDC le déplace ; le composant joue l'animation de l'état, sur place. L'apparence de chaque personne (morphologie, peau, coiffure, barbe, lunettes, outil) est dans components/kit/character-kit/equipe.json ; GDC la passe en paramètres (décision de PA du 19 octobre 2026 : chaque personne a son personnage). blocked : posture d'arrêt devant la barrière ; unknown : immobile, matériaux grisés, lisible sans animation. Version 1.1.1 (plan D-1, 22 octobre 2026) : les matériaux de la palette viennent du registre commun de l'hôte (ctx.materiau), partagés par toute l'équipe : une même peau, une même chevelure, une même tenue n'ont qu'un matériau sur la carte ; sans registre, chaque personnage fabrique les siens, comme en 1.1.0. Rien ne change à l'écran.
 
 - Fichier : `components/character/character/index.js`
 - Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; kit `character-kit`
