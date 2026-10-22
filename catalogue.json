@@ -864,7 +864,7 @@
       "category": "character",
       "name": "Le personnage (un agent)",
       "purpose": "Montrer qui travaille, où, et dans quel état.",
-      "description": "Un personnage par agent, à partir du personnage maître : tenue et outil de son métier, couleur de son équipe. GDC le déplace ; le composant joue l'animation de l'état, sur place. L'apparence de chaque personne (morphologie, peau, coiffure, barbe, lunettes, outil) est dans components/kit/character-kit/equipe.json ; GDC la passe en paramètres (décision de PA du 19 octobre 2026 : chaque personne a son personnage). blocked : posture d'arrêt devant la barrière ; unknown : immobile, matériaux grisés, lisible sans animation.",
+      "description": "Un personnage par agent, à partir du personnage maître : tenue et outil de son métier, couleur de son équipe. GDC le déplace ; le composant joue l'animation de l'état, sur place. L'apparence de chaque personne (morphologie, peau, coiffure, barbe, lunettes, outil) est dans components/kit/character-kit/equipe.json ; GDC la passe en paramètres (décision de PA du 19 octobre 2026 : chaque personne a son personnage). blocked : posture d'arrêt devant la barrière ; unknown : immobile, matériaux grisés, lisible sans animation. Version 1.1.1 (plan D-1, 22 octobre 2026) : les matériaux de la palette viennent du registre commun de l'hôte (ctx.materiau), partagés par toute l'équipe : une même peau, une même chevelure, une même tenue n'ont qu'un matériau sur la carte ; sans registre, chaque personnage fabrique les siens, comme en 1.1.0. Rien ne change à l'écran.",
       "params": {
         "trade": "client | architect | engineer | foreman | mason | electrician | plumber | painter | inspector | concierge | representative",
         "team": "none | client | architecture | studies | site | reception | operations",
@@ -980,7 +980,8 @@
           "headlamp : la lentille brille sans vraie lumière ; le client n'a pas de casque, donc pas de lampe",
           "Ligne au journal des versions"
         ]
-      }
+      },
+      "version": "1.1.1"
     },
     {
       "id": "excavator",

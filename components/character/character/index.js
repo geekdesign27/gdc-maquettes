@@ -27,7 +27,7 @@ const clipDe = (etat) =>
 
 export const meta = {
   id: "character",
-  version: "1.1.0",
+  version: "1.1.1",
   category: "character",
   states: ETATS,
   params: {
@@ -100,8 +100,11 @@ export function create(THREE, params, ctx) {
     ),
     ...params,
   };
-  const materiaux = new Map(); // les materiaux de palette de cette instance, liberes par dispose()
+  // Les materiaux de palette : ceux du registre commun de l'hote (ctx.materiau, 1.1.1), partages par toute l'equipe et
+  // jamais liberes ici ; sans registre, ceux de cette instance, liberes par dispose().
+  const materiaux = new Map();
   const materiau = (nom) => {
+    if (ctx.materiau) return ctx.materiau(nom);
     if (!materiaux.has(nom)) {
       const d = ctx.tokens.materiaux[nom];
       if (!d) throw new Error(`matériau absent de la palette : ${nom}`);
