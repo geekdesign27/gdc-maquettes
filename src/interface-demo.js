@@ -155,6 +155,57 @@ const horaireA = (iso, mode = "auto", fin = null) => ({
   fin: fin === null ? null : new Date(fin).getTime(),
 });
 
+// Le rail d'un panneau (lot G8) : chaque rail dans un ecran factice, pose comme GDC le posera : le panneau, son rail
+// contre lui et la carte. Le relais fait ce que fera GDC : gdc-toggle renvoie open et masque le panneau sans le
+// retirer, gdc-resize renvoie la taille.
+const ecranRail = (side) => (n) => {
+  const vertical = side !== "bottom";
+  const ecran = el("div", { class: "ecran-rail", style: `display: flex; flex-direction: ${vertical ? "row" : "column"}; height: ${vertical ? 220 : 260}px; border: 1px solid color-mix(in srgb, var(--gdc-ink) 15%, transparent); border-radius: 8px; overflow: hidden; background: var(--gdc-background)` });
+  const panneau = el("div", { style: "flex: none; overflow: auto; padding: 10px 12px; background: var(--gdc-surface); color: var(--gdc-muted); font-size: 12px" }, `${n.data.panel?.name ?? "Le panneau"}, posé par GDC`);
+  const carte = el("div", { style: "flex: 1 1 auto; display: grid; place-items: center; color: var(--gdc-muted); font-size: 12px; background: color-mix(in srgb, var(--gdc-ink) 4%, transparent)" }, "La carte");
+  const taille = () => {
+    const r = n.data.resize;
+    const t = r && Number.isFinite(r.size) ? r.size : vertical ? 180 : 110;
+    panneau.style[vertical ? "width" : "height"] = `${t}px`;
+  };
+  const montre = () => {
+    panneau.hidden = n.data.open !== true;
+    taille();
+  };
+  n.addEventListener("gdc-toggle", (e) => {
+    n.data = { ...n.data, open: e.detail.open };
+    montre();
+  });
+  n.addEventListener("gdc-resize", (e) => {
+    n.data = { ...n.data, resize: { ...n.data.resize, size: e.detail.size } };
+    taille();
+  });
+  montre();
+  if (side === "right") ecran.append(carte, n, panneau);
+  else if (side === "bottom") ecran.append(carte, n, panneau);
+  else ecran.append(panneau, n, carte);
+  return ecran;
+};
+// La rangee du telephone : les trois rails cote a cote ; le relais n'ouvre qu'un panneau a la fois
+const rangeeRail = (n) => {
+  const rangee = el("div", { style: "display: flex; height: 42px; border: 1px solid color-mix(in srgb, var(--gdc-ink) 15%, transparent); border-radius: 8px; overflow: hidden" });
+  const rails = [
+    { panel: { id: "arbre", name: "L'arbre", icon: "tree" }, side: "left", open: true, counts: { waiting: 1 } },
+    { panel: { id: "fil", name: "Le fil", icon: "feed" }, side: "right", open: false, counts: {} },
+    { panel: { id: "planning", name: "Le planning", icon: "schedule" }, side: "bottom", open: false, counts: { blocked: 2 } },
+  ].map((data, i) => {
+    const r = i === 0 ? n : document.createElement("gdc-panel-rail");
+    r.data = data;
+    r.style.flex = "1 1 0";
+    r.addEventListener("gdc-toggle", (e) => {
+      for (const x of rangee.children) x.data = { ...x.data, open: e.detail.open && x === r };
+    });
+    return r;
+  });
+  rangee.append(...rails);
+  return rangee;
+};
+
 export const variantes = {
   "time-of-day": [
     { titre: "Auto, au crépuscule : la nuit arrive", data: { horaire: horaireA("2026-10-22T18:42:00") } },
@@ -367,6 +418,17 @@ export const variantes = {
       data: { id: "client", name: "Pierre-Alain, le client", team: "client", state: "waiting", doing: ["Attend le rapport d'audit"], next: [], can: ["Valider une fiche", "Refuser une fiche"], actions: [] },
     },
   ],
+  // le rail d'un panneau : les trois cotes, ouverts et fermes, avec et sans badges, le separateur du planning
+  "panel-rail": [
+    { titre: "À gauche, fermé : l'arbre, une décision t'attend et deux bloqués", cadre: ecranRail("left"), data: { panel: { id: "arbre", name: "L'arbre des fiches", icon: "tree" }, side: "left", open: false, counts: { waiting: 1, blocked: 2, done: 9 } } },
+    { titre: "À gauche, ouvert : la poignée replie l'arbre", cadre: ecranRail("left"), data: { panel: { id: "arbre", name: "L'arbre des fiches", icon: "tree" }, side: "left", open: true, counts: { waiting: 1 } } },
+    { titre: "À droite, fermé : le fil, sans badge", cadre: ecranRail("right"), data: { panel: { id: "fil", name: "Le fil des déclencheurs", icon: "feed" }, side: "right", open: false, counts: { done: 4 } } },
+    { titre: "À droite, ouvert : le fil, trois erreurs (le badge ne se voit que fermé)", cadre: ecranRail("right"), data: { panel: { id: "fil", name: "Le fil des déclencheurs", icon: "feed" }, side: "right", open: true, counts: { error: 3 } } },
+    { titre: "En bas, ouvert : le planning, le séparateur le redimensionne (flèches, Début, Fin, Entrée replie)", cadre: ecranRail("bottom"), data: { panel: { id: "planning", name: "Le planning du chantier", icon: "schedule" }, side: "bottom", open: true, counts: { waiting: 1 }, resize: { size: 110, min: 72, max: 200 } } },
+    { titre: "En bas, fermé : le planning, seize alertes dont une décision", cadre: ecranRail("bottom"), data: { panel: { id: "planning", name: "Le planning du chantier", icon: "schedule" }, side: "bottom", open: false, counts: { waiting: 1, error: 12, blocked: 3 }, resize: { size: 110, min: 72, max: 200 } } },
+    { titre: "Cas limites : côté inconnu, nom long, cent vingt erreurs, icône inconnue", cadre: ecranRail("left"), data: { panel: { id: "x", name: "Un panneau au nom beaucoup trop long pour la bande", icon: "inconnue" }, side: "haut", open: false, counts: { error: "120" } } },
+    { titre: "Sur un écran de téléphone : la rangée des trois onglets, un seul panneau ouvert", cadre: rangeeRail, data: {} },
+  ],
 };
 
 const journal = [];
@@ -520,7 +582,7 @@ function sectionElement(entry) {
       const f = el("div", { style: `display: inline-flex; gap: 12px; padding: 18px 24px; border-radius: 8px; background: ${v.fond}` });
       f.append(n);
       d.append(el("h3", {}, v.titre), f);
-    } else d.append(el("h3", {}, v.titre), n);
+    } else d.append(el("h3", {}, v.titre), v.cadre ? v.cadre(n) : n);
     // la suite : chaque clic donne le data suivant a l'element, comme GDC a chaque nouvelle scene
     if (v.suite) {
       let i = 0;
@@ -544,7 +606,7 @@ function sectionElement(entry) {
         `${mod.meta.tag} « ${v.titre} » : rendu`,
       ),
     );
-    for (const e of ["gdc-select", "gdc-copy", "gdc-close", "gdc-hover"]) {
+    for (const e of ["gdc-select", "gdc-copy", "gdc-close", "gdc-hover", "gdc-toggle", "gdc-resize"]) {
       n.addEventListener(e, (ev) => {
         const attendu = e in (entry.outputs || {});
         note(
