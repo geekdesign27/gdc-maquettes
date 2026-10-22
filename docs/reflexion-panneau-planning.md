@@ -2,6 +2,8 @@
 
 Demande de Pierre-Alain du 22 octobre 2026. Ce document est une réflexion de l'atelier des maquettes, à croiser avec celle de GDC. Rien n'est décidé ni fabriqué.
 
+> **Suite** : GDC a répondu (`docs/planning-reponse-de-gdc.md`) et Pierre-Alain a tranché ; la réponse de l'atelier est dans `docs/planning-reponse-a-gdc.md`. Elle remplace ce document pour le planning (lignes par étapes, futur sans date, jours vides repliés).
+
 ## Ce que demande Pierre-Alain
 
 1. **Inverser les panneaux latéraux** : l'arbre des fiches et des lots (`side-nav` 2.0.0), aujourd'hui à droite, passe à gauche ; le fil des déclencheurs (`trigger-feed`), aujourd'hui à gauche, passe à droite.
