@@ -3,6 +3,7 @@
 import { tokens, cssVariables } from "./tokens.js";
 import { signes, signIcon, plusGrave, GRAVITE } from "./signes.js";
 import { correspond, sameRef, hoverLink } from "./survol.js";
+import { groupFloors } from "./etages.js";
 import manrope from "../components/interface/fonts/manrope-latin-wght-normal.woff2?inline";
 import inter from "../components/interface/fonts/inter-latin-wght-normal.woff2?inline";
 import jetbrainsMono from "../components/interface/fonts/jetbrains-mono-latin-wght-normal.woff2?inline";
@@ -55,8 +56,9 @@ function portrait(document, id) {
   return svg.localName === "svg" ? document.importNode(svg, true) : null;
 }
 
-// Le contexte injecte dans chaque element : les jetons, la signaletique, les portraits et le survol partage (lot G8),
-// une seule source.
+// Le contexte injecte dans chaque element : les jetons, la signaletique, les portraits, le survol partage et la regle
+// des six etages (lot G8, src/etages.js : le selecteur d'etages montre les memes etages que le batiment), une seule
+// source.
 export const interfaceContext = {
   tokens,
   signes,
@@ -67,6 +69,7 @@ export const interfaceContext = {
   correspond,
   sameRef,
   hoverLink,
+  groupFloors,
 };
 
 // Definit tous les elements (gdc-<id>) et pose, une fois, la feuille des polices et des variables dans le document.
