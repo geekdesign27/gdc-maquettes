@@ -52,8 +52,16 @@ const actionsLimites = [
   { ts: "2026-10-21T15:53:41.000Z", action: "apparait", element: "character", id: "inconnu", nom: "Quelqu'un, un rôle inconnu", phrase: "Quelqu'un, un rôle inconnu apparaît (la baraque)" },
   { ts: "2026-10-21T15:53:41.000Z", action: "quantite", element: "parking", id: "parking" },
   { ts: "pas une date", action: "change", element: "control-office", id: "bureau-controle", phrase: "Le bureau de contrôle : idle → error" },
-  { ts: "2026-10-21T15:53:42.000Z", action: "fermeture", element: "chantier", id: "chantier", phrase: "Le chantier ferme" },
+  { ts: "2026-10-21T15:53:42.000Z", action: "fermeture", element: "chantier", id: "chantier", phrase: "Le chantier ferme", cause: null, deduit: "silence" },
+  { ts: "2026-10-21T15:53:43.000Z", action: "change", element: "client-office", id: "bureau-client", phrase: "Une cause illisible : ignorée, la ligne ne se clique pas", cause: "pas-un-evt" },
 ];
+// Le choix relaye comme GDC le fera (derniere passe de GDC, section 6) : un premier choix, puis chaque gdc-select de
+// l'element lui revient en selected.
+const relaieChoix = (n, premier) => {
+  n.selected = premier;
+  n.addEventListener("gdc-select", (e) => { n.selected = e.detail; });
+  return n;
+};
 // neuf fiches, pour voir le rez regroupe : les plus anciennes livrees, puis le chantier en cours
 const neufFiches = (selected, livrees = 4) => ({
   building: { id: "bureau", name: "Application de bureau" },
@@ -312,6 +320,19 @@ export const variantes = {
       titre: "Projet type : les vingt et une étapes",
       style: "height: 420px; max-width: 380px",
       data: { actions: actionsProjetType.flat() },
+    },
+    // 1.1.0 : un fait choisi ailleurs (le planning, la carte) ; la page relaie chaque clic du fil en selected, comme GDC
+    {
+      titre: "Un fait choisi ailleurs (1.1.0) : les quatre actions de evt:004-…/de40e60e marquées, le fil y défile ; un clic est relayé en selected, comme GDC",
+      style: "height: 320px; max-width: 380px",
+      data: { actions: actionsTroisApplications.flat() },
+      cadre: (n) => relaieChoix(n, { id: "terrain", ref: { application: "terrain", fiche: "004-saisir-un-constat-hors-ligne" }, evt: "evt:004-saisir-un-constat-hors-ligne/de40e60e" }),
+    },
+    {
+      titre: "Un choix sans evt (1.1.0) : une fiche choisie dans l'arbre ; rien n'est marqué",
+      style: "height: 200px; max-width: 380px",
+      data: { actions: actionsTroisApplications.flat() },
+      cadre: (n) => relaieChoix(n, { id: "004-saisir-un-constat-hors-ligne", ref: { application: "terrain", fiche: "004-saisir-un-constat-hors-ligne" } }),
     },
     {
       titre: "Projet type, limit 6 : les six plus récentes",

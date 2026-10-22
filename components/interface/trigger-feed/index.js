@@ -13,13 +13,18 @@
 //   annonces dans l'ordre ou ils se sont passes.
 // - Un seul arret de tabulation (tabindex mobile) sur toutes les lignes ; une ligne qui porte une reference se survole
 //   (ctx.hoverLink) et se clique (gdc-select).
+// - Version 1.1.0 (plan de l'atelier, I-6 ; derniere passe de GDC, section 6) : chaque action porte sa cause, le fait du
+//   journal qui l'a produite (evt:<journal>/<id>), ou null quand elle est deduite (deduit : silence, delai, dossier). Une
+//   ligne qui a une reference ou une cause se clique : gdc-select porte { id, ref, evt }, { id, ref } sans cause,
+//   { id, evt } sans reference. Le choix relaye par GDC (selected, une propriete a part comme highlight) marque les
+//   actions dont la cause vaut son evt, et le fil defile jusqu'a la premiere ; rien d'autre ne change.
 
 export const meta = {
   id: "trigger-feed",
-  version: "1.0.0",
+  version: "1.1.0",
   category: "interface",
   tag: "gdc-trigger-feed",
-  inputs: ["actions", "limit", "highlight"],
+  inputs: ["actions", "limit", "highlight", "selected"],
   outputs: ["gdc-select", "gdc-hover"],
 };
 
@@ -53,6 +58,11 @@ button.ligne:hover { background: color-mix(in srgb, var(--gdc-ink) 7%, transpare
 .ligne:focus { outline-offset: -2px; }
 /* la marque du survol partage : plus legere que la selection, sans couleur d'etat, rien ne bouge */
 .ligne[data-highlight] { background: var(--gdc-highlight-fill); box-shadow: var(--gdc-highlight-ring); }
+/* l'action du fait choisi ailleurs : le fond et le trait de la selection de l'arbre, sans couleur d'etat ; la marque du
+   survol n'y ajoute que son trait */
+.ligne[aria-current="true"] { background: color-mix(in srgb, var(--gdc-ink) 11%, transparent); box-shadow: inset 3px 0 0 var(--gdc-ink); }
+.ligne[aria-current="true"][data-highlight] { background: color-mix(in srgb, var(--gdc-ink) 11%, transparent);
+  box-shadow: inset 3px 0 0 var(--gdc-ink), var(--gdc-highlight-ring); }
 .phrase { padding-top: 3px; overflow-wrap: anywhere; }
 /* le visage d'un personnage (lot G7) ; les autres lignes ont un simple point */
 .visage { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; overflow: hidden;
@@ -110,7 +120,10 @@ export function define(registry, ctx) {
     #unseen = 0; // les nouvelles actions arrivees pendant que la liste etait remontee
     #open = false; // deplie sur telephone
     #highlight = null;
+    #selected = null; // le dernier choix relaye par GDC ({ id, ref?, evt?, etape? }), ou null
+    #reveler = false; // le choix a change : defiler jusqu'a son action des qu'elle est dans la liste
     #refs = new WeakMap(); // ligne -> reference (le survol partage)
+    #causes = new WeakMap(); // ligne -> cause (evt:<journal>/<id>)
     #instantNodes = new Map(); // instant (ts) -> son element, garde d'un rendu a l'autre
     #lineNodes = new Map(); // cle d'action -> l'element de sa ligne
     #queue = []; // les annonces en attente
@@ -188,7 +201,16 @@ export function define(registry, ctx) {
         this.#fold();
       });
       ctx.hoverLink(this, (n) => this.#refs.get(n) ?? null);
+      // un fait choisi pendant que le fil etait masque (un panneau ferme en rail) vient dans la vue a sa reouverture
+      new ResizeObserver(() => {
+        if (this.#reveler && liste.clientHeight) this.#markChosen(true);
+      }).observe(liste);
       this.#fold();
+    }
+
+    // un choix recu avant d'etre dans la page attend sa mise en page pour defiler
+    connectedCallback() {
+      if (this.#reveler) requestAnimationFrame(() => this.#markChosen(true));
     }
 
     disconnectedCallback() {
@@ -221,6 +243,19 @@ export function define(registry, ctx) {
     set highlight(ref) {
       this.#highlight = ref ?? null;
       this.#lightUp();
+    }
+
+    // le dernier choix relaye par GDC, d'ou qu'il vienne : marque les actions dont la cause vaut son evt et defile
+    // jusqu'a la premiere ; sans evt, plus rien n'est marque. Ne redessine rien.
+    get selected() {
+      return this.#selected;
+    }
+    set selected(value) {
+      const sel = value && typeof value === "object" ? value : null;
+      const avant = evtOf(this.#selected);
+      this.#selected = sel;
+      if (evtOf(sel) !== avant) this.#reveler = Boolean(evtOf(sel));
+      this.#markChosen(true);
     }
 
     // garde les actions recues qui ne le sont pas deja, puis les plus recentes jusqu'a limit ; rend les arrivees
@@ -346,18 +381,20 @@ export function define(registry, ctx) {
       this.#tabTo(tab);
       if (perdu) tab?.focus({ preventScroll: true });
       this.#lightUp();
+      this.#markChosen();
     }
 
-    // une action : un bouton si elle porte une reference (survol et clic), sinon une ligne lisible au clavier
+    // une action : un bouton si elle porte une reference (survol et clic) ou une cause (clic), sinon une ligne lisible
+    // au clavier
     #ligne(a, key) {
-      const ref = a.ref && typeof a.ref === "object" ? a.ref : null;
+      const ref = refOf(a);
+      const cause = causeOf(a);
       const regime = REGIMES.includes(a.action);
-      const l = document.createElement(ref ? "button" : "div");
+      const l = document.createElement(ref || cause ? "button" : "div");
       l.className = "ligne" + (regime ? " regime" : "");
-      if (ref) {
-        l.type = "button";
-        this.#refs.set(l, ref);
-      }
+      if (ref || cause) l.type = "button";
+      if (ref) this.#refs.set(l, ref);
+      if (cause) this.#causes.set(l, cause);
       l.tabIndex = -1;
       l.dataset.key = key;
       if (this.#fresh.has(key)) l.classList.add("neuve");
@@ -379,16 +416,42 @@ export function define(registry, ctx) {
       return v;
     }
 
+    // { id, ref, evt } ; sans cause { id, ref }, sans reference { id, evt } (evt : la chaine complete de cause)
     #press(b) {
       const a = this.#kept.find((x) => this.#keys.get(x) === b.dataset.key);
       if (!a) return;
+      const detail = { id: a.id ?? null };
+      const ref = refOf(a);
+      const evt = causeOf(a);
+      if (ref) detail.ref = ref;
+      if (evt) detail.evt = evt;
       this.dispatchEvent(
         new CustomEvent("gdc-select", {
-          detail: { id: a.id ?? null },
+          detail,
           bubbles: true,
           composed: true,
         }),
       );
+    }
+
+    // les actions du fait choisi : aria-current sur chacune. Au moment du choix (defiler), ou des que le fil choisi
+    // masque redevient visible, il defile jusqu'a la premiere si aucune n'est deja entiere en vue, et l'arret de
+    // tabulation y va ; un nouveau data ne fait jamais defiler : une action du fait qui arrive plus tard est marquee sans
+    // faire bouger la liste.
+    #markChosen(defiler = false) {
+      const evt = evtOf(this.#selected);
+      const marquees = [];
+      for (const l of this.#els.liste.querySelectorAll(".ligne")) {
+        const oui = Boolean(evt) && this.#causes.get(l) === evt;
+        if (oui) l.setAttribute("aria-current", "true");
+        else l.removeAttribute("aria-current");
+        if (oui && visible(l)) marquees.push(l);
+      }
+      if (!defiler || !this.#reveler || !this.#els.liste.clientHeight) return;
+      this.#reveler = false;
+      if (!marquees.length) return;
+      if (!this.shadowRoot.activeElement?.classList?.contains("ligne")) this.#tabTo(marquees[0]);
+      if (!marquees.some((l) => this.#entiere(l))) this.#center(marquees[0]);
     }
 
     // la marque du survol partage, seule : une ligne s'allume quand sa reference correspond a celle survolee
@@ -471,6 +534,11 @@ export function define(registry, ctx) {
         premiere?.focus({ preventScroll: true });
       }
       if (!this.#open) this.#tabTo(this.#premiere());
+      // deplie sur telephone : le fait choisi pendant que le fil etait replie vient dans la vue
+      if (this.#open && evtOf(this.#selected)) {
+        this.#reveler = true;
+        this.#markChosen(true);
+      }
     }
 
     // les lignes atteignables, de haut en bas
@@ -525,6 +593,19 @@ export function define(registry, ctx) {
       else if (r.bottom > cr.bottom) c.scrollTop += r.bottom - cr.bottom + 8;
     }
 
+    // une ligne entiere dans la vue de la liste
+    #entiere(l) {
+      const haut = this.#top(l);
+      return haut >= 0 && haut + l.offsetHeight <= this.#els.liste.clientHeight;
+    }
+
+    // amene une ligne au milieu de la liste ; un glissement court, aucun avec moins d'animations
+    #center(l) {
+      const c = this.#els.liste;
+      const top = c.scrollTop + this.#top(l) - (c.clientHeight - l.offsetHeight) / 2;
+      c.scrollTo({ top: Math.max(0, top), behavior: this.#calme() ? "auto" : "smooth" });
+    }
+
     #atTop() {
       return this.#els.liste.scrollTop <= 2;
     }
@@ -564,6 +645,20 @@ export function define(registry, ctx) {
 
   function jourDe(date) {
     return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+  }
+
+  function refOf(a) {
+    return a.ref && typeof a.ref === "object" ? a.ref : null;
+  }
+
+  // la cause d'une action : l'identifiant complet de son fait (evt:<journal>/<id>) ; null ou absente, aucune
+  function causeOf(a) {
+    return typeof a.cause === "string" && a.cause.startsWith("evt:") ? a.cause : null;
+  }
+
+  // l'evt d'un choix relaye par GDC, ou null
+  function evtOf(sel) {
+    return sel && typeof sel.evt === "string" && sel.evt.startsWith("evt:") ? sel.evt : null;
   }
 
   // deux actions sont la meme quand GDC envoie exactement les memes valeurs

@@ -280,8 +280,17 @@ function poseFil(actions) {
   filVille = document.createElement('gdc-trigger-feed');
   filVille.className = 'fil-ville';
   filVille.data = { actions };
+  filVille.selected = choixGdc;
   filVille.addEventListener('gdc-hover', (e) => relaieSurvol('fil', e.detail.ref));
+  filVille.addEventListener('gdc-select', (e) => relaieChoix(e.detail));
   placePanneau('fil', filVille);
+}
+// La selection, comme GDC le fera (derniere passe de GDC, section 6) : le dernier gdc-select, d'ou qu'il vienne, est
+// renvoye au fil (selected) : un evt y marque les actions de ce fait.
+let choixGdc = null;
+function relaieChoix(detail) {
+  choixGdc = detail ?? null;
+  if (filVille) filVille.selected = choixGdc;
 }
 function retireFil() {
   filVille?.remove();
