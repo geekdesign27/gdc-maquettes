@@ -1,0 +1,13 @@
+{
+  "nom": "ENV_FLOODLIGHT_A_v001",
+  "id": "floodlight",
+  "bible": "WORKSITE 1.2",
+  "blender": "5.3.0 Beta",
+  "script": "blender/assets/floodlight.py",
+  "script_sha256": "6359ac87751adbe98c94e048e54acb91ec99054d421c46b7096a6e7c258be087",
+  "commun_sha256": "e8cb480c62b7bdb8b54460ec91e343989e89e93987616cc2711afd5dbcdf2f80",
+  "palette_sha256": "1d680d9cdb1b8f17d1781232af4cc0f9e61120093db3153769da181b2d11293c",
+  "glb_sha256": "ee30201fa0a63c2b16c6a81c4b15e70550475e994737bcef8bc69b0c0497857e",
+  "animations": [],
+  "statut": "a valider"
+}

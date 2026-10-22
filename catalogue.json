@@ -1844,7 +1844,11 @@
       "status": "à faire",
       "role": "modeleur",
       "data": {},
-      "production": "blender"
+      "production": "blender",
+      "assets": [
+        "ENV_FLOODLIGHT_A_v001.glb"
+      ],
+      "version": "1.0.0"
     },
     {
       "id": "party-shed",
