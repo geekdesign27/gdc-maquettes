@@ -1396,7 +1396,7 @@
         "Sur téléphone, la rangée de pastilles montre le premier niveau ; choisir un bâtiment ouvre une deuxième rangée avec ses fiches",
         "Ligne au journal des versions"
       ],
-      "status": "à faire",
+      "status": "livré",
       "inputs": {
         "groups": "liste de { title, items } ; un item : { id, name, state?, ref?, etape?, progress?, delivered?, children? : [items] }, trois niveaux au plus ; id est unique dans tout l'arbre (GDC compose celui d'un lot, par exemple 001-cloturer-un-audit/L1) ; state est l'un des six états de la signalétique, absent pas de signe, toute autre valeur « inconnu » ; ref : { application, fiche?, lot? } ; progress : { done, total }, les lots finis sur le total, affiché « 1/3 » ; delivered : un enfant livré est rangé sous « Livrées · n » de son parent (décisions de Pierre-Alain du 22 octobre 2026)",
         "selected": "identifiant sélectionné ; ses parents s'ouvrent quand il change",
