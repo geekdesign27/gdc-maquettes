@@ -42,7 +42,7 @@ Un composant ne sort jamais d'événement : le clic, le survol et la sélection 
 - `THREE` : la bibliothèque Three.js, **injectée**. Un composant n'importe jamais `three` lui-même : GDC et la galerie fournissent la même instance.
 - `params` : les paramètres de création, déjà complétés par les défauts.
 - `ctx` : le contexte d'affichage.
-  - `ctx.tokens` : les couleurs partagées (`src/tokens.js`), dont les **couleurs d'état, qui ne changent jamais** ;
+  - `ctx.tokens` : les couleurs partagées (`src/tokens.js`), dont les **couleurs d'état, qui ne changent jamais**, et `ctx.tokens.lumiere`, les lumières qu'un composant fait lui-même (la couleur des projecteurs de `src/lumiere.json`, plan D-2) ;
   - `ctx.theme` : `'light'` ou `'dark'` ;
   - `ctx.palette` : les couleurs de base du thème courant (sol, gravier, béton, bois, verre, papier, encre), déjà choisies selon `ctx.theme` ;
   - `ctx.quality` : `'low'` ou `'high'` ; en `'low'`, moins de détails, aucune ombre ;

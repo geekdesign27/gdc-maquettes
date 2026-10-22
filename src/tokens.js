@@ -2,6 +2,7 @@
 // Les couleurs d'etat ne servent qu'aux badges et a l'interface HTML : elles ne colorent jamais les materiaux du monde
 // (bible WORKSITE 1.2). Les couleurs d'equipe habillent les tenues des personnages.
 import palette from "./palette.json" with { type: "json" };
+import lumiere from "./lumiere.json" with { type: "json" };
 import { groupFloors } from "./etages.js";
 
 export const tokens = {
@@ -11,6 +12,8 @@ export const tokens = {
   state: palette.etat,
   team: palette.equipe,
   personnages: palette.personnages, // peaux, cheveux et orange fluo du gilet (materiaux MAT_SKIN_*, MAT_HAIR_*, MAT_FABRIC_HIVIS)
+  // les lumieres faites par les composants (src/lumiere.json, fiche day-night) : le verre et la tache des projecteurs
+  lumiere: { projecteurs: { couleur: lumiere.projecteurs.couleur } },
 };
 
 // Les couleurs de base pour un theme d'interface : celles du monde (identiques en clair et en sombre),
