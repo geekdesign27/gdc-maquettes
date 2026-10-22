@@ -642,7 +642,8 @@ export function create(THREE, params, ctx) {
       if (apart.has(c)) return false;
       let ok = true;
       c.traverse((o) => {
-        if (o.isMesh && !fusionnable(o)) ok = false;
+        // un maillage que la fusion ne sait pas reporter, ou un autre objet qui se voit (ligne, points, sprite, lumiere)
+        if (o.isMesh ? !fusionnable(o) : o.isLine || o.isPoints || o.isSprite || o.isLight) ok = false;
       });
       return ok;
     });
