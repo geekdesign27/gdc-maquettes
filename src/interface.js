@@ -4,6 +4,8 @@ import { tokens, cssVariables } from "./tokens.js";
 import { signes, signIcon, plusGrave, GRAVITE } from "./signes.js";
 import { correspond, sameRef, hoverLink } from "./survol.js";
 import { groupFloors } from "./etages.js";
+import { instants } from "./ville/scene-gdc.js";
+import { personneDe } from "./ville/equipe.js";
 import manrope from "../components/interface/fonts/manrope-latin-wght-normal.woff2?inline";
 import inter from "../components/interface/fonts/inter-latin-wght-normal.woff2?inline";
 import jetbrainsMono from "../components/interface/fonts/jetbrains-mono-latin-wght-normal.woff2?inline";
@@ -56,9 +58,17 @@ function portrait(document, id) {
   return svg.localName === "svg" ? document.importNode(svg, true) : null;
 }
 
+// La personne d'equipe.json d'une action de GDC qui concerne un personnage (son portrait : ctx.portrait), par la
+// meme regle que la carte (src/ville/equipe.js, personneDe) ; null pour une autre action ou une personne inconnue.
+function agentOf(action) {
+  if (!action || action.element !== "character") return null;
+  return personneDe(action)?.id ?? null;
+}
+
 // Le contexte injecte dans chaque element : les jetons, la signaletique, les portraits, le survol partage et la regle
-// des six etages (lot G8, src/etages.js : le selecteur d'etages montre les memes etages que le batiment), une seule
-// source.
+// des six etages (lot G8, src/etages.js : le selecteur d'etages montre les memes etages que le batiment) ; pour le fil
+// des declencheurs, la lecture des actions de la carte (instants, src/ville/scene-gdc.js) et la personne d'une action
+// (agentOf). Une seule source.
 export const interfaceContext = {
   tokens,
   signes,
@@ -70,6 +80,8 @@ export const interfaceContext = {
   sameRef,
   hoverLink,
   groupFloors,
+  instants,
+  agentOf,
 };
 
 // Definit tous les elements (gdc-<id>) et pose, une fois, la feuille des polices et des variables dans le document.
