@@ -88,8 +88,8 @@ export function anchorFor(visible, buildingRef, ref) {
 }
 
 // Les six aspects d'une piece de la vue en coupe (building-interior 2.0.0), et la phase du run d'un lot (PHASES de
-// GDC) qui donne chacun. Fiche validee par Pierre-Alain le 21 octobre 2026 ; lecon, deploie et retour (apres livre) et
-// abandonne : decisions du 22 octobre 2026.
+// GDC) qui donne chacun. Fiche validee par Pierre-Alain le 21 octobre 2026 ; lecon, deploie et retour (apres livre),
+// abandonne, et le statut final (fini, abandonne) avant la phase : decisions du 22 octobre 2026.
 export const ROOM_STATES = [
   "todo",
   "preparing",
