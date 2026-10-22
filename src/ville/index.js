@@ -7,3 +7,5 @@ export { lisScene, instants, phaseDe } from './scene-gdc.js';
 export { equipes, usagers, tache, EFFECTIFS, PLAFONDS } from './vie.js';
 export { personneDe, parametresDe } from './equipe.js';
 export { creeCarte, REMPLACANTS } from './carte.js';
+// l'heure reelle (fiche day-night) : le soleil de Fribourg sur l'heure du poste, la recette de l'instant
+export { soleilDe, momentDe, recetteDe, regleLumieres, MOMENTS } from './heure.js';

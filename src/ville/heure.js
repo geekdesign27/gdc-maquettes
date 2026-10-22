@@ -159,7 +159,7 @@ export function creeVitres() {
     const parForce = copies.get(m);
     if (!parForce[force]) {
       const c = m.clone();
-      c.userData = { ...m.userData, vitre: force, origine: m };
+      c.userData = { vitre: force, origine: m };
       parForce[force] = c;
       regleCopie(c);
     }
@@ -198,4 +198,40 @@ export function creeVitres() {
       copies.clear();
     },
   };
+}
+
+// Ce qui s'eclaire la nuit (fiche day-night) : faiblement tout batiment habite et tout bureau, franchement la ou un
+// agent travaille (un bureau actif ou occupe, l'etage occupied d'un batiment, un conteneur ou se trouve un agent). Un
+// conteneur vide reste eteint ; les engins aussi.
+export const BUREAUX = [
+  "architect-office",
+  "client-office",
+  "design-office",
+  "control-office",
+  "site-office",
+];
+export const ECLAIRABLES = new Set([...BUREAUX, "site-container", "building"]);
+
+// La force des vitres d'un lieu (pas d'un batiment, eclaire etage par etage) : "faible", "franche" ou null.
+export function forceDe(id, { actif = false, agent = false } = {}) {
+  if (BUREAUX.includes(id)) return actif || agent ? "franche" : "faible";
+  if (id === "site-container") return agent ? "franche" : null;
+  return null;
+}
+
+// Les vitres d'un batiment (building 2.0.0 les nomme GLASS_FLOOR_n, userData.glass = { floor, occupied }) : franche a
+// un etage occupe, faible a un etage habite (le verre MAT_GLASS_LIT des etages termines), eteinte ailleurs.
+export function eclaireBatiment(vitres, racine) {
+  racine.traverse((o) => {
+    if (!o.isMesh || !o.userData.glass) return;
+    const m = o.material.userData.vitre
+      ? o.material.userData.origine
+      : o.material;
+    const force = o.userData.glass.occupied
+      ? "franche"
+      : m.name === "MAT_GLASS_LIT"
+        ? "faible"
+        : null;
+    vitres.pose(o, force);
+  });
 }

@@ -14,6 +14,8 @@ import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils.js';
 import { creeChargeur } from '../src/assets.js';
 import { makeContext } from '../src/tokens.js';
 import { measure } from '../src/contract.js';
+import { soleilDe, momentDe, recetteDe, lumiere } from '../src/ville/heure.js';
+import palette from '../src/palette.json' with { type: 'json' };
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -267,6 +269,107 @@ for (const [nom, scenes] of Object.entries(sequences))
   }
   verifie(carte.compte().camions.length === 0, 'camion : il ne repart pas');
   carte.dispose();
+}
+
+// --- L'heure reelle (fiche day-night) : le soleil de Fribourg sur l'heure du poste, le jour inchange, la nuit et ses
+// fenetres (blanc chaud, faible et franche, jamais une couleur d'etat), sans reseau
+{
+  const heureUTC = (ms) => new Date(ms).getUTCHours() + new Date(ms).getUTCMinutes() / 60;
+  // les ephemerides de Berne decalees d'une minute vers l'ouest, en UTC ; a 5 minutes pres
+  for (const [date, lever, coucher] of [['2026-06-21', 3 + 36 / 60, 19 + 29 / 60], ['2026-12-21', 7 + 14 / 60, 15 + 47 / 60]]) {
+    const s = soleilDe(new Date(`${date}T12:00:00Z`));
+    verifie(Math.abs(heureUTC(s.lever) - lever) < 5 / 60, `heure : lever du ${date} à Fribourg faux (${heureUTC(s.lever).toFixed(2)} h UTC)`);
+    verifie(Math.abs(heureUTC(s.coucher) - coucher) < 5 / 60, `heure : coucher du ${date} à Fribourg faux (${heureUTC(s.coucher).toFixed(2)} h UTC)`);
+    // l'aube et le crepuscule : 30 minutes, centres sur le lever et le coucher
+    const min = 60000;
+    const m = (t) => momentDe(t);
+    verifie(m(s.lever - 16 * min).moment === 'nuit' && m(s.lever - 14 * min).moment === 'aube', `heure : l'aube du ${date} ne commence pas 15 minutes avant le lever`);
+    verifie(Math.abs(m(s.lever).jour - 0.5) < 0.01, `heure : au lever du ${date}, la lumière n'est pas à mi-chemin`);
+    verifie(m(s.lever + 14 * min).moment === 'aube' && m(s.lever + 16 * min).moment === 'jour', `heure : l'aube du ${date} ne finit pas 15 minutes après le lever`);
+    verifie(m(s.coucher - 16 * min).moment === 'jour' && m(s.coucher - 14 * min).moment === 'crepuscule', `heure : le crépuscule du ${date} ne commence pas 15 minutes avant le coucher`);
+    verifie(Math.abs(m(s.coucher).jour - 0.5) < 0.01 && m(s.coucher + 16 * min).moment === 'nuit', `heure : le crépuscule du ${date} n'est pas centré sur le coucher`);
+  }
+  // le jour, rien ne change : la recette du haut de lumiere.json, le fond de l'interface, aucune fenetre allumee
+  for (const theme of ['light', 'dark']) {
+    const j = recetteDe(1, theme);
+    verifie(JSON.stringify([j.ciel, j.soleil.couleur, j.soleil.intensite, j.soleil.position]) === JSON.stringify([lumiere.ciel, lumiere.soleil.couleur, lumiere.soleil.intensite, lumiere.soleil.position]), `heure : de jour, la lumière n'est pas la recette du jour (${theme})`);
+    verifie(j.fond === palette.interface[theme].background && j.fenetres === 0, `heure : de jour, le fond ou les fenêtres changent (${theme})`);
+    const n = recetteDe(0, theme);
+    verifie(n.ciel.intensite === lumiere.nuit.ciel.intensite && n.soleil.intensite === lumiere.nuit.lune.intensite && n.fond === lumiere.nuit.fond[theme] && n.fenetres === 1, `heure : la nuit n'est pas la recette de nuit (${theme})`);
+    verifie(JSON.stringify(n.soleil.position) === JSON.stringify(lumiere.soleil.position), 'heure : la lune ne vient pas de la direction du soleil');
+  }
+  // blanc chaud, clair, loin de toute couleur d'etat
+  const rvb = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+  for (const [nom, h] of [['fenetres', lumiere.fenetres.couleur], ['projecteurs', lumiere.projecteurs.couleur]]) {
+    const [r, g, b] = rvb(h);
+    verifie(0.2126 * r + 0.7152 * g + 0.0722 * b > 200, `heure : la lumière des ${nom} n'est pas claire (${h})`);
+    for (const [etat, e] of Object.entries(palette.etat))
+      verifie(Math.hypot(...rvb(e).map((c, i) => c - [r, g, b][i])) > 80, `heure : la lumière des ${nom} ressemble à l'état ${etat} (${h})`);
+  }
+  verifie(rvb(lumiere.fenetres.couleur).every((c, i, a) => i === 0 || c <= a[i - 1]), 'heure : les fenêtres ne sont pas d\'un blanc chaud');
+  verifie(lumiere.fenetres.faible < lumiere.fenetres.franche, 'heure : la lumière franche n\'est pas plus forte que la faible');
+  const source = await readFile(join(ROOT, 'src/ville/heure.js'), 'utf8');
+  verifie(!/\bfetch\b|XMLHttpRequest|WebSocket|localStorage|navigator\./.test(source), "heure : l'heure ne vient pas du seul poste (réseau ou stockage)");
+
+  // la carte : la nuit, les vitres des bureaux et du batiment habite faiblement, franchement la ou l'on travaille ;
+  // le jour, les vitres d'origine ; ses lumieres suivent l'heure
+  const compteVitres = (carte) => {
+    const n = { faible: 0, franche: 0, conteneur: 0 };
+    carte.root.traverse((o) => {
+      if (!o.isMesh || !/^MAT_GLASS/.test(o.material.name)) return;
+      const v = o.material.userData.vitre;
+      if (v) n[v]++;
+      let r = o;
+      while (r && !r.userData.component) r = r.parent;
+      if (v && r && r.userData.component === 'site-container') n.conteneur++;
+      if (v && !/office|container|building/.test(r?.userData.component)) n.ailleurs = true;
+    });
+    return n;
+  };
+  const ciel = new THREE.HemisphereLight();
+  const soleil = new THREE.DirectionalLight();
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color();
+  const s8 = sequences['trois-applications'][7];
+  const carte = await creeCarte(THREE, { components: modules, chargeur, theme: 'light', quality: 'high', reducedMotion: true, heure: 'nuit', lumieres: { ciel, soleil, scene } });
+  await carte.applique(s8);
+  let n = compteVitres(carte);
+  verifie(n.faible > 0 && n.franche > 0 && !n.ailleurs, `heure : la nuit, les fenêtres ne s'allument pas comme prévu (${JSON.stringify(n)})`);
+  verifie(n.conteneur === 0, 'heure : un conteneur vide est éclairé');
+  verifie(ciel.intensity === lumiere.nuit.ciel.intensite && soleil.intensity === lumiere.nuit.lune.intensite && '#' + scene.background.getHexString().toUpperCase() === lumiere.nuit.fond.light, 'heure : la carte ne règle pas les lumières de la nuit');
+  verifie(carte.heure.moment === 'nuit', 'heure : la carte ne dit pas la nuit');
+  // un agent dans un conteneur : ses fenetres s'allument franchement
+  await carte.applique({ ...s8, actions: [], elements: [...s8.elements, { element: 'character', id: 'gardien', role: 'concierge', nom: 'Le concierge', etat: 'idle', lieu: 'cabane-garantie' }] }, { actions: false });
+  verifie(compteVitres(carte).conteneur > 0, "heure : le conteneur où se trouve un agent reste éteint");
+  // le jour : les vitres d'origine, la recette du jour
+  verifie(carte.regleHeure('jour'), 'heure : passer au jour ne demande pas de redessiner');
+  let ecart = 0;
+  carte.root.traverse((o) => {
+    const v = o.isMesh && o.material.userData.vitre && o.material;
+    if (v && (!v.color.equals(v.userData.origine.color) || v.emissive.getHex() !== new THREE.Color(v.userData.origine.emissive).multiplyScalar(v.userData.origine.emissiveIntensity).getHex())) ecart++;
+  });
+  verifie(ecart === 0, `heure : de jour, ${ecart} vitre(s) ne sont pas celles d'origine`);
+  verifie(ciel.intensity === lumiere.ciel.intensite && soleil.intensity === lumiere.soleil.intensite && soleil.color.getHexString().toUpperCase() === lumiere.soleil.couleur.slice(1), 'heure : de jour, les lumières ne sont pas la recette du jour');
+  carte.dispose();
+  // une zone jamais activee reste eteinte (projet-type 1, le terrain : les bureaux sont gris)
+  const grise = await creeCarte(THREE, { components: modules, chargeur, theme: 'dark', quality: 'low', reducedMotion: true, heure: 'nuit' });
+  await grise.applique(sequences['projet-type'][0]);
+  n = compteVitres(grise);
+  verifie(n.faible + n.franche === 0, 'heure : une zone jamais activée a des fenêtres éclairées');
+  grise.dispose();
+  // l'heure du poste : la carte suit l'horloge, par pas, et ne redessine que quand la lumiere change
+  const s = soleilDe(new Date('2026-10-22T12:00:00Z'));
+  let t = s.coucher - 20 * 60000;
+  const suit = await creeCarte(THREE, { components: modules, chargeur, theme: 'light', quality: 'low', reducedMotion: true, maintenant: () => t });
+  verifie(suit.heure.moment === 'jour', "heure : la carte ne suit pas l'heure du poste (jour)");
+  verifie(!suit.update(25), 'heure : la carte redessine de jour sans changement');
+  t = s.coucher;
+  verifie(suit.update(25) && suit.heure.moment === 'crepuscule' && Math.abs(suit.recette().fenetres - 0.5) < 0.02, "heure : la carte ne suit pas le crépuscule");
+  t = s.coucher + 3 * 3600000;
+  suit.update(25);
+  verifie(suit.heure.moment === 'nuit' && suit.recette().fenetres === 1, "heure : la carte ne passe pas à la nuit");
+  suit.dispose();
+  rapports.push(`heure réelle : Fribourg le 22 octobre 2026, lever ${new Date(s.lever).toISOString().slice(11, 16)} et coucher ${new Date(s.coucher).toISOString().slice(11, 16)} UTC ; la nuit, fenêtres faibles et franches vérifiées`);
 }
 
 // --- Le verdict

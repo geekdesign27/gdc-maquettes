@@ -4,7 +4,9 @@
 // - les actions jouees dans l'ordre de leur horodatage, les marches le long des voies (chemins.js), plafonnees ;
 // - la vie du chantier (vie.js), tiree du regime, des phases et des agents presents, a partir d'une graine ;
 // - les zones jamais activees en niveaux de gris, colorees pour toujours a la premiere activation ;
-// - la vue en coupe (building-interior 2.0.0) d'un etage, que GDC ouvre au clic ou au selecteur d'etages.
+// - la vue en coupe (building-interior 2.0.0) d'un etage, que GDC ouvre au clic ou au selecteur d'etages ;
+// - l'heure reelle (fiche day-night, heure.js) : la lumiere suit le soleil de Fribourg sur l'heure du poste, et la nuit
+//   les fenetres des bureaux et des batiments habites s'eclairent, franchement la ou un agent travaille.
 // Les composants n'en savent rien : la carte les cree, les pose, leur donne un etat, et recolore des copies de leurs
 // materiaux (zones grises, remplacants des ouvriers et des usagers). Three.js, le chargeur des modeles et les
 // composants sont injectes ; rien n'est charge d'ailleurs.
@@ -41,6 +43,16 @@ import {
   roomsFromPieces,
 } from "../etages.js";
 import { tokens, makeContext, paletteFor } from "../tokens.js";
+import {
+  MOMENTS,
+  momentDe,
+  recetteDe,
+  regleLumieres,
+  creeVitres,
+  ECLAIRABLES,
+  forceDe,
+  eclaireBatiment,
+} from "./heure.js";
 
 // Les remplacants, en attendant character 1.2.0 (worker et civilian) : la carte recolore des copies des materiaux de la
 // tenue du chef d'equipe (casque et gilet) et de la tenue de ville du client. A retirer avec la 1.2.0 (fiche city-map).
@@ -75,6 +87,7 @@ const PAS_DE_PORTE = 1.2; // s au plus, de la porte au poste
 const ANGLE_DEHORS = Math.PI / 4; // face a la camera
 const ANGLE_BUREAU = Math.PI;
 const HAUTEUR_REPERE = 2.4;
+const PAS_HEURE = 20; // s, l'heure du poste est relue a ce rythme : une transition de 30 minutes avance par pas invisibles
 // Les lieux qui ont des postes (desk:n), et ceux ou l'on se tient pres de la porte (entry).
 const POSTES = [
   "architect-office",
@@ -104,7 +117,10 @@ const lerp = (a, b, t) => a + (b - a) * t;
 const dist = (a, b) => Math.hypot(b[0] - a[0], b[1] - a[1]);
 
 // options : { components (par identifiant), chargeur (prepare, assetsPour), theme, quality, reducedMotion, graine,
-// force (la mesure de fluidite : chaque parcelle en chantier prend son plafond d'ouvriers) }.
+// force (la mesure de fluidite : chaque parcelle en chantier prend son plafond d'ouvriers), lumieres ({ ciel, soleil,
+// scene } : la HemisphereLight, la DirectionalLight et la scene de la page, que la carte regle sur l'heure ; sans elles,
+// la page les regle avec recette()), heure ("jour", "aube", "nuit" ou de 0 a 1 : un moment fixe pour les revues ;
+// absente, l'heure du poste), maintenant (l'horloge, Date.now par defaut) }.
 export async function creeCarte(THREE, options) {
   const { components, chargeur } = options;
   const ctxOptions = {
@@ -186,6 +202,45 @@ export async function creeCarte(THREE, options) {
     });
   }
 
+  // --- l'heure reelle (fiche day-night) : la recette de l'instant, et les vitres eclairees sur des copies des materiaux.
+  // Le passage est trop lent pour une animation : la recette suit l'horloge par pas, rien de particulier sans animation.
+  const vitres = creeVitres();
+  const maintenant = options.maintenant || Date.now;
+  let heureFixe = options.heure ?? null;
+  let jour = null;
+  let horloge = 0;
+  const lieuxOccupes = new Set(); // les lieux ou se trouve un agent, selon la derniere scene
+  const jourDe = () =>
+    heureFixe === null
+      ? momentDe(maintenant()).jour
+      : typeof heureFixe === "number"
+        ? heureFixe
+        : (MOMENTS[heureFixe] ?? 1);
+  function majHeure() {
+    const j = jourDe();
+    if (j === jour) return false;
+    jour = j;
+    const r = recetteDe(j, fondTheme);
+    if (options.lumieres) regleLumieres(options.lumieres, r);
+    vitres.regle(r.fenetres);
+    return true;
+  }
+  // une zone grise n'a pas de fenetre eclairee ; une zone qui se colore s'eclaire a la fin de son fondu
+  function fenetresDe(m) {
+    if (!ECLAIRABLES.has(m.id)) return;
+    const z = m.zone && gris[m.zone];
+    if (z && (!z.actif || z.fondu !== null)) return;
+    if (m.id === "building") eclaireBatiment(vitres, m.inst.root);
+    else
+      vitres.pose(
+        m.inst.root,
+        forceDe(m.id, {
+          actif: m.state === "active",
+          agent: lieuxOccupes.has(m.cle),
+        }),
+      );
+  }
+
   // --- les membres : une instance chacun, avec sa zone et, pour un element de GDC, l'element recu
   const membres = new Map(); // cle -> { cle, id, inst, zone, el, lieu, acteur, sortie }
   function pose(cle, id, inst, position = [0, 0, 0], rotation = 0) {
@@ -206,6 +261,7 @@ export async function creeCarte(THREE, options) {
     m.inst.setState(state, data);
     m.state = state;
     grise(m.inst.root, m.zone); // un composant peut refaire ses maillages a chaque etat (building)
+    fenetresDe(m);
   }
   function retire(cle) {
     const m = membres.get(cle);
@@ -1006,6 +1062,8 @@ export async function creeCarte(THREE, options) {
 
   // l'etat recu : chaque element a sa place et son etat ; ce qui n'est plus dans la scene s'en va
   function concilie(scene, doucement) {
+    lieuxOccupes.clear();
+    for (const p of scene.personnages) if (p.lieu) lieuxOccupes.add(p.lieu);
     // les objets d'abord (un batiment change d'etage, et ses ancres avec), puis les agents a leur poste
     const agents = [];
     for (const [cle, m] of [...membres]) {
@@ -1049,6 +1107,7 @@ export async function creeCarte(THREE, options) {
     // les zones : celles qui s'activent prennent leur couleur, une fois, pour toujours
     for (const [zone, oui] of Object.entries(scene.zones))
       if (oui && !actives.has(zone)) active(zone, doucement);
+    for (const m of membres.values()) fenetresDe(m);
   }
   function active(zone, doucement) {
     actives.add(zone);
@@ -1072,6 +1131,7 @@ export async function creeCarte(THREE, options) {
     for (const c of z.clones.values()) c.dispose();
     z.clones.clear();
     z.fondu = null;
+    for (const m of membres.values()) if (m.zone === zone) fenetresDe(m);
   }
   // une impulsion : l'echelle de de a vers ; axe « y » : seulement la hauteur (une grue qui se monte)
   function impulsion(m, de, vers, fin, axe = "tout", duree = IMPULSION) {
@@ -1326,6 +1386,11 @@ export async function creeCarte(THREE, options) {
       for (const m of membres.values())
         if (m.inst.root.visible && m.inst.update(dt)) encore = true;
       if (coupe) encore = majCoupe(dt) || encore;
+      horloge += dt;
+      if (horloge >= PAS_HEURE) {
+        horloge = 0;
+        if (majHeure()) encore = true;
+      }
       return encore || (anime && vivants.size > 0);
     },
     // Les reperes HTML : les etapes et les passages sur leurs lieux fixes, la pastille de chaque batiment.
@@ -1504,6 +1569,20 @@ export async function creeCarte(THREE, options) {
     },
     // La vue en coupe d'un etage (building-interior 2.0.0 : une piece par lot, les agents a leur piece ou sur le palier) :
     // fiche, l'etage clique ou choisi au selecteur d'etages ; sans fiche, l'etage en chantier le plus haut.
+    // L'heure (fiche day-night) : { moment, jour }, jour de 0 (la nuit) a 1 (le jour). regleHeure fixe un moment pour les
+    // revues ("jour", "aube", "nuit" ou de 0 a 1 ; null : l'heure du poste) et rend true s'il faut redessiner. recette() :
+    // le ciel, le soleil ou la lune, le fond et l'allumage des fenetres de l'instant, pour une page qui regle ses lumieres.
+    get heure() {
+      if (heureFixe === null) return momentDe(maintenant());
+      const nom = jour >= 1 ? "jour" : jour <= 0 ? "nuit" : "aube";
+      return { moment: nom, jour };
+    },
+    regleHeure(h) {
+      heureFixe = h ?? null;
+      horloge = 0;
+      return majHeure();
+    },
+    recette: () => recetteDe(jour, fondTheme),
     ouvreCoupe: (id, fiche) => ouvreCoupe(id, fiche),
     fermeCoupe: () => fermeCoupe(),
     get coupe() {
@@ -1558,6 +1637,7 @@ export async function creeCarte(THREE, options) {
       plan.dispose();
       cube.dispose();
       if (anneau) for (const r of Object.values(anneau)) r.dispose();
+      vitres.libere();
     },
   };
   let anneau = null;
@@ -1768,5 +1848,6 @@ export async function creeCarte(THREE, options) {
 
   // la carte commence vide (le terrain, chantier ferme), jusqu'a la premiere scene
   await coucheFixe(["block"]);
+  majHeure();
   return carte;
 }
