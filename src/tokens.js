@@ -30,9 +30,12 @@ export function paletteFor(theme) {
 // assets : une copie des modeles du composant pour cette instance (voir src/assets.js).
 // groupFloors : la regle des six etages (src/etages.js), injectee comme Three.js : un composant n'importe rien hors de
 // son dossier.
+// materiau : le materiau partage d'un MAT_ de la palette (chargeur.materiau(THREE), registre de src/materiaux.js) ; un
+// composant ne le libere jamais. Absent, le composant fabrique les siens, comme avant le registre.
 export function makeContext(
   { theme = "light", quality = "high", reducedMotion = false } = {},
   assets = {},
+  materiau = undefined,
 ) {
   const t = theme === "dark" ? "dark" : "light";
   return {
@@ -43,6 +46,7 @@ export function makeContext(
     reducedMotion: Boolean(reducedMotion),
     assets,
     groupFloors,
+    materiau,
   };
 }
 

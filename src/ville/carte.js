@@ -124,6 +124,9 @@ const dist = (a, b) => Math.hypot(b[0] - a[0], b[1] - a[1]);
 // absente, l'heure du poste), maintenant (l'horloge, Date.now par defaut) }.
 export async function creeCarte(THREE, options) {
   const { components, chargeur } = options;
+  // le registre commun des materiaux du chargeur (plan D-1) : ctx.materiau des composants, et les teintes des tenues
+  const registre = chargeur.registre ?? null;
+  const materiauPartage = chargeur.materiau?.(THREE);
   const ctxOptions = {
     theme: options.theme,
     quality: options.quality,
@@ -154,7 +157,7 @@ export async function creeCarte(THREE, options) {
     return mod.create(
       THREE,
       tous,
-      makeContext(ctxOptions, await chargeur.assetsPour(meta)),
+      makeContext(ctxOptions, await chargeur.assetsPour(meta), materiauPartage),
     );
   }
 
@@ -791,10 +794,12 @@ export async function creeCarte(THREE, options) {
       vivants.set(spec.cle, { spec, a: acteur(m), n: 0, usager, pret: false });
     }
   }
-  // les remplacants : copies des materiaux de la tenue, recolorees (casque et gilet de l'ouvrier, tenue de l'usager)
+  // les remplacants : copies des materiaux de la tenue, recolorees (casque et gilet de l'ouvrier, tenue de l'usager) ;
+  // avec le registre, une meme tenue partage sa copie (elle n'est pas rendue dans copies, que la carte libere)
   function remplace(objet, teinteUsager) {
     const copies = new Map();
     const teinte = (m, hex) => {
+      if (registre) return registre.teinte(m, hex);
       if (!copies.has(m)) {
         const c = m.clone();
         c.color = new THREE.Color(hex);

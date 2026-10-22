@@ -35,6 +35,7 @@ for (const cat of existsSync(join(ROOT, 'components')) ? await readdir(join(ROOT
   }
 }
 const chargeur = creeChargeur({ GLTFLoader, SkeletonUtils }, sources);
+const materiau = chargeur.materiau(THREE);
 
 // Un GLB vient toujours de son script Blender : asset.json garde les empreintes du script et du fichier.
 async function provenance(dossier, entry, fichiers) {
@@ -141,7 +142,9 @@ for (const entry of items) {
         try {
           await chargeur.prepare(mod.meta);
           const partagees = await chargeur.partagees(mod.meta);
-          for (const o of contexts) problems.push(...checkInstance(THREE, mod, entry, makeContext(o, await chargeur.assetsPour(mod.meta)), partagees));
+          // avec le registre commun des materiaux (ctx.materiau, plan D-1), puis sans, comme un hote plus ancien
+          for (const o of contexts) problems.push(...checkInstance(THREE, mod, entry, makeContext(o, await chargeur.assetsPour(mod.meta), materiau), partagees));
+          problems.push(...checkInstance(THREE, mod, entry, makeContext(contexts[0], await chargeur.assetsPour(mod.meta)), partagees).map((p) => `${p} (sans registre)`));
         } catch (e) { problems.push('modeles non chargeables : ' + e.message); }
       }
     }
@@ -172,6 +175,14 @@ for (const entry of items) {
 const survol = [...checkCorrespond({ correspond, sameRef }), ...catalogue.items.filter((i) => i.kind === 'html').flatMap((i) => checkHoverFiche(i).map((p) => `${i.id} : ${p}`))];
 if (survol.length) errors.push(['hover-link', survol]);
 
+// Le registre commun des materiaux (plan D-1) : une fois tous les modeles ouverts, un MAT_ ne doit pas arriver sous deux
+// reglages differents d'un GLB a l'autre (la palette est la source unique) ; le registre les garde a part.
+for (const cle of Object.keys(sources)) {
+  const [category, id, fichier] = cle.split('/');
+  await chargeur.prepare({ category, id, assets: [fichier] });
+}
+if (chargeur.registre.ecarts.length) errors.push(['registre des matériaux', chargeur.registre.ecarts.map((n) => `${n} : réglages différents d'un modèle à l'autre`)]);
+
 // Un dossier absent du catalogue est une erreur : le catalogue est la source unique.
 const known = new Set(items.map((i) => `${i.category}/${i.id}`));
 for (const category of existsSync(join(ROOT, 'components')) ? await readdir(join(ROOT, 'components')) : []) {
@@ -185,4 +196,5 @@ for (const [id, problems] of errors) {
   for (const p of problems) console.log(`  - ${p}`);
 }
 console.log(`\n${ok} élément(s) conforme(s), ${errors.length} en erreur, ${pending} à faire (sur ${items.length}).`);
+console.log(`Registre des matériaux : ${chargeur.registre.materiaux().size} matériaux partagés pour les ${Object.keys(sources).length} modèles et les contrôles.`);
 process.exit(errors.length ? 1 : 0);

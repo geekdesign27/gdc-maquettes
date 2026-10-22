@@ -23,6 +23,7 @@ const SEQUENCES = Object.fromEntries(Object.entries(import.meta.glob('../fixture
 const SCENES_GDC = import.meta.glob('../fixtures/*/[0-9]*.json', { eager: true, import: 'default' });
 
 const charge = chargeur({ GLTFLoader, SkeletonUtils });
+const materiauPartage = charge.materiau(THREE); // ctx.materiau : le registre commun des materiaux (plan D-1)
 defineElements(); // le fil des declencheurs et l'arbre, de part et d'autre de la carte vivante
 const entries = catalogue.items.filter((i) => i.kind === 'component');
 const $ = (id) => document.getElementById(id);
@@ -316,7 +317,7 @@ async function instance(id, state) {
       const params = m.personne ? personnage.parametresDe(personnage.PERSONNES.find((x) => x.id === m.personne)) : { ...defaultParams(mod.meta), ...m.params };
       const metaM = m.personne ? personnage.metaPersonne(params) : mod.meta;
       await charge.prepare(metaM);
-      const inst = mod.create(THREE, params, makeContext(options, await charge.assetsPour(metaM)));
+      const inst = mod.create(THREE, params, makeContext(options, await charge.assetsPour(metaM), materiauPartage));
       inst.setState(m.state || mod.meta.states[0], { ...sampleData(entries.find((e) => e.id === m.id)), ...m.data });
       insts.push(inst);
     }
@@ -339,7 +340,7 @@ async function instance(id, state) {
       const params = personnage.parametresDe(p);
       const m = personnage.metaPersonne(params);
       await charge.prepare(m);
-      insts.push(ch.create(THREE, params, makeContext(options, await charge.assetsPour(m))));
+      insts.push(ch.create(THREE, params, makeContext(options, await charge.assetsPour(m), materiauPartage)));
     }
     await charge.prepare(personnage.metaDecor());
     const inst = personnage.create(THREE, insts, await charge.assetsPour(personnage.metaDecor()), makeContext(options));
@@ -358,7 +359,7 @@ async function instance(id, state) {
   const mod = byId[id];
   const entry = entries.find((e) => e.id === id);
   await charge.prepare(mod.meta);
-  const inst = mod.create(THREE, { ...defaultParams(mod.meta), ...parametresAdresse(mod.meta) }, makeContext(options, await charge.assetsPour(mod.meta)));
+  const inst = mod.create(THREE, { ...defaultParams(mod.meta), ...parametresAdresse(mod.meta) }, makeContext(options, await charge.assetsPour(mod.meta), materiauPartage));
   const premier = state && mod.meta.states.includes(state) ? state : mod.meta.states.find((s) => s !== 'hidden') || mod.meta.states[0];
   inst.setState(premier, donnees(entry));
   return { inst, state: premier, entry, mod };
@@ -436,7 +437,7 @@ async function seance(x) {
     const params = personnage.parametresDe(personnage.PERSONNES.find((p) => p.id === pid));
     const m = personnage.metaPersonne(params);
     await charge.prepare(m);
-    const inst = byId.character.create(THREE, params, makeContext(options, await charge.assetsPour(m)));
+    const inst = byId.character.create(THREE, params, makeContext(options, await charge.assetsPour(m), materiauPartage));
     inst.setState(i % 2 ? 'thinking' : 'talk', { facing: poste.z < 0 ? 0 : Math.PI });
     x.inst.root.updateMatrixWorld(true);
     inst.root.position.copy(x.inst.root.localToWorld(poste));
@@ -461,7 +462,7 @@ async function ouvriers(x) {
       const params = personnage.parametresDe(p);
       const m = personnage.metaPersonne(params);
       await charge.prepare(m);
-      const inst = byId.character.create(THREE, params, makeContext(options, await charge.assetsPour(m)));
+      const inst = byId.character.create(THREE, params, makeContext(options, await charge.assetsPour(m), materiauPartage));
       inst.setState(ETAT_PIECE[room.state] || 'idle', { facing: Math.PI });
       x.inst.root.updateMatrixWorld(true);
       inst.root.position.copy(x.inst.root.localToWorld(poste.clone().add(new THREE.Vector3((j - (personnes.length - 1) / 2) * 0.9, 0, 0.2))));
@@ -480,7 +481,7 @@ async function poseOccupants(x, groupe, ids) {
     const params = personnage.parametresDe(personnage.PERSONNES.find((p) => p.id === pid));
     const m = personnage.metaPersonne(params);
     await charge.prepare(m);
-    const inst = byId.character.create(THREE, params, makeContext(options, await charge.assetsPour(m)));
+    const inst = byId.character.create(THREE, params, makeContext(options, await charge.assetsPour(m), materiauPartage));
     inst.setState(groupe === 'crew' ? 'idle' : personnage.ETAT_OCCUPANTS[x.entry.id] || 'work', { facing: Math.PI });
     x.inst.root.updateMatrixWorld(true);
     inst.root.position.copy(x.inst.root.localToWorld(poste));
@@ -663,7 +664,7 @@ async function report() {
   if (current.scene) return rapportScene();
   const m = measure(current.inst.root);
   const problems = [...checkMeta(mod.meta, entry)];
-  if (!problems.length) problems.push(...checkInstance(THREE, mod, entry, makeContext(options, await charge.assetsPour(mod.meta)), await charge.partagees(mod.meta)));
+  if (!problems.length) problems.push(...checkInstance(THREE, mod, entry, makeContext(options, await charge.assetsPour(mod.meta), materiauPartage), await charge.partagees(mod.meta)));
   const el = $('report');
   el.replaceChildren();
   const line = document.createElement('div');
