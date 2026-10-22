@@ -1407,6 +1407,8 @@ export async function creeCarte(THREE, options) {
         if (m.inst.root.visible && m.inst.update(dt)) encore = true;
       if (coupe) encore = majCoupe(dt) || encore;
       horloge += dt;
+      // un choix qui retombe se voit tout de suite, sans attendre le pas de l'horloge
+      if (finChoix !== null && maintenant() >= finChoix) horloge = PAS_HEURE;
       if (horloge >= PAS_HEURE) {
         horloge = 0;
         if (majHeure()) encore = true;
@@ -1596,7 +1598,13 @@ export async function creeCarte(THREE, options) {
       return { moment, jour };
     },
     regleHeure(h, { garde = false } = {}) {
-      heureFixe = h ?? null;
+      const connu =
+        h === null ||
+        h === undefined ||
+        (typeof h === "number" && h >= 0 && h <= 1) ||
+        Object.hasOwn(MOMENTS, h);
+      if (!connu) signale(`heure : moment ${h} inconnu, l'heure réelle est reprise`);
+      heureFixe = connu ? (h ?? null) : null;
       finChoix =
         heureFixe === null || garde
           ? null
@@ -1608,13 +1616,15 @@ export async function creeCarte(THREE, options) {
     // le lever et le coucher du jour a Fribourg, le prochain passage, et fin, l'instant ou le choix retombe en auto.
     horaire() {
       const h = horaireDe(maintenant());
+      // un choix echu se dit tout de suite en auto ; la lumiere suit au prochain update
+      const echu = finChoix !== null && h.maintenant >= finChoix;
       const mode =
-        heureFixe === null
+        heureFixe === null || echu
           ? "auto"
           : typeof heureFixe === "number"
             ? moment
             : heureFixe;
-      return { ...h, mode, fin: finChoix };
+      return { ...h, mode, fin: echu ? null : finChoix };
     },
     recette: () => recetteDe(jour, fondTheme),
     ouvreCoupe: (id, fiche) => ouvreCoupe(id, fiche),

@@ -841,7 +841,7 @@ Fabriqué avec day-night. Un sélecteur à quatre positions, Auto, Jour, Aube et
 
 - Fabriqué par : intégrateur d'interface
 - Élément : `<gdc-time-of-day>`
-- Entrées (propriété data) : `horaire` (carte.horaire() : { mode, moment, maintenant, lever, coucher, prochain: { instant, moment }, fin }. mode vaut auto, jour, aube ou nuit ; moment vaut jour, aube, crepuscule ou nuit ; les instants sont en millisecondes. GDC le relit à chaque update de la carte qui rend true, et au moins une fois par minute pour l'heure affichée.)
+- Entrées (propriété data) : `horaire` (carte.horaire() : { mode, moment, jour, maintenant, lever, coucher, prochain: { instant, moment }, fin }. mode vaut auto, jour, aube ou nuit ; moment vaut jour, aube, crepuscule ou nuit ; les instants sont en millisecondes. GDC le relit à chaque update de la carte qui rend true, et au moins une fois par minute pour l'heure affichée.)
 - Sorties (événements) : `gdc-select` (detail.id = auto \| jour \| aube \| nuit, le mode choisi, à transmettre à carte.regleHeure (null pour auto))
 - Critères d'acceptation :
   - Utilisable au clavier comme un groupe de boutons radio : flèches, Début, Fin, un seul arrêt de tabulation

@@ -393,6 +393,13 @@ for (const [nom, scenes] of Object.entries(sequences))
   t = h.fin + 60000;
   suit.update(25);
   verifie(suit.horaire().mode === 'auto' && suit.heure.moment === 'aube', "heure : le choix ne tombe pas au prochain passage");
+  // un choix echu se dit en auto tout de suite, et la lumiere suit des le prochain update
+  suit.regleHeure('nuit');
+  t = suit.horaire().fin + 1000;
+  verifie(suit.horaire().mode === 'auto' && suit.update(1 / 60) && suit.heure.moment !== 'nuit', "heure : un choix échu ne retombe pas tout de suite");
+  // un moment inconnu (auto non traduit, par exemple) reprend l'heure reelle et se signale
+  suit.regleHeure('auto');
+  verifie(suit.horaire().mode === 'auto' && suit.signalements.some((m) => /moment auto inconnu/.test(m)), "heure : un moment inconnu n'est ni repris ni signalé");
   verifie(suit.regleHeure('nuit', { garde: true }) && suit.horaire().fin === null, 'heure : un moment gardé a une fin');
   suit.regleHeure(null);
   verifie(suit.horaire().mode === 'auto', "heure : regleHeure(null) ne revient pas à l'heure réelle");

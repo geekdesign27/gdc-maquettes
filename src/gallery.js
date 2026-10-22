@@ -213,21 +213,31 @@ function retireArbre() {
 // les lumieres de la galerie ; l'horaire est relu a chaque choix et toutes les 20 secondes, comme GDC le fera.
 let heureVille = null;
 let relitHeure = null;
+let choixHeure = null; // le moment choisi en bas de la ville : il tient quand une bascule recree la carte
 function poseHeure(carte) {
   retireHeure();
+  if (choixHeure) carte.regleHeure(choixHeure);
   heureVille = document.createElement('gdc-time-of-day');
   heureVille.className = 'heure-ville';
   const relit = () => { heureVille.data = { horaire: carte.horaire() }; };
   heureVille.addEventListener('gdc-select', (e) => {
-    if (carte.regleHeure(e.detail.id === 'auto' ? null : e.detail.id)) dirty = true;
+    choixHeure = e.detail.id === 'auto' ? null : e.detail.id;
+    if (carte.regleHeure(choixHeure)) dirty = true;
     relit();
   });
   relit();
-  relitHeure = setInterval(relit, 20000);
+  // GDC relit a chaque update qui rend true ; ici, toutes les 5 secondes suffisent (un choix qui retombe, l'heure)
+  relitHeure = setInterval(() => {
+    relit();
+    if (carte.horaire().mode === 'auto') choixHeure = null;
+    dirty = true;
+  }, 5000);
+  $('heure').disabled = true; // la ville a son propre moment, en bas : la bascule du haut vaut pour le reste
   stage.append(heureVille);
 }
 function retireHeure() {
   clearInterval(relitHeure);
+  $('heure').disabled = false;
   heureVille?.remove();
   heureVille = null;
 }
@@ -250,9 +260,10 @@ async function instanceVille(id, state) {
   const etapes = index.etapes.map((e) => String(e.numero).padStart(2, '0'));
   const sceneDe = (s) => SCENES_GDC[`../fixtures/${nom}/${index.etapes[etapes.indexOf(s)].fichier}`];
   const q = new URLSearchParams(location.search);
-  // la carte regle elle-meme la lumiere sur l'heure (le moment de la bascule, ou celui que l'on choisit en bas)
+  // la carte regle elle-meme la lumiere sur l'heure (l'heure reelle, ou le moment que l'on choisit en bas)
   const lumieres = { ciel, soleil: sun, scene: options.silhouette ? null : scene };
-  const carte = await creeCarte(THREE, { components: byId, chargeur: charge, ...options, lumieres, force: q.get('ouvriers') === 'max' });
+  // la ville suit l'heure reelle, comme dans GDC ; ?heure=nuit dans l'adresse la fixe pour une capture
+  const carte = await creeCarte(THREE, { components: byId, chargeur: charge, ...options, heure: Object.hasOwn(MOMENTS, heureDemandee ?? '') ? heureDemandee : undefined, lumieres, force: q.get('ouvriers') === 'max' });
   const premier = etapes.includes(state) ? state : etapes[0];
   await carte.applique(sceneDe(premier));
   const actionsJusqua = (s) => etapes.slice(0, etapes.indexOf(s) + 1).flatMap((x) => sceneDe(x).actions || []);
