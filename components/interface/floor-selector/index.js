@@ -43,6 +43,8 @@ button[aria-current="true"][data-highlight] { background: color-mix(in srgb, var
 .niveau { flex: none; display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%;
   border: 1.5px solid color-mix(in srgb, var(--gdc-ink) 45%, transparent); font: 600 12px/1 var(--gdc-font-title, system-ui, sans-serif);
   font-variant-numeric: tabular-nums; }
+/* l'etape reste lisible sur le fond de la selection, en sombre aussi (4,5:1) */
+button[aria-current="true"] .etape { color: var(--gdc-ink); }
 button[aria-current="true"] .niveau { background: var(--gdc-ink); border-color: var(--gdc-ink); color: var(--gdc-surface); }
 button[aria-disabled="true"] .niveau { border-style: dashed; }
 .nom { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -120,8 +122,9 @@ export function define(registry, ctx) {
     }
     set data(value) {
       this.#data = value && typeof value === "object" ? value : {};
+      const avant = this.#selected;
       this.#selected = this.#data.selected ?? null;
-      this.#render();
+      this.#render(idOf(avant) !== idOf(this.#selected));
     }
 
     // la reference survolee ailleurs : pose ou retire la marque, sans redessiner
@@ -130,7 +133,7 @@ export function define(registry, ctx) {
     }
     set highlight(ref) {
       this.#highlight = ref ?? null;
-      this.#mark();
+      this.#lightUp();
     }
 
     // la reference du batiment : son application est l'identifiant envoye par GDC (contrat, « Le survol partage »)
@@ -141,7 +144,9 @@ export function define(registry, ctx) {
         : { application: String(id) };
     }
 
-    #render() {
+    // nouveauChoix : la fiche choisie vient de changer ; fondue dans le rez, elle le deplie (un repli fait a la main
+    // tient tant que le choix ne change pas)
+    #render(nouveauChoix = false) {
       const { nav, titre, liste, vide } = this.#els;
       const focusKey = this.shadowRoot.activeElement?.dataset?.key;
       const name = String(this.#data.building?.name ?? "Bâtiment");
@@ -154,9 +159,8 @@ export function define(registry, ctx) {
         const li = document.createElement("li");
         if (v.grouped) {
           li.className = "rez";
-          // deplie d'office quand la fiche choisie y est fondue
           const ids = v.ids.map(idOf);
-          if (this.#selected !== null && ids.includes(idOf(this.#selected)))
+          if (nouveauChoix && ids.includes(idOf(this.#selected)))
             this.#open = true;
           const sous = document.createElement("ul");
           sous.className = "regroupees";
@@ -276,27 +280,34 @@ export function define(registry, ctx) {
       return this.#visibles().find((b) => b.dataset.key === key);
     }
 
-    // aria-current sur le choisi, la marque du survol, et un seul bouton atteignable par Tab : le choisi s'il est
-    // visible, sinon le rez s'il contient le choisi, sinon l'etage du haut
+    // aria-current sur le choisi (sur le rez replie s'il y est fondu), la marque du survol, et un seul bouton
+    // atteignable par Tab : celui qui a le focus, sinon le choisi, sinon le rez qui le contient, sinon l'etage du haut
     #mark() {
-      const app = this.#app();
-      const h = this.#highlight;
       const visibles = this.#visibles();
-      const sel = this.#selected === null ? null : String(this.#selected);
+      const sel = idOf(this.#selected);
+      const rez = visibles.find((b) => b.dataset.key === "rez");
+      const cache = Boolean(rez) && !this.#open && sel !== null && this.#ids.get(rez).includes(sel);
       const tab =
+        visibles.find((b) => b === this.shadowRoot.activeElement) ||
         visibles.find((b) => b.dataset.id === sel) ||
-        visibles.find(
-          (b) => b.dataset.key === "rez" && this.#ids.get(b).includes(sel),
-        ) ||
+        (cache ? rez : null) ||
         visibles.at(-1);
       for (const b of this.#els.liste.querySelectorAll("button")) {
-        if (b.dataset.key !== "rez")
-          b.setAttribute(
-            "aria-current",
-            String(sel !== null && b.dataset.id === sel),
-          );
+        const courant = b === rez ? cache : sel !== null && b.dataset.id === sel;
+        b.setAttribute("aria-current", String(courant));
         b.tabIndex = b === tab ? 0 : -1;
-        // une fiche s'allume pour elle-meme, ses lots ou son application ; l'existant, pour son application seule
+      }
+      this.#lightUp();
+    }
+
+    // la marque du survol partage, seule : highlight change a chaque survol et ne touche ni au choix ni au focus.
+    // Une fiche s'allume pour elle-meme, ses lots ou son application ; le rez regroupe et l'existant (references
+    // d'application) pour l'application elle-meme ou une de leurs fiches, jamais pour une voisine (contrat, « Ce qui
+    // entre : highlight », decision de PA du 22 octobre 2026).
+    #lightUp() {
+      const app = this.#app();
+      const h = this.#highlight;
+      for (const b of this.#els.liste.querySelectorAll("button")) {
         const on =
           Boolean(app && h) &&
           (sameRef(h, app) ||
@@ -310,7 +321,8 @@ export function define(registry, ctx) {
     }
 
     // en colonne, haut monte d'un etage ; en rangee, droite avance vers le haut. Debut et Fin : les deux bouts
-    // de ce qu'on voit (le haut et le rez en colonne, le rez et le haut en rangee). Echap replie le rez.
+    // de ce qu'on voit (le haut et le rez en colonne, le rez et le haut en rangee). Echap, depuis le rez ou une de ses
+    // fiches, le replie.
     #move(ev) {
       const visibles = this.#visibles();
       const i = visibles.indexOf(this.shadowRoot.activeElement);
@@ -326,7 +338,11 @@ export function define(registry, ctx) {
       if (pas) j = Math.min(last, Math.max(0, i + pas));
       else if (ev.key === "Home") j = rangee ? 0 : last;
       else if (ev.key === "End") j = rangee ? last : 0;
-      else if (ev.key === "Escape" && this.#open) {
+      else if (
+        ev.key === "Escape" &&
+        this.#open &&
+        (visibles[i].dataset.key === "rez" || visibles[i].closest(".regroupees"))
+      ) {
         // le focus revient au rez avant qu'on replie : un seul gdc-hover, pas de null entre les deux
         const rez = this.#button("rez");
         ev.preventDefault();
