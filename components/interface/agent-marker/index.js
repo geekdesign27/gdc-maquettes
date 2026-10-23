@@ -12,13 +12,16 @@
 // - Cliquer un repere vaut cliquer l'agent : gdc-select, detail.id = l'agent. Chaque repere est un bouton (Tab, Entree).
 // - Les reperes d'une image a l'autre sont les memes boutons, deplaces : le focus et l'impulsion ne se perdent pas
 //   quand GDC redonne les positions a chaque image.
+// - Les etiquettes de lieu et les pastilles que GDC pose sur la carte (obstacles) restent lisibles : un repere ou un
+//   groupe qui en touche une monte juste au-dessus d'elle, et une tige relie sa pointe a la tete (decision de
+//   Pierre-Alain, 23 octobre 2026).
 
 export const meta = {
   id: "agent-marker",
   version: "1.0.0",
   category: "interface",
   tag: "gdc-agent-marker",
-  inputs: ["agents", "hovered"],
+  inputs: ["agents", "hovered", "obstacles"],
   outputs: ["gdc-select"],
 };
 
@@ -27,8 +30,9 @@ export const meta = {
 const SIGNE = { waiting: "waiting", blocked: "blocked", unknown: "unknown" };
 const PERMANENTS = new Set(["waiting", "blocked"]);
 const PORTRAIT = 26; // px
+const HAUTEUR = 32; // px, le corps d'un repere
 const POINTE = 7; // px, de la pointe a la tete
-const ECART = 2; // px entre deux reperes qui ne se touchent pas
+const ECART = 2; // px entre deux reperes qui ne se touchent pas, et entre un repere et l'obstacle qu'il evite
 const MAX_PORTRAITS = 3;
 
 const CSS = `
@@ -39,6 +43,14 @@ const CSS = `
 /* un repere : pose sur la tete de l'agent, sa pointe en bas ; le bouton suit la position, son corps porte l'impulsion */
 .repere { position: absolute; left: 0; top: 0; pointer-events: auto; padding: 0; border: 0; background: none; color: inherit;
   font: inherit; cursor: pointer; transform: translate(var(--x), var(--y)) translate(-50%, calc(-100% - ${POINTE}px)); }
+/* la tige : un repere monte au-dessus d'une etiquette de lieu reste relie a la tete (--tige, sa longueur) ; un trait
+   d'encre borde de surface, lisible sur tous les sols de la carte ; elle s'interrompt sur l'etiquette qu'elle traverse
+   (--tige-masque), pour ne pas barrer son texte */
+.repere::before { content: ""; position: absolute; left: 50%; top: calc(100% + ${POINTE}px); width: 4px; height: var(--tige, 0px);
+  transform: translateX(-50%); pointer-events: none;
+  background: linear-gradient(to right, var(--gdc-surface) 0 1px, var(--gdc-ink) 1px 3px, var(--gdc-surface) 3px);
+  -webkit-mask-image: var(--tige-masque, none); mask-image: var(--tige-masque, none); }
+.repere:not(.monte)::before { display: none; }
 .repere:focus-visible { outline: none; }
 .repere:focus-visible .corps { outline: 2px solid var(--gdc-ink); outline-offset: 2px; }
 .corps { position: relative; display: flex; align-items: center; gap: 5px; height: 32px; padding: 3px 9px 3px 3px; border-radius: 16px;
@@ -79,6 +91,76 @@ const prenom = (a) =>
     .trim();
 const nombre = (v) => (typeof v === "number" && Number.isFinite(v) ? v : null);
 
+// La montee d'un repere large de l, dont la pointe vise la tete (x, y) : juste au-dessus des obstacles que son corps ou
+// sa pointe toucheraient. Chaque pas passe au-dessus d'un obstacle qu'il ne retouchera plus : la boucle finit.
+const monte = (x, y, l, obstacles) => {
+  let pointe = y;
+  for (let pas = 0; pas <= obstacles.length; pas++) {
+    const haut = pointe - POINTE - HAUTEUR;
+    const o = obstacles.find(
+      (r) =>
+        r.x < x + l / 2 + ECART &&
+        x - l / 2 - ECART < r.x + r.width &&
+        r.y < pointe &&
+        haut - ECART < r.y + r.height,
+    );
+    if (!o) break;
+    pointe = o.y - ECART;
+  }
+  return y - pointe;
+};
+
+// Le masque de la tige qui descend de la pointe (x, pointe) sur sa longueur : interrompue, a ECART pres, sur chaque
+// obstacle qu'elle traverse ; null si elle n'en traverse aucun (la tige pleine)
+const masqueDeTige = (x, pointe, longueur, obstacles) => {
+  const trous = obstacles
+    .filter(
+      (r) =>
+        r.x <= x + 1 &&
+        x - 1 <= r.x + r.width &&
+        r.y < pointe + longueur &&
+        pointe < r.y + r.height,
+    )
+    .map((r) => [
+      Math.max(r.y - ECART - pointe, 0),
+      Math.min(r.y + r.height + ECART - pointe, longueur),
+    ])
+    .sort((p, q) => p[0] - q[0]);
+  if (!trous.length) return null;
+  const arrets = [];
+  let pos = 0;
+  for (const [debut, fin] of trous) {
+    if (debut > pos) arrets.push(`#000 ${pos}px ${debut}px`);
+    pos = Math.max(pos, fin);
+    arrets.push(`transparent ${debut}px ${pos}px`);
+  }
+  arrets.push(`#000 ${pos}px`);
+  return `linear-gradient(to bottom, ${arrets.join(", ")})`;
+};
+
+// Les reperes qui se touchent fusionnent : chaque groupe rejoint celui d'un voisin dont la boite touche la sienne
+// (union-find) ; rend les listes de membres fusionnees
+const fusionne = (groupes) => {
+  const parent = groupes.map((_, i) => i);
+  const racine = (i) => (parent[i] === i ? i : (parent[i] = racine(parent[i])));
+  const touche = (p, q) =>
+    p[0] < q[2] + ECART &&
+    q[0] < p[2] + ECART &&
+    p[1] < q[3] + ECART &&
+    q[1] < p[3] + ECART;
+  for (let i = 0; i < groupes.length; i++)
+    for (let j = i + 1; j < groupes.length; j++)
+      if (touche(groupes[i].pose.boite, groupes[j].pose.boite))
+        parent[racine(i)] = racine(j);
+  const listes = new Map();
+  groupes.forEach((g, i) => {
+    const r = racine(i);
+    if (!listes.has(r)) listes.set(r, []);
+    listes.get(r).push(...g.membres);
+  });
+  return [...listes.values()];
+};
+
 export function define(registry, ctx) {
   const {
     signes,
@@ -93,6 +175,7 @@ export function define(registry, ctx) {
     #boutons = new Map(); // cle (agent ou groupe) -> bouton, reutilise d'une image a l'autre
     #deplie = null; // cle du groupe deplie
     #panneau = null; // le groupe deplie, a l'ecran
+    #mesure = null; // le contexte de canevas qui mesure les prenoms
 
     constructor() {
       super();
@@ -150,8 +233,73 @@ export function define(registry, ctx) {
       this.#render();
     }
 
-    // Les reperes a montrer : les permanents, et celui qu'on survole ; places a l'ecran, puis regroupes s'ils se touchent
-    #reperes() {
+    // les rectangles a ne pas recouvrir (facultatifs) ; un rectangle mal forme est ignore
+    #obstacles() {
+      return (
+        Array.isArray(this.#data.obstacles) ? this.#data.obstacles : []
+      ).filter(
+        (o) =>
+          o &&
+          [o.x, o.y, o.width, o.height].every((v) => nombre(v) !== null) &&
+          o.width > 0 &&
+          o.height > 0,
+      );
+    }
+
+    // la largeur d'un texte dans la police des reperes ; avant que la couche soit dans la page, une estimation
+    #largeurTexte(texte) {
+      const police = this.isConnected ? getComputedStyle(this).font : "";
+      if (!police) return texte.length * 7;
+      if (!this.#mesure) this.#mesure = document.createElement("canvas").getContext("2d");
+      if (!this.#mesure) return texte.length * 7;
+      this.#mesure.font = police;
+      return Math.ceil(this.#mesure.measureText(texte).width);
+    }
+
+    // la largeur d'un repere, d'apres sa CSS (.corps : bordure 1, marges 3 et 9, ecart 5) : la meme pour le regrouper
+    // et pour le poser
+    #largeur(membres) {
+      if (membres.length === 1) {
+        const { a, complet } = membres[0];
+        const nom = Math.min(this.#largeurTexte(prenom(a)), 120);
+        return 1 + 3 + PORTRAIT + 5 + nom + (complet ? 5 + 16 : 0) + (complet ? 9 : 8) + 1;
+      }
+      // un groupe porte toujours un signe : il compte au moins un agent qui attend ou qui est bloque
+      const portraits = PORTRAIT + (Math.min(membres.length, MAX_PORTRAITS) - 1) * (PORTRAIT - 9);
+      return 1 + 3 + portraits + 5 + this.#largeurTexte(String(membres.length)) + 5 + 16 + 9 + 1;
+    }
+
+    // La pose d'un repere large de l sur la tete (x, y) : entier dans la couche (un agent au bord de la carte), monte
+    // au-dessus des obstacles qu'il toucherait, aussi haut que la couche le permet, la tige le reliant a la tete
+    #pose(x, y, l, obstacles) {
+      const largeur = this.clientWidth;
+      const X = Math.round(
+        largeur > l + 4 ? Math.min(Math.max(x, l / 2 + 2), largeur - l / 2 - 2) : x,
+      );
+      const plusHaut = HAUTEUR + POINTE + 2; // la pointe la plus haute qui garde le repere entier
+      const tete = Math.round(Math.max(y, plusHaut));
+      const tige = Math.round(Math.min(monte(X, tete, l, obstacles), tete - plusHaut));
+      const pointe = tete - tige;
+      return {
+        X,
+        tete,
+        pointe,
+        tige,
+        boite: [X - l / 2, pointe - POINTE - HAUTEUR, X + l / 2, pointe - POINTE],
+      };
+    }
+
+    // un groupe (ou un agent seul) : sa place est la moyenne de ses tetes, en haut de la plus haute
+    #groupe(membres, obstacles) {
+      const x = membres.reduce((s, m) => s + m.a.x, 0) / membres.length;
+      const y = Math.min(...membres.map((m) => m.a.y));
+      return { membres, x, pose: this.#pose(x, y, this.#largeur(membres), obstacles) };
+    }
+
+    // Les reperes a montrer : les permanents, et celui qu'on survole. Ils se regroupent d'abord sur les tetes, comme sans
+    // obstacle ; puis chaque groupe monte au-dessus des obstacles, et les groupes montes qui se touchent fusionnent et
+    // remontent, jusqu'a ce qu'aucun n'en touche un autre (chaque tour fusionne, ou s'arrete : la boucle finit)
+    #reperes(obstacles) {
       // un agent hors de la couche (la carte zoomee, un panneau devant) n'a pas de repere : plaque au bord, sa pointe ne
       // viserait rien (revue DA)
       const [largeur, hauteur] = [this.clientWidth, this.clientHeight];
@@ -172,51 +320,23 @@ export function define(registry, ctx) {
       const hovered = this.#data.hovered ?? null;
       const montres = agents
         .filter((a) => PERMANENTS.has(a.state) || a.id === hovered)
-        .map((a) => {
-          const complet = PERMANENTS.has(a.state);
-          const largeur =
-            PORTRAIT +
-            14 +
-            Math.min(prenom(a).length * 7, 120) +
-            (complet ? 21 : 0);
-          return {
-            a,
-            complet,
-            boite: [
-              a.x - largeur / 2,
-              a.y - POINTE - 32,
-              a.x + largeur / 2,
-              a.y - POINTE,
-            ],
-          };
-        });
-      // les reperes qui se touchent : chacun rejoint le groupe d'un voisin qu'il touche (union-find)
-      const parent = montres.map((_, i) => i);
-      const racine = (i) =>
-        parent[i] === i ? i : (parent[i] = racine(parent[i]));
-      const touche = (p, q) =>
-        p[0] < q[2] + ECART &&
-        q[0] < p[2] + ECART &&
-        p[1] < q[3] + ECART &&
-        q[1] < p[3] + ECART;
-      for (let i = 0; i < montres.length; i++)
-        for (let j = i + 1; j < montres.length; j++)
-          if (touche(montres[i].boite, montres[j].boite))
-            parent[racine(i)] = racine(j);
-      const groupes = new Map();
-      montres.forEach((m, i) => {
-        const r = racine(i);
-        if (!groupes.has(r)) groupes.set(r, []);
-        groupes.get(r).push(m);
-      });
-      return [...groupes.values()];
+        .map((a) => ({ a, complet: PERMANENTS.has(a.state) }));
+      let groupes = fusionne(montres.map((m) => this.#groupe([m], []))).map((membres) =>
+        this.#groupe(membres, obstacles),
+      );
+      for (;;) {
+        const listes = fusionne(groupes);
+        if (listes.length === groupes.length) return groupes;
+        groupes = listes.map((membres) => this.#groupe(membres, obstacles));
+      }
     }
 
     #render() {
       const { couche } = this.#els;
       const vus = new Set();
       let deplieVu = false;
-      for (const membres of this.#reperes()) {
+      const obstacles = this.#obstacles();
+      for (const { membres, x, pose } of this.#reperes(obstacles)) {
         if (membres.length === 1) {
           const { a, complet } = membres[0];
           const cle = `agent:${a.id}`;
@@ -228,15 +348,13 @@ export function define(registry, ctx) {
           b.dataset.id = a.id;
           b.classList.toggle("court", !complet);
           b.setAttribute("aria-label", this.#libelle(a));
-          this.#place(b, a.x, a.y);
+          this.#place(b, x, pose, obstacles);
           vus.add(cle);
           continue;
         }
-        // un groupe : la cle tient a ses agents, sa place est la moyenne de leurs tetes, en haut du plus haut
+        // un groupe : la cle tient a ses agents
         const ids = membres.map((m) => m.a.id).sort();
         const cle = `groupe:${ids.join("|")}`;
-        const x = membres.reduce((s, m) => s + m.a.x, 0) / membres.length;
-        const y = Math.min(...membres.map((m) => m.a.y));
         const etats = membres.map((m) => `${m.a.id}:${m.a.state}`).join("|");
         const b = this.#bouton(cle, () => this.#corpsGroupe(membres), etats);
         b.dataset.groupe = "1";
@@ -245,11 +363,11 @@ export function define(registry, ctx) {
           "aria-label",
           `${membres.length} agents : ${membres.map((m) => this.#libelle(m.a)).join(" ; ")}`,
         );
-        this.#place(b, x, y);
+        this.#place(b, x, pose, obstacles);
         vus.add(cle);
         if (this.#deplie === cle) {
           deplieVu = true;
-          this.#montreDeplie(membres, x, y);
+          this.#montreDeplie(membres, pose);
         }
       }
       for (const [cle, b] of this.#boutons)
@@ -291,20 +409,16 @@ export function define(registry, ctx) {
       return b;
     }
 
-    // la place d'un repere : sur la tete, mais toujours entier dans la couche (un agent au bord de la carte)
-    #place(b, x, y) {
+    // un repere a sa pose : sa pointe, sa tige, et le masque de la tige sur les etiquettes qu'elle traverse
+    #place(b, x, { X, pointe, tige }, obstacles) {
       b.dataset.x = String(x);
-      const l = b.offsetWidth || 120;
-      const largeur = this.clientWidth;
-      const X =
-        largeur > l + 4
-          ? Math.min(Math.max(x, l / 2 + 2), largeur - l / 2 - 2)
-          : x;
-      b.style.setProperty("--x", `${Math.round(X)}px`);
-      b.style.setProperty(
-        "--y",
-        `${Math.round(Math.max(y, 32 + POINTE + 2))}px`,
-      );
+      b.classList.toggle("monte", tige > 0);
+      b.style.setProperty("--x", `${X}px`);
+      b.style.setProperty("--y", `${pointe}px`);
+      b.style.setProperty("--tige", `${tige}px`);
+      const masque = tige > 0 ? masqueDeTige(X, pointe, tige, obstacles) : null;
+      if (masque) b.style.setProperty("--tige-masque", masque);
+      else b.style.removeProperty("--tige-masque");
     }
 
     #libelle(a) {
@@ -369,7 +483,7 @@ export function define(registry, ctx) {
     }
 
     // le groupe deplie : un repere par agent, complet pour ceux qui attendent ou sont bloques, court pour les autres
-    #montreDeplie(membres, x, y) {
+    #montreDeplie(membres, { X: x, pointe, tete }) {
       if (!this.#panneau) {
         this.#panneau = document.createElement("div");
         this.#panneau.className = "deplie";
@@ -383,18 +497,21 @@ export function define(registry, ctx) {
         p.dataset.signature = signature;
         p.replaceChildren(...this.#reperesDeplies(membres));
       }
-      // toujours entier dans la couche : au-dessus du groupe s'il y a la place, sinon en dessous ; recadre de cote et en
-      // bas (le groupe d'un agent au bord de la carte)
+      // toujours entier dans la couche : au-dessus du groupe s'il y a la place, sinon sous les tetes (sous l'etiquette
+      // qui l'a fait monter, qu'il ne recouvre pas) ; recadre de cote et en bas (le groupe d'un agent au bord de la carte)
       const [l, h] = [p.offsetWidth, p.offsetHeight];
       const [largeur, hauteur] = [this.clientWidth, this.clientHeight];
-      const dessus = y - (POINTE + 40) - h >= 2;
+      const dessus = pointe - (POINTE + 40) - h >= 2;
       p.classList.toggle("dessous", !dessus);
       const X =
         largeur > l + 4
           ? Math.min(Math.max(x, l / 2 + 2), largeur - l / 2 - 2)
           : x;
-      const Y =
-        dessus || !hauteur ? y : Math.max(Math.min(y, hauteur - h - 10), 2);
+      const Y = dessus
+        ? pointe
+        : !hauteur
+          ? tete
+          : Math.max(Math.min(tete, hauteur - h - 10), 2);
       p.style.setProperty("--x", `${Math.round(X)}px`);
       p.style.setProperty("--y", `${Math.round(Y)}px`);
     }

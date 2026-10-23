@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-66 éléments : 50 livré, 14 à faire, 2 exemple ; 1 nouvelle(s) version(s) prévue(s).
+66 éléments : 49 livré, 15 à faire, 2 exemple.
 
 ## G0 : La ligne graphique
 
@@ -67,7 +67,6 @@ Poser le plan du chantier dans l'ordre du parcours : bureau d'architecte, bureau
 | 7 | `site-office` | La baraque du conducteur de travaux | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu de la coordination : planning des lots, chef de chantier, répartition des agents. | livré |
 | 8 | `parking` | Le parking : le carnet des demandes | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer les demandes en attente de tri, sous forme de caisses de matériel. | livré |
 | 9 | `reception-area` | La zone de réception | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le lieu des essais et de la visite, avant la remise des clés. | livré |
-| 10 | `site-fence` | La clôture de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Cloisonner le chantier, comme tout chantier romand. | livré |
 | 11 | `waste-skip` | La benne de tri | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le tri des déchets de chantier, obligatoire (OLED, art. 17). | livré |
 | 12 | `material-storage` | Le stockage de matériaux | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer l'approvisionnement du chantier : les matériaux qui attendent d'être posés. | livré |
 | 13 | `site-ground` | Le terrain de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le sol du chantier clôturé : de la terre d'abord, puis du béton et des voies à mesure que le chantier avance. | livré |
@@ -223,25 +222,6 @@ Une aire en plein air sur son socle : un auvent sur quatre poteaux, dessous le p
 - Budget : 10000 triangles, 8 matériaux
 - Critères d'acceptation :
   - Lisible comme un lieu de contrôle final
-
-### La clôture de chantier (`site-fence`)
-
-Une clôture mobile : panneaux en treillis gris (maille de 0,45 m) sur plots en béton, un poteau rond à chaque jonction, sans orange, pour ne jamais ressembler à la barrière de blocage (bible, 18.8). Posée en ligne droite le long d'une longueur donnée, en panneaux de largeur égale (3,50 m au plus) ; avec gate, un portail ouvert de 4 m au milieu, ses deux vantaux tournés vers l'intérieur (décisions de Pierre-Alain du 20 octobre 2026). Version 1.0.1 (plan D-1, 22 octobre 2026) : chaque pièce répétée (plot, poteau, cadre, remplissage, poteau et vantaux du portail) est posée en une seule InstancedMesh par maillage, avec la géométrie et le matériau du modèle, au lieu d'une copie par panneau. Rien ne change à l'écran.
-
-- Fichier : `components/site/site-fence/index.js`
-- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `ENV_SITE_FENCE_A_v001`
-- Modèles : `ENV_SITE_FENCE_A_v001.glb`
-- Paramètres : `length` (nombre, 2 à 60, défaut 12) ; `gate` (booléen, défaut false)
-- États : `default`
-- Ancres : `label`
-- Données reçues par setState : aucune
-- Budget : 4000 triangles, 3 matériaux
-- Critères d'acceptation :
-  - Reconnaissable comme clôture de chantier mobile, sans orange
-  - Impossible à confondre avec la barrière de blocage sur une planche côte à côte
-  - Les panneaux et les plots se répètent par instance
-
-Nouvelle version prévue : 1.1.0, au lot G8 (à faire).
 
 ### La benne de tri (`waste-skip`)
 
@@ -672,7 +652,7 @@ Faire de la carte la visualisation du harnais : relier au survol la carte, le fi
 | 8 | `floodlight` | Le projecteur de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Éclairer le chantier la nuit quand on y travaille. | livré |
 | 9 | `character-kit` | Le personnage maître et son équipe | Bibliothèque de modèles 3D produite par un script Blender (blender/assets/<id>.py) et réutilisée par plusieurs composants : components/kit/<id>/ | Un squelette, une morphologie et des animations communes pour tous les agents. | livré |
 | 10 | `character` | Le personnage (un agent) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer qui travaille, où, et dans quel état. | livré |
-| 11 | `site-fence` | La clôture de chantier (version 1.1.0) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Cloisonner le chantier, comme tout chantier romand. | à faire |
+| 11 | `site-fence` | La clôture de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Cloisonner le chantier, comme tout chantier romand. | à faire |
 | 12 | `party-shed` | Le cabanon de la fête | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer la pause : le chantier est fermé et l'équipe fait la fête au cabanon en attendant ta décision. | à faire |
 | 13 | `city-car` | La voiture d'ambiance | Composant 3D Three.js, conforme à docs/contrat-composant.md | Faire vivre la ville autour du chantier, sans rien dire du harnais. | à faire |
 | 14 | `city-map` | La carte vivante | Document de référence, pas de code | Assembler et animer la carte du chantier à partir des scènes que GDC envoie : où chaque élément se pose, par où chacun marche, et la vie du chantier qui naît de l'état reçu. | à faire |
@@ -881,6 +861,27 @@ Un personnage par agent, à partir du personnage maître : tenue et outil de son
   - headlamp : la lentille brille sans vraie lumière ; le client n'a pas de casque, donc pas de lampe
   - Ligne au journal des versions
 
+### La clôture de chantier (`site-fence`)
+
+Une clôture mobile : panneaux en treillis gris (maille de 0,45 m) sur plots en béton, un poteau rond à chaque jonction, sans orange, pour ne jamais ressembler à la barrière de blocage (bible, 18.8). Posée en ligne droite le long d'une longueur donnée, en panneaux de largeur égale (3,50 m au plus) ; avec gate, un portail ouvert de 4 m au milieu, ses deux vantaux tournés vers l'intérieur (décisions de Pierre-Alain du 20 octobre 2026). Version 1.0.1 (plan D-1, 22 octobre 2026) : chaque pièce répétée (plot, poteau, cadre, remplissage, poteau et vantaux du portail) est posée en une seule InstancedMesh par maillage, avec la géométrie et le matériau du modèle, au lieu d'une copie par panneau. Rien ne change à l'écran. Version 1.1.0 (lot G8, docs/vie-du-chantier.md, section 7) : le portail fermé. default reste le portail ouvert de la 1.0, pour que GDC ne casse pas ; closed ferme les deux vantaux dans l'axe de la clôture par une rotation douce d'environ 1,5 seconde, une fois (et retour vers default), l'état final directement si reducedMotion ; seules les matrices des deux vantaux bougent, sans pièce ni appel de dessin de plus. L'assemblage le ferme en régime fermé et pause, l'ouvre en régime ouvert. Fiche validée par Pierre-Alain le 21 octobre 2026.
+
+- Fichier : `components/site/site-fence/index.js`
+- Fabriqué par : modeleur
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `ENV_SITE_FENCE_A_v001`
+- Modèles : `ENV_SITE_FENCE_A_v001.glb`
+- Paramètres : `length` (nombre, 2 à 60, défaut 12) ; `gate` (booléen, défaut false)
+- États : `default`, `closed`
+- Ancres : `label`
+- Données reçues par setState : aucune
+- Budget : 4000 triangles, 3 matériaux
+- Critères d'acceptation :
+  - Reconnaissable comme clôture de chantier mobile, sans orange
+  - Impossible à confondre avec la barrière de blocage sur une planche côte à côte
+  - Les panneaux et les plots se répètent par instance
+  - Le passage de default à closed, et retour, est une rotation douce d'environ 1,5 seconde, une fois ; l'état final directement si reducedMotion
+  - Sans gate, closed ne change rien
+  - Ligne au journal des versions
+
 ### Le cabanon de la fête (`party-shed`)
 
 Un petit cabanon en bois, avec un auvent et une table haute. Sous l'auvent, une lanterne à facettes tourne lentement (un tour en 8 secondes environ) et projette trois taches de couleur qui glissent au sol et sur le mur : elles ne s'allument et ne s'éteignent jamais, donc aucun flash (WCAG 2.3.1). Des notes de musique, des formes en 3D et non une police, montent doucement depuis la porte et s'effacent, trois au plus à la fois. Les trois teintes de fête sont des lumières (bloc fete de src/lumiere.json), choisies loin des six couleurs d'état et des couleurs d'équipe (ΔE 2000 d'au moins 20, mesuré) et proposées sur planche à Pierre-Alain. L'assemblage le pose près de la baraque, hors de la clôture (à confirmer sur la scène de référence) ; en régime pause, les ouvriers s'y rassemblent (talk, idle, jamais celebrate, qui reste aux agents) ; les agents restent où GDC les place. Fiche validée par Pierre-Alain le 21 octobre 2026.
@@ -935,11 +936,11 @@ Pas un composant : un module de la bibliothèque livrée à GDC (src/ville/), qu
 
 ### Le repère d'agent (`agent-marker`)
 
-Un repère HTML posé au-dessus de la tête de l'agent, sur l'ancre label de character (2,05 m), qui le suit. Sur la carte entière d'un portable de 13 pouces, un agent ne mesure que 16 × 5 px (environ 8 px par mètre) : le repère garde une taille fixe en pixels, quel que soit le zoom, et passe devant les murs. Le repère complet porte le portrait du lot G7 (fixe, sans son geste), le prénom et le signe d'état (src/signes.js), avec une pointe vers la tête. Repère permanent pour les agents qui attendent ta décision (waiting) et pour les bloqués (blocked) ; les autres n'ont qu'un repère court au survol (portrait et prénom, sans signe). Les repères qui se touchent n'en font qu'un : trois portraits au plus, le signe le plus grave (ctx.plusGrave) et le nombre ; au clic, le groupe se déplie. Une impulsion douce à l'apparition, puis fixe ; rien ne bouge avec moins d'animations. Cliquer un repère vaut cliquer l'agent : GDC ouvre sa fiche (agent-popup). Côté carte (l'assemblage, GDC ou la galerie), sans que character change : la zone de prise d'un agent se calcule à l'écran, et non par une forme 3D invisible qui grandirait et rapetisserait avec le zoom ; le pointeur prend l'agent le plus proche à moins de 12 px (une cible de 24 px, WCAG 2.5.8), devant le bâtiment ou le décor qui est derrière lui ; au survol, l'anneau de sélection (selection-ring, état hover, à l'encre) se pose à ses pieds et le repère court s'ouvre. Écartés : le halo de la couleur du casque (une couleur qui dit un état dans la 3D, bible 17.3 ; le jaune du site se lit Bloqué, le bleu d'architecture se lit Actif ; un scintillement continu est interdit, signalétique, principe 5) et la silhouette à travers les murs (coûteuse, et couverte par le repère, qui reste visible au-dessus du mur). Ouvriers et usagers n'ont jamais de repère. Fiche validée par Pierre-Alain le 22 octobre 2026.
+Un repère HTML posé au-dessus de la tête de l'agent, sur l'ancre label de character (2,05 m), qui le suit. Sur la carte entière d'un portable de 13 pouces, un agent ne mesure que 16 × 5 px (environ 8 px par mètre) : le repère garde une taille fixe en pixels, quel que soit le zoom, et passe devant les murs. Le repère complet porte le portrait du lot G7 (fixe, sans son geste), le prénom et le signe d'état (src/signes.js), avec une pointe vers la tête. Repère permanent pour les agents qui attendent ta décision (waiting) et pour les bloqués (blocked) ; les autres n'ont qu'un repère court au survol (portrait et prénom, sans signe). Les repères qui se touchent n'en font qu'un : trois portraits au plus, le signe le plus grave (ctx.plusGrave) et le nombre ; au clic, le groupe se déplie. Une impulsion douce à l'apparition, puis fixe ; rien ne bouge avec moins d'animations. Cliquer un repère vaut cliquer l'agent : GDC ouvre sa fiche (agent-popup). Côté carte (l'assemblage, GDC ou la galerie), sans que character change : la zone de prise d'un agent se calcule à l'écran, et non par une forme 3D invisible qui grandirait et rapetisserait avec le zoom ; le pointeur prend l'agent le plus proche à moins de 12 px (une cible de 24 px, WCAG 2.5.8), devant le bâtiment ou le décor qui est derrière lui ; au survol, l'anneau de sélection (selection-ring, état hover, à l'encre) se pose à ses pieds et le repère court s'ouvre. Écartés : le halo de la couleur du casque (une couleur qui dit un état dans la 3D, bible 17.3 ; le jaune du site se lit Bloqué, le bleu d'architecture se lit Actif ; un scintillement continu est interdit, signalétique, principe 5) et la silhouette à travers les murs (coûteuse, et couverte par le repère, qui reste visible au-dessus du mur). Ouvriers et usagers n'ont jamais de repère. Le repère ne recouvre pas les étiquettes de lieu ni les pastilles que GDC pose sur la carte (obstacles) : un repère ou un groupe qui en touche une monte juste au-dessus d'elle, et une tige fine relie sa pointe à la tête de l'agent. Fiche validée par Pierre-Alain le 22 octobre 2026 ; entrée obstacles ajoutée sur sa décision du 23 octobre 2026.
 
 - Fabriqué par : intégrateur d'interface (le repère) ; intégrateur (la prise, côté carte) ; directeur artistique (relecture)
 - Élément : `<gdc-agent-marker>`
-- Entrées (propriété data) : `agents` (liste de { id, name, state, x, y } : les agents de la carte, hors ouvriers et usagers ; id : l'identifiant de l'agent, celui des portraits (equipe.json), comme pour agent-popup ; state : mêmes valeurs que character ; x, y : la position à l'écran de leur ancre label, en pixels, que GDC recalcule quand la caméra ou l'agent bouge) ; `hovered` (identifiant de l'agent sous le pointeur (la prise côté carte), ou null)
+- Entrées (propriété data) : `agents` (liste de { id, name, state, x, y } : les agents de la carte, hors ouvriers et usagers ; id : l'identifiant de l'agent, celui des portraits (equipe.json), comme pour agent-popup ; state : mêmes valeurs que character ; x, y : la position à l'écran de leur ancre label, en pixels, que GDC recalcule quand la caméra ou l'agent bouge) ; `hovered` (identifiant de l'agent sous le pointeur (la prise côté carte), ou null) ; `obstacles` (liste de { x, y, width, height } : les rectangles à l'écran, en pixels dans la couche, que les repères ne doivent pas recouvrir (les étiquettes de lieu et les pastilles que GDC pose sur la carte) ; facultative)
 - Sorties (événements) : `gdc-select` (detail.id = agent choisi)
 - Critères d'acceptation :
   - Taille fixe en pixels, lisible sur la carte entière d'un portable de 13 pouces, en clair et en sombre
@@ -948,7 +949,8 @@ Un repère HTML posé au-dessus de la tête de l'agent, sur l'ancre label de cha
   - Les repères qui se touchent se regroupent : trois portraits au plus, le signe le plus grave et le nombre ; le groupe se déplie au clic
   - Une impulsion à l'apparition, puis fixe ; aucun mouvement avec moins d'animations, le portrait compris
   - Chaque repère se prend au clavier (Tab, Entrée) et émet gdc-select
-  - Côté carte : un agent se prend à 12 px du pointeur, devant ce qui est derrière lui, sur la séquence fixtures/projet-type (étape 18 : trois agents groupés à la réception)
+  - Côté carte : un agent se prend à 12 px du pointeur, devant ce qui est derrière lui, sur la séquence fixtures/projet-type (étape 20 : trois agents groupés à la réception)
+  - Aucun repère ni groupe ne recouvre un rectangle d'obstacles : il monte au-dessus, entier dans la couche, et sa tige le relie à la tête ; sans obstacle, ni montée ni tige
 
 ### Le rail d'un panneau (`panel-rail`)
 
@@ -993,23 +995,6 @@ Le planning lit la sortie de gdc chronologie (schéma 1, docs/planning-derniere-
   - Rien ne clignote ; avec moins d'animation, aucun glissement
   - Budget : premier affichage en moins de 200 ms et défilement fluide sur la séquence volume (100 fiches), sur le portable de référence, mesurés et joints au constat
   - Lisible en clair et en sombre
-  - Ligne au journal des versions
-
-### La clôture de chantier (`site-fence`), version 1.1.0
-
-Le portail ferme (docs/vie-du-chantier.md, section 7) : default reste le portail ouvert de la 1.0, pour que GDC ne casse pas ; closed ferme les deux vantaux par une rotation douce d'environ 1,5 seconde, une fois. L'assemblage le ferme en régime ferme et pause, l'ouvre en régime ouvert. Fiche validée par Pierre-Alain le 21 octobre 2026.
-
-- Fichier : `components/site/site-fence/index.js`
-- Fabriqué par : modeleur
-- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `ENV_SITE_FENCE_A_v001`
-- Paramètres : `length` (nombre, 2 à 60, défaut 12) ; `gate` (booléen, défaut false)
-- États : `default`, `closed`
-- Ancres : `label`
-- Données reçues par setState : aucune
-- Budget : 4000 triangles, 3 matériaux
-- Critères d'acceptation :
-  - Le passage de default à closed, et retour, est une rotation douce d'environ 1,5 seconde, une fois ; l'état final directement si reducedMotion
-  - Sans gate, closed ne change rien
   - Ligne au journal des versions
 
 ## G9 : La ville autour

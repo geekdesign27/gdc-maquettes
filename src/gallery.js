@@ -823,9 +823,16 @@ function dessineAgents() {
   }
   agentsEcran = current.ville.carte.agents().map((a) => ({ ...a, tete: projette(a.tete), pieds: projette(a.pieds) }));
   const survole = agentsEcran.find((a) => a.id === agentSurvoleVille);
+  // les etiquettes de lieu et les pastilles deja posees (drawAnchors) : le repere monte au-dessus de celles qu'il recouvrirait
+  const cadre = stage.getBoundingClientRect();
+  const obstacles = [...$('anchors').querySelectorAll('.anchor')]
+    .map((t) => t.getBoundingClientRect())
+    .filter((r) => r.width && r.height)
+    .map((r) => ({ x: r.left - cadre.left, y: r.top - cadre.top, width: r.width, height: r.height }));
   repereAgents.data = {
     agents: agentsEcran.map((a) => ({ id: a.personne, name: a.name, state: a.state, x: a.tete[0], y: a.tete[1] })),
     hovered: survole ? survole.personne : null,
+    obstacles,
   };
 }
 let appui = null;
@@ -1023,7 +1030,11 @@ function dessineCadres(layer) {
   }
 }
 function drawAnchors() {
+  dessineEtiquettes();
+  // le repere d'agent apres les etiquettes : il evite celles qui sont deja posees
   dessineAgents();
+}
+function dessineEtiquettes() {
   const layer = $('anchors');
   if (!options.anchors || options.silhouette || !current.inst) { layer.replaceChildren(); etiquettes = { inst: null, tags: new Map(), cadres: null }; return; }
   if (etiquettes.inst !== current.inst) { layer.replaceChildren(); etiquettes = { inst: current.inst, tags: new Map(), cadres: null }; }

@@ -247,6 +247,10 @@ const planAgents = (n) => {
     if (!Number.isFinite(a.x) || !Number.isFinite(a.y)) continue;
     plan.append(el("div", { "aria-hidden": "true", style: `position: absolute; left: ${a.x - 2.5}px; top: ${a.y}px; width: 5px; height: 16px; border-radius: 2px; background: color-mix(in srgb, var(--gdc-ink) 70%, transparent)` }));
   }
+  // les etiquettes de lieu que GDC pose sur la carte, donnees au repere comme obstacles (nom : pour le banc seulement)
+  for (const o of n.data.obstacles || []) {
+    plan.append(el("div", { "aria-hidden": "true", style: `position: absolute; left: ${o.x}px; top: ${o.y}px; width: ${o.width}px; height: ${o.height}px; display: grid; place-items: center; border-radius: 4px; border: 1px solid color-mix(in srgb, var(--gdc-ink) 30%, transparent); background: var(--gdc-surface); font: 12px/1 var(--gdc-font-ui, system-ui, sans-serif); white-space: nowrap` }, o.nom || ""));
+  }
   const pris = (px, py) => {
     let best = null;
     let bd = 12;
@@ -602,6 +606,24 @@ export const variantes = {
       titre: "Six agents qui se touchent : trois portraits, le signe le plus grave (ta décision passe avant le blocage) et le nombre",
       cadre: planAgents,
       data: { agents: ["claire", "lina", "julie", "robin", "anne", "yves"].map((id, k) => ({ id, name: id[0].toUpperCase() + id.slice(1), state: k === 2 ? "blocked" : "waiting", x: 260 + k * 14, y: 150 + (k % 2) * 6 })), hovered: null },
+    },
+    {
+      titre: "Les étiquettes de lieu restent lisibles : le groupe de la réception et Julie montent au-dessus de « 7 Réception » et de « Feu vert », reliés à la tête par une tige ; Emma, sans étiquette au-dessus d'elle, reste en place (survole-la)",
+      cadre: planAgents,
+      data: {
+        agents: [
+          { id: "claire", name: "Claire, l'architecte", state: "waiting", x: 300, y: 190 },
+          { id: "anne", name: "Anne, la commission de réception", state: "waiting", x: 318, y: 196 },
+          { id: "olivier", name: "Olivier, le surveillant de chantier", state: "blocked", x: 340, y: 188 },
+          { id: "julie", name: "Julie, la développeuse base de données", state: "blocked", x: 120, y: 210 },
+          { id: "emma", name: "Emma, la développeuse interface", state: "typing", x: 540, y: 170 },
+        ],
+        hovered: null,
+        obstacles: [
+          { nom: "7 Réception", x: 272, y: 150, width: 92, height: 22 },
+          { nom: "Feu vert", x: 90, y: 176, width: 70, height: 22 },
+        ],
+      },
     },
     {
       titre: "Cas limites : prénom très long, position absente, état inconnu, identifiant sans portrait, au bord du cadre",
