@@ -237,6 +237,39 @@ const rangeeRail = (n) => {
   return rangee;
 };
 
+// Le repere d'agent (lot G8) : une carte factice, ou chaque agent est une silhouette de 5 x 16 px (sa taille sur la
+// carte entiere d'un portable) ; le repere se pose sur sa tete. Le relais fait ce que fera GDC : le pointeur prend
+// l'agent le plus proche a moins de 12 px de sa silhouette, et le renvoie en hovered.
+const planAgents = (n) => {
+  const plan = el("div", { style: "position: relative; height: 270px; max-width: 680px; border-radius: 8px; overflow: hidden; border: 1px solid color-mix(in srgb, var(--gdc-ink) 15%, transparent); background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--gdc-ink) 5%, var(--gdc-background)) 0 18px, var(--gdc-background) 18px 36px)" });
+  const agents = n.data.agents || [];
+  for (const a of agents) {
+    if (!Number.isFinite(a.x) || !Number.isFinite(a.y)) continue;
+    plan.append(el("div", { "aria-hidden": "true", style: `position: absolute; left: ${a.x - 2.5}px; top: ${a.y}px; width: 5px; height: 16px; border-radius: 2px; background: color-mix(in srgb, var(--gdc-ink) 70%, transparent)` }));
+  }
+  const pris = (px, py) => {
+    let best = null;
+    let bd = 12;
+    for (const a of agents) {
+      if (!Number.isFinite(a.x) || !Number.isFinite(a.y)) continue;
+      const dy = Math.max(a.y - py, 0, py - (a.y + 16));
+      const d = Math.hypot(px - a.x, dy);
+      if (d <= bd) [best, bd] = [a.id, d];
+    }
+    return best;
+  };
+  plan.addEventListener("pointermove", (ev) => {
+    const r = plan.getBoundingClientRect();
+    const id = pris(ev.clientX - r.left, ev.clientY - r.top);
+    if (id !== (n.data.hovered ?? null)) n.data = { ...n.data, hovered: id };
+  });
+  plan.addEventListener("pointerleave", () => {
+    if (n.data.hovered) n.data = { ...n.data, hovered: null };
+  });
+  plan.append(n);
+  return plan;
+};
+
 export const variantes = {
   "time-of-day": [
     { titre: "Auto, au crépuscule : la nuit arrive", data: { horaire: horaireA("2026-10-22T18:42:00") } },
@@ -542,6 +575,43 @@ export const variantes = {
     {
       titre: "Pierre-Alain attend ta décision",
       data: { id: "client", name: "Pierre-Alain, le client", team: "client", state: "waiting", doing: ["Attend le rapport d'audit"], next: [], can: ["Valider une fiche", "Refuser une fiche"], actions: [] },
+    },
+  ],
+  // le repere d'agent : sur une carte factice, le pointeur pres d'une silhouette ouvre son repere court
+  "agent-marker": [
+    {
+      titre: "La réception, trois agents groupés : Claire et Anne attendent ta décision, Olivier est bloqué ; Hélène, au travail, n'a pas de repère ; au clic, le groupe se déplie",
+      cadre: planAgents,
+      data: { agents: [
+        { id: "claire", name: "Claire, l'architecte", state: "waiting", x: 300, y: 150 },
+        { id: "anne", name: "Anne, la commission de réception", state: "waiting", x: 318, y: 156 },
+        { id: "olivier", name: "Olivier, le surveillant de chantier", state: "blocked", x: 340, y: 148 },
+        { id: "helene", name: "Hélène, le bureau de contrôle", state: "inspect", x: 120, y: 90 },
+      ], hovered: null },
+    },
+    {
+      titre: "Un bloqué seul, une décision seule, Emma au travail (survole sa silhouette)",
+      cadre: planAgents,
+      data: { agents: [
+        { id: "julie", name: "Julie, la développeuse base de données", state: "blocked", x: 120, y: 140 },
+        { id: "client", name: "Pierre-Alain, le client", state: "waiting", x: 360, y: 110 },
+        { id: "emma", name: "Emma, la développeuse interface", state: "typing", x: 540, y: 170 },
+      ], hovered: null },
+    },
+    {
+      titre: "Six agents qui se touchent : trois portraits, le signe le plus grave (ta décision passe avant le blocage) et le nombre",
+      cadre: planAgents,
+      data: { agents: ["claire", "lina", "julie", "robin", "anne", "yves"].map((id, k) => ({ id, name: id[0].toUpperCase() + id.slice(1), state: k === 2 ? "blocked" : "waiting", x: 260 + k * 14, y: 150 + (k % 2) * 6 })), hovered: null },
+    },
+    {
+      titre: "Cas limites : prénom très long, position absente, état inconnu, identifiant sans portrait, au bord du cadre",
+      cadre: planAgents,
+      data: { agents: [
+        { id: "victor", name: "Victor-Emmanuel-Maximilien de la Baraque du Conducteur, chef de chantier", state: "waiting", x: 200, y: 120 },
+        { id: "fanny", name: "Fanny", state: "blocked" },
+        { id: "inconnu", name: "Quelqu'un d'inconnu", state: "waiting", x: 470, y: 160 },
+        { id: "bernard", name: "Bernard, le concierge", state: "unknown", x: 640, y: 30 },
+      ], hovered: "bernard" },
     },
   ],
   // le rail d'un panneau : les trois cotes, ouverts et fermes, avec et sans badges, le separateur du planning
