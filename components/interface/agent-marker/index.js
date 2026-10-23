@@ -62,9 +62,11 @@ const CSS = `
 .nombre { font-variant-numeric: tabular-nums; }
 /* le court : au survol seulement, plus discret */
 .repere.court .corps { height: 30px; padding-right: 8px; }
-/* le groupe deplie : ses agents empiles au-dessus de lui */
+/* le groupe deplie : ses agents empiles au-dessus de lui, ou en dessous quand la place manque en haut de la carte ;
+   --x et --y sont deja recadres dans la couche (montreDeplie) */
 .deplie { position: absolute; left: 0; top: 0; pointer-events: auto; display: flex; flex-direction: column-reverse; gap: 4px;
   transform: translate(var(--x), var(--y)) translate(-50%, calc(-100% - ${POINTE + 40}px)); }
+.deplie.dessous { flex-direction: column; transform: translate(var(--x), var(--y)) translate(-50%, 8px); }
 .deplie .repere { position: static; transform: none; }
 .deplie .corps::after { display: none; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
@@ -362,12 +364,25 @@ export function define(registry, ctx) {
       }
       const p = this.#panneau;
       p.setAttribute("aria-label", `${membres.length} agents`);
-      p.style.setProperty("--x", `${Math.round(x)}px`);
-      p.style.setProperty("--y", `${Math.round(y)}px`);
       const signature = membres.map((m) => `${m.a.id}:${m.a.state}`).join("|");
-      if (p.dataset.signature === signature) return;
-      p.dataset.signature = signature;
-      p.replaceChildren(
+      if (p.dataset.signature !== signature) {
+        p.dataset.signature = signature;
+        p.replaceChildren(...this.#reperesDeplies(membres));
+      }
+      // toujours entier dans la couche : au-dessus du groupe s'il y a la place, sinon en dessous ; recadre de cote et en
+      // bas (le groupe d'un agent au bord de la carte)
+      const [l, h] = [p.offsetWidth, p.offsetHeight];
+      const [largeur, hauteur] = [this.clientWidth, this.clientHeight];
+      const dessus = y - (POINTE + 40) - h >= 2;
+      p.classList.toggle("dessous", !dessus);
+      const X = largeur > l + 4 ? Math.min(Math.max(x, l / 2 + 2), largeur - l / 2 - 2) : x;
+      const Y = dessus || !hauteur ? y : Math.max(Math.min(y, hauteur - h - 10), 2);
+      p.style.setProperty("--x", `${Math.round(X)}px`);
+      p.style.setProperty("--y", `${Math.round(Y)}px`);
+    }
+
+    #reperesDeplies(membres) {
+      return [
         ...membres.map(({ a, complet }) => {
           const b = document.createElement("button");
           b.type = "button";
@@ -377,7 +392,7 @@ export function define(registry, ctx) {
           b.append(this.#corpsAgent(a, complet));
           return b;
         }),
-      );
+      ];
     }
   }
 

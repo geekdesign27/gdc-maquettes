@@ -628,7 +628,8 @@ for (const [nom, scenes] of Object.entries(sequences))
     const p = v.clone().applyMatrix4(carte.root.matrixWorld).project(camera);
     return [((p.x + 1) / 2) * W, ((1 - p.y) / 2) * H];
   };
-  const agents = carte.agents().map((a) => ({ ...a, tete: ecran(a.tete), pieds: ecran(a.pieds) }));
+  const agents = carte.agents().map((a) => ({ ...a, piedsCarte: a.pieds.clone().applyMatrix4(carte.root.children[0].matrix.clone().invert()), tete: ecran(a.tete), pieds: ecran(a.pieds) }));
+  let testes = 0;
   const lu = lisScene(scene, connus);
   verifie(agents.length === lu.personnages.length, `prise : ${agents.length} agents pour ${lu.personnages.length} dans la scène (jamais un ouvrier ni un usager)`);
   const aLaReception = agents.filter((a) => lu.personnages.find((p) => p.id === a.id)?.lieu === 'aire-reception');
@@ -637,18 +638,49 @@ for (const [nom, scenes] of Object.entries(sequences))
   for (const a of agents) {
     const milieu = [(a.tete[0] + a.pieds[0]) / 2, (a.tete[1] + a.pieds[1]) / 2];
     verifie(agentPris(agents, ...milieu) === a.id, `prise : sur sa silhouette, ${a.id} n'est pas pris (${agentPris(agents, ...milieu)})`);
-    // de cote, la ou aucun autre agent n'est plus pres
-    for (const cote of [-1, 1]) {
-      const pres = [milieu[0] + cote * (RAYON_PRISE - 1), milieu[1]];
-      const loin = [milieu[0] + cote * (RAYON_PRISE + 1), milieu[1]];
-      const seul = agents.every((b) => b === a || Math.hypot(b.tete[0] - pres[0], b.tete[1] - pres[1]) > 2 * RAYON_PRISE + 2);
-      if (!seul) continue;
-      verifie(agentPris(agents, ...pres) === a.id, `prise : à ${RAYON_PRISE - 1} px de ${a.id}, rien n'est pris`);
-      verifie(agentPris(agents, ...loin) === null, `prise : à ${RAYON_PRISE + 1} px de ${a.id}, un agent est pris`);
-    }
+    // a 11 px et a 13 px de sa silhouette, dans une direction ou aucun autre agent n'est plus pres : de cote, ou
+    // au-dessus de la tete et sous les pieds pour un agent serre dans un groupe (chaque agent est teste, aucun n'est saute)
+    const [dx, dy] = [a.tete[0] - a.pieds[0], a.tete[1] - a.pieds[1]];
+    const l = Math.hypot(dx, dy) || 1;
+    const haut = [dx / l, dy / l];
+    const candidats = [];
+    for (const [base, sens] of [[a.tete, 1], [a.pieds, -1]])
+      for (let deg = -75; deg <= 75; deg += 15) {
+        const r = (deg * Math.PI) / 180;
+        const [ux, uy] = [sens * haut[0], sens * haut[1]];
+        candidats.push([base, [ux * Math.cos(r) - uy * Math.sin(r), ux * Math.sin(r) + uy * Math.cos(r)]]);
+      }
+    for (const cote of [-1, 1]) candidats.push([milieu, [cote * -haut[1], cote * haut[0]]]);
+    const dist = (b, p) => {
+      const [ex, ey] = [b.tete[0] - b.pieds[0], b.tete[1] - b.pieds[1]];
+      const t = Math.max(0, Math.min(1, ((p[0] - b.pieds[0]) * ex + (p[1] - b.pieds[1]) * ey) / (ex * ex + ey * ey || 1)));
+      return Math.hypot(b.pieds[0] + t * ex - p[0], b.pieds[1] + t * ey - p[1]);
+    };
+    const libre = candidats.find(([b, d]) => {
+      const pres = [b[0] + d[0] * (RAYON_PRISE - 1), b[1] + d[1] * (RAYON_PRISE - 1)];
+      const loin = [b[0] + d[0] * (RAYON_PRISE + 1), b[1] + d[1] * (RAYON_PRISE + 1)];
+      return Math.abs(dist(a, pres) - (RAYON_PRISE - 1)) < 0.5 && dist(a, loin) > RAYON_PRISE + 0.5 && agents.every((o) => o === a || (dist(o, pres) > dist(a, pres) + 0.5 && dist(o, loin) > RAYON_PRISE + 0.5));
+    });
+    verifie(libre, `prise : aucune direction libre autour de ${a.id} pour l'essai à ${RAYON_PRISE - 1} et ${RAYON_PRISE + 1} px`);
+    if (!libre) continue;
+    const [b, d] = libre;
+    testes++;
+    verifie(agentPris(agents, b[0] + d[0] * (RAYON_PRISE - 1), b[1] + d[1] * (RAYON_PRISE - 1)) === a.id, `prise : à ${RAYON_PRISE - 1} px de ${a.id}, il n'est pas pris`);
+    verifie(agentPris(agents, b[0] + d[0] * (RAYON_PRISE + 1), b[1] + d[1] * (RAYON_PRISE + 1)) === null, `prise : à ${RAYON_PRISE + 1} px de ${a.id}, un agent est pris`);
   }
+  // l'anneau du survol se pose aux pieds de l'agent, a la hauteur ou il se tient (une aire, un plancher, un etage)
+  for (const a of agents) {
+    await carte.survoleAgent(a.id);
+    carte.update(1 / 30);
+    let anneau = null;
+    carte.root.traverse((o) => {
+      if (o.userData.component === 'selection-ring' && Math.hypot(o.position.x - a.piedsCarte.x, o.position.z - a.piedsCarte.z) < 0.5 && o.position.distanceTo(a.piedsCarte) < 2) anneau = anneau || o;
+    });
+    verifie(anneau && anneau.position.y >= a.piedsCarte.y && anneau.position.y - a.piedsCarte.y < 0.05, `prise : l'anneau du survol de ${a.id} n'est pas à ses pieds (${anneau ? anneau.position.y.toFixed(2) : 'absent'} pour des pieds à ${a.piedsCarte.y.toFixed(2)} m)`);
+  }
+  await carte.survoleAgent(null);
   // trois agents groupes : chacun se prend sur sa propre silhouette, aucun ne cache l'autre
-  rapports.push(`prise d'un agent : ${agents.length} agents de projet-type « ${index.etapes[pas].titre} », dont 3 groupés à la réception, pris sur leur silhouette (${Math.min(...taille).toFixed(0)} à ${Math.max(...taille).toFixed(0)} px de haut) et à ${RAYON_PRISE - 1} px, pas à ${RAYON_PRISE + 1}`);
+  rapports.push(`prise d'un agent : ${agents.length} agents de projet-type « ${index.etapes[pas].titre} », dont 3 groupés à la réception, pris sur leur silhouette (${Math.min(...taille).toFixed(0)} à ${Math.max(...taille).toFixed(0)} px de haut) ; ${testes} sur ${agents.length} essayés à ${RAYON_PRISE - 1} px (pris) et à ${RAYON_PRISE + 1} px (rien) ; l'anneau du survol à leurs pieds`);
   carte.dispose();
 }
 

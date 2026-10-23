@@ -1414,14 +1414,14 @@ export async function creeCarte(THREE, options) {
       }
       for (const a of [...acteurs.values()]) if (avance(a, dt)) encore = true;
       // l'anneau de la selection suit l'agent choisi ; il respire, comme celui du survol
-      if (choixAgent && membres.has(choixAgent.cle)) anneauChoix.petit.root.position.copy(choixAgent.inst.root.position).setY(0.02);
+      if (choixAgent && membres.has(choixAgent.cle)) aSesPieds(anneauChoix.petit, choixAgent);
       if (anneauChoix) for (const r of Object.values(anneauChoix)) if (r.update(dt)) encore = true;
       // l'anneau de l'agent survole le suit ; un agent qui s'en va l'emporte
       if (agentSurvole) {
         if (!membres.has(agentSurvole.cle) || !visibleDe(agentSurvole.inst.root)) {
           agentSurvole = null;
           anneauAgent.setState("hidden");
-        } else anneauAgent.root.position.copy(agentSurvole.inst.root.position).setY(0);
+        } else aSesPieds(anneauAgent, agentSurvole);
         if (anneauAgent.update(dt)) encore = true;
       }
       for (const r of [...roulages]) {
@@ -1487,8 +1487,6 @@ export async function creeCarte(THREE, options) {
         badges: Object.fromEntries(g.montres.map((id, k) => [id, k === g.montres.length - 1 && g.total > g.montres.length ? g.total : 1])),
       }));
     },
-    // Le point d'une ancre d'un element de GDC pose sur la carte (son badge, son label), dans le repere de la carte ;
-    // null s'il n'est pas montre.
     // La selection (gdc-select, derniere passe de GDC, section 6) : ou la carte va, et l'anneau de selection pose.
     // { id, ref } et { id, ref, evt } : l'ancre trouvee par src/etages.js (la piece d'un lot, l'etage d'une fiche) ou le
     // batiment de l'application, et l'anneau ; { id: "etape:<n>", etape } : le centre de la zone de l'etape, sans
@@ -1511,7 +1509,7 @@ export async function creeCarte(THREE, options) {
       if (!detail || !lu) return null;
       const versCarte = (v) => v.clone().applyMatrix4(plateau.matrix);
       const pose = (r, v) => {
-        r.root.position.copy(v).setY(0.02);
+        r.root.position.copy(v).setY(v.y + 0.02); // a la hauteur de son ancre : un etage en hauteur, une piece
         r.setState("selected");
       };
       // une etape : le centre de sa zone
@@ -1541,7 +1539,8 @@ export async function creeCarte(THREE, options) {
       );
       if (agent) {
         choixAgent = agent;
-        pose(anneauChoix.petit, agent.inst.root.position);
+        aSesPieds(anneauChoix.petit, agent);
+        anneauChoix.petit.setState("selected");
         return { point: versCarte(agent.inst.root.position), agent: agent.el.id };
       }
       // un lieu fixe
@@ -1583,8 +1582,10 @@ export async function creeCarte(THREE, options) {
       }
       agentSurvole = id ? membres.get(`gdc:${id}`) || null : null;
       anneauAgent.setState(agentSurvole ? "hover" : "hidden");
-      if (agentSurvole) anneauAgent.root.position.copy(agentSurvole.inst.root.position).setY(0);
+      if (agentSurvole) aSesPieds(anneauAgent, agentSurvole);
     },
+    // Le point d'une ancre d'un element de GDC pose sur la carte (son badge, son label), dans le repere de la carte ;
+    // null s'il n'est pas montre.
     ancreElement(id, nom = "badge") {
       const m = membres.get(`gdc:${id}`);
       if (!m || !m.inst.root.visible) return null;
@@ -1869,6 +1870,8 @@ export async function creeCarte(THREE, options) {
   let anneauAgent = null; // l'anneau de l'agent survole (agent-marker)
   let anneauChoix = null; // l'anneau de la selection (selectionne)
   let choixAgent = null; // l'agent choisi : l'anneau le suit
+  // un anneau aux pieds d'un agent, a la hauteur ou il se tient (une aire, un plancher, un etage), juste au-dessus
+  const aSesPieds = (anneau, m) => anneau.root.position.copy(m.inst.root.position).setY(m.inst.root.position.y + 0.02);
   let agentSurvole = null;
   const visibleDe = (o) => {
     for (let x = o; x && x !== root; x = x.parent) if (!x.visible) return false;
