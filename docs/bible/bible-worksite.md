@@ -691,6 +691,8 @@ Chaque lieu est posé sur un socle :
 - bord du même matériau : la lumière le fonce, comme dans REF_ENV ;
 - arêtes du dessus en classe C3.
 
+**Le socle de la ville** (amendement du 23 octobre 2026, décision de Pierre-Alain, lot G9) : quand la carte est entourée de la ville fictive, c'est la ville entière qui est le lieu posé sur son socle (`city-ground`). Ce socle fait **3 m** d'épaisseur : à 0,60 m, son bord ne faisait qu'environ 1 px au dézoom de la ville entière (2,5 px par mètre) ; à 3 m, environ 7 px. Son dessus ne change pas, et les lieux gardent leur socle de 0,60 m.
+
 ### 18.6 Scène de référence (précise les sections 8 et 14)
 
 - La galerie (`npm run dev`, *Cube étalon et nuancier*) montre le cube étalon sur son socle, la mesure de ses trois faces et un cube par matériau de la bibliothèque.

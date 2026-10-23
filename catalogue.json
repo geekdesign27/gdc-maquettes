@@ -2064,7 +2064,7 @@
       "category": "site",
       "name": "Le grand terrain",
       "purpose": "Le sol de toute la ville : une seule maquette, dans laquelle le chantier s'encastre.",
-      "description": "Un plateau maquette de 0,60 m en MAT_EARTH, arêtes du dessus en C3 (bible, 18.5), de la taille de la ville (environ 325 × 270 m, city-plan) ; son bord est le bord visible de la carte, comme dans REF_ENV. Son dessus est à 10 mm sous zéro, juste sous celui de site-ground (5 mm) : le terrain du chantier et les socles des lieux s'y fondent sans scintillement, leurs bords se perdent dans le plateau. Le dessus est en herbe (MAT_LANDSCAPE) ; data.zones dessine les dalles de béton (MAT_CONCRETE) des places, des cours et des parkings, comme site-ground ; les rues viennent de road-kit. La bande libre : tant que le chantier a quatre applications ou moins, la partie de la place du chantier qui n'est pas construite est un pré, avec une vingtaine d'arbres de nature-kit posés par l'assemblage ; elle disparaît quand la cinquième application ouvre la deuxième rangée de parcelles (docs/ville.md), sans que la ville bouge. Il reçoit l'ombre et n'en porte pas. Fiche validée par Pierre-Alain le 23 octobre 2026 : un seul socle pour toute la ville ; la règle 18.5 vaut pour la carte entière, le lieu posé sur son socle.",
+      "description": "Un plateau maquette de 3 m en MAT_EARTH, arêtes du dessus en C3 (bible, 18.5, amendement du 23 octobre 2026 : le socle de la ville), de la taille de la ville (environ 325 × 270 m, city-plan) ; son bord est le bord visible de la carte, comme dans REF_ENV. Son dessus est à 10 mm sous zéro, juste sous celui de site-ground (5 mm) : le terrain du chantier et les socles des lieux s'y fondent sans scintillement, leurs bords se perdent dans le plateau. Le dessus est en herbe (MAT_LANDSCAPE) ; data.zones dessine les dalles de béton (MAT_CONCRETE) des places, des cours et des parkings, comme site-ground ; les rues viennent de road-kit. La bande libre : tant que le chantier a quatre applications ou moins, la partie de la place du chantier qui n'est pas construite est un pré, avec une vingtaine d'arbres de nature-kit posés par l'assemblage ; elle disparaît quand la cinquième application ouvre la deuxième rangée de parcelles (docs/ville.md), sans que la ville bouge. Il reçoit l'ombre et n'en porte pas. Fiche validée par Pierre-Alain le 23 octobre 2026 : un seul socle pour toute la ville ; la règle 18.5 vaut pour la carte entière, le lieu posé sur son socle. Version 1.0.0 validée par Pierre-Alain le 23 octobre 2026, après le constat du contrôleur : le socle de la ville fait 3 m (le bord de 0,60 m ne faisait qu'environ 1 px au dézoom de la ville entière ; à 3 m, environ 7 px) ; l'herbe reste en MAT_LANDSCAPE, séparée de la terre du chantier par la clôture et la rue de ceinture ; une zone grass ne dessine rien, le dessus étant déjà en herbe.",
       "params": {
         "width": "nombre, 100 à 340, défaut 325",
         "depth": "nombre, 100 à 280, défaut 270"
@@ -2086,12 +2086,13 @@
         "3 appels de dessin dans la passe principale, aucun dans la passe d'ombre (il reçoit l'ombre, il n'en porte pas), en haute comme en basse",
         "Les zones se redessinent quand data.zones change"
       ],
-      "status": "à faire",
+      "status": "livré",
       "role": "modeleur",
       "data": {
         "zones": "liste de { x, z, width, depth, surface: grass | concrete }, en mètres, origine au centre du plateau"
       },
-      "production": "code"
+      "production": "code",
+      "version": "1.0.0"
     },
     {
       "id": "road-kit",

@@ -21,7 +21,7 @@ Les repères sont ceux de `src/ville/implantation.js` : en mètres, au sol (x, z
 | Rue de ceinture | Elle fait le tour de la place, bande de 10 m juste à l'extérieur : x de −10,5 à −0,5 et de 124,5 à 134,5, z de −4,5 à 5,5 et de 75,5 à 85,5 |
 | Pâtés | Deux rangées complètes de chaque côté de la rue de ceinture, séparées par une rue de 10 m |
 | Ville entière | x de −100,5 à 224,5 et z de −94,5 à 175,5 : 325 × 270 m |
-| Bord | Le bord du socle de `city-ground` ; les rues y sont coupées net, comme sur une maquette |
+| Bord | Le bord du socle de `city-ground`, épais de 3 m (bible, 18.5, amendement du 23 octobre 2026) ; les rues y sont coupées net, comme sur une maquette |
 
 Les pâtés font 40 m, sauf dans les deux bandes qui longent la place, où ils se partagent la longueur pour que les rues tombent juste :
 - **au fond et devant** (le long de x, de −10,5 à 134,5, soit 145 m) : trois pâtés et deux rues ; une des deux rues tombe sur l'avenue nord (x = 27) ;

@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-66 éléments : 49 livré, 15 à faire, 2 exemple.
+66 éléments : 50 livré, 14 à faire, 2 exemple.
 
 ## G0 : La ligne graphique
 
@@ -1004,7 +1004,7 @@ Entourer le chantier d'une ville fictive de Suisse romande, belle et un peu viva
 | Ordre | Identifiant | Nom | Nature | But | Statut |
 |---|---|---|---|---|---|
 | 1 | `city-plan` | Le plan de la ville | Document de référence, pas de code | Poser une ville fictive de Suisse romande autour des quatre zones : belle et un peu vivante, sans jamais ajouter un fait du harnais. | à faire |
-| 2 | `city-ground` | Le grand terrain | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le sol de toute la ville : une seule maquette, dans laquelle le chantier s'encastre. | à faire |
+| 2 | `city-ground` | Le grand terrain | Composant 3D Three.js, conforme à docs/contrat-composant.md | Le sol de toute la ville : une seule maquette, dans laquelle le chantier s'encastre. | livré |
 | 3 | `road-kit` | Le kit des rues | Bibliothèque de modèles 3D produite par un script Blender (blender/assets/<id>.py) et réutilisée par plusieurs composants : components/kit/<id>/ | Les rues de la ville, aux cotes de sa grille : chaussées, carrefours, giratoires, trottoirs, passages piétons et lampadaires. | à faire |
 | 4 | `nature-kit` | Le kit de la nature | Bibliothèque de modèles 3D produite par un script Blender (blender/assets/<id>.py) et réutilisée par plusieurs composants : components/kit/<id>/ | Les arbres, les haies et les parcs qui rendent la ville belle et verte. | à faire |
 | 5 | `villa-kit` | Le kit des villas romandes | Bibliothèque de modèles 3D produite par un script Blender (blender/assets/<id>.py) et réutilisée par plusieurs composants : components/kit/<id>/ | Les maisons d'une banlieue de Suisse romande : crépi clair, toit à pans, volets, haie de thuyas, reconnaissables d'un coup d'œil. | à faire |
@@ -1031,7 +1031,7 @@ Pas un composant : une partie de l'assemblage de la carte (src/ville/), qui pose
 
 ### Le grand terrain (`city-ground`)
 
-Un plateau maquette de 0,60 m en MAT_EARTH, arêtes du dessus en C3 (bible, 18.5), de la taille de la ville (environ 325 × 270 m, city-plan) ; son bord est le bord visible de la carte, comme dans REF_ENV. Son dessus est à 10 mm sous zéro, juste sous celui de site-ground (5 mm) : le terrain du chantier et les socles des lieux s'y fondent sans scintillement, leurs bords se perdent dans le plateau. Le dessus est en herbe (MAT_LANDSCAPE) ; data.zones dessine les dalles de béton (MAT_CONCRETE) des places, des cours et des parkings, comme site-ground ; les rues viennent de road-kit. La bande libre : tant que le chantier a quatre applications ou moins, la partie de la place du chantier qui n'est pas construite est un pré, avec une vingtaine d'arbres de nature-kit posés par l'assemblage ; elle disparaît quand la cinquième application ouvre la deuxième rangée de parcelles (docs/ville.md), sans que la ville bouge. Il reçoit l'ombre et n'en porte pas. Fiche validée par Pierre-Alain le 23 octobre 2026 : un seul socle pour toute la ville ; la règle 18.5 vaut pour la carte entière, le lieu posé sur son socle.
+Un plateau maquette de 3 m en MAT_EARTH, arêtes du dessus en C3 (bible, 18.5, amendement du 23 octobre 2026 : le socle de la ville), de la taille de la ville (environ 325 × 270 m, city-plan) ; son bord est le bord visible de la carte, comme dans REF_ENV. Son dessus est à 10 mm sous zéro, juste sous celui de site-ground (5 mm) : le terrain du chantier et les socles des lieux s'y fondent sans scintillement, leurs bords se perdent dans le plateau. Le dessus est en herbe (MAT_LANDSCAPE) ; data.zones dessine les dalles de béton (MAT_CONCRETE) des places, des cours et des parkings, comme site-ground ; les rues viennent de road-kit. La bande libre : tant que le chantier a quatre applications ou moins, la partie de la place du chantier qui n'est pas construite est un pré, avec une vingtaine d'arbres de nature-kit posés par l'assemblage ; elle disparaît quand la cinquième application ouvre la deuxième rangée de parcelles (docs/ville.md), sans que la ville bouge. Il reçoit l'ombre et n'en porte pas. Fiche validée par Pierre-Alain le 23 octobre 2026 : un seul socle pour toute la ville ; la règle 18.5 vaut pour la carte entière, le lieu posé sur son socle. Version 1.0.0 validée par Pierre-Alain le 23 octobre 2026, après le constat du contrôleur : le socle de la ville fait 3 m (le bord de 0,60 m ne faisait qu'environ 1 px au dézoom de la ville entière ; à 3 m, environ 7 px) ; l'herbe reste en MAT_LANDSCAPE, séparée de la terre du chantier par la clôture et la rue de ceinture ; une zone grass ne dessine rien, le dessus étant déjà en herbe.
 
 - Fichier : `components/site/city-ground/index.js`
 - Fabriqué par : modeleur
