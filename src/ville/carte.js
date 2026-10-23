@@ -293,6 +293,16 @@ export async function creeCarte(THREE, options) {
     m.state = s;
   }
 
+  // le portail de la cloture (site-fence 1.1.0) : ferme en regime ferme et en pause, ouvert en regime ouvert. Joue (un
+  // passage, une action de GDC), il tourne doucement ; pose tel quel (une scene recue), il est d'emblee a sa place : la
+  // carte avance alors son temps jusqu'au bout de la rotation
+  function portailDe(m, doucement) {
+    const s = regime === "ouvert" ? "default" : "closed";
+    if (m.state === s) return;
+    etat(m, s, {});
+    if (!doucement) m.inst.update(60);
+  }
+
   // la lampe frontale (character 1.2.0) : allumee la nuit, comme les projecteurs (le jour sous 0,5), pour toute personne
   // casquee qui est dehors (m.casque) ; eteinte dans un bureau, a son poste (m.auBureau). Rien ne clignote.
   function lampeDe(m) {
@@ -384,6 +394,7 @@ export async function creeCarte(THREE, options) {
       const m = pose(c.cle, c.id, inst, c.position, c.rotation || 0);
       if (c.zone) m.zone = c.zone; // un projecteur pose derriere la cloture reste de la zone du chantier
       etat(m, components[c.id].meta.states[0], {});
+      if (c.id === "site-fence") portailDe(m, false);
       fixes.push(c.cle);
     }
     for (const [id, l] of Object.entries(imp.lieux)) {
@@ -868,7 +879,10 @@ export async function creeCarte(THREE, options) {
     const ancien = regime;
     regime = scene.regime;
     if (ancien !== regime)
-      for (const m of membres.values()) if (m.id === "floodlight") projecteurDe(m);
+      for (const m of membres.values()) {
+        if (m.id === "floodlight") projecteurDe(m);
+        if (m.id === "site-fence") portailDe(m, transition);
+      }
     const specs = new Map(voulusPar(scene).map((s) => [s.cle, s]));
     let k = 0;
     for (const [cle, v] of [...vivants]) {

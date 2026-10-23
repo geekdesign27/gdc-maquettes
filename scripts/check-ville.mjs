@@ -587,6 +587,60 @@ rapportCamionPlus();
   rapports.push(`projecteurs : ${implantation(3, ['house', 'block', 'hall']).projecteurs.length} pour trois applications (densité ${DENSITE_PROJECTEURS}), dans leur zone, hors des voies, des clôtures et des parcelles ; allumés la nuit en régime ouvert dans une zone en couleur`);
 }
 
+// --- Le portail (site-fence 1.1.0) : ferme en regime ferme et en pause, ouvert en regime ouvert ; une rotation douce
+// de 1,5 s, une fois, puis plus rien a dessiner ; sans portail, closed ne change rien
+{
+  // l'ouverture d'un vantail : 1 quand il est tourne vers l'interieur (90 degres), 0 dans l'axe de la cloture
+  const ouverture = (im, i) => {
+    const m = new THREE.Matrix4();
+    im.getMatrixAt(i, m);
+    const x = new THREE.Vector3().setFromMatrixColumn(m, 0).normalize();
+    return Math.abs(x.z);
+  };
+  const vantaux = (root) => {
+    const v = [];
+    root.traverse((o) => { if (o.isInstancedMesh && o.name.startsWith('ENV_SITE_FENCE_A_GATE_LEAF_FRAME')) for (let i = 0; i < o.count; i++) v.push(ouverture(o, i)); });
+    return v;
+  };
+  const portails = (carte) => {
+    const v = [];
+    carte.root.traverse((o) => { if (o.userData.component === 'site-fence') v.push(...vantaux(o)); });
+    return v;
+  };
+  const s8 = sequences['trois-applications'][7];
+  const carte = await creeCarte(THREE, { components: modules, chargeur, theme: 'light', quality: 'high', reducedMotion: false });
+  await carte.applique(s8);
+  verifie(portails(carte).length === 4 && portails(carte).every((o) => o > 0.999), `portail : en régime ouvert, des vantaux fermés (${portails(carte).map((o) => o.toFixed(2))})`);
+  for (const regime of ['pause', 'ferme']) {
+    await carte.applique({ ...s8, chantier: { ...s8.chantier, regime } }, { actions: false });
+    verifie(portails(carte).every((o) => o < 0.001), `portail : en régime ${regime}, posé tel quel, des vantaux ouverts (${portails(carte).map((o) => o.toFixed(2))})`);
+    await carte.applique(s8, { actions: false });
+  }
+  carte.dispose();
+  // le composant seul : la rotation, aller et retour, avec et sans animation
+  const mod = modules['site-fence'];
+  const assets = await chargeur.assetsPour(mod.meta);
+  const anime = mod.create(THREE, { length: 12, gate: true }, makeContext({ quality: 'high' }, assets));
+  anime.setState('closed');
+  let t = 0;
+  while (anime.update(1 / 60)) t += 1 / 60;
+  verifie(Math.abs(t - 1.5) < 0.05 && vantaux(anime.root).every((o) => o < 0.001) && anime.update(1 / 60) === false, `portail : la fermeture dure ${t.toFixed(2)} s au lieu de 1,5 s, ou ne finit pas fermée`);
+  anime.setState('default');
+  anime.update(0.75);
+  const milieu = vantaux(anime.root);
+  verifie(milieu.every((o) => o > 0.6 && o < 0.8), `portail : à mi-course, les vantaux ne sont pas à 45 degrés (${milieu.map((o) => o.toFixed(2))})`);
+  anime.dispose();
+  const fixe = mod.create(THREE, { length: 12, gate: true }, makeContext({ quality: 'low', reducedMotion: true }, assets));
+  fixe.setState('closed');
+  verifie(vantaux(fixe.root).every((o) => o < 0.001) && fixe.update(1 / 60) === false, 'portail : avec moins d\'animations, closed ne pose pas directement les vantaux fermés');
+  fixe.dispose();
+  const sans = mod.create(THREE, { length: 12, gate: false }, makeContext({ quality: 'high' }, assets));
+  sans.setState('closed');
+  verifie(sans.update(1 / 60) === false, 'portail : sans gate, closed anime quelque chose');
+  sans.dispose();
+  rapports.push('portail : fermé en régime fermé et en pause, ouvert en régime ouvert ; rotation de 1,5 s, une fois, directe avec moins d\'animations ; sans portail, closed ne change rien');
+}
+
 // --- La lampe frontale et les personnes de la vie du chantier (character 1.2.0, plan D-3) : la nuit, toute personne
 // casquee qui est dehors a sa lampe allumee, aucune de jour, aucune a son poste dans un bureau, aucune sans casque ;
 // les ouvriers sont des worker (plus de tenue de chef d'equipe recoloree), les usagers des civilian
