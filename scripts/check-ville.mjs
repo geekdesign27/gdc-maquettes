@@ -641,6 +641,71 @@ rapportCamionPlus();
   rapports.push('portail : fermé en régime fermé et en pause, ouvert en régime ouvert ; rotation de 1,5 s, une fois, directe avec moins d\'animations ; sans portail, closed ne change rien');
 }
 
+// --- Le cabanon de la fete (party-shed, lot G8) : pres de la zone des transformations, hors des voies et des lieux, en
+// couleur meme dans une zone grise ; la fete en pause, ferme sinon ; son ancre gather au point de rassemblement. Joue,
+// le portail reste ouvert tant que l'equipe passe vers le cabanon, puis se ferme
+{
+  const imp = implantation(3, ['house', 'block', 'hall']);
+  const fete = imp.decor.find((d) => d.id === 'party-shed');
+  const T = imp.cadres.transformations;
+  const [x, , z] = fete.position;
+  verifie(x - 2.1 >= T.x[0] && x + 2.4 <= T.x[1] && z - 1.7 >= T.z[0] && z + 1.7 <= T.z[1], 'cabanon : hors de la zone des transformations');
+  for (const l of Object.values(imp.lieux))
+    verifie(Math.abs(l.position[0] - x) > 5 || Math.abs(l.position[2] - z) > 4.5, `cabanon : sur le lieu ${l.id}`);
+  const cabanon = (carte) => {
+    let r = null;
+    carte.root.traverse((o) => { if (!r && o.userData.component === 'party-shed') r = o; });
+    return r;
+  };
+  const allume = (root) => {
+    let n = 0;
+    root.traverse((o) => { if (o.isInstancedMesh && /LANTERN_LIT|SPOTS|NOTES/.test(o.name) && o.parent) n++; });
+    return n;
+  };
+  const gris = (root) => {
+    let n = 0;
+    root.traverse((o) => { if (o.isMesh && [].concat(o.material).some((m) => m.userData?.gris)) n++; });
+    return n;
+  };
+  const s8 = sequences['trois-applications'][7];
+  const pauseDe = (s) => ({ ...s, chantier: { ...s.chantier, regime: 'pause' } });
+  const carte = await creeCarte(THREE, { components: modules, chargeur, theme: 'light', quality: 'high', reducedMotion: false });
+  await carte.applique(sequences['projet-type'][0]); // zones encore grises
+  const r = cabanon(carte);
+  verifie(r && gris(r) === 0, 'cabanon : grisé avec la zone des transformations');
+  verifie(r && allume(r) === 0, 'cabanon : en fête hors de la pause');
+  await carte.applique(s8, { actions: false });
+  verifie(allume(cabanon(carte)) === 0, 'cabanon : en fête en régime ouvert');
+  await carte.applique(pauseDe(s8), { actions: false });
+  verifie(allume(cabanon(carte)) === 5, `cabanon : posé en pause, pas en fête (${allume(cabanon(carte))} pièces allumées sur 5)`);
+  const g = new THREE.Vector3();
+  cabanon(carte).parent.updateMatrixWorld(true);
+  const inst = cabanon(carte);
+  const ancre = inst.getObjectByName('ANCHOR_GATHER').getWorldPosition(g);
+  inst.parent.worldToLocal(ancre);
+  verifie(Math.hypot(ancre.x - imp.points.rassemblement[0], ancre.z - imp.points.rassemblement[1]) < 0.3, `cabanon : l'ancre gather (${ancre.x.toFixed(2)}, ${ancre.z.toFixed(2)}) loin du point de rassemblement`);
+  carte.dispose();
+  // joue : de ouvert a pause, sur une carte neuve (les ouvriers a leur poste), le portail attend que l'equipe soit passee
+  const joue = await creeCarte(THREE, { components: modules, chargeur, theme: 'light', quality: 'high', reducedMotion: false });
+  await joue.applique(s8);
+  const ts = '2099-01-01T00:00:00.000Z';
+  await joue.applique({ ...pauseDe(s8), actions: [{ ts, action: 'pause', element: 'chantier', id: 'chantier', de: 'ouvert', vers: 'pause' }] });
+  const portailOuvert = () => {
+    let o = false;
+    joue.root.traverse((x) => { if (x.isInstancedMesh && x.name.startsWith('ENV_SITE_FENCE_A_GATE_LEAF_FRAME')) { const m = new THREE.Matrix4(); x.getMatrixAt(0, m); o = o || Math.abs(new THREE.Vector3().setFromMatrixColumn(m, 0).normalize().z) > 0.999; } });
+    return o;
+  };
+  let tempsOuvert = 0;
+  for (let t = 0; t < 120; t += 0.1) {
+    joue.update(0.1);
+    if (portailOuvert()) tempsOuvert = t;
+  }
+  verifie(tempsOuvert > 10 && !portailOuvert(), `portail : en pause jouée, ouvert ${tempsOuvert.toFixed(1)} s puis ${portailOuvert() ? 'resté ouvert' : 'fermé'} (il attend l'équipe)`);
+  verifie(allume(cabanon(joue)) === 5, 'cabanon : en pause jouée, pas en fête');
+  joue.dispose();
+  rapports.push(`cabanon : dans la zone des transformations, en couleur dans une zone grise, en fête seulement en pause ; l'équipe s'y rassemble ; en pause jouée, le portail reste ouvert ${tempsOuvert.toFixed(1)} s le temps qu'elle passe`);
+}
+
 // --- La lampe frontale et les personnes de la vie du chantier (character 1.2.0, plan D-3) : la nuit, toute personne
 // casquee qui est dehors a sa lampe allumee, aucune de jour, aucune a son poste dans un bureau, aucune sans casque ;
 // les ouvriers sont des worker (plus de tenue de chef d'equipe recoloree), les usagers des civilian

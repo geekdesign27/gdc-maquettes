@@ -1,0 +1,13 @@
+{
+  "nom": "ENV_PARTY_SHED_A_v001",
+  "id": "party-shed",
+  "bible": "WORKSITE 1.2",
+  "blender": "5.3.0 Beta",
+  "script": "blender/assets/party-shed.py",
+  "script_sha256": "2487bc86a3cb2ae090f5ad170d79c1f3a83ad59fb51d35595e738f84e880d82f",
+  "commun_sha256": "e8cb480c62b7bdb8b54460ec91e343989e89e93987616cc2711afd5dbcdf2f80",
+  "palette_sha256": "4bc8171a929e1280ede0f531e271993458475f88a046e4086ca0659b08a01033",
+  "glb_sha256": "fe70b4e0fde75b01923a614433e6f026675bba326ac2f536c9def2325f10e5f5",
+  "animations": [],
+  "statut": "a valider"
+}

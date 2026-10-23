@@ -183,8 +183,8 @@ export function tache(ouvrier, n, { parcelle, abords, points, porte }) {
   }
 }
 
-// La pause (regime pause, fiches G8) : les ouvriers rejoignent le point de rassemblement pres de la baraque, en
-// attendant le cabanon de la fete (party-shed), et y restent : talk et idle, jamais celebrate (reserve aux agents).
+// La pause (regime pause, fiches G8) : les ouvriers rejoignent le point de rassemblement, devant le cabanon de la fete
+// (party-shed), et y restent : talk et idle, jamais celebrate (reserve aux agents).
 export function placeDePause(ouvrier, k, rassemblement) {
   const t = alea(`${ouvrier.graine}:pause`);
   const angle = (k / 6) * Math.PI * 2 + t() * 0.6;

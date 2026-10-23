@@ -18,7 +18,7 @@ import {
   BORDURE,
   zoneDe,
 } from "./implantation.js";
-import { creeChemins, mesure, positionSur } from "./chemins.js";
+import { creeChemins, mesure, positionSur, VITESSE } from "./chemins.js";
 import { lisScene, instants } from "./scene-gdc.js";
 import {
   equipes,
@@ -302,6 +302,24 @@ export async function creeCarte(THREE, options) {
     etat(m, s, {});
     if (!doucement) m.inst.update(60);
   }
+  // Joue, le portail ne se ferme qu'une fois les ouvriers passes : en pause, ils sortent vers le cabanon de la fete ; a
+  // la fermeture, ils en reviennent jusqu'au vestiaire. Il s'ouvre tout de suite.
+  let portailEnAttente = false;
+  function portails(transition) {
+    portailEnAttente = transition && anime && regime !== "ouvert";
+    if (portailEnAttente) return;
+    for (const m of membres.values()) if (m.id === "site-fence") portailDe(m, transition);
+  }
+  const ouvriersEnMarche = () => [...acteurs.values()].some((a) => a.marche && a.m.vie);
+
+  // le cabanon de la fete (party-shed) : la fete en pause, ferme sinon. Pose tel quel, il est d'emblee en fete (porte
+  // ouverte, lanterne allumee) : la carte avance son temps jusque-la
+  function feteDe(m, doucement) {
+    const s = regime === "pause" ? "party" : "closed";
+    if (m.state === s) return;
+    etat(m, s, {});
+    if (!doucement) m.inst.update(10);
+  }
 
   // la lampe frontale (character 1.2.0) : allumee la nuit, comme les projecteurs (le jour sous 0,5), pour toute personne
   // casquee qui est dehors (m.casque) ; eteinte dans un bureau, a son poste (m.auBureau). Rien ne clignote.
@@ -393,8 +411,13 @@ export async function creeCarte(THREE, options) {
       const inst = await cree(c.id, c.params);
       const m = pose(c.cle, c.id, inst, c.position, c.rotation || 0);
       if (c.zone) m.zone = c.zone; // un projecteur pose derriere la cloture reste de la zone du chantier
+      if (c.couleur) {
+        m.zone = null; // le cabanon de la fete garde ses couleurs, meme dans une zone encore grise
+        colore(inst.root);
+      }
       etat(m, components[c.id].meta.states[0], {});
       if (c.id === "site-fence") portailDe(m, false);
+      if (c.id === "party-shed") feteDe(m, false);
       fixes.push(c.cle);
     }
     for (const [id, l] of Object.entries(imp.lieux)) {
@@ -579,12 +602,15 @@ export async function creeCarte(THREE, options) {
   }
   // marcher le long de points du sol, puis apres() ; sans animation, on y est tout de suite. clip : walk, ou carry pour
   // un ouvrier qui porte (character 1.2.0)
-  function marche(a, points, apres, clip = "walk") {
+  // libre : la marche n'est pas plafonnee (chemins.js) ; elle va au pas, quelle que soit la longueur (l'equipe qui va au
+  // cabanon de la fete, hors du chantier, ou qui en revient)
+  function marche(a, points, apres, clip = "walk", libre = false) {
     const chemin = mesure(
       [a.pos, ...points].filter(
         (p, i, l) => i === 0 || dist(l[i - 1], p) > 1e-6,
       ),
     );
+    if (libre) chemin.duree = Math.max(chemin.duree, chemin.longueur / VITESSE);
     a.y = 0;
     if (!anime || chemin.longueur < 0.05) {
       const fin = chemin.points[chemin.points.length - 1];
@@ -784,6 +810,8 @@ export async function creeCarte(THREE, options) {
   };
   const dansParcelle = (p, pa) =>
     pa && Math.abs(p[0] - pa.position[0]) < 7 && Math.abs(p[1] - pa.position[2]) < 7.5; // sa parcelle, dans sa rangee
+  const horsChantier = ([x, z]) =>
+    x < imp.chantier.x[0] || x > imp.chantier.x[1] || z < imp.chantier.z[0] || z > imp.chantier.z[1];
   // un trajet dans le chantier : droit dans sa parcelle, sinon par l'allee
   function trajet(a, vers, pa) {
     if (dansParcelle(a.pos, pa) && dansParcelle(vers, pa)) return [vers];
@@ -823,9 +851,10 @@ export async function creeCarte(THREE, options) {
     if (!anime) {
       placeActeur(a, t.vers);
       arrive();
-    } else marche(a, trajet(a, t.vers, pa), arrive, t.porte ? "carry" : "walk");
+    } else marche(a, trajet(a, t.vers, pa), arrive, t.porte ? "carry" : "walk", horsChantier(a.pos));
   }
-  function pause(v, k) {
+  // direct : une scene posee telle quelle, l'equipe est deja au cabanon ; jouee, elle y va a pied
+  function pause(v, k, direct = false) {
     const place = placeLibre(v.spec.cle, placeDePause(v.spec, k, imp.points.rassemblement), 0);
     const reste = () => {
       const e = etatDePause(v.spec, v.n++);
@@ -843,10 +872,10 @@ export async function creeCarte(THREE, options) {
     };
     v.a.attente = 0;
     v.a.m.inst.root.visible = true;
-    if (!anime) {
+    if (!anime || direct) {
       placeActeur(v.a, place);
       reste();
-    } else marche(v.a, trajet(v.a, place, null), reste);
+    } else marche(v.a, trajet(v.a, place, null), reste, "walk", true);
   }
   // les ouvriers et usagers voulus par une scene (le regime peut etre celui d'une action en cours de lecture)
   const voulusPar = (scene) => [
@@ -878,11 +907,13 @@ export async function creeCarte(THREE, options) {
   function vie(scene, transition) {
     const ancien = regime;
     regime = scene.regime;
-    if (ancien !== regime)
+    if (ancien !== regime) {
       for (const m of membres.values()) {
         if (m.id === "floodlight") projecteurDe(m);
-        if (m.id === "site-fence") portailDe(m, transition);
+        if (m.id === "party-shed") feteDe(m, transition);
       }
+      portails(transition);
+    }
     const specs = new Map(voulusPar(scene).map((s) => [s.cle, s]));
     let k = 0;
     for (const [cle, v] of [...vivants]) {
@@ -893,7 +924,7 @@ export async function creeCarte(THREE, options) {
         v.a.suite = null;
         if (v.pret && transition && anime && !v.usager) {
           v.a.attente = 0;
-          marche(v.a, trajet(v.a, imp.points.vestiaire, null), () => retire(cle));
+          marche(v.a, trajet(v.a, imp.points.vestiaire, null), () => retire(cle), "walk", horsChantier(v.a.pos));
         } else retire(cle);
         continue;
       }
@@ -912,7 +943,7 @@ export async function creeCarte(THREE, options) {
         placeActeur(v.a, v.usager ? porteBatiment(spec.batiment) : transition && anime ? imp.points.vestiaire : abordsDe(spec.batiment).pied[spec.rang % 5]);
       }
       v.n = 0;
-      if (regime === "pause" && !v.usager) pause(v, k++);
+      if (regime === "pause" && !v.usager) pause(v, k++, !transition);
       else tacheSuivante(v);
     }
   }
@@ -938,6 +969,7 @@ export async function creeCarte(THREE, options) {
       if (r.rotation !== undefined) r.m.inst.root.rotation.y = r.rotation;
       r.fin?.();
     }
+    if (portailEnAttente) portails(false);
     concilie(lu, false);
     vie(lu, false);
   }
@@ -1452,6 +1484,11 @@ export async function creeCarte(THREE, options) {
         }
       }
       for (const a of [...acteurs.values()]) if (avance(a, dt)) encore = true;
+      if (portailEnAttente && !ouvriersEnMarche()) {
+        portailEnAttente = false;
+        for (const m of membres.values()) if (m.id === "site-fence") portailDe(m, true);
+        encore = true;
+      }
       // l'anneau de la selection suit l'agent choisi ; il respire, comme celui du survol
       if (choixAgent && membres.has(choixAgent.cle)) aSesPieds(anneauChoix.petit, choixAgent);
       if (anneauChoix) for (const r of Object.values(anneauChoix)) if (r.update(dt)) encore = true;

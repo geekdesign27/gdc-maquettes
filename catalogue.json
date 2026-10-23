@@ -1822,7 +1822,7 @@
       "category": "site",
       "name": "Le cabanon de la fête",
       "purpose": "Montrer la pause : le chantier est fermé et l'équipe fait la fête au cabanon en attendant ta décision.",
-      "description": "Un petit cabanon en bois, avec un auvent et une table haute. Sous l'auvent, une lanterne à facettes tourne lentement (un tour en 8 secondes environ) et projette trois taches de couleur qui glissent au sol et sur le mur : elles ne s'allument et ne s'éteignent jamais, donc aucun flash (WCAG 2.3.1). Des notes de musique, des formes en 3D et non une police, montent doucement depuis la porte et s'effacent, trois au plus à la fois. Les trois teintes de fête sont des lumières (bloc fete de src/lumiere.json), choisies loin des six couleurs d'état et des couleurs d'équipe (ΔE 2000 d'au moins 20, mesuré) et proposées sur planche à Pierre-Alain. L'assemblage le pose près de la baraque, hors de la clôture (à confirmer sur la scène de référence) ; en régime pause, les ouvriers s'y rassemblent (talk, idle, jamais celebrate, qui reste aux agents) ; les agents restent où GDC les place. Fiche validée par Pierre-Alain le 21 octobre 2026.",
+      "description": "Un petit cabanon en bois, avec un auvent et une table haute. Sous l'auvent, une lanterne à facettes tourne lentement (un tour en 8 secondes environ) et projette trois taches de couleur qui glissent au sol et sur le mur : elles ne s'allument et ne s'éteignent jamais, donc aucun flash (WCAG 2.3.1). Des notes de musique, des formes en 3D et non une police, montent doucement depuis la porte et s'effacent, trois au plus à la fois. Les trois teintes de fête sont des lumières (bloc fete de src/lumiere.json), choisies loin des six couleurs d'état et des couleurs d'équipe (ΔE 2000 d'au moins 20, mesuré) et proposées sur planche à Pierre-Alain. L'assemblage le pose près de la baraque, hors de la clôture (à confirmer sur la scène de référence) ; en régime pause, les ouvriers s'y rassemblent (talk, idle, jamais celebrate, qui reste aux agents) ; les agents restent où GDC les place. Fiche validée par Pierre-Alain le 21 octobre 2026. Choix de Pierre-Alain du 23 octobre 2026 : les trois teintes magenta #FF3DCB, cyan ciel #2EDCFF et vert lime #9CFF4A (ΔE 2000 de 24,7 au moins) ; une note s'efface en rapetissant ; le cabanon est posé près de la zone des transformations (au fond à droite, l'avant vers la voie), l'équipe y sort par le portail, qui se ferme une fois qu'elle est passée.",
       "params": {},
       "states": [
         "closed",
@@ -1847,7 +1847,12 @@
       "status": "à faire",
       "role": "modeleur",
       "data": {},
-      "production": "mixte"
+      "production": "mixte",
+      "version": "1.0.0",
+      "blender": "ENV_PARTY_SHED_A_v001",
+      "assets": [
+        "ENV_PARTY_SHED_A_v001.glb"
+      ]
     },
     {
       "id": "city-car",

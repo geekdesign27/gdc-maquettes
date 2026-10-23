@@ -20,6 +20,7 @@
   },
   "fenetres": { "commentaire": "Les vitres eclairees la nuit, sur des copies des materiaux de vitre : faiblement sur tout batiment habite et tout bureau, franchement la ou un agent travaille. Blanc chaud, jamais une couleur d'etat. Intensites : la part emissive, de 0 a 1.", "couleur": "#FFE4B5", "faible": 0.4, "franche": 1.0 },
   "projecteurs": { "commentaire": "La lumiere des projecteurs de chantier (floodlight) : blanche, un peu plus froide que les fenetres.", "couleur": "#EEF2F6" },
+  "fete": { "commentaire": "Les lumieres du cabanon de la fete (party-shed) : la lanterne, ses trois taches et les notes, une teinte chacune. Loin des six couleurs d'etat et des cinq couleurs d'equipe (Delta E 2000 de 24,7 au moins, mesure le 23 octobre 2026) ; magenta, cyan ciel et vert lime, validees par Pierre-Alain le 23 octobre 2026. Opacite : celle des taches au sol et sur le mur, posees par-dessus le sol (et non ajoutees, pour que leur couleur se lise aussi de jour sur un sol clair).", "couleurs": ["#FF3DCB", "#2EDCFF", "#9CFF4A"], "opacite": 0.6 },
   "cibles": {
     "commentaire": "Le cube etalon en MAT_CONCRETE : valeur de chaque face rapportee a celle du dessus ; le dessus vaut la couleur de palette a 3 % pres.",
     "tolerance": 0.03,

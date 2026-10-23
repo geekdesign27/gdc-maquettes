@@ -71,6 +71,11 @@ const AVANT_2 = 72.5; // le bord avant du chantier a deux rangees (54,5 a une ra
 const X_LIAISON = 31.4; // le chemin qui descend de l'allee a l'allee de la deuxieme rangee, le long de l'entree
 const Z_ROUTE = 26; // l'axe de la route entre les transformations et les bureaux
 const X_ROUTE = 27; // l'axe de la route entre les bureaux et le chantier
+// Le cabanon de la fete (party-shed, lot G8) : au fond a droite de la zone des transformations, le seul coin libre que
+// rien ne cache a la camera (choix de Pierre-Alain du 23 octobre 2026 : « pres de la zone transformation ») ; son avant
+// (+Z du composant) tourne vers la voie qui descend du carrefour. En pause, l'equipe se rassemble devant son auvent, au
+// bord de la voie (son ancre gather).
+const FETE = { position: [21.9, 0, 10.95], rotation: Math.PI / 2, rassemblement: [24.4, 11.15] };
 
 const centre = (a) => (a[0] + a[1]) / 2;
 const long = (a) => a[1] - a[0];
@@ -255,8 +260,10 @@ export function implantation(applications = 1, types = null, densite = DENSITE_P
     cloture(CHANTIER, "fence:avant", "z+", CHANTIER.x),
   ];
 
-  // Le decor du chantier : le stock et les bennes de tri, toujours la.
+  // Le decor du chantier : le stock et les bennes de tri, toujours la ; le cabanon de la fete, hors de la cloture, qui
+  // garde ses couleurs dans une zone encore grise (couleur) : c'est lui qui dit la pause.
   const decor = [
+    { cle: "party-shed", id: "party-shed", position: FETE.position, rotation: FETE.rotation, couleur: true },
     {
       cle: "material-storage",
       id: "material-storage",
@@ -348,13 +355,13 @@ export function implantation(applications = 1, types = null, densite = DENSITE_P
     Object.entries(LIEUX).map(([id, l]) => [id, { id, ...l }]),
   );
 
-  // Les points de la vie du chantier : le vestiaire (la baraque), le stock, la benne, le rassemblement de la pause (pres
-  // de la baraque, en attendant le cabanon party-shed) et le portail d'entree.
+  // Les points de la vie du chantier : le vestiaire (la baraque), le stock, la benne, le rassemblement de la pause (devant
+  // le cabanon de la fete) et le portail d'entree.
   const points = {
     vestiaire: lieux.baraque.porte,
     stock: [37.6, 49.4],
     benne: [43, 47.4],
-    rassemblement: [32.2, 43.6],
+    rassemblement: FETE.rassemblement,
     portail: [CHANTIER.x[0], centre(ENTREE)],
   };
 
@@ -411,6 +418,10 @@ function voies({ CHANTIER, ENTREE, sortie, lieux, parcelles }) {
   for (const id of verticaux) surVoie(id, lieux[id].porte[1]);
   surVoie("entree", centre(ENTREE));
   chaine(["carrefour", ...Object.values(points).filter((p) => p.x === X_ROUTE && p.z > Z_ROUTE).sort((a, b) => a.z - b.z).map((p) => p.id)]);
+  // vers le bas, la voie descend du carrefour jusqu'au cabanon de la fete
+  point("voie:fete", X_ROUTE, FETE.rassemblement[1]);
+  point("porte:fete", ...FETE.rassemblement);
+  chaine(["carrefour", "voie:fete", "porte:fete"]);
 
   // les portes des lieux hors du chantier
   for (const id of horizontaux) {
