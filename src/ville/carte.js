@@ -1413,6 +1413,14 @@ export async function creeCarte(THREE, options) {
         }
       }
       for (const a of [...acteurs.values()]) if (avance(a, dt)) encore = true;
+      // l'anneau de l'agent survole le suit ; un agent qui s'en va l'emporte
+      if (agentSurvole) {
+        if (!membres.has(agentSurvole.cle) || !visibleDe(agentSurvole.inst.root)) {
+          agentSurvole = null;
+          anneauAgent.setState("hidden");
+        } else anneauAgent.root.position.copy(agentSurvole.inst.root.position).setY(0);
+        if (anneauAgent.update(dt)) encore = true;
+      }
       for (const r of [...roulages]) {
         encore = true;
         r.t += dt;
@@ -1478,6 +1486,42 @@ export async function creeCarte(THREE, options) {
     },
     // Le point d'une ancre d'un element de GDC pose sur la carte (son badge, son label), dans le repere de la carte ;
     // null s'il n'est pas montre.
+    // Les agents de la carte, pour leur repere (agent-marker) et leur prise au pointeur (prise.js) : jamais d'ouvrier ni
+    // d'usager. id : celui de GDC ; personne : celui d'equipe.json (les portraits) ; tete : l'ancre label de character
+    // (2,05 m) ; pieds : sa place au sol ; les deux dans le repere de la carte, que l'hote projette a l'ecran.
+    agents() {
+      const liste = [];
+      for (const m of membres.values()) {
+        if (!m.acteur || m.vie || !m.el || !m.cle.startsWith("gdc:") || !visibleDe(m.inst.root)) continue;
+        let tete;
+        try {
+          tete = pointAncre(m, "label").applyMatrix4(plateau.matrix);
+        } catch {
+          continue;
+        }
+        liste.push({
+          id: m.el.id,
+          personne: personneDe(m.el)?.id ?? m.el.id,
+          name: m.el.nom || m.el.id,
+          state: m.state || m.el.etat,
+          tete,
+          pieds: m.inst.root.position.clone().applyMatrix4(plateau.matrix),
+        });
+      }
+      return liste;
+    },
+    // L'agent survole (la prise, cote carte) : l'anneau de selection, au survol et a l'encre, a ses pieds ; il le suit
+    // quand il marche. null : l'anneau s'en va.
+    async survoleAgent(id) {
+      if (!anneauAgent) {
+        anneauAgent = await cree("selection-ring", { radius: 0.55 });
+        plateau.add(anneauAgent.root);
+        anneauAgent.setState("hidden");
+      }
+      agentSurvole = id ? membres.get(`gdc:${id}`) || null : null;
+      anneauAgent.setState(agentSurvole ? "hover" : "hidden");
+      if (agentSurvole) anneauAgent.root.position.copy(agentSurvole.inst.root.position).setY(0);
+    },
     ancreElement(id, nom = "badge") {
       const m = membres.get(`gdc:${id}`);
       if (!m || !m.inst.root.visible) return null;
@@ -1753,10 +1797,17 @@ export async function creeCarte(THREE, options) {
       plan.dispose();
       cube.dispose();
       if (anneau) for (const r of Object.values(anneau)) r.dispose();
+      anneauAgent?.dispose();
       vitres.libere();
     },
   };
   let anneau = null;
+  let anneauAgent = null; // l'anneau de l'agent survole (agent-marker)
+  let agentSurvole = null;
+  const visibleDe = (o) => {
+    for (let x = o; x && x !== root; x = x.parent) if (!x.visible) return false;
+    return true;
+  };
 
   // un objet touche -> le membre qui le contient
   const parRacine = () =>

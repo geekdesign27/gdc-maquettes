@@ -14,6 +14,7 @@ import * as kit from './kit.js';
 import * as personnage from './personnage.js';
 import * as reference from './scene-reference.js';
 import { creeCarte } from './ville/carte.js';
+import { agentPris } from './ville/prise.js';
 import { MOMENTS, recetteDe, regleLumieres, creeVitres, eclaireBatiment, forceDe, ECLAIRABLES } from './ville/heure.js';
 import { defineElements, elements } from './interface.js';
 import { arbreDe } from './arbre.js';
@@ -761,12 +762,61 @@ function sousPointeur(ev) {
   // le premier element de GDC sous le pointeur : un ouvrier ou un usager qui passe devant un batiment ne le cache pas
   return current.ville ? current.ville.carte.designe(touches) : touches[0] || null;
 }
+// Le repere d'agent (agent-marker) et la prise, cote carte, comme GDC le fera : a chaque image, les agents de la carte
+// projetes a l'ecran (la tete, l'ancre label ; les pieds) ; le repere sur la tete ; le pointeur prend le plus proche a
+// moins de 12 px de sa silhouette ; cliquer un agent ou son repere est un gdc-select { id }, relaye comme les autres.
+let repereAgents = null;
+let agentsEcran = [];
+let agentSurvoleVille = null;
+let agentChoisi = null;
+function agentSousPointeur(ev) {
+  const r = stage.getBoundingClientRect();
+  return agentPris(agentsEcran, ev.clientX - r.left, ev.clientY - r.top);
+}
+function survoleAgent(id) {
+  if (id === agentSurvoleVille) return Boolean(id);
+  agentSurvoleVille = id;
+  current.ville?.carte.survoleAgent(id).then(() => { dirty = true; });
+  dirty = true;
+  return Boolean(id);
+}
+function choisitAgent(id) {
+  agentChoisi = agentsEcran.find((a) => a.id === id) || { id, name: id };
+  relaieChoix({ id }, { depuisCarte: true });
+  rapportVille();
+}
+function dessineAgents() {
+  if (!current.ville || !options.anchors || options.silhouette) {
+    repereAgents?.remove();
+    repereAgents = null;
+    agentsEcran = [];
+    return;
+  }
+  if (!repereAgents) {
+    repereAgents = document.createElement('gdc-agent-marker');
+    repereAgents.style.zIndex = '1'; // sur la carte, sous les panneaux de la ville
+    // le repere porte l'identifiant des portraits (equipe.json) ; GDC choisit par son identifiant a lui
+    repereAgents.addEventListener('gdc-select', (e) => {
+      const a = agentsEcran.find((x) => x.personne === e.detail.id);
+      if (a) choisitAgent(a.id);
+    });
+    stage.append(repereAgents);
+  }
+  agentsEcran = current.ville.carte.agents().map((a) => ({ ...a, tete: projette(a.tete), pieds: projette(a.pieds) }));
+  const survole = agentsEcran.find((a) => a.id === agentSurvoleVille);
+  repereAgents.data = {
+    agents: agentsEcran.map((a) => ({ id: a.personne, name: a.name, state: a.state, x: a.tete[0], y: a.tete[1] })),
+    hovered: survole ? survole.personne : null,
+  };
+}
 let appui = null;
 let survolVille = 'null';
 renderer.domElement.addEventListener('pointerdown', (ev) => { appui = [ev.clientX, ev.clientY]; });
 renderer.domElement.addEventListener('pointerup', async (ev) => {
   if (!current.ville || !appui || Math.hypot(ev.clientX - appui[0], ev.clientY - appui[1]) > 4) return;
   const { carte } = current.ville;
+  const agent = agentSousPointeur(ev);
+  if (agent) return choisitAgent(agent);
   const objet = sousPointeur(ev);
   const cible = carte.cible(objet);
   // l'etage touche s'ouvre ; le rez regroupe ou le batiment : l'etage en chantier le plus haut (building-interior 2.0.0).
@@ -786,12 +836,18 @@ renderer.domElement.addEventListener('pointerup', async (ev) => {
 });
 renderer.domElement.addEventListener('pointermove', (ev) => {
   if (!current.ville || ev.buttons) return;
+  // un agent a moins de 12 px de sa silhouette passe devant le batiment ou le decor qui est derriere lui (agent-marker)
+  if (survoleAgent(agentSousPointeur(ev))) {
+    if (survolVille !== 'null') { survolVille = 'null'; relaieSurvol('carte', null); }
+    return;
+  }
   const ref = current.ville.carte.refSous(sousPointeur(ev));
   if (JSON.stringify(ref) === survolVille) return;
   survolVille = JSON.stringify(ref);
   relaieSurvol('carte', ref);
 });
 renderer.domElement.addEventListener('pointerleave', () => {
+  if (current.ville) survoleAgent(null);
   if (!current.ville || survolVille === 'null') return;
   survolVille = 'null';
   relaieSurvol('carte', null);
@@ -946,6 +1002,7 @@ function dessineCadres(layer) {
   }
 }
 function drawAnchors() {
+  dessineAgents();
   const layer = $('anchors');
   if (!options.anchors || options.silhouette || !current.inst) { layer.replaceChildren(); etiquettes = { inst: null, tags: new Map(), cadres: null }; return; }
   if (etiquettes.inst !== current.inst) { layer.replaceChildren(); etiquettes = { inst: current.inst, tags: new Map(), cadres: null }; }
@@ -994,7 +1051,7 @@ function rapportVille() {
   const c = carte.compte();
   const e = index.etapes[etapes.indexOf(current.state)];
   const el = $('report');
-  el.replaceChildren(`${e.numero}. ${e.titre} · régime ${carte.regime} · ${c.agents} agents · ${c.ouvriers} ouvriers · ${c.usagers} usagers · ${m.triangles} triangles · ${m.materials} matériaux`);
+  el.replaceChildren(`${e.numero}. ${e.titre} · régime ${carte.regime} · ${c.agents} agents · ${c.ouvriers} ouvriers · ${c.usagers} usagers · ${m.triangles} triangles · ${m.materials} matériaux${agentChoisi ? ` · agent choisi : ${agentChoisi.name}` : ''}`);
   if (carte.signalements.length) {
     const s = document.createElement('span');
     s.className = 'ko';

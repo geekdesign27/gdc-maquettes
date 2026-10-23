@@ -17,6 +17,8 @@ import { makeContext } from '../src/tokens.js';
 import { measure } from '../src/contract.js';
 import { soleilDe, momentDe, recetteDe, passages, lumiere } from '../src/ville/heure.js';
 import palette from '../src/palette.json' with { type: 'json' };
+import reglages from '../src/lumiere.json' with { type: 'json' };
+import { agentPris, RAYON_PRISE } from '../src/ville/prise.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -600,6 +602,53 @@ for (const [nom, scenes] of Object.entries(sequences))
   o.avant(false);
   verifie(r.shadowMap.needsUpdate && !o.enRetard, "ombre : une image isolée ne refait pas l'ombre");
   rapports.push("ombre de l'hôte : refaite une image sur deux pendant une animation, toujours sur une image isolée");
+}
+
+// --- La prise d'un agent (fiche agent-marker) : sur la carte entiere d'un portable (la camera de la galerie, 1280 x 800),
+// a la reception attendue de projet-type (trois agents groupes a l'aire de reception), chaque agent se prend sur sa
+// silhouette et a 11 px d'elle, plus a 13 px ; jamais un ouvrier ni un usager. La prise se fait a l'ecran : l'agent passe
+// devant le batiment ou le decor derriere lui (l'hote la teste avant le rayon).
+{
+  const index = JSON.parse(await readFile(join(ROOT, 'fixtures', 'projet-type', 'index.json'), 'utf8'));
+  const pas = index.etapes.findIndex((e) => /réception est attendue/.test(e.titre));
+  verifie(pas >= 0, 'prise : projet-type n\'a plus de pas « réception attendue »');
+  const scene = sequences['projet-type'][pas];
+  const carte = await creeCarte(THREE, { components: modules, chargeur, theme: 'light', quality: 'high', reducedMotion: true });
+  await carte.applique(scene);
+  for (let t = 0; t < 30; t++) carte.update(1 / 30);
+  const [W, H] = [1280, 800];
+  const vue = 26; // le cadrage de la galerie pour une application
+  const camera = new THREE.OrthographicCamera(-vue * (W / H), vue * (W / H), vue, -vue, 0.1, 500);
+  camera.position.set(...reglages.camera.position).multiplyScalar(4);
+  camera.lookAt(...reglages.camera.cible);
+  camera.updateMatrixWorld();
+  carte.root.updateMatrixWorld(true);
+  const ecran = (v) => {
+    const p = v.clone().applyMatrix4(carte.root.matrixWorld).project(camera);
+    return [((p.x + 1) / 2) * W, ((1 - p.y) / 2) * H];
+  };
+  const agents = carte.agents().map((a) => ({ ...a, tete: ecran(a.tete), pieds: ecran(a.pieds) }));
+  const lu = lisScene(scene, connus);
+  verifie(agents.length === lu.personnages.length, `prise : ${agents.length} agents pour ${lu.personnages.length} dans la scène (jamais un ouvrier ni un usager)`);
+  const aLaReception = agents.filter((a) => lu.personnages.find((p) => p.id === a.id)?.lieu === 'aire-reception');
+  verifie(aLaReception.length === 3, `prise : ${aLaReception.length} agents à la réception au lieu de 3`);
+  const taille = agents.map((a) => Math.hypot(a.tete[0] - a.pieds[0], a.tete[1] - a.pieds[1]));
+  for (const a of agents) {
+    const milieu = [(a.tete[0] + a.pieds[0]) / 2, (a.tete[1] + a.pieds[1]) / 2];
+    verifie(agentPris(agents, ...milieu) === a.id, `prise : sur sa silhouette, ${a.id} n'est pas pris (${agentPris(agents, ...milieu)})`);
+    // de cote, la ou aucun autre agent n'est plus pres
+    for (const cote of [-1, 1]) {
+      const pres = [milieu[0] + cote * (RAYON_PRISE - 1), milieu[1]];
+      const loin = [milieu[0] + cote * (RAYON_PRISE + 1), milieu[1]];
+      const seul = agents.every((b) => b === a || Math.hypot(b.tete[0] - pres[0], b.tete[1] - pres[1]) > 2 * RAYON_PRISE + 2);
+      if (!seul) continue;
+      verifie(agentPris(agents, ...pres) === a.id, `prise : à ${RAYON_PRISE - 1} px de ${a.id}, rien n'est pris`);
+      verifie(agentPris(agents, ...loin) === null, `prise : à ${RAYON_PRISE + 1} px de ${a.id}, un agent est pris`);
+    }
+  }
+  // trois agents groupes : chacun se prend sur sa propre silhouette, aucun ne cache l'autre
+  rapports.push(`prise d'un agent : ${agents.length} agents de projet-type « ${index.etapes[pas].titre} », dont 3 groupés à la réception, pris sur leur silhouette (${Math.min(...taille).toFixed(0)} à ${Math.max(...taille).toFixed(0)} px de haut) et à ${RAYON_PRISE - 1} px, pas à ${RAYON_PRISE + 1}`);
+  carte.dispose();
 }
 
 // --- Le verdict
