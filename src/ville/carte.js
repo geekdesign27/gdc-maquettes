@@ -8,8 +8,8 @@
 // - l'heure reelle (fiche day-night, heure.js) : la lumiere suit le soleil de Fribourg sur l'heure du poste, et la nuit
 //   les fenetres des bureaux et des batiments habites s'eclairent, franchement la ou un agent travaille.
 // Les composants n'en savent rien : la carte les cree, les pose, leur donne un etat, et recolore des copies de leurs
-// materiaux (zones grises, remplacants des ouvriers et des usagers). Three.js, le chargeur des modeles et les
-// composants sont injectes ; rien n'est charge d'ailleurs.
+// materiaux (zones grises) ; la nuit, elle allume la lampe frontale des personnes casquees qui sont dehors. Three.js,
+// le chargeur des modeles et les composants sont injectes ; rien n'est charge d'ailleurs.
 import {
   implantation,
   abords,
@@ -34,6 +34,8 @@ import {
   parametresOuvrier,
   parametresUsager,
   metaPersonne,
+  porteCasque,
+  COLORIS_VILLE,
 } from "./equipe.js";
 import { alea } from "./graine.js";
 import {
@@ -55,13 +57,6 @@ import {
   eclaireBatiment,
 } from "./heure.js";
 
-// Les remplacants, en attendant character 1.2.0 (worker et civilian) : la carte recolore des copies des materiaux de la
-// tenue du chef d'equipe (casque et gilet) et de la tenue de ville du client. A retirer avec la 1.2.0 (fiche city-map).
-export const REMPLACANTS = {
-  casque: "#8E959C", // casque gris (docs/vie-du-chantier.md, section 3)
-  gilet: "#D7EC23", // gilet jaune fluo
-  usagers: ["#D9765F", "#9C4F7A", "#7FA7C9"], // coloris de ville provisoires : ni graphite, ni equipe, ni etat
-};
 const RECUL = 2; // comme la scene de reference : la carte descend d'environ 1,6 m a l'ecran
 const FONDU_ZONE = 1.5; // s, la couleur qui arrive une fois
 const IMPULSION = 0.4; // s, un element qui apparait ou s'efface
@@ -249,7 +244,10 @@ export async function creeCarte(THREE, options) {
             : "aube";
     if (j === jour) return false;
     jour = j;
-    for (const m of membres.values()) if (m.id === "floodlight") projecteurDe(m);
+    for (const m of membres.values()) {
+      if (m.id === "floodlight") projecteurDe(m);
+      if (m.casque) lampeDe(m);
+    }
     const r = recetteDe(j, fondTheme);
     if (options.lumieres) regleLumieres(options.lumieres, r);
     vitres.regle(r.fenetres);
@@ -288,6 +286,16 @@ export async function creeCarte(THREE, options) {
     m.state = s;
   }
 
+  // la lampe frontale (character 1.2.0) : allumee la nuit, comme les projecteurs (le jour sous 0,5), pour toute personne
+  // casquee qui est dehors (m.casque) ; eteinte dans un bureau, a son poste (m.auBureau). Rien ne clignote.
+  function lampeDe(m) {
+    const voulue = jour !== null && jour < 0.5 && !m.auBureau;
+    m.inst.root.userData.villeAuBureau = !!m.auBureau; // pour le controle de la carte
+    if (m.lampe === voulue) return;
+    m.lampe = voulue;
+    m.inst.setState(m.state || "idle", { headlamp: voulue });
+  }
+
   // --- les membres : une instance chacun, avec sa zone et, pour un element de GDC, l'element recu
   const membres = new Map(); // cle -> { cle, id, inst, zone, el, lieu, acteur, sortie }
   function pose(cle, id, inst, position = [0, 0, 0], rotation = 0) {
@@ -307,6 +315,7 @@ export async function creeCarte(THREE, options) {
   function etat(m, state, data) {
     m.inst.setState(state, data);
     m.state = state;
+    if (m.casque) lampeDe(m);
     grise(m.inst.root, m.zone); // un composant peut refaire ses maillages a chaque etat (building)
     fenetresDe(m);
   }
@@ -550,8 +559,9 @@ export async function creeCarte(THREE, options) {
     if (facing !== undefined)
       a.m.inst.setState(a.m.state || "idle", { facing });
   }
-  // marcher le long de points du sol, puis apres() ; sans animation, on y est tout de suite
-  function marche(a, points, apres) {
+  // marcher le long de points du sol, puis apres() ; sans animation, on y est tout de suite. clip : walk, ou carry pour
+  // un ouvrier qui porte (character 1.2.0)
+  function marche(a, points, apres, clip = "walk") {
     const chemin = mesure(
       [a.pos, ...points].filter(
         (p, i, l) => i === 0 || dist(l[i - 1], p) > 1e-6,
@@ -564,11 +574,13 @@ export async function creeCarte(THREE, options) {
       apres?.();
       return 0;
     }
-    a.marche = { chemin, t: 0 };
+    a.marche = { chemin, t: 0, clip };
     a.apres = apres;
     a.m.inst.root.visible = true;
-    a.m.inst.setState("walk", { facing: positionSur(chemin, 0)[2] });
-    a.m.state = "walk";
+    a.m.auBureau = false; // en marche, on est dehors
+    a.m.inst.setState(clip, { facing: positionSur(chemin, 0)[2] });
+    a.m.state = clip;
+    if (a.m.casque) lampeDe(a.m);
     return chemin.duree;
   }
   function avance(a, dt) {
@@ -578,7 +590,7 @@ export async function creeCarte(THREE, options) {
       const [x, z, cap] = positionSur(a.marche.chemin, f);
       a.pos = [x, z];
       a.m.inst.root.position.set(x, 0, z);
-      a.m.inst.setState("walk", { facing: cap }); // le meme etat ne relance pas le clip : seul le regard tourne
+      a.m.inst.setState(a.marche.clip, { facing: cap }); // le meme etat ne relance pas le clip : seul le regard tourne
       if (f >= 1) {
         a.marche = null;
         const apres = a.apres;
@@ -647,7 +659,8 @@ export async function creeCarte(THREE, options) {
       for (const nom of [`desk:${rang + 1}`, `crew:${rang + 1}`]) {
         try {
           const v = pointAncre(mf, nom);
-          return { pos: [v.x, v.z], y: 0, facing: ANGLE_BUREAU };
+          // desk:n est dedans, a un poste ; crew:n, devant la baraque, est dehors (la lampe frontale)
+          return { pos: [v.x, v.z], y: 0, facing: ANGLE_BUREAU, auBureau: nom.startsWith("desk:") };
         } catch {
           /* poste suivant */
         }
@@ -707,6 +720,7 @@ export async function creeCarte(THREE, options) {
   function installeAgent(a, p) {
     const poste = posteAgent(p);
     placeActeur(a, poste.pos, poste.y);
+    a.m.auBureau = !!poste.auBureau;
     a.m.inst.root.visible = true;
     etat(a.m, etatValide(p), { facing: poste.facing });
   }
@@ -724,6 +738,7 @@ export async function creeCarte(THREE, options) {
     a.m.inst.root.visible = true;
     return marche(a, [...voie, poste.pos], () => {
       placeActeur(a, poste.pos, poste.y);
+      a.m.auBureau = !!poste.auBureau;
       etat(a.m, etatValide(p), { facing: poste.facing });
     });
   }
@@ -790,7 +805,7 @@ export async function creeCarte(THREE, options) {
     if (!anime) {
       placeActeur(a, t.vers);
       arrive();
-    } else marche(a, trajet(a, t.vers, pa), arrive);
+    } else marche(a, trajet(a, t.vers, pa), arrive, t.porte ? "carry" : "walk");
   }
   function pause(v, k) {
     const place = placeLibre(v.spec.cle, placeDePause(v.spec, k, imp.points.rassemblement), 0);
@@ -826,40 +841,18 @@ export async function creeCarte(THREE, options) {
       if (vivants.has(spec.cle)) continue;
       const usager = spec.cle.startsWith("usager:");
       const tirage = alea(`${spec.graine}:visage`);
-      const params = usager ? parametresUsager(tirage) : parametresOuvrier(tirage, spec.phase === "excavation" && spec.rang === 0);
+      const params = usager
+        ? parametresUsager(tirage, COLORIS_VILLE[spec.rang % COLORIS_VILLE.length])
+        : parametresOuvrier(tirage, spec.phase === "excavation" && spec.rang === 0);
       const inst = await cree("character", params, true);
       const m = pose(spec.cle, "character", inst, [0, 0, 0]);
       m.zone = null;
       m.vie = true;
-      m.copies = remplace(inst.root, usager ? REMPLACANTS.usagers[spec.rang % 3] : null);
+      m.casque = porteCasque(params);
       inst.root.visible = false;
       etat(m, "idle", {});
       vivants.set(spec.cle, { spec, a: acteur(m), n: 0, usager, pret: false });
     }
-  }
-  // les remplacants : copies des materiaux de la tenue, recolorees (casque et gilet de l'ouvrier, tenue de l'usager) ;
-  // avec le registre, une meme tenue partage sa copie (elle n'est pas rendue dans copies, que la carte libere)
-  function remplace(objet, teinteUsager) {
-    const copies = new Map();
-    const teinte = (m, hex) => {
-      if (registre) return registre.teinte(m, hex);
-      if (!copies.has(m)) {
-        const c = m.clone();
-        c.color = new THREE.Color(hex);
-        copies.set(m, c);
-      }
-      return copies.get(m);
-    };
-    objet.traverse((o) => {
-      if (!o.isMesh) return;
-      const nom = o.material.name;
-      if (teinteUsager) {
-        if (nom === "MAT_FABRIC_GRAPHITE") o.material = teinte(o.material, teinteUsager);
-      } else if (nom === "MAT_FABRIC_SITE") o.material = teinte(o.material, REMPLACANTS.casque);
-      else if (nom === "MAT_FABRIC_HIVIS") o.material = teinte(o.material, REMPLACANTS.gilet);
-      o.userData.villePropre = true;
-    });
-    return [...copies.values()];
   }
   // Le regime s'applique : ouverture (on sort du vestiaire), ouvert, pause (au rassemblement), fermeture (on rentre au
   // vestiaire). transition : un passage joue (une action de GDC), et non l'etat d'une scene posee telle quelle.
@@ -963,6 +956,7 @@ export async function creeCarte(THREE, options) {
             await cree("character", params, true),
           );
           m.zone = null;
+          m.casque = porteCasque(params);
           m.inst.root.visible = false;
           m.el = el;
           acteur(m);

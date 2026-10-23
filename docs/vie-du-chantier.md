@@ -44,7 +44,7 @@ Un lot bloqué (la barrière `blocked-sign`) ne change pas le régime : seule l'
 
 ## 3. Les ouvriers
 
-**La tenue** : bleu de travail graphite, **casque gris #8E959C**, **gilet jaune fluo #D7EC23** à bandes claires. Le jaune fluo fait partie des couleurs admises pour la haute visibilité (Suva : « orange, jaune ou rouge », bible 18.8).
+**La tenue** : bleu de travail graphite, **casque gris #8E959C** (devenu le gris chaud #8C807A à la fabrication, le 23 octobre 2026 : #8E959C était à ΔE 1,7 du gris de l'état « Inconnu »), **gilet jaune fluo #D7EC23** à bandes claires. Le jaune fluo fait partie des couleurs admises pour la haute visibilité (Suva : « orange, jaune ou rouge », bible 18.8).
 
 **Pourquoi ces deux couleurs fonctionnent** (écarts ΔE 2000, mesurés comme en 18.8) :
 - un agent porte le casque de son équipe et, pour l'équipe site, le gilet orange #FF6A13 ; un ouvrier porte le casque gris et le gilet jaune ; on les distingue d'un coup d'œil (gilet jaune et gilet orange : 50,9) ;
@@ -59,7 +59,7 @@ Un lot bloqué (la barrière `blocked-sign`) ne change pas le régime : seule l'
 
 ## 4. Le travail des ouvriers, phase par phase
 
-Les animations existent déjà (`walk`, `work`, `inspect`, `talk`, `waiting`, `idle`), sauf **porter** (`carry`), à créer. Chaque ouvrier enchaîne de petites tâches de 8 à 20 secondes, avec des pauses. Une graine propre au bâtiment et à sa phase les décale, pour que deux ouvriers ne soient jamais synchronisés.
+Les animations existent (`walk`, `work`, `inspect`, `talk`, `waiting`, `idle`) ; **porter** (`carry`, un sac de ciment tenu devant le ventre) est livrée avec `character` 1.2.0 et sert aux trajets du stock vers le poste et vers la benne. Chaque ouvrier enchaîne de petites tâches de 8 à 20 secondes, avec des pauses. Une graine propre au bâtiment et à sa phase les décale, pour que deux ouvriers ne soient jamais synchronisés.
 
 | Phase du bâtiment | Ouvriers | Ce qu'ils font | Engins |
 |---|---|---|---|

@@ -554,6 +554,38 @@ for (const [nom, scenes] of Object.entries(sequences))
   rapports.push(`projecteurs : ${implantation(3, ['house', 'block', 'hall']).projecteurs.length} pour trois applications (densité ${DENSITE_PROJECTEURS}), dans leur zone, hors des voies, des clôtures et des parcelles ; allumés la nuit en régime ouvert dans une zone en couleur`);
 }
 
+// --- La lampe frontale et les personnes de la vie du chantier (character 1.2.0, plan D-3) : la nuit, toute personne
+// casquee qui est dehors a sa lampe allumee, aucune de jour, aucune a son poste dans un bureau, aucune sans casque ;
+// les ouvriers sont des worker (plus de tenue de chef d'equipe recoloree), les usagers des civilian
+{
+  const personnes = (carte) => {
+    const l = [];
+    carte.root.traverse((o) => { if (o.userData.component === 'character' && o.visible) l.push(o); });
+    return l;
+  };
+  const lampe = (r) => !!r.getObjectByName('PRP_CHR_HEADLAMP_LENS');
+  const casque = (r) => !!r.getObjectByName('CHR_BASE_MASTER_HELMET');
+  const auBureau = (r) => r.userData.villeAuBureau === true; // a un poste desk:n (crew:n, devant la baraque, est dehors)
+  const s8 = sequences['trois-applications'][7];
+  const carte = await creeCarte(THREE, { components: modules, chargeur, theme: 'light', quality: 'high', reducedMotion: true, heure: 'nuit' });
+  await carte.applique(s8);
+  const ps = personnes(carte);
+  const dehors = ps.filter((r) => casque(r) && !auBureau(r));
+  const allumees = () => personnes(carte).filter(lampe).length;
+  verifie(dehors.length > 0 && dehors.every(lampe), `lampe frontale : la nuit, ${dehors.filter((r) => !lampe(r)).length} personne(s) casquée(s) dehors sans lampe sur ${dehors.length}`);
+  verifie(!ps.some((r) => !casque(r) && lampe(r)), 'lampe frontale : une personne sans casque a une lampe');
+  verifie(!ps.some((r) => auBureau(r) && lampe(r)), 'lampe frontale : allumée à un poste de bureau');
+  verifie(ps.some(auBureau), "lampe frontale : aucun agent à un poste de bureau dans la scène d'essai");
+  const ouvriers = ps.filter((r) => r.getObjectByName('CHR_OUTFIT_WORKER_VEST'));
+  verifie(ouvriers.length > 0 && ouvriers.every(casque), `ouvriers : ${ouvriers.length} en tenue d'ouvrier, tous casqués`);
+  carte.regleHeure('jour');
+  verifie(allumees() === 0, `lampe frontale : ${allumees()} allumée(s) de jour`);
+  carte.regleHeure('nuit');
+  verifie(allumees() === dehors.length, 'lampe frontale : la nuit revenue, les lampes ne se rallument pas');
+  carte.dispose();
+  rapports.push(`lampe frontale : ${dehors.length} personnes casquées dehors la nuit (trois-applications 08), toutes allumées, aucune de jour ni au bureau ; ${ouvriers.length} ouvriers en tenue worker`);
+}
+
 // --- L'ombre de l'hote (plan D-1c) : une image sur deux pendant une animation, toujours sur une image isolee
 {
   const { ombreAlternee } = await import('../src/ombre.js');

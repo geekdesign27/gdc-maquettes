@@ -2,10 +2,15 @@
 // usagers de la vie du chantier. Les parametres sont ceux que le composant character recoit ; il ne sait pas qui il
 // represente.
 import equipe from "../../components/kit/character-kit/equipe.json" with { type: "json" };
-import { fichiersDe } from "../../components/character/character/habillage.js";
+import {
+  fichiersDe,
+  porteCasque,
+} from "../../components/character/character/habillage.js";
 import { choisis } from "./graine.js";
 
 export const PERSONNES = equipe.personnes;
+export { porteCasque };
+export const COLORIS_VILLE = ["a", "b", "c"]; // les trois coloris de la tenue de ville (character 1.2.0)
 const parId = new Map(PERSONNES.map((p) => [p.id, p]));
 
 // Les roles de GDC qui ne se reconnaissent pas au prenom (schema 3 : role d'un personnage).
@@ -77,19 +82,25 @@ function visage(alea) {
   };
 }
 
-// L'ouvrier, en attendant character 1.2.0 (worker) : la tenue du chef d'equipe (bleu de travail et gilet), que
-// l'assemblage recolore (casque gris, gilet jaune fluo). Le signaleur garde le talkie-walkie.
+// L'ouvrier (character 1.2.0, worker) : bleu de travail graphite, gilet jaune fluo, casque gris. Le signaleur garde le
+// talkie-walkie.
 export function parametresOuvrier(alea, radio = false) {
   return {
-    trade: "foreman",
-    team: "site",
+    trade: "worker",
+    team: "none",
     tool: radio ? "radio" : "none",
     ...visage(alea),
   };
 }
 
-// L'usager, en attendant character 1.2.0 (civilian) : la tenue de ville du client, sans casque, que l'assemblage
-// recolore dans un coloris vif pour que le client reste le seul en civil graphite.
-export function parametresUsager(alea) {
-  return { trade: "client", team: "none", tool: "none", ...visage(alea) };
+// L'usager ou le badaud (character 1.2.0, civilian) : la tenue de ville, sans casque, dans un des trois coloris vifs,
+// pour que le client reste le seul en civil graphite.
+export function parametresUsager(alea, coloris = "a") {
+  return {
+    trade: "civilian",
+    team: "none",
+    tool: "none",
+    outfitColor: coloris,
+    ...visage(alea),
+  };
 }

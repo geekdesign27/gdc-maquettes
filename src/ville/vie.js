@@ -99,9 +99,10 @@ export function usagers(lu, { quality = "high", graine = "gdc" } = {}) {
   return liste;
 }
 
-// La tache numero n d'un ouvrier, rejouable : { vers, etat, duree, dedans?, echafaudage? }. vers : un point du sol
-// [x, z] ; echafaudage : l'etage ou il travaille (l'assemblage le pose a sa hauteur) ; dedans : il entre par la porte
-// et ne se voit plus le temps de la tache.
+// La tache numero n d'un ouvrier, rejouable : { vers, etat, duree, dedans?, echafaudage?, porte? }. vers : un point du
+// sol [x, z] ; echafaudage : l'etage ou il travaille (l'assemblage le pose a sa hauteur) ; dedans : il entre par la
+// porte et ne se voit plus le temps de la tache ; porte : il y va en portant (carry, character 1.2.0), du stock a son
+// poste ou vers la benne.
 // parcelle : implantation().parcelles[k] ; abords : abords(parcelle, type) ; points : implantation().points ; porte :
 // la porte du batiment [x, z].
 export function tache(ouvrier, n, { parcelle, abords, points, porte }) {
@@ -115,7 +116,7 @@ export function tache(ouvrier, n, { parcelle, abords, points, porte }) {
   if (ouvrier.rangement)
     return pair
       ? { vers: pied(), etat: "work", duree }
-      : { vers: points.benne, etat: "work", duree };
+      : { vers: points.benne, etat: "work", duree, porte: true };
   switch (ouvrier.phase) {
     case "excavation":
       // un signaleur reste pres de la pelle et parle a la radio ; l'autre controle le niveau au bord de la fouille
@@ -127,7 +128,7 @@ export function tache(ouvrier, n, { parcelle, abords, points, porte }) {
     case "foundations":
       // ils portent les planches du stock a la fouille, puis travaillent au sol
       return pair
-        ? { vers: pied(), etat: "work", duree }
+        ? { vers: pied(), etat: "work", duree, porte: n > 0 }
         : { vers: points.stock, etat: "work", duree: duree / 2 };
     case "structure":
       // un ouvrier au pied de la grue (quand GDC la pose) ; les autres sur l'echafaudage, au niveau en cours, et des
@@ -148,11 +149,12 @@ export function tache(ouvrier, n, { parcelle, abords, points, porte }) {
         echafaudage: ouvrier.etage,
         etat: "work",
         duree,
+        porte: n % 3 === 0 && n > 0, // il revient du stock
       };
     case "envelope":
       // sur l'echafaudage a differents niveaux ; un aller-retour vers la benne
       if (rang === 1 && !pair)
-        return { vers: points.benne, etat: "work", duree: duree / 2 };
+        return { vers: points.benne, etat: "work", duree: duree / 2, porte: true };
       return {
         vers: facade(),
         echafaudage: 1 + Math.floor(t() * Math.max(ouvrier.etage, 1)),
@@ -162,7 +164,7 @@ export function tache(ouvrier, n, { parcelle, abords, points, porte }) {
     case "finishing":
       // ils entrent et sortent par la porte du batiment ; un porte des dechets a la benne
       if (rang === 1 && !pair)
-        return { vers: points.benne, etat: "work", duree: duree / 2 };
+        return { vers: points.benne, etat: "work", duree: duree / 2, porte: true };
       return pair
         ? { vers: porte, etat: "work", duree, dedans: true }
         : { vers: pied(), etat: "work", duree };
