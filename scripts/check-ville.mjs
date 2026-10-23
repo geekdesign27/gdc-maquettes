@@ -749,6 +749,21 @@ for (const [nom, scenes] of Object.entries(sequences))
   const parPortrait = await carte.selectionne({ id: carte.agents().find((a) => a.id === unAgent.id).personne });
   verifie(parPortrait && parPortrait.agent === unAgent.id, 'sélection d\'un agent par son repère (equipe.json) : rien');
   verifie((await carte.selectionne({ id: 'rien-de-tel' })) === null && (await carte.selectionne(null)) === null, 'sélection inconnue : la carte va quelque part');
+  // un agent choisi dans un batiment dont la coupe est ouverte (l'arbre ouvre la coupe de sa fiche) : la carte va la ou
+  // il se tient vraiment, a sa piece ou sur le palier, et non a son poste dans le batiment cache (revue DA)
+  const dedans = lu.personnages.find((p) => p.batiment && p.etage);
+  if (dedans) {
+    const bd = lu.batiments.find((x) => x.id === dedans.batiment);
+    await carte.ouvreCoupe(bd.id, dedans.etage);
+    for (let t = 0; t < 30; t++) carte.update(1 / 30);
+    const sel = await carte.selectionne({ id: dedans.id, ref: { application: bd.ref?.application || bd.id, fiche: dedans.etage } });
+    const ou = carte.agents().find((a) => a.id === dedans.id);
+    verifie(sel && ou && sel.point.distanceTo(ou.pieds) < 1e-6, `sélection de ${dedans.id} dans la coupe ouverte : la carte ne va pas à ses pieds`);
+    const surLaFiche = await carte.selectionne({ id: dedans.etage, ref: { application: bd.ref?.application || bd.id, fiche: dedans.etage } });
+    verifie(surLaFiche && surLaFiche.coupe, 'sélection de la fiche dont la coupe est ouverte : la carte ne va pas à la coupe');
+    carte.fermeCoupe();
+    for (let t = 0; t < 90; t++) carte.update(1 / 30);
+  }
   rapports.push(`caméra qui suit : un saut sans animation, ${DUREE_SUIVI} s sinon, interrompue sans saut ; la carte choisit l'étage d'une fiche, la pièce d'un lot, le bâtiment d'une application, le centre de la zone d'une étape et un agent`);
   carte.dispose();
 }

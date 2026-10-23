@@ -1518,8 +1518,33 @@ export async function creeCarte(THREE, options) {
         const c = imp.cadres[ETAPES[n].zone];
         return { point: versCarte(new THREE.Vector3((c.x[0] + c.x[1]) / 2, 0, (c.z[0] + c.z[1]) / 2)), zone: ETAPES[n].zone };
       }
+      // un agent, par l'identifiant de GDC ou par celui d'equipe.json (son repere), avant la fiche ou il travaille : la
+      // carte va a lui, la ou il se tient vraiment (dans la coupe ouverte, a sa piece ou sur le palier)
+      const agent = [...membres.values()].find(
+        (m) => m.acteur && !m.vie && m.el && m.cle.startsWith("gdc:") && (m.el.id === detail.id || personneDe(m.el)?.id === detail.id),
+      );
+      if (agent) {
+        choixAgent = agent;
+        aSesPieds(anneauChoix.petit, agent);
+        anneauChoix.petit.setState("selected");
+        return { point: versCarte(agent.inst.root.position), agent: agent.el.id };
+      }
       // une reference : la piece, l'etage ou le batiment
       const ref = detail.ref;
+      // la coupe ouverte sur cette fiche : le batiment est cache, la carte va a la piece du lot, ou a la coupe
+      if (ref?.application && coupe && coupe.fiche !== undefined && ref.fiche === coupe.fiche) {
+        const bc = lu.batiments.find((x) => x.id === coupe.id);
+        if (bc && (bc.ref?.application || bc.id) === ref.application) {
+          coupe.inst.root.updateMatrix();
+          const k = (coupe.rooms || []).findIndex((r) => r.id === ref.lot);
+          if (k >= 0) {
+            const v = coupe.inst.anchor(`room:${k + 1}`).applyMatrix4(coupe.inst.root.matrix);
+            pose(anneauChoix.petit, v);
+            return { point: versCarte(v), ancre: `room:${k + 1}`, coupe: true };
+          }
+          return { point: versCarte(coupe.inst.root.position), ancre: null, coupe: true };
+        }
+      }
       if (ref?.application) {
         const b = lu.batiments.find((x) => (x.ref?.application || x.id) === ref.application);
         const m = b && membres.get(`gdc:${b.id}`);
@@ -1532,16 +1557,6 @@ export async function creeCarte(THREE, options) {
         const v = pointAncre(m, ancre);
         pose(anneauChoix.petit, v);
         return { point: versCarte(v), ancre };
-      }
-      // un agent, par l'identifiant de GDC ou par celui d'equipe.json (son repere)
-      const agent = [...membres.values()].find(
-        (m) => m.acteur && !m.vie && m.el && m.cle.startsWith("gdc:") && (m.el.id === detail.id || personneDe(m.el)?.id === detail.id),
-      );
-      if (agent) {
-        choixAgent = agent;
-        aSesPieds(anneauChoix.petit, agent);
-        anneauChoix.petit.setState("selected");
-        return { point: versCarte(agent.inst.root.position), agent: agent.el.id };
       }
       // un lieu fixe
       const lieu = membres.get(detail.id);

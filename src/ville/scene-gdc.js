@@ -33,6 +33,11 @@ export function phaseDe(batiment) {
       etage: 1,
     };
   const visibles = groupFloors(floorsFromEtages(etages), batiment.etat);
+  // building 2.0.0 : tant que le rez n'est pas debout (structure), les etages au-dessus attendent en plot ; la vie du
+  // chantier (ouvriers, grue) suit donc le rez, ce que le batiment montre (volume : un rez regroupe en plot sous des
+  // etages en envelope ne montre que des gabarits, et montait une grue)
+  if (STAGES.indexOf(visibles[0].stage) < STAGES.indexOf("structure"))
+    return { phase: visibles[0].stage, habite: false, etage: 1 };
   const enChantier = visibles.filter((f) => f.stage !== "completed");
   const habite = visibles.some((f) => f.stage === "completed");
   if (!enChantier.length)

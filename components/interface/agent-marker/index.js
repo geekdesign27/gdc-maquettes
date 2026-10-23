@@ -152,6 +152,13 @@ export function define(registry, ctx) {
 
     // Les reperes a montrer : les permanents, et celui qu'on survole ; places a l'ecran, puis regroupes s'ils se touchent
     #reperes() {
+      // un agent hors de la couche (la carte zoomee, un panneau devant) n'a pas de repere : plaque au bord, sa pointe ne
+      // viserait rien (revue DA)
+      const [largeur, hauteur] = [this.clientWidth, this.clientHeight];
+      const dedans = (a) =>
+        !largeur ||
+        !hauteur ||
+        (a.x >= 0 && a.x <= largeur && a.y >= 0 && a.y <= hauteur);
       const agents = (
         Array.isArray(this.#data.agents) ? this.#data.agents : []
       ).filter(
@@ -159,7 +166,8 @@ export function define(registry, ctx) {
           a &&
           a.id !== undefined &&
           nombre(a.x) !== null &&
-          nombre(a.y) !== null,
+          nombre(a.y) !== null &&
+          dedans(a),
       );
       const hovered = this.#data.hovered ?? null;
       const montres = agents
@@ -288,9 +296,15 @@ export function define(registry, ctx) {
       b.dataset.x = String(x);
       const l = b.offsetWidth || 120;
       const largeur = this.clientWidth;
-      const X = largeur > l + 4 ? Math.min(Math.max(x, l / 2 + 2), largeur - l / 2 - 2) : x;
+      const X =
+        largeur > l + 4
+          ? Math.min(Math.max(x, l / 2 + 2), largeur - l / 2 - 2)
+          : x;
       b.style.setProperty("--x", `${Math.round(X)}px`);
-      b.style.setProperty("--y", `${Math.round(Math.max(y, 32 + POINTE + 2))}px`);
+      b.style.setProperty(
+        "--y",
+        `${Math.round(Math.max(y, 32 + POINTE + 2))}px`,
+      );
     }
 
     #libelle(a) {
@@ -375,8 +389,12 @@ export function define(registry, ctx) {
       const [largeur, hauteur] = [this.clientWidth, this.clientHeight];
       const dessus = y - (POINTE + 40) - h >= 2;
       p.classList.toggle("dessous", !dessus);
-      const X = largeur > l + 4 ? Math.min(Math.max(x, l / 2 + 2), largeur - l / 2 - 2) : x;
-      const Y = dessus || !hauteur ? y : Math.max(Math.min(y, hauteur - h - 10), 2);
+      const X =
+        largeur > l + 4
+          ? Math.min(Math.max(x, l / 2 + 2), largeur - l / 2 - 2)
+          : x;
+      const Y =
+        dessus || !hauteur ? y : Math.max(Math.min(y, hauteur - h - 10), 2);
       p.style.setProperty("--x", `${Math.round(X)}px`);
       p.style.setProperty("--y", `${Math.round(Y)}px`);
     }

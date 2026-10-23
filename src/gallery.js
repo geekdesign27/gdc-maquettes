@@ -315,7 +315,8 @@ function relaieChoix(detail, { depuisCarte = false } = {}) {
   // la carte va a ce qui est choisi et y pose l'anneau ; un choix fait sur la carte, deja sous le pointeur, ne la
   // deplace pas
   const carteChoix = current.ville?.carte;
-  if (carteChoix) carteChoix.selectionne(choixGdc).then((v) => {
+  // apres la coupe : elle replace les agents et cache le batiment (un agent choisi dans un batiment est a sa piece)
+  const vise = (avant) => carteChoix && Promise.resolve(avant).then(() => carteChoix.selectionne(choixGdc)).then((v) => {
     if (v && !depuisCarte && current.ville?.carte === carteChoix) suivi().vers(current.inst.root.localToWorld(v.point.clone()));
     dirty = true;
   });
@@ -330,11 +331,14 @@ function relaieChoix(detail, { depuisCarte = false } = {}) {
     }
   }
   const carte = current.ville?.carte;
-  if (!carte || depuisCarte || !ref?.application) return;
+  if (!carte || depuisCarte || !ref?.application) return vise();
   const b = sceneVille?.elements?.find((e) => e.element === 'building' && (e.ref?.application ?? e.id) === ref.application);
-  if (!b) return;
-  if (ref.fiche && carte.coupe !== b.id) carte.ouvreCoupe(b.id, ref.fiche).then(() => { dirty = true; });
-  else if (!ref.fiche && carte.coupe) { carte.fermeCoupe(); dirty = true; }
+  if (!b) return vise();
+  if (ref.fiche && carte.coupe !== b.id) vise(carte.ouvreCoupe(b.id, ref.fiche).then(() => { dirty = true; }));
+  else {
+    if (!ref.fiche && carte.coupe) { carte.fermeCoupe(); dirty = true; }
+    vise();
+  }
 }
 // le noeud de l'arbre qui porte exactement une reference (un batiment, une fiche, un lot)
 function noeudDe(groupes, ref) {
