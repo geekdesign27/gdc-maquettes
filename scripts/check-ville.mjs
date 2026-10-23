@@ -19,6 +19,7 @@ import { soleilDe, momentDe, recetteDe, passages, lumiere } from '../src/ville/h
 import palette from '../src/palette.json' with { type: 'json' };
 import reglages from '../src/lumiere.json' with { type: 'json' };
 import { agentPris, RAYON_PRISE } from '../src/ville/prise.js';
+import { creeSuivi, DUREE_SUIVI } from '../src/ville/camera.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -648,6 +649,75 @@ for (const [nom, scenes] of Object.entries(sequences))
   }
   // trois agents groupes : chacun se prend sur sa propre silhouette, aucun ne cache l'autre
   rapports.push(`prise d'un agent : ${agents.length} agents de projet-type « ${index.etapes[pas].titre} », dont 3 groupés à la réception, pris sur leur silhouette (${Math.min(...taille).toFixed(0)} à ${Math.max(...taille).toFixed(0)} px de haut) et à ${RAYON_PRISE - 1} px, pas à ${RAYON_PRISE + 1}`);
+  carte.dispose();
+}
+
+// --- La camera qui suit la selection (plan I-8) : un saut sans mouvement avec moins d'animations ; sinon un
+// deplacement court, interrompu par toute nouvelle selection ; la camera glisse sans tourner ni zoomer. Et ce que la carte
+// choisit pour les trois formes de gdc-select (derniere passe de GDC, section 6)
+{
+  const essai = (reducedMotion) => {
+    const camera = new THREE.OrthographicCamera(-10, 10, 10, -10, 0.1, 500);
+    camera.position.set(40, 46, 40);
+    const cible = new THREE.Vector3(0, 0, 0);
+    return { camera, cible, suivi: creeSuivi({ camera, cible, reducedMotion }) };
+  };
+  const ecart = (e) => e.camera.position.clone().sub(e.cible);
+  const pres = (a, b) => a.distanceTo(b) < 1e-6;
+  const A = new THREE.Vector3(12, 0, -8);
+  const B = new THREE.Vector3(-20, 0, 15);
+  // sans animation : un saut, tout de suite
+  const s = essai(true);
+  const decalage = ecart(s);
+  verifie(s.suivi.vers(A) === 0 && pres(s.cible, A) && pres(ecart(s), decalage) && !s.suivi.update(1 / 60), 'caméra : sans animation, pas de saut immédiat');
+  // avec animation : un deplacement court, qui arrive juste, sans tourner
+  const m = essai(false);
+  verifie(m.suivi.vers(A) === DUREE_SUIVI && DUREE_SUIVI <= 1, `caméra : un déplacement de ${DUREE_SUIVI} s`);
+  let images = 0;
+  while (m.suivi.update(1 / 60) && images < 600) images++;
+  verifie(pres(m.cible, A) && pres(ecart(m), decalage), 'caméra : le déplacement n\'arrive pas juste, ou la caméra a tourné');
+  verifie(Math.abs(images + 1 - DUREE_SUIVI * 60) <= 1, `caméra : ${images + 1} images au lieu de ${DUREE_SUIVI * 60}`);
+  // une nouvelle selection a mi-chemin : elle repart d'ou la camera est, sans saut, et arrive a la nouvelle cible
+  const i = essai(false);
+  i.suivi.vers(A);
+  for (let k = 0; k < 15; k++) i.suivi.update(1 / 60);
+  const ou = i.cible.clone();
+  i.suivi.vers(B);
+  i.suivi.update(1 / 60);
+  // le premier pas d'un depart en douceur : un dixieme du trajet au plus (une image a 60 im/s sur 0,6 s : 8 %)
+  verifie(i.cible.distanceTo(ou) <= 0.1 * B.distanceTo(ou), `caméra : la nouvelle sélection fait sauter la caméra de ${i.cible.distanceTo(ou).toFixed(2)} m`);
+  while (i.suivi.update(1 / 60));
+  verifie(pres(i.cible, B), 'caméra : interrompue, elle n\'arrive pas à la nouvelle sélection');
+  i.suivi.vers(A);
+  i.suivi.arrete();
+  verifie(!i.suivi.update(1 / 60) && pres(i.cible, B), 'caméra : prise par l\'utilisateur, elle continue');
+
+  // ce que la carte choisit
+  const index = JSON.parse(await readFile(join(ROOT, 'fixtures', 'trois-applications', 'index.json'), 'utf8'));
+  const scene = sequences['trois-applications'][index.etapes.length - 1];
+  const carte = await creeCarte(THREE, { components: modules, chargeur, theme: 'light', quality: 'high', reducedMotion: true });
+  await carte.applique(scene);
+  const lu = lisScene(scene, connus);
+  const b = lu.batiments.find((x) => (x.etages || []).some((e) => e.fiche && (e.pieces || []).length));
+  const fiche = b.etages.find((e) => e.fiche && (e.pieces || []).length);
+  const app = b.ref?.application || b.id;
+  const surFiche = await carte.selectionne({ id: fiche.fiche, ref: { application: app, fiche: fiche.fiche } });
+  verifie(surFiche && /^floor:/.test(surFiche.ancre || ''), `sélection { id, ref } d'une fiche : ${JSON.stringify(surFiche && surFiche.ancre)} au lieu de son étage`);
+  const surLot = await carte.selectionne({ id: 'x', ref: { application: app, fiche: fiche.fiche, lot: fiche.pieces[0].lot }, evt: 'evt:essai/1' });
+  verifie(surLot && /^(room|floor):/.test(surLot.ancre || ''), `sélection { id, ref, evt } d'un lot : ${JSON.stringify(surLot && surLot.ancre)}`);
+  const surApp = await carte.selectionne({ id: app, ref: { application: app } });
+  verifie(surApp && surApp.ancre === null && surApp.point, 'sélection d\'une application : pas sur son bâtiment');
+  const surEtape = await carte.selectionne({ id: 'etape:7', etape: 7 });
+  const remise = carte.cadres().find((z) => z.cle === 'remise');
+  const centreRemise = remise.coins.reduce((s, c) => s.add(c), new THREE.Vector3()).multiplyScalar(0.25);
+  verifie(surEtape && surEtape.zone === 'remise' && Math.hypot(surEtape.point.x - centreRemise.x, surEtape.point.z - centreRemise.z) < 1e-6, 'sélection d\'une étape : pas au centre de sa zone');
+  const unAgent = lu.personnages[0];
+  const parGdc = await carte.selectionne({ id: unAgent.id });
+  verifie(parGdc && parGdc.agent === unAgent.id, `sélection d'un agent par son identifiant de GDC (${unAgent.id}) : ${JSON.stringify(parGdc)}`);
+  const parPortrait = await carte.selectionne({ id: carte.agents().find((a) => a.id === unAgent.id).personne });
+  verifie(parPortrait && parPortrait.agent === unAgent.id, 'sélection d\'un agent par son repère (equipe.json) : rien');
+  verifie((await carte.selectionne({ id: 'rien-de-tel' })) === null && (await carte.selectionne(null)) === null, 'sélection inconnue : la carte va quelque part');
+  rapports.push(`caméra qui suit : un saut sans animation, ${DUREE_SUIVI} s sinon, interrompue sans saut ; la carte choisit l'étage d'une fiche, la pièce d'un lot, le bâtiment d'une application, le centre de la zone d'une étape et un agent`);
   carte.dispose();
 }
 

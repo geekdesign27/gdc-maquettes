@@ -15,6 +15,7 @@ import * as personnage from './personnage.js';
 import * as reference from './scene-reference.js';
 import { creeCarte } from './ville/carte.js';
 import { agentPris } from './ville/prise.js';
+import { creeSuivi } from './ville/camera.js';
 import { MOMENTS, recetteDe, regleLumieres, creeVitres, eclaireBatiment, forceDe, ECLAIRABLES } from './ville/heure.js';
 import { defineElements, elements } from './interface.js';
 import { arbreDe } from './arbre.js';
@@ -59,6 +60,11 @@ camera.position.set(...lumiere.camera.position).multiplyScalar(4);
 camera.lookAt(...lumiere.camera.cible);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.addEventListener('change', () => { dirty = true; });
+// La camera qui suit la selection (plan I-8) : un deplacement court, interrompu par une nouvelle selection ou quand on
+// prend la camera ; un saut avec moins d'animations. Refaite a chaque composant choisi (les options ont pu changer).
+let suiviCamera = null;
+const suivi = () => (suiviCamera ??= creeSuivi({ camera, cible: controls.target, reducedMotion: options.reducedMotion }));
+controls.addEventListener('start', () => suiviCamera?.arrete());
 const ciel = new THREE.HemisphereLight(lumiere.ciel.couleur, lumiere.ciel.sol, lumiere.ciel.intensite);
 scene.add(ciel);
 const sun = new THREE.DirectionalLight(lumiere.soleil.couleur, lumiere.soleil.intensite);
@@ -306,6 +312,13 @@ function poseFil(actions) {
 let choixGdc = null;
 function relaieChoix(detail, { depuisCarte = false } = {}) {
   choixGdc = detail ?? null;
+  // la carte va a ce qui est choisi et y pose l'anneau ; un choix fait sur la carte, deja sous le pointeur, ne la
+  // deplace pas
+  const carteChoix = current.ville?.carte;
+  if (carteChoix) carteChoix.selectionne(choixGdc).then((v) => {
+    if (v && !depuisCarte && current.ville?.carte === carteChoix) suivi().vers(current.inst.root.localToWorld(v.point.clone()));
+    dirty = true;
+  });
   if (filVille) filVille.selected = choixGdc;
   if (planningVille) planningVille.selected = choixGdc;
   const ref = choixGdc?.ref;
@@ -709,6 +722,8 @@ async function poseOccupants(x, groupe, ids) {
 window.galerie = {
   get courant() { return current; },
   redessine() { dirty = true; },
+  // le point que vise la camera (la cible des controles) : la camera qui suit la selection se mesure avec lui
+  get vise() { return controls.target.toArray(); },
   // Cadrer de pres pour une revue : zoom de la camera orthographique, centre sur un point de la scene (x, y, z) ;
   // galerie.cadre(1) revient au cadrage d'ensemble.
   cadre(zoom = 1, centre = null) {
@@ -870,6 +885,8 @@ function eclaireVitres() {
 }
 
 async function select(id, state) {
+  suiviCamera?.arrete();
+  suiviCamera = null;
   retire(current);
   for (const v of current.voisins) retire(v);
   vitres.libere();
@@ -1110,6 +1127,7 @@ function loop() {
   const dt = Math.min(clock.getDelta(), 0.1);
   let continu = false;
   for (const x of [current, ...current.voisins]) if (x.inst && x.inst.update(dt)) continu = true;
+  if (suiviCamera?.update(dt)) { controls.update(); continu = true; }
   // une animation qui s'arrete sur une image sans ombre refaite : une image de plus, qui la refait
   if (continu || ombre.enRetard) dirty = true;
   if (dirty) {

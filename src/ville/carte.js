@@ -1413,6 +1413,9 @@ export async function creeCarte(THREE, options) {
         }
       }
       for (const a of [...acteurs.values()]) if (avance(a, dt)) encore = true;
+      // l'anneau de la selection suit l'agent choisi ; il respire, comme celui du survol
+      if (choixAgent && membres.has(choixAgent.cle)) anneauChoix.petit.root.position.copy(choixAgent.inst.root.position).setY(0.02);
+      if (anneauChoix) for (const r of Object.values(anneauChoix)) if (r.update(dt)) encore = true;
       // l'anneau de l'agent survole le suit ; un agent qui s'en va l'emporte
       if (agentSurvole) {
         if (!membres.has(agentSurvole.cle) || !visibleDe(agentSurvole.inst.root)) {
@@ -1486,6 +1489,66 @@ export async function creeCarte(THREE, options) {
     },
     // Le point d'une ancre d'un element de GDC pose sur la carte (son badge, son label), dans le repere de la carte ;
     // null s'il n'est pas montre.
+    // La selection (gdc-select, derniere passe de GDC, section 6) : ou la carte va, et l'anneau de selection pose.
+    // { id, ref } et { id, ref, evt } : l'ancre trouvee par src/etages.js (la piece d'un lot, l'etage d'une fiche) ou le
+    // batiment de l'application, et l'anneau ; { id: "etape:<n>", etape } : le centre de la zone de l'etape, sans
+    // anneau ; { id } d'un agent (son repere, sa prise) : ses pieds, et l'anneau ; { id } d'un lieu : ce lieu.
+    // Rend { point } dans le repere de la carte (l'hote y conduit sa camera, camera.js), ou null.
+    async selectionne(detail) {
+      if (!anneauChoix) {
+        anneauChoix = {
+          grand: await cree("selection-ring", { radius: 6.2 }),
+          petit: await cree("selection-ring", { radius: 0.9 }),
+        };
+        for (const r of Object.values(anneauChoix)) {
+          plateau.add(r.root);
+          r.setState("hidden");
+        }
+      }
+      anneauChoix.grand.setState("hidden");
+      anneauChoix.petit.setState("hidden");
+      choixAgent = null;
+      if (!detail || !lu) return null;
+      const versCarte = (v) => v.clone().applyMatrix4(plateau.matrix);
+      const pose = (r, v) => {
+        r.root.position.copy(v).setY(0.02);
+        r.setState("selected");
+      };
+      // une etape : le centre de sa zone
+      const n = Number(detail.etape ?? String(detail.id || "").match(/^etape:(\d+)$/)?.[1]);
+      if (ETAPES[n]) {
+        const c = imp.cadres[ETAPES[n].zone];
+        return { point: versCarte(new THREE.Vector3((c.x[0] + c.x[1]) / 2, 0, (c.z[0] + c.z[1]) / 2)), zone: ETAPES[n].zone };
+      }
+      // une reference : la piece, l'etage ou le batiment
+      const ref = detail.ref;
+      if (ref?.application) {
+        const b = lu.batiments.find((x) => (x.ref?.application || x.id) === ref.application);
+        const m = b && membres.get(`gdc:${b.id}`);
+        if (!m) return null;
+        const ancre = anchorFor(groupFloors(b.floors, b.etat), { application: ref.application }, ref);
+        if (!ancre) {
+          pose(anneauChoix.grand, m.inst.root.position);
+          return { point: versCarte(m.inst.root.position), ancre: null };
+        }
+        const v = pointAncre(m, ancre);
+        pose(anneauChoix.petit, v);
+        return { point: versCarte(v), ancre };
+      }
+      // un agent, par l'identifiant de GDC ou par celui d'equipe.json (son repere)
+      const agent = [...membres.values()].find(
+        (m) => m.acteur && !m.vie && m.el && m.cle.startsWith("gdc:") && (m.el.id === detail.id || personneDe(m.el)?.id === detail.id),
+      );
+      if (agent) {
+        choixAgent = agent;
+        pose(anneauChoix.petit, agent.inst.root.position);
+        return { point: versCarte(agent.inst.root.position), agent: agent.el.id };
+      }
+      // un lieu fixe
+      const lieu = membres.get(detail.id);
+      if (lieu && imp.lieux[detail.id]) return { point: versCarte(lieu.inst.root.position), lieu: detail.id };
+      return null;
+    },
     // Les agents de la carte, pour leur repere (agent-marker) et leur prise au pointeur (prise.js) : jamais d'ouvrier ni
     // d'usager. id : celui de GDC ; personne : celui d'equipe.json (les portraits) ; tete : l'ancre label de character
     // (2,05 m) ; pieds : sa place au sol ; les deux dans le repere de la carte, que l'hote projette a l'ecran.
@@ -1798,11 +1861,14 @@ export async function creeCarte(THREE, options) {
       cube.dispose();
       if (anneau) for (const r of Object.values(anneau)) r.dispose();
       anneauAgent?.dispose();
+      if (anneauChoix) for (const r of Object.values(anneauChoix)) r.dispose();
       vitres.libere();
     },
   };
   let anneau = null;
   let anneauAgent = null; // l'anneau de l'agent survole (agent-marker)
+  let anneauChoix = null; // l'anneau de la selection (selectionne)
+  let choixAgent = null; // l'agent choisi : l'anneau le suit
   let agentSurvole = null;
   const visibleDe = (o) => {
     for (let x = o; x && x !== root; x = x.parent) if (!x.visible) return false;
