@@ -33,6 +33,9 @@ const PORTRAIT = 26; // px
 const HAUTEUR = 32; // px, le corps d'un repere
 const POINTE = 7; // px, de la pointe a la tete
 const ECART = 2; // px entre deux reperes qui ne se touchent pas, et entre un repere et l'obstacle qu'il evite
+// px : au-dela, le repere reste sur la tete, quitte a recouvrir l'etiquette ; plus haut, il se lirait rattache a un autre
+// lieu (decision de Pierre-Alain, 23 octobre 2026)
+const MONTEE_MAX = 80;
 const MAX_PORTRAITS = 3;
 
 const CSS = `
@@ -250,7 +253,8 @@ export function define(registry, ctx) {
     #largeurTexte(texte) {
       const police = this.isConnected ? getComputedStyle(this).font : "";
       if (!police) return texte.length * 7;
-      if (!this.#mesure) this.#mesure = document.createElement("canvas").getContext("2d");
+      if (!this.#mesure)
+        this.#mesure = document.createElement("canvas").getContext("2d");
       if (!this.#mesure) return texte.length * 7;
       this.#mesure.font = police;
       return Math.ceil(this.#mesure.measureText(texte).width);
@@ -262,30 +266,61 @@ export function define(registry, ctx) {
       if (membres.length === 1) {
         const { a, complet } = membres[0];
         const nom = Math.min(this.#largeurTexte(prenom(a)), 120);
-        return 1 + 3 + PORTRAIT + 5 + nom + (complet ? 5 + 16 : 0) + (complet ? 9 : 8) + 1;
+        return (
+          1 +
+          3 +
+          PORTRAIT +
+          5 +
+          nom +
+          (complet ? 5 + 16 : 0) +
+          (complet ? 9 : 8) +
+          1
+        );
       }
       // un groupe porte toujours un signe : il compte au moins un agent qui attend ou qui est bloque
-      const portraits = PORTRAIT + (Math.min(membres.length, MAX_PORTRAITS) - 1) * (PORTRAIT - 9);
-      return 1 + 3 + portraits + 5 + this.#largeurTexte(String(membres.length)) + 5 + 16 + 9 + 1;
+      const portraits =
+        PORTRAIT +
+        (Math.min(membres.length, MAX_PORTRAITS) - 1) * (PORTRAIT - 9);
+      return (
+        1 +
+        3 +
+        portraits +
+        5 +
+        this.#largeurTexte(String(membres.length)) +
+        5 +
+        16 +
+        9 +
+        1
+      );
     }
 
     // La pose d'un repere large de l sur la tete (x, y) : entier dans la couche (un agent au bord de la carte), monte
-    // au-dessus des obstacles qu'il toucherait, aussi haut que la couche le permet, la tige le reliant a la tete
+    // au-dessus des obstacles qu'il toucherait, aussi haut que la couche le permet, la tige le reliant a la tete ; s'il
+    // devait monter de plus de MONTEE_MAX, il reste sur la tete
     #pose(x, y, l, obstacles) {
       const largeur = this.clientWidth;
       const X = Math.round(
-        largeur > l + 4 ? Math.min(Math.max(x, l / 2 + 2), largeur - l / 2 - 2) : x,
+        largeur > l + 4
+          ? Math.min(Math.max(x, l / 2 + 2), largeur - l / 2 - 2)
+          : x,
       );
       const plusHaut = HAUTEUR + POINTE + 2; // la pointe la plus haute qui garde le repere entier
       const tete = Math.round(Math.max(y, plusHaut));
-      const tige = Math.round(Math.min(monte(X, tete, l, obstacles), tete - plusHaut));
+      const montee = monte(X, tete, l, obstacles);
+      const tige =
+        montee > MONTEE_MAX ? 0 : Math.round(Math.min(montee, tete - plusHaut));
       const pointe = tete - tige;
       return {
         X,
         tete,
         pointe,
         tige,
-        boite: [X - l / 2, pointe - POINTE - HAUTEUR, X + l / 2, pointe - POINTE],
+        boite: [
+          X - l / 2,
+          pointe - POINTE - HAUTEUR,
+          X + l / 2,
+          pointe - POINTE,
+        ],
       };
     }
 
@@ -293,7 +328,11 @@ export function define(registry, ctx) {
     #groupe(membres, obstacles) {
       const x = membres.reduce((s, m) => s + m.a.x, 0) / membres.length;
       const y = Math.min(...membres.map((m) => m.a.y));
-      return { membres, x, pose: this.#pose(x, y, this.#largeur(membres), obstacles) };
+      return {
+        membres,
+        x,
+        pose: this.#pose(x, y, this.#largeur(membres), obstacles),
+      };
     }
 
     // Les reperes a montrer : les permanents, et celui qu'on survole. Ils se regroupent d'abord sur les tetes, comme sans
@@ -321,8 +360,8 @@ export function define(registry, ctx) {
       const montres = agents
         .filter((a) => PERMANENTS.has(a.state) || a.id === hovered)
         .map((a) => ({ a, complet: PERMANENTS.has(a.state) }));
-      let groupes = fusionne(montres.map((m) => this.#groupe([m], []))).map((membres) =>
-        this.#groupe(membres, obstacles),
+      let groupes = fusionne(montres.map((m) => this.#groupe([m], []))).map(
+        (membres) => this.#groupe(membres, obstacles),
       );
       for (;;) {
         const listes = fusionne(groupes);
