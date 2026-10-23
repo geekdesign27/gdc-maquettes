@@ -39,6 +39,7 @@ export const mesures = {
 };
 const { LIGNE, OUTILS, TETE, JOUR, VIDE, PLI, DEPLIE, MARGE, ECART } = mesures;
 const DEBORD = 10; // les lignes rendues au-dela de la vue, en haut et en bas
+const JALON = 20; // l'ecart minimal entre deux jalons d'une meme ligne
 const JOUR_MS = 86400000;
 
 // Les mots des etats de GDC ; une valeur inconnue s'affiche telle quelle, sans etre devinee.
@@ -601,6 +602,15 @@ function elements(l, ax, jalons, evts, fuseau) {
           x: c.x,
           evenement: c.e,
         });
+  }
+  out.sort((p, q) => p.x - q.x);
+  // des jalons trop proches se posent cote a cote, dans l'ordre de leur date, au lieu de se recouvrir ; leur date
+  // exacte reste dans le detail et la vue tableau
+  let avant = -Infinity;
+  for (const it of out) {
+    if (it.sorte !== "jalon") continue;
+    if (it.x - avant < JALON) it.x = avant + JALON;
+    avant = it.x;
   }
   out.sort((p, q) => p.x - q.x);
   return out;
