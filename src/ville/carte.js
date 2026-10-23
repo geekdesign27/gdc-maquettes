@@ -61,8 +61,13 @@ const RECUL = 2; // comme la scene de reference : la carte descend d'environ 1,6
 const FONDU_ZONE = 1.5; // s, la couleur qui arrive une fois
 const IMPULSION = 0.4; // s, un element qui apparait ou s'efface
 const MONTAGE_GRUE = 1.5; // s, la grue qui se monte ou se demonte
-const VITESSE_CAMION = 6; // m/s
-const ROULE_MAX = 6; // s, le plafond d'un trajet de camion
+// L'allure du camion (decision de Pierre-Alain du 23 octobre 2026, apres la revue DA : pres de 12 m/s dans la cloture,
+// ce n'etait ni pose ni credible pour un oeil SST) : sur la route, puis au pas dans l'enceinte du chantier ; il
+// accelere et freine comme un camion, ralentit avant d'entrer et recule lentement.
+const VITESSE_ROUTE = 6; // m/s
+const VITESSE_ENCEINTE = 4; // m/s, au pas dans la cloture
+const VITESSE_RECUL = 1.5; // m/s
+const ACCELERATION = 2.5; // m/s2, au demarrage comme au freinage
 const RAYON_VIRAGE = 2.5; // m, le camion arrondit les angles des voies
 const RECUL_CAMION = 5; // m, il recule hors de sa place avant de repartir
 const BRAQUAGE = 6; // 1/s, la vitesse a laquelle son cap rejoint celui de la voie
@@ -94,8 +99,10 @@ const POSTES = [
   "site-office",
 ];
 // Les decisions attendues au meme lieu (decision de Pierre-Alain du 22 octobre 2026) : une grille compacte de trois
-// panneaux par rang, un panneau et un badge par decision, six au plus ; au-dela, le dernier porte le total dans son
-// badge (panneaux()). Chaque panneau montre reste cliquable. pas : d'un panneau au suivant dans le rang ; rang : d'un
+// panneaux par rang, un panneau et un badge par decision, six au plus ; au-dela, le dernier porte dans son badge les
+// decisions qu'il regroupe, la sienne et celles sans panneau (« +12 » pour 17 : 1 + 1 + 1 + 1 + 1 + 12 font le total ;
+// decision de Pierre-Alain du 23 octobre 2026, apres la revue DA : « 17 » a cote de cinq « 1 » se lisait 22) (panneaux()).
+// Chaque panneau montre reste cliquable. pas : d'un panneau au suivant dans le rang ; rang : d'un
 // rang au suivant ; un lieu peut avoir sa grille (implantation.js, le feu vert).
 const MAX_PANNEAUX = 6;
 const PAR_RANG = 3;
@@ -1087,13 +1094,12 @@ export async function creeCarte(THREE, options) {
       return 0;
     }
     const chemin = mesure(recul ? points : arrondit(points));
-    const duree = Math.min(Math.max(chemin.longueur / VITESSE_CAMION, 1.5), ROULE_MAX);
     m.inst.root.visible = true;
     m.inst.root.position.set(points[0][0], 0, points[0][1]);
     if (aligne) m.inst.root.rotation.y = positionSur(chemin, 0)[2];
     m.roule = true;
-    roulages.push({ m, chemin, duree, t: 0, fin, rotation, recul });
-    return duree;
+    roulages.push({ m, chemin, s: 0, v: 0, fin, rotation, recul });
+    return dureeDe(chemin, recul);
   }
   const benneBaissee = (m) => etat(m, "idle", {}); // il roule benne baissee
   function arriveCamion(m) {
@@ -1113,6 +1119,25 @@ export async function creeCarte(THREE, options) {
       { rotation: pa?.camion.rotation, aligne: true },
     );
   }
+  // dans l'enceinte du chantier, ou il roule au pas
+  const dansEnceinte = ([x, z]) => x > imp.chantier.x[0] && x < imp.chantier.x[1] && z > imp.chantier.z[0] && z < imp.chantier.z[1];
+  // l'allure voulue a la distance s d'un chemin : au pas dans l'enceinte, et deja au pas quand il y entre bientot
+  function allure(r, v) {
+    if (r.recul) return VITESSE_RECUL;
+    const freinage = (v * v) / (2 * ACCELERATION) + 1;
+    const ici = positionSur(r.chemin, r.s / r.chemin.longueur);
+    const devant = positionSur(r.chemin, Math.min(r.s + freinage, r.chemin.longueur) / r.chemin.longueur);
+    return dansEnceinte(ici) || dansEnceinte(devant) ? VITESSE_ENCEINTE : VITESSE_ROUTE;
+  }
+  // la duree d'un trajet a cette allure, pour la lecture des actions (une estimation : la vitesse de croisiere par
+  // morceau de 0,5 m, plus le demarrage et le freinage)
+  function dureeDe(chemin, recul) {
+    if (recul) return chemin.longueur / VITESSE_RECUL + VITESSE_RECUL / ACCELERATION;
+    let t = 0;
+    for (let s = 0; s < chemin.longueur; s += 0.5)
+      t += Math.min(0.5, chemin.longueur - s) / (dansEnceinte(positionSur(chemin, s / chemin.longueur)) ? VITESSE_ENCEINTE : VITESSE_ROUTE);
+    return t + VITESSE_ROUTE / ACCELERATION;
+  }
   function repartCamion(m) {
     m.part = true;
     const t = trajetCamion(m);
@@ -1126,7 +1151,7 @@ export async function creeCarte(THREE, options) {
     const recule = [x - RECUL_CAMION, z - 3.5];
     const aller = [recule, ...t.slice(0, -3).reverse()];
     const d1 = roule(m, [[x, z], recule], () => roule(m, aller, () => retire(m.cle)), { recul: true });
-    return d1 + Math.min(Math.max(mesure(aller).longueur / VITESSE_CAMION, 1.5), ROULE_MAX);
+    return d1 + dureeDe(mesure(arrondit(aller)), false);
   }
 
   // l'etat recu : chaque element a sa place et son etat ; ce qui n'est plus dans la scene s'en va
@@ -1426,10 +1451,15 @@ export async function creeCarte(THREE, options) {
       }
       for (const r of [...roulages]) {
         encore = true;
-        r.t += dt;
-        const f = Math.min(r.t / r.duree, 1);
-        // il accelere au depart et ralentit avant l'arret ; son cap rejoint celui de la voie sans a-coup
-        const [x, z, cap] = positionSur(r.chemin, f * f * (3 - 2 * f));
+        // son allure : il accelere jusqu'a la vitesse du lieu (la route, l'enceinte), et freine pour s'arreter juste
+        const reste = r.chemin.longueur - r.s;
+        const vmax = Math.min(allure(r, r.v), Math.sqrt(2 * ACCELERATION * reste));
+        r.v = r.v < vmax ? Math.min(r.v + ACCELERATION * dt, vmax) : Math.max(r.v - ACCELERATION * dt, vmax);
+        r.s = Math.min(r.s + Math.max(r.v, 0.3) * dt, r.chemin.longueur);
+        r.vitesse = r.v; // pour le controle
+        const f = r.chemin.longueur ? r.s / r.chemin.longueur : 1;
+        // son cap rejoint celui de la voie sans a-coup
+        const [x, z, cap] = positionSur(r.chemin, f);
         r.m.inst.root.position.set(x, 0, z);
         const vise = r.recul ? cap + Math.PI : cap;
         const ecart = Math.atan2(Math.sin(vise - r.m.inst.root.rotation.y), Math.cos(vise - r.m.inst.root.rotation.y));
@@ -1477,14 +1507,16 @@ export async function creeCarte(THREE, options) {
       return encore || (anime && vivants.size > 0);
     },
     // Les panneaux de decision de chaque lieu : ceux qui sont montres (six au plus, chacun avec son badge) et le total ;
-    // badge : ce que porte le badge de chacun (1, et le total pour le dernier quand il y en a plus de six).
+    // badges : ce que porte le badge de chacun, 1, et pour le dernier quand il y en a plus de six, les decisions qu'il
+    // regroupe (le reste : total - 5, ecrit « +12 ») ; reste : l'identifiant de ce dernier, ou null.
     panneaux() {
       return [...groupesPanneaux.values()].map((g) => ({
         lieu: g.lieu,
         element: g.element,
         total: g.total,
         montres: [...g.montres],
-        badges: Object.fromEntries(g.montres.map((id, k) => [id, k === g.montres.length - 1 && g.total > g.montres.length ? g.total : 1])),
+        badges: Object.fromEntries(g.montres.map((id, k) => [id, k === g.montres.length - 1 && g.total > g.montres.length ? g.total - k : 1])),
+        reste: g.total > g.montres.length ? g.montres[g.montres.length - 1] : null,
       }));
     },
     // La selection (gdc-select, derniere passe de GDC, section 6) : ou la carte va, et l'anneau de selection pose.

@@ -165,6 +165,7 @@ for (const cat of await readdir(join(ROOT, 'components')))
       }
 const chargeur = creeChargeur({ GLTFLoader, SkeletonUtils }, sources);
 const rapports = [rapportRangee];
+const rapportCamionPlus = () => rapportCamion && rapports.push(rapportCamion);
 // la direction de visee de la camera isometrique de la galerie, a peu pres : de haut et de biais
 const ISO = new THREE.Vector3(-1, -1.15, -1).normalize();
 
@@ -248,7 +249,9 @@ for (const [nom, scenes] of Object.entries(sequences))
           const ou = `${nom} ${i + 1} : ${g.element} à ${g.lieu}`;
           verifie(g.montres.length === Math.min(g.total, 6), `${ou} : ${g.montres.length} panneaux montrés pour ${g.total}`);
           const badges = g.montres.map((id) => g.badges[id]);
-          verifie(badges.every((b, k) => b === (k === badges.length - 1 && g.total > 6 ? g.total : 1)), `${ou} : badges ${badges.join(', ')} pour ${g.total} décisions`);
+          // le dernier porte le reste (« +12 » pour 17) : les badges additionnes font le total
+          verifie(badges.every((b, k) => b === (k === badges.length - 1 && g.total > 6 ? g.total - 5 : 1)) && badges.reduce((s, b) => s + b, 0) === g.total, `${ou} : badges ${badges.join(', ')} pour ${g.total} décisions`);
+          verifie(g.reste === (g.total > 6 ? g.montres[5] : null), `${ou} : le panneau du reste est ${g.reste}`);
           const poses = [];
           carte.root.traverse((o) => {
             if (o.userData.component !== g.element || !visible(o)) return;
@@ -322,6 +325,7 @@ for (const [nom, scenes] of Object.entries(sequences))
     }
   }
 
+let rapportCamion = '';
 // --- Le camion de livraison : il roule benne baissee, la leve une fois gare, et repart (le pas « Emma a fini son lot »,
 // celui d'avant, puis retour) ; les pas se trouvent par leur titre : GDC en ajoute d'une version a l'autre
 {
@@ -332,13 +336,38 @@ for (const [nom, scenes] of Object.entries(sequences))
   await carte.applique(s15);
   await carte.applique(s16);
   let vu = false;
-  for (let t = 0; t < 20 * 30; t++) {
+  // son allure (decision de Pierre-Alain du 23 octobre 2026) : au pas dans l'enceinte (4 m/s au plus), 6 m/s au plus
+  // sur la route, garé en moins de 20 s
+  const lu16 = lisScene(s16, connus);
+  const enceinte = implantation(lu16.applications, lu16.types).chantier;
+  const camion = () => { let c = null; carte.root.traverse((o) => { if (!c && o.userData.component === 'delivery-truck') c = o; }); return c; };
+  let avant = null;
+  let pireEnceinte = 0;
+  let pireRoute = 0;
+  let gare = null;
+  for (let t = 0; t < 30 * 30; t++) {
     carte.update(1 / 30);
+    const o = camion();
+    if (o) {
+      const p = o.position.clone();
+      if (avant) {
+        const v = Math.hypot(p.x - avant.x, p.z - avant.z) * 30;
+        const dedans = p.x > enceinte.x[0] && p.x < enceinte.x[1] && p.z > enceinte.z[0] && p.z < enceinte.z[1];
+        if (dedans) pireEnceinte = Math.max(pireEnceinte, v);
+        else pireRoute = Math.max(pireRoute, v);
+      }
+      avant = p;
+    }
     for (const c of carte.compte().camions) {
       if (c.roule) vu = true;
+      if (vu && !c.roule && gare === null) gare = t / 30;
       verifie(!c.roule || c.state !== 'arriving', `camion : il vide sa benne en roulant (t = ${(t / 30).toFixed(1)} s)`);
     }
   }
+  verifie(pireEnceinte <= 4.05, `camion : ${pireEnceinte.toFixed(1)} m/s dans l'enceinte, plus que le pas (4 m/s)`);
+  verifie(pireRoute <= 6.05, `camion : ${pireRoute.toFixed(1)} m/s sur la route, plus que 6 m/s`);
+  verifie(gare !== null && gare < 20, `camion : garé en ${gare} s`);
+  rapportCamion = `camion : au pas dans l'enceinte (${pireEnceinte.toFixed(1)} m/s au plus), ${pireRoute.toFixed(1)} m/s au plus sur la route, garé en ${gare?.toFixed(1)} s ; benne baissée en roulant, levée à l'arrêt, retiré après son départ`;
   verifie(vu, 'camion : il ne roule pas pour arriver');
   verifie(carte.compte().camions.length === 1 && carte.compte().camions[0].state === 'arriving', 'camion : garé, il ne lève pas sa benne');
   await carte.applique({ ...s15, actions: [{ ts: 'z', action: 'disparait', element: 'delivery-truck', id: 'camion-001-cloturer-un-audit' }] });
@@ -350,6 +379,7 @@ for (const [nom, scenes] of Object.entries(sequences))
   carte.dispose();
 }
 
+rapportCamionPlus();
 // --- L'heure reelle (fiche day-night) : le soleil de Fribourg sur l'heure du poste, le jour inchange, la nuit et ses
 // fenetres (blanc chaud, faible et franche, jamais une couleur d'etat), sans reseau
 {

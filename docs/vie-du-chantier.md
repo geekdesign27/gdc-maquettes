@@ -125,7 +125,7 @@ Demande de Pierre-Alain du 21 octobre 2026. Tant qu'aucun projet n'a atteint une
 **Ce que ça dit** : « cette partie de la ville existe, on n'y est jamais allé ». On voit tout le parcours dès le premier jour, et la carte se colore au fil des projets, comme une ville qui s'ouvre.
 
 **Les garde-fous de signalétique** :
-- le gris de zone n'est pas l'état « Inconnu » : celui-ci est un anneau pointillé et un point d'interrogation sur un agent ou une fiche, dans l'interface. Une zone grise ne contient d'ailleurs aucun agent : s'il y en avait un, elle serait activée ;
+- le gris de zone n'est pas l'état « Inconnu » : celui-ci est un anneau pointillé et un point d'interrogation sur un agent ou une fiche, dans l'interface. Un agent n'est jamais grisé, même dans une zone grise : il garde toujours ses couleurs (décision de Pierre-Alain du 23 octobre 2026, après la revue DA). GDC peut en effet placer un agent dans une zone qu'aucun projet n'a encore atteinte : Hélène, le programme `gdc`, travaille au bureau de contrôle dès l'étape 01, dans le chantier encore gris. Seuls les lieux, le décor et le sol prennent le gris de la zone ;
 - les repères HTML (numéros d'étapes, nom de la zone) restent lisibles et prennent un ton atténué dans l'interface, sans couleur d'état ;
 - la bordure peinte au sol de la zone devient grise elle aussi.
 
