@@ -160,6 +160,13 @@ function buildList() {
     b.dataset.id = personnage.PERSONNAGE_ID;
     b.addEventListener('click', () => select(personnage.PERSONNAGE_ID));
     list.append(b);
+    // la planche de lecture de character 1.2.0 : ouvriers, passants, lampe frontale (la nuit) et carry
+    const v = document.createElement('button');
+    v.textContent = 'La vie du chantier : ouvriers et passants';
+    v.title = 'Un agent de l\u2019équipe site, deux ouvriers, la barrière et la grue ; le client, trois badauds, un usager et Fanny';
+    v.dataset.id = personnage.VIE_ID;
+    v.addEventListener('click', () => select(personnage.VIE_ID));
+    list.append(v);
   }
   for (const lot of catalogue.lots) {
     const items = entries.filter((e) => e.lot === lot.id).sort((a, b) => a.order - b.order);
@@ -501,7 +508,8 @@ async function instance(id, state) {
       const metaM = m.personne ? personnage.metaPersonne(params) : mod.meta;
       await charge.prepare(metaM);
       const inst = mod.create(THREE, params, makeContext(options, await charge.assetsPour(metaM), materiauPartage));
-      inst.setState(m.state || mod.meta.states[0], { ...sampleData(entries.find((e) => e.id === m.id)), ...m.data });
+      // la scene de reference garde ses personnes sans lampe frontale (character 1.2.0), meme la nuit
+      inst.setState(m.state || mod.meta.states[0], { ...sampleData(entries.find((e) => e.id === m.id)), ...(m.id === 'character' ? { headlamp: false } : {}), ...m.data });
       insts.push(inst);
     }
     const inst = reference.create(THREE, insts, p);
@@ -529,8 +537,26 @@ async function instance(id, state) {
     const inst = personnage.create(THREE, insts, await charge.assetsPour(personnage.metaDecor()), makeContext(options));
     const meta = { ...ch.meta, anchors: [] };
     const premier = state && meta.states.includes(state) ? state : 'idle';
-    inst.setState(premier, sampleData(entries.find((x) => x.id === 'character')));
+    inst.setState(premier, donnees(entries.find((x) => x.id === 'character')));
     return { inst, state: premier, entry: { ...e, id, name: 'L\u2019équipe' }, mod: { meta }, personnage: e };
+  }
+  if (id === personnage.VIE_ID) {
+    // la vie du chantier : les membres de la planche (personnes, barriere, grue), chacun avec ses seuls fichiers
+    const ch = byId.character;
+    const insts = [];
+    for (const m of personnage.membresVie()) {
+      const mod = m.id ? byId[m.id] : ch;
+      const params = m.id ? { ...defaultParams(mod.meta), ...m.params } : m.params;
+      const metaM = m.id ? mod.meta : personnage.metaPersonne(params);
+      await charge.prepare(metaM);
+      insts.push(mod.create(THREE, params, makeContext(options, await charge.assetsPour(metaM), materiauPartage)));
+    }
+    const inst = personnage.createVie(THREE, insts, makeContext(options));
+    const meta = { ...ch.meta, states: personnage.ETATS_VIE, anchors: [] };
+    const premier = state && meta.states.includes(state) ? state : 'idle';
+    const entry = { ...personnage.entree(catalogue), id, name: 'La vie du chantier', data: { headlamp: 'la nuit' } };
+    inst.setState(premier, donnees(entry));
+    return { inst, state: premier, entry, mod: { meta }, personnage: entry };
   }
   if (id.startsWith(kit.PREFIXE_ID)) {
     const d = kit.demonstrations(catalogue).find((x) => kit.PREFIXE_ID + x.entry.id === id);
@@ -553,7 +579,10 @@ async function instance(id, state) {
 function donnees(entry) {
   const q = new URLSearchParams(location.search);
   const adresse = Object.keys(entry.data || {}).filter((k) => q.has(k)).map((k) => [k, valeurAdresse(q.get(k))]);
-  return { ...sampleData(entry), ...Object.fromEntries(adresse) };
+  const d = { ...sampleData(entry), ...Object.fromEntries(adresse) };
+  // la lampe frontale (character 1.2.0) ne s'allume que la nuit, comme sur la carte ; ?headlamp=true la force
+  if ('headlamp' in (entry.data || {}) && !q.has('headlamp')) d.headlamp = options.heure === 'nuit';
+  return d;
 }
 
 function valeurAdresse(v) {
@@ -983,7 +1012,9 @@ function rapportScene() {
 // La planche du personnage : la mesure du personnage le plus charge (sa tenue complete), comparee au budget de la
 // fiche.
 function rapportPersonnage() {
-  const { budget } = current.personnage;
+  // la nuit, la lampe frontale allumee est un septieme materiau (character 1.2.0, choix de Pierre-Alain du 23 octobre 2026)
+  const budget = { ...current.personnage.budget };
+  if (options.heure === 'nuit') budget.materials += 1;
   const m = current.inst.personnages.map(measure).reduce((a, b) => (b.triangles + b.materials * 1e6 > a.triangles + a.materials * 1e6 ? b : a));
   const el = $('report');
   el.replaceChildren(`${current.entry.name} · état ${current.state} · ${current.inst.personnages.length} personnes · le plus chargé : ${m.triangles} / ${budget.triangles} triangles · ${m.materials} / ${budget.materials} matériaux · `);
@@ -1076,6 +1107,6 @@ buildList();
 resize();
 const [hashId, hashState, hashPlanche] = decodeURIComponent(location.hash.slice(1)).split('/');
 if (hashPlanche === 'planche') { options.planche = true; $('planche').setAttribute('aria-pressed', 'true'); resize(); }
-const start = byId[hashId] || hashId === etalon.ETALON_ID || hashId === personnage.PERSONNAGE_ID || hashId === reference.SCENE_ID || hashId?.startsWith(kit.PREFIXE_ID) || SEQUENCES[hashId?.split(':')[1]] ? hashId : entries.find((e) => byId[e.id])?.id;
+const start = byId[hashId] || hashId === etalon.ETALON_ID || hashId === personnage.PERSONNAGE_ID || hashId === personnage.VIE_ID || hashId === reference.SCENE_ID || hashId?.startsWith(kit.PREFIXE_ID) || SEQUENCES[hashId?.split(':')[1]] ? hashId : entries.find((e) => byId[e.id])?.id;
 if (start) await select(start, hashState);
 loop();

@@ -3,7 +3,14 @@
 // composant s'appliquent a toute l'equipe. Outil de la galerie seulement : il n'est pas livre a GDC.
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 import { materiauPalette } from "./etalon.js";
-import { PERSONNES, parametresDe, metaPersonne } from "./ville/equipe.js";
+import {
+  PERSONNES,
+  parametresDe,
+  metaPersonne,
+  parametresOuvrier,
+  parametresUsager,
+} from "./ville/equipe.js";
+import { alea } from "./ville/graine.js";
 
 export const PERSONNAGE_ID = "personnage";
 export { PERSONNES, parametresDe, metaPersonne };
@@ -94,6 +101,83 @@ export function create(THREE, personnages, decor, ctx) {
     },
     dispose() {
       for (const inst of personnages) inst.dispose();
+      geometrie.dispose();
+      sol.dispose();
+    },
+  };
+}
+
+// La planche de la vie du chantier (character 1.2.0, criteres d'acceptation de la fiche) : au fond, un agent de
+// l'equipe site (Yves), deux ouvriers (dont un qui porte), la barriere de blocage et la grue ; devant, le client, trois
+// badauds (les trois coloris de ville), un usager et Fanny. Les visages des ouvriers et des passants sont tires d'une
+// graine, comme sur la carte. Outil de la galerie seulement.
+export const VIE_ID = "personnage-vie";
+export const ETATS_VIE = ["idle", "walk", "work", "carry", "talk", "waiting"];
+export function membresVie() {
+  const ouvrier = (n) => parametresOuvrier(alea(`galerie:ouvrier:${n}`));
+  const passant = (n, c) => parametresUsager(alea(`galerie:passant:${n}`), c);
+  const agent = (id) => parametresDe(PERSONNES.find((p) => p.id === id));
+  return [
+    { params: agent("yves"), position: [-4.0, -1.1] },
+    { params: ouvrier(1), position: [-2.9, -1.1], ouvrier: true },
+    { params: ouvrier(2), position: [-1.8, -1.1], ouvrier: true, porte: true },
+    { id: "blocked-sign", position: [-0.3, -1.3] },
+    { id: "crane", params: { height: 6 }, position: [3.2, -1.2] },
+    { params: agent("client"), position: [-4.0, 1.1] },
+    { params: passant(1, "a"), position: [-2.9, 1.1] },
+    { params: passant(2, "b"), position: [-1.8, 1.1] },
+    { params: passant(3, "c"), position: [-0.7, 1.1] },
+    { params: passant(4, "a"), position: [0.4, 1.1] },
+    { params: agent("fanny"), position: [1.5, 1.1] },
+  ];
+}
+
+// instances : une par membre de membresVie(), dans le meme ordre. etat : un de ETATS_VIE ; carry n'est joue que par
+// les ouvriers (les autres marchent), comme sur la carte. data.headlamp : la nuit, les lampes des casques.
+export function createVie(THREE, instances, ctx) {
+  const membres = membresVie();
+  const root = new THREE.Group();
+  root.name = "planche-vie";
+  const ombres = ctx.quality === "high";
+  instances.forEach((inst, i) => {
+    const [x, z] = membres[i].position;
+    inst.root.position.set(x, 0, z);
+    root.add(inst.root);
+  });
+  const [l, h, pr] = [10.6, SOCLE.taille[1], 4.4];
+  const geometrie = new RoundedBoxGeometry(l, h, pr, 3, SOCLE.chanfrein);
+  const sol = materiauPalette(THREE, "MAT_EARTH");
+  const socle = new THREE.Mesh(geometrie, sol);
+  socle.position.set(0.6, -h / 2, -0.2);
+  socle.receiveShadow = ombres;
+  root.add(socle);
+  const personnes = instances.filter((_, i) => !membres[i].id);
+  return {
+    root,
+    personnages: personnes.map((inst) => inst.root),
+    setState(etat, data = {}) {
+      instances.forEach((inst, i) => {
+        const m = membres[i];
+        if (m.id) {
+          inst.setState(m.id === "crane" ? "idle" : "default");
+          return;
+        }
+        // le second ouvrier porte toujours : la planche montre le sac, quel que soit l'etat choisi
+        const e = m.porte ? "carry" : etat === "carry" && !m.ouvrier ? "walk" : etat;
+        inst.setState(e, { facing: 0.6, headlamp: data.headlamp === true });
+        if (!ctx.reducedMotion) inst.update(((i * 0.37) % 1) * 2);
+      });
+    },
+    update(dt) {
+      let encore = false;
+      for (const inst of personnes) encore = inst.update(dt) || encore;
+      return encore;
+    },
+    anchor(nom) {
+      throw new Error(`ancre inconnue : ${nom}`);
+    },
+    dispose() {
+      for (const inst of instances) inst.dispose();
       geometrie.dispose();
       sol.dispose();
     },
