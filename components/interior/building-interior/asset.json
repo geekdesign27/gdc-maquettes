@@ -6,8 +6,8 @@
   "script": "blender/assets/building-interior.py",
   "script_sha256": "6c70d01085d0d9556b6422bd5d0c83bc3db8759b93044886beec796adbc83df7",
   "commun_sha256": "e8cb480c62b7bdb8b54460ec91e343989e89e93987616cc2711afd5dbcdf2f80",
-  "palette_sha256": "1d680d9cdb1b8f17d1781232af4cc0f9e61120093db3153769da181b2d11293c",
-  "glb_sha256": "d0041ccdb7a09fa16d3e94eb763b5d826d95509c5a3d6b43e6b1c79c486b4f7d",
+  "palette_sha256": "4bc8171a929e1280ede0f531e271993458475f88a046e4086ca0659b08a01033",
+  "glb_sha256": "ca74f5a25062c158159e300e3776be3bccbbe46fe201d1a98af7cbb6a8b8429e",
   "animations": [],
   "statut": "a valider"
 }

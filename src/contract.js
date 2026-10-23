@@ -75,7 +75,9 @@ export function sampleData(entry) {
     floor: { stage: 'structure' },
     zones: [{ x: -8, z: 0, width: 14, depth: 12, surface: 'concrete' }, { x: 6, z: 0, width: 5, depth: 28, surface: 'asphalt' }],
     // building 2.0.0 : un etage sans stade prend l'etat essaye ; deux lots, l'un fini
-    floors: [{ id: '001-essai', rooms: [{ id: 'L1', done: true }, { id: 'L2', done: false }] }] };
+    floors: [{ id: '001-essai', rooms: [{ id: 'L1', done: true }, { id: 'L2', done: false }] }],
+    // character 1.2.0 : la lampe frontale allumee, pour compter son materiau dans chaque etat
+    headlamp: true };
   return Object.fromEntries(Object.keys(entry.data || {}).map((k) => [k, k in sample ? sample[k] : 1]));
 }
 

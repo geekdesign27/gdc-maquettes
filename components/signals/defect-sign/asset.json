@@ -6,7 +6,7 @@
   "script": "blender/assets/defect-sign.py",
   "script_sha256": "7e5a6c3826f7d5ae9a8595d45f658fbe61dad031a0451306a476b667d51c9c6e",
   "commun_sha256": "e8cb480c62b7bdb8b54460ec91e343989e89e93987616cc2711afd5dbcdf2f80",
-  "palette_sha256": "1d680d9cdb1b8f17d1781232af4cc0f9e61120093db3153769da181b2d11293c",
+  "palette_sha256": "4bc8171a929e1280ede0f531e271993458475f88a046e4086ca0659b08a01033",
   "glb_sha256": "557590166e9dbe96bd8128dda1243812a8eae18d9f820fe0cd020047a3ebda0f",
   "animations": [],
   "statut": "a valider"

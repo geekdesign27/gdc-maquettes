@@ -2,9 +2,10 @@
 // (corps, visage, casque, squelette, animations) recoit la coiffure, la tenue du metier et l'outil, rebranches sur ses os,
 // puis les couleurs de la personne. Partage par le composant et par la planche de l'equipe de la galerie.
 
-export const BASE = "kit:character-kit/CHR_BASE_MASTER_v002.glb";
-export const COIFFURES = "kit:character-kit/CHR_HAIR_KIT_v002.glb";
-export const OUTILS = "kit:character-kit/PRP_CHR_TOOLS_v002.glb";
+const V = "_v003"; // la version de tous les fichiers du kit (character-kit v003, plan D-3)
+export const BASE = `kit:character-kit/CHR_BASE_MASTER${V}.glb`;
+export const COIFFURES = `kit:character-kit/CHR_HAIR_KIT${V}.glb`;
+export const OUTILS = `kit:character-kit/PRP_CHR_TOOLS${V}.glb`;
 export const METIERS = [
   "client",
   "architect",
@@ -17,9 +18,11 @@ export const METIERS = [
   "inspector",
   "concierge",
   "representative",
+  "worker", // l'ouvrier de la vie du chantier (1.2.0) : pas un agent
+  "civilian", // badaud ou usager d'un batiment habite (1.2.0) : pas un agent
 ];
 export const tenueDe = (trade) =>
-  `kit:character-kit/CHR_OUTFIT_${trade.toUpperCase()}_v002.glb`;
+  `kit:character-kit/CHR_OUTFIT_${trade.toUpperCase()}${V}.glb`;
 export const FICHIERS = [BASE, COIFFURES, OUTILS, ...METIERS.map(tenueDe)];
 
 // L'outil de chaque metier quand la personne n'en precise pas (docs/correspondances.md).
@@ -35,6 +38,8 @@ export const OUTIL_DU_METIER = {
   inspector: "clipboard",
   concierge: "keys",
   representative: "binder",
+  worker: "none",
+  civilian: "none",
 };
 
 // Les fichiers dont une personne a besoin : l'hote peut ne fournir que ceux-la dans ctx.assets.
@@ -53,6 +58,9 @@ export function outilDe({ trade, tool = "auto" }) {
 }
 
 const CASQUE = "CHR_BASE_MASTER_HELMET";
+const LAMPE = "PRP_CHR_HEADLAMP"; // la lampe frontale, clipsee au casque (base, v003)
+const LENTILLE = "PRP_CHR_HEADLAMP_LENS";
+export const SAC = "CHR_OUTFIT_WORKER_SACK"; // le sac de ciment de carry, dans la tenue d'ouvrier
 const VISAGE = "CHR_BASE_MASTER_FACE";
 const CILS = "CHR_BASE_MASTER_LASHES";
 const EQUIPE_GLB = "MAT_FABRIC_SITE"; // le materiau des parties d'equipe dans les GLB du kit
@@ -64,6 +72,12 @@ const MATERIAU_EQUIPE = {
   operations: "MAT_FABRIC_OPERATIONS",
   client: "MAT_SURFACE", // le casque blanc « cote client » (decision du 19 octobre 2026)
 };
+const CASQUE_OUVRIER = "MAT_FABRIC_WORKER"; // le casque gris de l'ouvrier, quelle que soit l'equipe
+const CIVIL_GLB = "MAT_FABRIC_CIVIL_A"; // le coloris de la tenue de ville dans le GLB, remplace par celui de la personne
+
+// Le casque : tout le monde le porte, sauf le client (equipe « none ») et la tenue de ville ; l'ouvrier toujours.
+export const porteCasque = ({ trade, team }) =>
+  trade === "worker" || (trade !== "civilian" && team !== "none");
 
 // Rebranche sur la base les pieces d'un autre fichier du kit dont le nom passe garder(nom) : une piece rigide (enfant
 // d'un os) passe sous l'os de meme nom de la base ; une piece deformee recoit un squelette fait des os de la base.
@@ -105,9 +119,10 @@ function pieceDe(o) {
   return "";
 }
 
-// Habille la base d'une personne. apparence : { trade, team, body, skin, hair, hairColor, beard, glasses, tool } ;
-// assets : les copies des fichiers (ctx.assets) ; materiau(nom) : un materiau de palette (MAT_...) fourni par l'appelant,
-// qui le libere. Rend la scene de la base et ses clips.
+// Habille la base d'une personne. apparence : { trade, team, body, skin, hair, hairColor, beard, glasses, tool,
+// outfitColor } ; assets : les copies des fichiers (ctx.assets) ; materiau(nom) : un materiau de palette (MAT_...) fourni
+// par l'appelant, qui le libere. Rend la scene de la base, ses clips, la lampe frontale detachee ({ parent, pieces,
+// lentille }, ou null sans casque et en qualite basse), le sac de carry (ouvrier) et le nombre de squelettes.
 export function habille(THREE, apparence, assets, materiau, qualite) {
   const a = apparence;
   const { scene, animations } = assets[BASE];
@@ -134,9 +149,17 @@ export function habille(THREE, apparence, assets, materiau, qualite) {
       (n) => n === nom || n === nom + "_TEAM",
     );
   }
+  const squelettes = partageSquelette(THREE, scene);
 
-  // Le casque : tout le monde le porte, sauf le client (equipe « none ») ; blanc pour l'equipe client.
-  if (a.team === "none") scene.getObjectByName(CASQUE).removeFromParent();
+  // Le casque (porteCasque), blanc pour l'equipe client, gris pour l'ouvrier. La lampe frontale suit le casque ; sous
+  // 0,30 m, elle disparait en qualite basse (bible 18.3). Elle est detachee : le composant la pose quand il l'allume.
+  const casque = porteCasque(a);
+  if (!casque) scene.getObjectByName(CASQUE).removeFromParent();
+  let lampe = null;
+  const pieces = [LAMPE, LENTILLE].map((n) => scene.getObjectByName(n));
+  if (casque && qualite === "high" && pieces.every(Boolean))
+    lampe = { parent: pieces[0].parent, pieces, lentille: pieces[1] };
+  for (const o of pieces) o?.removeFromParent();
   if (a.body !== "F") scene.getObjectByName(CILS).removeFromParent();
   // qualite basse : ce qui mesure moins de 0,30 m disparait (bible 18.3) : les traits du visage et les cils
   for (const nom of [VISAGE, CILS]) {
@@ -150,6 +173,7 @@ export function habille(THREE, apparence, assets, materiau, qualite) {
   const echanges = {
     MAT_SKIN_B: "MAT_SKIN_" + a.skin,
     MAT_HAIR_BROWN: "MAT_HAIR_" + a.hairColor.toUpperCase(),
+    [CIVIL_GLB]: "MAT_FABRIC_CIVIL_" + (a.outfitColor ?? "a").toUpperCase(),
   };
   scene.traverse((o) => {
     if (!o.isMesh) return;
@@ -157,6 +181,7 @@ export function habille(THREE, apparence, assets, materiau, qualite) {
     const piece = pieceDe(o);
     let final = nom;
     if (echanges[nom]) final = echanges[nom];
+    else if (piece === CASQUE && a.trade === "worker") final = CASQUE_OUVRIER;
     else if (piece === CASQUE && equipe) final = equipe;
     else if (nom === EQUIPE_GLB && piece.endsWith("_TEAM") && equipe)
       final =
@@ -167,5 +192,39 @@ export function habille(THREE, apparence, assets, materiau, qualite) {
     const k = o.morphTargetDictionary?.FEMININE;
     if (k !== undefined) o.morphTargetInfluences[k] = a.body === "F" ? 1 : 0;
   });
-  return { scene, animations };
+  // la lampe detachee n'est pas dans la scene : ses couleurs a part (boitier graphite ; la lentille, le composant)
+  for (const o of lampe?.pieces ?? [])
+    o.traverse((x) => {
+      if (x.isMesh) x.material = materiau(x.material.name);
+    });
+  return { scene, animations, lampe, sac: scene.getObjectByName(SAC), squelettes };
+}
+
+// Un squelette par personnage (plan D-1c, correction 4) : le corps, la tenue et la coiffure, deformes par les memes os,
+// recoivent le meme THREE.Skeleton, si bien que Three.js ne recalcule et ne recharge qu'une texture d'os par image au
+// lieu d'une par maillage. Un maillage dont les os ou les matrices de liaison different garde le sien. Rend le nombre
+// de squelettes du personnage.
+const EGAL = 1e-5;
+export function partageSquelette(THREE, scene) {
+  const deformes = [];
+  scene.traverse((o) => {
+    if (o.isSkinnedMesh) deformes.push(o);
+  });
+  const communs = [];
+  for (const o of deformes) {
+    const s = o.skeleton;
+    const commun = communs.find(
+      (c) =>
+        c.bones.length === s.bones.length &&
+        c.bones.every((b, i) => b === s.bones[i]) &&
+        c.boneInverses.every((m, i) =>
+          m.elements.every(
+            (v, k) => Math.abs(v - s.boneInverses[i].elements[k]) < EGAL,
+          ),
+        ),
+    );
+    if (!commun) communs.push(s);
+    else if (commun !== s) o.bind(commun, o.bindMatrix);
+  }
+  return communs.length;
 }

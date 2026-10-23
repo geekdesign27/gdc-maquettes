@@ -32,7 +32,12 @@
     "hair_blond": "#DFCE8A",
     "hair_red": "#CF7D5A",
     "hair_grey": "#A7A6A2",
-    "hivis": "#FF6A13"
+    "hivis": "#FF6A13",
+    "hivis_yellow": "#D7EC23",
+    "worker_grey": "#8C807A",
+    "civil_a": "#D670B0",
+    "civil_b": "#7ED9CF",
+    "civil_c": "#B49CE6"
   },
   "materiaux": {
     "MAT_CONCRETE": {
@@ -207,6 +212,31 @@
     },
     "MAT_FABRIC_HIVIS": {
       "couleur": "hivis",
+      "rugosite": 0.85,
+      "metal": 0.0
+    },
+    "MAT_FABRIC_HIVIS_YELLOW": {
+      "couleur": "hivis_yellow",
+      "rugosite": 0.85,
+      "metal": 0.0
+    },
+    "MAT_FABRIC_WORKER": {
+      "couleur": "worker_grey",
+      "rugosite": 0.85,
+      "metal": 0.0
+    },
+    "MAT_FABRIC_CIVIL_A": {
+      "couleur": "civil_a",
+      "rugosite": 0.85,
+      "metal": 0.0
+    },
+    "MAT_FABRIC_CIVIL_B": {
+      "couleur": "civil_b",
+      "rugosite": 0.85,
+      "metal": 0.0
+    },
+    "MAT_FABRIC_CIVIL_C": {
+      "couleur": "civil_c",
       "rugosite": 0.85,
       "metal": 0.0
     }

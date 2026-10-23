@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-58 éléments : 50 livré, 6 à faire, 2 exemple ; 3 nouvelle(s) version(s) prévue(s).
+58 éléments : 48 livré, 8 à faire, 2 exemple ; 1 nouvelle(s) version(s) prévue(s).
 
 ## G0 : La ligne graphique
 
@@ -350,49 +350,9 @@ Montrer qui travaille, où, et dans quel état.
 
 | Ordre | Identifiant | Nom | Nature | But | Statut |
 |---|---|---|---|---|---|
-| 1 | `character-kit` | Le personnage maître et son équipe | Bibliothèque de modèles 3D produite par un script Blender (blender/assets/<id>.py) et réutilisée par plusieurs composants : components/kit/<id>/ | Un squelette, une morphologie et des animations communes pour tous les agents. | livré |
-| 2 | `character` | Le personnage (un agent) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer qui travaille, où, et dans quel état. | livré |
 | 3 | `excavator` | La pelleteuse | Composant 3D Three.js, conforme à docs/contrat-composant.md | L'état fouille d'un bâtiment : le terrassement d'une nouvelle application. | livré |
 | 4 | `crane` | La grue | Composant 3D Three.js, conforme à docs/contrat-composant.md | La fusion vers dev, à la réception : on pose la pièce finie. | livré |
 | 5 | `delivery-truck` | Le camion de livraison | Composant 3D Three.js, conforme à docs/contrat-composant.md | L'arrivée d'une nouvelle dépendance : un événement à surveiller pour la sécurité. | livré |
-
-### Le personnage maître et son équipe (`character-kit`)
-
-CHR_BASE_MASTER (1,70 m, 5 têtes, décision du 19 octobre 2026), son armature RIG_CHR_BASE, les douze animations communes, les tenues par métier (client, architect, engineer, foreman, mason, electrician, plumber, painter, inspector, concierge, representative ; gilet orange pour l'équipe site), le casque de la couleur d'équipe (blanc pour l'équipe client ; le client n'en porte pas) et les accessoires (tablette, rouleau de plans, trépied de géomètre, talkie-walkie, rouleau à peinture, truelle, câble, planchette, tampon, trousseau de clés, classeur). Qui porte quoi : docs/correspondances.md. Bible, section 5.
-
-- Dossier : `components/kit/character-kit/`, script `blender/assets/character-kit.py`
-- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres)
-- Modèles : `CHR_BASE_MASTER_v002.glb`, `CHR_HAIR_KIT_v002.glb`, `PRP_CHR_TOOLS_v002.glb`, `CHR_OUTFIT_CLIENT_v002.glb`, `CHR_OUTFIT_ARCHITECT_v002.glb`, `CHR_OUTFIT_ENGINEER_v002.glb`, `CHR_OUTFIT_FOREMAN_v002.glb`, `CHR_OUTFIT_MASON_v002.glb`, `CHR_OUTFIT_ELECTRICIAN_v002.glb`, `CHR_OUTFIT_PLUMBER_v002.glb`, `CHR_OUTFIT_PAINTER_v002.glb`, `CHR_OUTFIT_INSPECTOR_v002.glb`, `CHR_OUTFIT_CONCIERGE_v002.glb`, `CHR_OUTFIT_REPRESENTATIVE_v002.glb`
-- Animations : `ANM_CHR_IDLE`, `ANM_CHR_WALK`, `ANM_CHR_WORK`, `ANM_CHR_TYPING`, `ANM_CHR_INSPECT`, `ANM_CHR_READ`, `ANM_CHR_THINKING`, `ANM_CHR_WAITING`, `ANM_CHR_TALK`, `ANM_CHR_CELEBRATE`, `ANM_CHR_BLOCKED`
-- Budget : 8000 triangles, 6 matériaux
-- Critères d'acceptation :
-  - Planche comparative des morphologies validée avant les variantes
-  - Un seul squelette pour tous
-  - Le portrait (G7) et le corps se correspondent
-
-Nouvelle version prévue : v003, au lot G8 (à faire).
-
-### Le personnage (un agent) (`character`)
-
-Un personnage par agent, à partir du personnage maître : tenue et outil de son métier, couleur de son équipe. GDC le déplace ; le composant joue l'animation de l'état, sur place. L'apparence de chaque personne (morphologie, peau, coiffure, barbe, lunettes, outil) est dans components/kit/character-kit/equipe.json ; GDC la passe en paramètres (décision de PA du 19 octobre 2026 : chaque personne a son personnage). blocked : posture d'arrêt devant la barrière ; unknown : immobile, matériaux grisés, lisible sans animation. Version 1.1.1 (plan D-1, 22 octobre 2026) : les matériaux de la palette viennent du registre commun de l'hôte (ctx.materiau), partagés par toute l'équipe : une même peau, une même chevelure, une même tenue n'ont qu'un matériau sur la carte ; sans registre, chaque personnage fabrique les siens, comme en 1.1.0. Rien ne change à l'écran.
-
-- Fichier : `components/character/character/index.js`
-- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; kit `character-kit`
-- Modèles : `kit:character-kit/CHR_BASE_MASTER_v002.glb`, `kit:character-kit/CHR_HAIR_KIT_v002.glb`, `kit:character-kit/PRP_CHR_TOOLS_v002.glb`, `kit:character-kit/CHR_OUTFIT_CLIENT_v002.glb`, `kit:character-kit/CHR_OUTFIT_ARCHITECT_v002.glb`, `kit:character-kit/CHR_OUTFIT_ENGINEER_v002.glb`, `kit:character-kit/CHR_OUTFIT_FOREMAN_v002.glb`, `kit:character-kit/CHR_OUTFIT_MASON_v002.glb`, `kit:character-kit/CHR_OUTFIT_ELECTRICIAN_v002.glb`, `kit:character-kit/CHR_OUTFIT_PLUMBER_v002.glb`, `kit:character-kit/CHR_OUTFIT_PAINTER_v002.glb`, `kit:character-kit/CHR_OUTFIT_INSPECTOR_v002.glb`, `kit:character-kit/CHR_OUTFIT_CONCIERGE_v002.glb`, `kit:character-kit/CHR_OUTFIT_REPRESENTATIVE_v002.glb`
-- Animations : `ANM_CHR_IDLE`, `ANM_CHR_WALK`, `ANM_CHR_WORK`, `ANM_CHR_TYPING`, `ANM_CHR_INSPECT`, `ANM_CHR_READ`, `ANM_CHR_THINKING`, `ANM_CHR_WAITING`, `ANM_CHR_TALK`, `ANM_CHR_CELEBRATE`, `ANM_CHR_BLOCKED`
-- Paramètres : `trade` (client | architect | engineer | foreman | mason | electrician | plumber | painter | inspector | concierge | representative) ; `team` (none | client | architecture | studies | site | reception | operations) ; `body` (M | F) ; `skin` (A | B | C | D | E) ; `hair` (short | side | crop | bob | long | ponytail | bun) ; `hairColor` (black | brown | blond | red | grey) ; `beard` (true | false) ; `glasses` (true | false) ; `tool` (auto (l'outil du métier) | none | plans | tablet | tripod | radio | roller | trowel | cable | clipboard | stamp | keys | binder | wrench)
-- États : `idle`, `walk`, `work`, `typing`, `inspect`, `read`, `thinking`, `waiting`, `talk`, `celebrate`, `blocked`, `unknown`
-- Ancres : `label`, `badge`
-- Données reçues par setState : `facing` (angle en radians, sens du regard ou de la marche)
-- Budget : 8000 triangles, 6 matériaux
-- Critères d'acceptation :
-  - Le métier se lit à la tenue et à l'outil
-  - L'équipe se lit à la couleur de la tenue
-  - unknown : gris, immobile, lisible
-  - reducedMotion : posture fixe et lisible pour chaque état
-  - Animations sur place, sans déplacement non maîtrisé
-
-Nouvelle version prévue : 1.2.0, au lot G8 (à faire).
 
 ### La pelleteuse (`excavator`)
 
@@ -710,8 +670,8 @@ Faire de la carte la visualisation du harnais : relier au survol la carte, le fi
 | 7 | `day-night` | L'heure réelle | Document de référence, pas de code | La carte suit l'heure réelle : le jour, une nuit pas trop sombre, une courte aube et un court crépuscule ; la nuit, les fenêtres disent où l'on travaille. | livré |
 | 7 | `time-of-day` | Le moment de la carte | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Suivre l'heure réelle, ou choisir le jour, l'aube ou la nuit pour y voir plus clair ; l'horaire du soleil de Fribourg. | livré |
 | 8 | `floodlight` | Le projecteur de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Éclairer le chantier la nuit quand on y travaille. | livré |
-| 9 | `character-kit` | Le personnage maître et son équipe (version v003) | Bibliothèque de modèles 3D produite par un script Blender (blender/assets/<id>.py) et réutilisée par plusieurs composants : components/kit/<id>/ | Un squelette, une morphologie et des animations communes pour tous les agents. | à faire |
-| 10 | `character` | Le personnage (un agent) (version 1.2.0) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer qui travaille, où, et dans quel état. | à faire |
+| 9 | `character-kit` | Le personnage maître et son équipe | Bibliothèque de modèles 3D produite par un script Blender (blender/assets/<id>.py) et réutilisée par plusieurs composants : components/kit/<id>/ | Un squelette, une morphologie et des animations communes pour tous les agents. | à faire |
+| 10 | `character` | Le personnage (un agent) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer qui travaille, où, et dans quel état. | à faire |
 | 11 | `site-fence` | La clôture de chantier (version 1.1.0) | Composant 3D Three.js, conforme à docs/contrat-composant.md | Cloisonner le chantier, comme tout chantier romand. | à faire |
 | 12 | `party-shed` | Le cabanon de la fête | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer la pause : le chantier est fermé et l'équipe fait la fête au cabanon en attendant ta décision. | à faire |
 | 13 | `city-car` | La voiture d'ambiance | Composant 3D Three.js, conforme à docs/contrat-composant.md | Faire vivre la ville autour du chantier, sans rien dire du harnais. | à faire |
@@ -877,6 +837,50 @@ Un mât de chantier galvanisé, lesté, avec un ou deux projecteurs LED. Aucune 
   - La tache au sol laisse lire les objets dessous
   - En qualité low, 600 triangles au plus et pas de tache au sol
 
+### Le personnage maître et son équipe (`character-kit`)
+
+CHR_BASE_MASTER (1,70 m, 5 têtes, décision du 19 octobre 2026), son armature RIG_CHR_BASE, les douze animations communes, les tenues par métier (client, architect, engineer, foreman, mason, electrician, plumber, painter, inspector, concierge, representative ; gilet orange pour l'équipe site), le casque de la couleur d'équipe (blanc pour l'équipe client ; le client n'en porte pas) et les accessoires (tablette, rouleau de plans, trépied de géomètre, talkie-walkie, rouleau à peinture, truelle, câble, planchette, tampon, trousseau de clés, classeur). Qui porte quoi : docs/correspondances.md. Bible, section 5. Version v003 (plan D-3) : ce que la ville vivante ajoute au kit : la tenue d'ouvrier CHR_OUTFIT_WORKER (bleu de travail graphite, casque gris chaud #8C807A (le #8E959C de la fiche était à ΔE 1,7 du gris de l'état « Inconnu » ; choix de Pierre-Alain du 23 octobre 2026), gilet jaune fluo #D7EC23 à bandes claires, docs/vie-du-chantier.md, section 3) ; la tenue de ville CHR_OUTFIT_CIVILIAN, sans casque, en trois coloris vifs, jamais graphite, jamais une couleur d'équipe ni d'état, pour que le client reste le seul en civil graphite (badauds et usagers des bâtiments habités) ; la lampe frontale PRP_CHR_HEADLAMP, fixée au casque, dont la lentille peut briller ; l'animation ANM_CHR_CARRY (porter). Les tissus des trois coloris de ville (MAT_FABRIC_CIVIL_*) et la tenue d'ouvrier sont ajoutés à src/palette.json (validés par Pierre-Alain le 23 octobre 2026) ; tous les modèles ont été reconstruits. Fiche validée par Pierre-Alain le 21 octobre 2026. Choix de Pierre-Alain du 23 octobre 2026 : la lampe allumée est un septième matériau, admis la nuit seulement ; le sac de ciment de carry, dans le gris du casque d'ouvrier ; la tenue de ville en sweat et pantalon beige (MAT_WOOD) ; les coloris de ville rose framboise, turquoise clair et lilas (MAT_FABRIC_CIVIL_A, B, C) ; headlamp aussi dans data, pour que l'assemblage l'allume et l'éteigne sans recréer le personnage.
+
+- Dossier : `components/kit/character-kit/`, script `blender/assets/character-kit.py`
+- Fabriqué par : animateur
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres)
+- Modèles : `CHR_BASE_MASTER_v003.glb`, `CHR_HAIR_KIT_v003.glb`, `PRP_CHR_TOOLS_v003.glb`, `CHR_OUTFIT_CLIENT_v003.glb`, `CHR_OUTFIT_ARCHITECT_v003.glb`, `CHR_OUTFIT_ENGINEER_v003.glb`, `CHR_OUTFIT_FOREMAN_v003.glb`, `CHR_OUTFIT_MASON_v003.glb`, `CHR_OUTFIT_ELECTRICIAN_v003.glb`, `CHR_OUTFIT_PLUMBER_v003.glb`, `CHR_OUTFIT_PAINTER_v003.glb`, `CHR_OUTFIT_INSPECTOR_v003.glb`, `CHR_OUTFIT_CONCIERGE_v003.glb`, `CHR_OUTFIT_REPRESENTATIVE_v003.glb`, `CHR_OUTFIT_WORKER_v003.glb`, `CHR_OUTFIT_CIVILIAN_v003.glb`
+- Animations : `ANM_CHR_IDLE`, `ANM_CHR_WALK`, `ANM_CHR_WORK`, `ANM_CHR_TYPING`, `ANM_CHR_INSPECT`, `ANM_CHR_READ`, `ANM_CHR_THINKING`, `ANM_CHR_WAITING`, `ANM_CHR_TALK`, `ANM_CHR_CELEBRATE`, `ANM_CHR_BLOCKED`, `ANM_CHR_CARRY`
+- Budget : 8000 triangles, 6 matériaux
+- Critères d'acceptation :
+  - Planche comparative des morphologies validée avant les variantes
+  - Un seul squelette pour tous
+  - Le portrait (G7) et le corps se correspondent
+  - Planche : un agent de l'équipe site, un ouvrier, la barrière de blocage et la grue côte à côte ; l'ouvrier se distingue de l'agent d'un coup d'œil
+  - Planche : le client, trois badauds, un usager et Fanny côte à côte ; le client reste le seul en civil graphite
+  - La lampe frontale se lit à 25 px par mètre sans changer la silhouette du casque ; la couleur d'équipe du casque reste lisible
+  - Chaque personne tient toujours dans 8 000 triangles et 6 matériaux (7 la nuit, lampe allumée)
+  - Tous les modèles reconstruits après l'ajout à la palette ; ligne au journal des versions
+
+### Le personnage (un agent) (`character`)
+
+Un personnage par agent, à partir du personnage maître : tenue et outil de son métier, couleur de son équipe. GDC le déplace ; le composant joue l'animation de l'état, sur place. L'apparence de chaque personne (morphologie, peau, coiffure, barbe, lunettes, outil) est dans components/kit/character-kit/equipe.json ; GDC la passe en paramètres (décision de PA du 19 octobre 2026 : chaque personne a son personnage). blocked : posture d'arrêt devant la barrière ; unknown : immobile, matériaux grisés, lisible sans animation. Version 1.1.1 (plan D-1, 22 octobre 2026) : les matériaux de la palette viennent du registre commun de l'hôte (ctx.materiau), partagés par toute l'équipe : une même peau, une même chevelure, une même tenue n'ont qu'un matériau sur la carte ; sans registre, chaque personnage fabrique les siens, comme en 1.1.0. Rien ne change à l'écran. Version 1.2.0 (plan D-3) : deux métiers de plus, qui ne sont pas des agents : worker (l'ouvrier, de l'équipe qui accompagne un agent : casque gris, gilet jaune) et civilian (badaud ou usager d'un bâtiment habité, sans casque, en tenue de ville). Un ouvrier ne joue jamais celebrate, blocked ni unknown ; un civil non plus. Le paramètre headlamp allume la lampe frontale : la lentille brille avec une petite lueur, sans vraie lumière ; l'assemblage l'allume la nuit pour toute personne casquée qui est dehors. Un état de plus, carry (porter), joué par les ouvriers seulement ; GDC ne l'envoie jamais. Fiche validée par Pierre-Alain le 21 octobre 2026. Choix de Pierre-Alain du 23 octobre 2026 : la lampe allumée est un septième matériau, admis la nuit seulement ; le sac de ciment de carry, dans le gris du casque d'ouvrier ; la tenue de ville en sweat et pantalon beige (MAT_WOOD) ; les coloris de ville rose framboise, turquoise clair et lilas (MAT_FABRIC_CIVIL_A, B, C) ; headlamp aussi dans data, pour que l'assemblage l'allume et l'éteigne sans recréer le personnage. Un squelette par personnage (plan D-1c, correction 4) : le corps, la tenue et la coiffure partagent un même THREE.Skeleton.
+
+- Fichier : `components/character/character/index.js`
+- Fabriqué par : animateur
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; kit `character-kit`
+- Modèles : `kit:character-kit/CHR_BASE_MASTER_v003.glb`, `kit:character-kit/CHR_HAIR_KIT_v003.glb`, `kit:character-kit/PRP_CHR_TOOLS_v003.glb`, `kit:character-kit/CHR_OUTFIT_CLIENT_v003.glb`, `kit:character-kit/CHR_OUTFIT_ARCHITECT_v003.glb`, `kit:character-kit/CHR_OUTFIT_ENGINEER_v003.glb`, `kit:character-kit/CHR_OUTFIT_FOREMAN_v003.glb`, `kit:character-kit/CHR_OUTFIT_MASON_v003.glb`, `kit:character-kit/CHR_OUTFIT_ELECTRICIAN_v003.glb`, `kit:character-kit/CHR_OUTFIT_PLUMBER_v003.glb`, `kit:character-kit/CHR_OUTFIT_PAINTER_v003.glb`, `kit:character-kit/CHR_OUTFIT_INSPECTOR_v003.glb`, `kit:character-kit/CHR_OUTFIT_CONCIERGE_v003.glb`, `kit:character-kit/CHR_OUTFIT_REPRESENTATIVE_v003.glb`, `kit:character-kit/CHR_OUTFIT_WORKER_v003.glb`, `kit:character-kit/CHR_OUTFIT_CIVILIAN_v003.glb`
+- Animations : `ANM_CHR_IDLE`, `ANM_CHR_WALK`, `ANM_CHR_WORK`, `ANM_CHR_TYPING`, `ANM_CHR_INSPECT`, `ANM_CHR_READ`, `ANM_CHR_THINKING`, `ANM_CHR_WAITING`, `ANM_CHR_TALK`, `ANM_CHR_CELEBRATE`, `ANM_CHR_BLOCKED`, `ANM_CHR_CARRY`
+- Paramètres : `trade` (client | architect | engineer | foreman | mason | electrician | plumber | painter | inspector | concierge | representative | worker | civilian) ; `team` (none | client | architecture | studies | site | reception | operations) ; `body` (M | F) ; `skin` (A | B | C | D | E) ; `hair` (short | side | crop | bob | long | ponytail | bun) ; `hairColor` (black | brown | blond | red | grey) ; `beard` (true | false) ; `glasses` (true | false) ; `tool` (auto (l'outil du métier) | none | plans | tablet | tripod | radio | roller | trowel | cable | clipboard | stamp | keys | binder | wrench) ; `headlamp` (true | false, défaut false : la lampe allumée au départ (sans casque : rien)) ; `outfitColor` (a | b | c, défaut a (tenue de ville seulement))
+- États : `idle`, `walk`, `work`, `typing`, `inspect`, `read`, `thinking`, `waiting`, `talk`, `celebrate`, `blocked`, `unknown`, `carry`
+- Ancres : `label`, `badge`
+- Données reçues par setState : `facing` (angle en radians, sens du regard ou de la marche) ; `headlamp` (true \| false : allume ou éteint la lampe frontale (sans casque : rien))
+- Budget : 8000 triangles, 6 matériaux
+- Critères d'acceptation :
+  - Le métier se lit à la tenue et à l'outil
+  - L'équipe se lit à la couleur de la tenue
+  - unknown : gris, immobile, lisible
+  - reducedMotion : posture fixe et lisible pour chaque état
+  - Animations sur place, sans déplacement non maîtrisé
+  - worker et civilian se lisent à la tenue, sans badge ni nom
+  - headlamp : la lentille brille sans vraie lumière ; le client n'a pas de casque, donc pas de lampe
+  - Ligne au journal des versions
+
 ### Le cabanon de la fête (`party-shed`)
 
 Un petit cabanon en bois, avec un auvent et une table haute. Sous l'auvent, une lanterne à facettes tourne lentement (un tour en 8 secondes environ) et projette trois taches de couleur qui glissent au sol et sur le mur : elles ne s'allument et ne s'éteignent jamais, donc aucun flash (WCAG 2.3.1). Des notes de musique, des formes en 3D et non une police, montent doucement depuis la porte et s'effacent, trois au plus à la fois. Les trois teintes de fête sont des lumières (bloc fete de src/lumiere.json), choisies loin des six couleurs d'état et des couleurs d'équipe (ΔE 2000 d'au moins 20, mesuré) et proposées sur planche à Pierre-Alain. L'assemblage le pose près de la baraque, hors de la clôture (à confirmer sur la scène de référence) ; en régime pause, les ouvriers s'y rassemblent (talk, idle, jamais celebrate, qui reste aux agents) ; les agents restent où GDC les place. Fiche validée par Pierre-Alain le 21 octobre 2026.
@@ -1005,36 +1009,4 @@ Le portail ferme (docs/vie-du-chantier.md, section 7) : default reste le portail
 - Critères d'acceptation :
   - Le passage de default à closed, et retour, est une rotation douce d'environ 1,5 seconde, une fois ; l'état final directement si reducedMotion
   - Sans gate, closed ne change rien
-  - Ligne au journal des versions
-
-### Le personnage maître et son équipe (`character-kit`), version v003
-
-Ce que la ville vivante ajoute au kit : la tenue d'ouvrier CHR_OUTFIT_WORKER (bleu de travail graphite, casque gris #8E959C, gilet jaune fluo #D7EC23 à bandes claires, docs/vie-du-chantier.md, section 3) ; la tenue de ville CHR_OUTFIT_CIVILIAN, sans casque, en trois coloris vifs, jamais graphite, jamais une couleur d'équipe ni d'état, pour que le client reste le seul en civil graphite (badauds et usagers des bâtiments habités) ; la lampe frontale PRP_CHR_HEADLAMP, fixée au casque, dont la lentille peut briller ; l'animation ANM_CHR_CARRY (porter). Les tissus des trois coloris de ville (MAT_FABRIC_CIVIL_*) et la tenue d'ouvrier sont une proposition d'ajout à src/palette.json, à valider par Pierre-Alain : changer la palette oblige à reconstruire tous les modèles. Fiche validée par Pierre-Alain le 21 octobre 2026.
-
-- Dossier : `components/kit/character-kit/`, script `blender/assets/character-kit.py`
-- Fabriqué par : animateur
-- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres)
-- Budget : 8000 triangles, 6 matériaux
-- Critères d'acceptation :
-  - Planche : un agent de l'équipe site, un ouvrier, la barrière de blocage et la grue côte à côte ; l'ouvrier se distingue de l'agent d'un coup d'œil
-  - Planche : le client, trois badauds, un usager et Fanny côte à côte ; le client reste le seul en civil graphite
-  - La lampe frontale se lit à 25 px par mètre sans changer la silhouette du casque ; la couleur d'équipe du casque reste lisible
-  - Chaque personne tient toujours dans 8 000 triangles et 6 matériaux
-  - Tous les modèles reconstruits après l'ajout à la palette ; ligne au journal des versions
-
-### Le personnage (un agent) (`character`), version 1.2.0
-
-Deux métiers de plus, qui ne sont pas des agents : worker (l'ouvrier, de l'équipe qui accompagne un agent : casque gris, gilet jaune) et civilian (badaud ou usager d'un bâtiment habité, sans casque, en tenue de ville). Un ouvrier ne joue jamais celebrate, blocked ni unknown ; un civil non plus. Le paramètre headlamp allume la lampe frontale : la lentille brille avec une petite lueur, sans vraie lumière ; l'assemblage l'allume la nuit pour toute personne casquée qui est dehors. Un état de plus, carry (porter), joué par les ouvriers seulement ; GDC ne l'envoie jamais. Fiche validée par Pierre-Alain le 21 octobre 2026.
-
-- Fichier : `components/character/character/index.js`
-- Fabriqué par : animateur
-- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; kit `character-kit`
-- Paramètres : `trade` (client | architect | engineer | foreman | mason | electrician | plumber | painter | inspector | concierge | representative | worker | civilian) ; `team` (none | client | architecture | studies | site | reception | operations) ; `body` (M | F) ; `skin` (A | B | C | D | E) ; `hair` (short | side | crop | bob | long | ponytail | bun) ; `hairColor` (black | brown | blond | red | grey) ; `beard` (true | false) ; `glasses` (true | false) ; `tool` (auto (l'outil du métier) | none | plans | tablet | tripod | radio | roller | trowel | cable | clipboard | stamp | keys | binder | wrench) ; `headlamp` (true | false, défaut false) ; `outfitColor` (a | b | c, défaut a (tenue de ville seulement))
-- États : `idle`, `walk`, `work`, `typing`, `inspect`, `read`, `thinking`, `waiting`, `talk`, `celebrate`, `blocked`, `unknown`, `carry`
-- Ancres : `label`, `badge`
-- Données reçues par setState : `facing` (angle en radians, sens du regard ou de la marche)
-- Budget : 8000 triangles, 6 matériaux
-- Critères d'acceptation :
-  - worker et civilian se lisent à la tenue, sans badge ni nom
-  - headlamp : la lentille brille sans vraie lumière ; le client n'a pas de casque, donc pas de lampe
   - Ligne au journal des versions

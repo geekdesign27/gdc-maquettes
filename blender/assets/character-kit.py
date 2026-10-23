@@ -19,6 +19,13 @@ a 0,66 m au lieu de 0,72, genou a 0,37), le tronc gagne ces 6 cm sous la taille 
 (bras x 1,15, jambes x 1,12, mains x 1,08, cou x 1,08), et le bas du tronc rentre dans les cuisses au lieu de deborder
 devant et derriere : plus d'arete au bassin. Epaules, bras et mains ne bougent pas : les poses et les outils restent.
 
+Version 3 (plan D-3, ville vivante ; fiches validees par PA le 21 octobre 2026, choix du 23 octobre 2026) : deux tenues
+qui ne sont pas des agents, l'ouvrier (CHR_OUTFIT_WORKER : veste de travail graphite, gilet jaune fluo a bandes claires,
+gants, casque gris pose par le composant, et le sac de ciment de ANM_CHR_CARRY) et la tenue de ville (CHR_OUTFIT_CIVILIAN :
+sweat d'un des trois coloris vifs, pantalon beige, jamais de casque) ; la lampe frontale PRP_CHR_HEADLAMP, clipsee a
+l'avant du casque, dont la lentille peut briller ; l'animation ANM_CHR_CARRY (porter). Le corps, le squelette et les
+onze autres clips ne changent pas.
+
 Pose de repos : en A, bras ecartes de 10 degres. Axes des os : Y le long de l'os, Z vers l'avant du personnage (-Y),
 sauf le pied (Z vers le haut). Les angles s'appliquent dans l'ordre Y, X, Z : Y tourne l'os sur son axe (bras gauche :
 rotation interne ; tete : regard vers la gauche), X plie vers l'avant partout (flexion), puis Z, autour de l'axe avant
@@ -27,7 +34,7 @@ cote gauche et se recopient en miroir.
 
 Animations : voir CLIPS, en bas du fichier (duree, boucle, posture de depart et mouvement des mains de chacune).
 Dans l'atelier seulement, des variables d'environnement choisissent la vue (voir vue_atelier) : GDC_ATELIER_CLIP,
-GDC_ATELIER_CASQUE=0 et GDC_ATELIER_PERSONNE=<id de equipe.json>.
+GDC_ATELIER_CASQUE=0, GDC_ATELIER_LAMPE=1 et GDC_ATELIER_PERSONNE=<id de equipe.json, ou worker, civilian>.
 """
 import json
 import math
@@ -39,7 +46,7 @@ import bmesh
 import bpy
 from mathutils import Matrix, Vector
 
-V = "_v002"  # la version de tous les fichiers du kit : ils portent le meme squelette
+V = "_v003"  # la version de tous les fichiers du kit : ils portent le meme squelette
 ASSET = {"id": "character-kit", "categorie": "kit", "nom": "CHR_BASE_MASTER" + V}
 
 P = "CHR_BASE_MASTER_"
@@ -616,6 +623,23 @@ def casque(rig, mat):
     return o
 
 
+LAMPE = (MENTON + 0.285, -0.205)  # la lampe frontale : hauteur et avant de son boitier, sur la coque elargie du casque
+
+
+def lampe_frontale(rig, mat, mat_lentille):
+    """La lampe frontale (PRP_CHR_HEADLAMP), clipsee a l'avant de la coque, au-dessus de la visiere : un boitier
+    graphite arrondi (un galet) et sa lentille ronde, agrandis comme le casque (x 1,2). Sans sangle : a 25 px par metre, elle ne
+    ferait qu'un demi-pixel, et la silhouette du casque ne change pas. La lentille est un noeud a part : le composant
+    l'allume (une lueur, sans vraie lumiere). Deux noeuds rigides, enfants de l'os de la tete, caches par defaut."""
+    z, y = LAMPE
+    boitier = ellipsoide("PRP_CHR_HEADLAMP", (0, y, z), (0.052, 0.030, 0.034), cotes=12, anneaux=8, mat=mat)
+    lentille = ellipsoide("PRP_CHR_HEADLAMP_LENS", (0, y - 0.026, z), (0.026, 0.010, 0.026), cotes=12, anneaux=6,
+                          mat=mat_lentille)
+    for o in (boitier, lentille):
+        rattache_a_l_os(o, rig, "HEAD")
+    return [boitier, lentille]
+
+
 
 # --- Les coiffures (fichier CHR_HAIR_KIT) --------------------------------------------------------------------------
 # Des masses sculptees (bible 4), chacune un noeud rattache a l'os de la tete. Elles passent sous le casque : rien ne
@@ -938,6 +962,17 @@ def gilet(nom, m, mat, mat_bandes, ecart=0.012):
     return [o]
 
 
+def sac(nom, m, mat):
+    """Le sac de ciment de ANM_CHR_CARRY (choix de PA du 23 octobre 2026) : un coussin tenu a deux mains devant le
+    ventre, rigide sur la poitrine (les bras ne balancent pas en portant). Le composant ne le montre qu'en carry."""
+    _, ry, _, cy = _interpole(m["tronc"], 1.00)
+    devant = cy - ry - 0.012  # le dos du sac touche le ventre, quelle que soit la morphologie
+    o = fuseau(nom, [(-0.125, 0, 0, 0, 0), (-0.115, 0.200, 0.085, 0, 0), (0.115, 0.200, 0.085, 0, 0), (0.125, 0, 0, 0, 0)],
+               cotes=16, exposant=3.0, origine=(0, devant - 0.085, 0.985), mat=mat)
+    rigide(o, "CHEST")
+    return [o]
+
+
 def ceinture(nom, m, mat, mat_outils):
     """Ceinture a outils simplifiee (amendement de PA du 19 octobre 2026) : la ceinture, deux poches sur les hanches et
     deux manches d'outils qui en sortent, de la couleur de l'equipe."""
@@ -1009,6 +1044,17 @@ def TENUES():
         "concierge": [("POLO_TEAM", lambda m, mt: polo("POLO", m, mt[EQUIPE])),
                       ("BELT_TEAM", lambda m, mt: ceinture("BELT", m, mt["habits"], mt[EQUIPE])),
                       ("GLOVES", lambda m, mt: gants("GLOVES", m, mt["habits"]))],
+        # l'ouvrier (docs/vie-du-chantier.md, section 3) : bleu de travail graphite (la veste de travail fermee sur le
+        # pantalon), gilet jaune fluo a bandes claires, gants ; le casque gris est pose par le composant. Le sac de
+        # ciment n'apparait qu'en carry.
+        "worker": [("JACKET", lambda m, mt: veste("JACKET", m, mt, mt["habits"], False)),
+                   ("VEST", lambda m, mt: gilet("VEST", m, mt["jaune"], mt["clair"], 0.030)),
+                   ("GLOVES", lambda m, mt: gants("GLOVES", m, mt["habits"])),
+                   ("SACK", lambda m, mt: sac("SACK", m, mt["ouvrier"]))],
+        # la tenue de ville (badauds, usagers) : sweat du coloris A (le composant le passe en B ou C), pantalon beige ;
+        # jamais de graphite en haut ni de casque, pour que le client reste le seul en civil graphite
+        "civilian": [("HOODIE", lambda m, mt: sweat("HOODIE", m, mt["civil"])),
+                     ("TROUSERS", lambda m, mt: pantalon("TROUSERS", m, mt["bois"]))],
         # representante : veste graphite, chemise claire, pantalon clair (MB_05)
         "representative": [("JACKET", lambda m, mt: veste("JACKET", m, mt, mt["habits"], True)),
                            ("SHIRT", lambda m, mt: chemise("SHIRT", m, mt["clair"])),
@@ -1189,7 +1235,7 @@ def clip(rig, nom, cles):
 
 
 def anime(rig):
-    """Les onze clips de la fiche, sur place, a 30 images par seconde. Chaque boucle revient a sa posture de depart."""
+    """Les douze clips de la fiche, sur place, a 30 images par seconde. Chaque boucle revient a sa posture de depart."""
     noms = []
     for nom, cles in CLIPS(rig):
         clip(rig, nom, cles)
@@ -1258,6 +1304,12 @@ def CLIPS(rig):
     accroupi = melange(D, THIGH=sym(22, 0, 0), SHIN=sym(-40, 0, 0), FOOT=sym(18, 0, 0), SPINE=(8, 0, 0), loc=(0, -0.05, 0))
     bras_leves = dict(ARM=sym(155, 0, -15), FOREARM=sym(12, 0, 0))
 
+    # CARRY, 32 images (1,07 s) en boucle : la marche, les deux bras plies qui tiennent le sac de ciment devant le ventre
+    # (ils ne balancent pas), le dos un peu en arriere pour equilibrer la charge. Depart : pied gauche devant, comme WALK.
+    # Sans animation, la posture fixe est l'image 0. Joue par les ouvriers seulement ; GDC ne l'envoie jamais.
+    tient = dict(ARM=sym(4, 0, -2), FOREARM=sym(86, 0, 0), HAND=sym(0, 0, 0), SPINE=(-4, 0, 0), CHEST=(-2, 0, 0))
+    porte = [(i, melange(p, **{k: v for k, v in tient.items()})) for i, p in marche]
+
     # BLOCKED, posture fixe (2 images identiques) : debout, bras croises, la tete droite. Immobile (bible 17.4).
     croise = melange(D, ARM_L=(22, 50, -4), ARM_R=(26, -50, 4), FOREARM_L=(96, 0, 0), FOREARM_R=(108, 0, 0), HEAD=(-2, 0, 0))
 
@@ -1279,6 +1331,9 @@ def CLIPS(rig):
                           (45, melange(parle, ARM_R=(18, 0, 10), FOREARM_R=(66, 0, 0), HEAD=(4, 0, 0))), (60, parle)]),
         ("ANM_CHR_CELEBRATE", [(0, D), (12, accroupi), (22, melange(D, loc=(0, 0.05, 0), **bras_leves)),
                                (32, melange(accroupi, **bras_leves)), (44, melange(D, **bras_leves)), (60, D)]),
+        # CARRY avant BLOCKED : anime() laisse les os dans la derniere pose cle, celle ou les portraits (agent-portraits)
+        # accrochent coiffure et tenue ; elle reste BLOCKED, comme en v002, et les portraits ne changent pas
+        ("ANM_CHR_CARRY", porte),
         ("ANM_CHR_BLOCKED", [(0, croise), (30, croise)]),
     ]
 
@@ -1289,7 +1344,7 @@ def CLIPS(rig):
 # Tous portent le meme squelette, que le composant reutilise : il rebranche les pieces sur les os du fichier principal.
 
 METIERS = ["client", "architect", "engineer", "foreman", "mason", "electrician", "plumber", "painter", "inspector",
-           "concierge", "representative"]
+           "concierge", "representative", "worker", "civilian"]
 EQUIPES = {"architecture": "MAT_FABRIC_ARCHITECTURE", "studies": "MAT_FABRIC_STUDIES", "site": "MAT_FABRIC_SITE",
            "reception": "MAT_FABRIC_RECEPTION", "operations": "MAT_FABRIC_OPERATIONS", "client": "MAT_SURFACE"}
 
@@ -1298,7 +1353,8 @@ def _mats(c):
     return {"peau": c.materiau(MAT_PEAU), "habits": c.materiau(MAT_HABITS), "cheveux": c.materiau(MAT_CHEVEUX),
             "sombre": c.materiau(MAT_SOMBRE), "clair": c.materiau(MAT_CLAIR), EQUIPE: c.materiau(EQUIPE),
             "bois": c.materiau("MAT_WOOD"), "tech": c.materiau("MAT_TECH"), "orange": c.materiau("MAT_FABRIC_HIVIS"),
-            "acier": c.materiau("MAT_STEEL")}
+            "acier": c.materiau("MAT_STEEL"), "jaune": c.materiau("MAT_FABRIC_HIVIS_YELLOW"),
+            "ouvrier": c.materiau("MAT_FABRIC_WORKER"), "civil": c.materiau("MAT_FABRIC_CIVIL_A")}
 
 
 def construit(c):
@@ -1308,6 +1364,7 @@ def construit(c):
     visage(rig, mats)
     lashes = cils(rig, mats["sombre"])
     helmet = casque(rig, mats["clair"])
+    lampe = lampe_frontale(rig, mats["habits"], mats["clair"])
     # les ancres de la fiche character : l'etiquette au-dessus du casque, le badge a cote de la tete (bible 17.7)
     c.ancre("ANCHOR_LABEL", (0, 0, 2.05))
     c.ancre("ANCHOR_BADGE", (0.32, 0, 1.78))  # 0,30 en v001 : le meme ecart au casque, elargi
@@ -1315,7 +1372,7 @@ def construit(c):
 
     # Atelier seulement : le clip, le casque, et une personne de l'equipe habillee. L'export garde la base seule.
     if "atelier" in sys.modules or any(Path(a).name == "atelier.py" for a in sys.argv):
-        vue_atelier(c, rig, helmet, lashes, mats)
+        vue_atelier(c, rig, helmet, lashes, lampe, mats)
     return {"triangles_vises": 4500, "animations": animations}
 
 
@@ -1346,18 +1403,42 @@ def equipe():
     return json.loads(chemin.read_text(encoding="utf-8"))["personnes"]
 
 
-def vue_atelier(c, rig, helmet, lashes, mats):
+# Les tenues qui ne sont pas des agents, pour l'atelier : un visage d'exemple (la carte tire le sien d'une graine).
+NON_AGENTS = {
+    "worker": {"id": "worker", "morpho": "M", "peau": "C", "coiffure": "short", "cheveux": "black", "barbe": True,
+               "lunettes": False, "metier": "worker", "equipe": "none", "casque": True, "outil": None},
+    "civilian": {"id": "civilian", "morpho": "F", "peau": "B", "coiffure": "ponytail", "cheveux": "brown", "barbe": False,
+                 "lunettes": False, "metier": "civilian", "equipe": "none", "casque": False, "outil": None},
+}
+
+
+def vue_atelier(c, rig, helmet, lashes, lampe, mats):
     """La vue de l'atelier : GDC_ATELIER_CLIP (le clip, sinon ANM_CHR_IDLE), GDC_ATELIER_CASQUE=0 (sans casque) et
     GDC_ATELIER_PERSONNE=<id de equipe.json> (la personne habillee, comme la galerie l'assemble). Captures seulement :
     la mesure compte toutes les pieces montees."""
-    rig.animation_data.action = bpy.data.actions.get(os.environ.get("GDC_ATELIER_CLIP", "ANM_CHR_IDLE"))
+    clip_vu = os.environ.get("GDC_ATELIER_CLIP", "ANM_CHR_IDLE")
+    # anime() laisse les os dans la derniere pose cle : la pose de repos d'abord, pour que les pieces rattachees aux os
+    # par habille() tombent a leur place ; le clip ensuite
+    for pb in rig.pose.bones:
+        pb.rotation_euler = (0, 0, 0)
+        pb.location = (0, 0, 0)
+    bpy.context.view_layer.update()
+    if os.environ.get("GDC_ATELIER_LAMPE") != "1":
+        for o in lampe:
+            cache(o)
     ident = os.environ.get("GDC_ATELIER_PERSONNE")
     if not ident:
+        rig.animation_data.action = bpy.data.actions.get(clip_vu)
         cache(lashes)
         if os.environ.get("GDC_ATELIER_CASQUE") == "0":
             cache(helmet)
         return
-    habille(c, rig, next(p for p in equipe() if p["id"] == ident), helmet, lashes, mats)
+    p = NON_AGENTS.get(ident) or next(p for p in equipe() if p["id"] == ident)
+    habille(c, rig, p, helmet, lashes, mats)
+    rig.animation_data.action = bpy.data.actions.get(clip_vu)
+    sac_vu = bpy.data.objects.get("CHR_OUTFIT_WORKER_SACK")
+    if sac_vu and clip_vu != "ANM_CHR_CARRY":
+        cache(sac_vu)
 
 
 def habille(c, rig, p, helmet, lashes, mats):
@@ -1380,6 +1461,8 @@ def habille(c, rig, p, helmet, lashes, mats):
             o.data.shape_keys.key_blocks["FEMININE"].value = 1.0 if p["morpho"] == "F" else 0.0
     if not p["casque"]:
         cache(helmet)
+    elif p["metier"] == "worker":
+        helmet.data.materials[0] = c.materiau("MAT_FABRIC_WORKER")  # le casque gris, quelle que soit l'equipe
     elif equipe_mat:
         helmet.data.materials[0] = c.materiau(equipe_mat)
     if p["morpho"] != "F":
