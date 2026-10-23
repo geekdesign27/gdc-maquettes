@@ -649,7 +649,7 @@ rapportCamionPlus();
   const fete = imp.decor.find((d) => d.id === 'party-shed');
   const T = imp.cadres.transformations;
   const [x, , z] = fete.position;
-  verifie(x - 2.1 >= T.x[0] && x + 2.4 <= T.x[1] && z - 1.7 >= T.z[0] && z + 1.7 <= T.z[1], 'cabanon : hors de la zone des transformations');
+  verifie(x - 2.35 >= T.x[0] && x + 2.6 <= T.x[1] && z - 1.75 >= T.z[0] && z + 1.75 <= T.z[1], 'cabanon : hors de la zone des transformations');
   for (const l of Object.values(imp.lieux))
     verifie(Math.abs(l.position[0] - x) > 5 || Math.abs(l.position[2] - z) > 4.5, `cabanon : sur le lieu ${l.id}`);
   const cabanon = (carte) => {

@@ -19,23 +19,23 @@ const P = "ENV_PARTY_SHED_A_";
 const PORTE = { ouverte: (100 * Math.PI) / 180, duree: 1 }; // la porte s'ouvre vers l'avant, gond cote camera
 const FONDU = 1.5; // l'allumage de la lanterne et des taches, apres la porte
 const TOUR = 8; // secondes par tour de lanterne
-const MUR = 0.31; // l'avant du mur du cabanon (z de Three.js), ou montent les taches
+const MUR = 0.35; // l'avant du pignon et de ses couvre-joints (z de Three.js), ou montent les taches
 const LARGE = 1.45; // la demi-largeur du mur
 // sol : les taches flottent a 8 cm, au-dessus des marquages et des voiles que l'hote pose au sol
-const TACHE = { rayon: 0.42, chemin: 1.25, sol: 0.08, anneaux: 3, cotes: 20 };
+const TACHE = { rayon: 0.65, chemin: 1.45, sol: 0.08, anneaux: 3, cotes: 20 };
 const NOTE = {
   periode: 1.6,
   duree: 3.6,
   max: 3,
   naissance: 0.3,
   effacement: 0.5,
-  echelle: 1.3, // la croche du modele fait 0,45 m ; a la camera iso, un peu plus
+  echelle: 2, // la croche du modele fait 0,45 m ; a la camera de la carte, il en faut le double pour la lire
 };
 // les notes figees (reducedMotion) : devant l'auvent, au-dessus de la porte
 const NOTES_FIXES = [
-  [0.3, 2.85, 2.0],
-  [0.65, 3.25, 2.05],
-  [1.0, 3.6, 1.95],
+  [1.2, 2.95, 1.95],
+  [1.85, 3.5, 2.0],
+  [2.5, 4.05, 1.95],
 ];
 
 export const meta = {
@@ -214,9 +214,9 @@ export function create(THREE, params, ctx) {
     );
     const avance = lisse(Math.min(u / 0.4, 1));
     v.set(
-      0.55 + 0.25 * Math.sin(u * Math.PI * 3 + k),
-      1.7 + 2.1 * Math.pow(u, 1.4),
-      0.9 + 1.3 * avance,
+      1.25 + 0.15 * Math.sin(u * Math.PI * 3 + k),
+      1.7 + 2.6 * Math.pow(u, 1.4),
+      0.9 + 1.2 * avance,
     );
     notes.setMatrixAt(
       i,

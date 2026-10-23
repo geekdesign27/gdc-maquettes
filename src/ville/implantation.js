@@ -75,7 +75,7 @@ const X_ROUTE = 27; // l'axe de la route entre les bureaux et le chantier
 // rien ne cache a la camera (choix de Pierre-Alain du 23 octobre 2026 : « pres de la zone transformation ») ; son avant
 // (+Z du composant) tourne vers la voie qui descend du carrefour. En pause, l'equipe se rassemble devant son auvent, au
 // bord de la voie (son ancre gather).
-const FETE = { position: [21.9, 0, 10.95], rotation: Math.PI / 2, rassemblement: [24.4, 11.15] };
+const FETE = { position: [21.6, 0, 10.95], rotation: Math.PI / 2, rassemblement: [24.3, 11.15] };
 
 const centre = (a) => (a[0] + a[1]) / 2;
 const long = (a) => a[1] - a[0];
