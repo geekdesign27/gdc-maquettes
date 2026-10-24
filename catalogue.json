@@ -1906,7 +1906,7 @@
         "Fluidité mesurée à 12 ouvriers ; lisible en clair et en sombre",
         "Aucune couleur d'état dans la scène ; ouvriers et usagers sans badge, sans nom, sans clic"
       ],
-      "status": "à faire",
+      "status": "livré",
       "role": "intégrateur (assemblage) ; directeur artistique (relecture)"
     },
     {
@@ -1928,7 +1928,7 @@
         "Côté carte : un agent se prend à 12 px du pointeur, devant ce qui est derrière lui, sur la séquence fixtures/projet-type (étape 20 : trois agents groupés à la réception)",
         "Aucun repère ni groupe ne recouvre un rectangle d'obstacles : il monte au-dessus, de 80 px au plus, entier dans la couche, et sa tige le relie à la tête ; au-delà de 80 px, il reste sur la tête ; sans obstacle, ni montée ni tige"
       ],
-      "status": "à faire",
+      "status": "livré",
       "role": "intégrateur d'interface (le repère) ; intégrateur (la prise, côté carte) ; directeur artistique (relecture)",
       "inputs": {
         "agents": "liste de { id, name, state, x, y } : les agents de la carte, hors ouvriers et usagers ; id : l'identifiant de l'agent, celui des portraits (equipe.json), comme pour agent-popup ; state : mêmes valeurs que character ; x, y : la position à l'écran de leur ancre label, en pixels, que GDC recalcule quand la caméra ou l'agent bouge",

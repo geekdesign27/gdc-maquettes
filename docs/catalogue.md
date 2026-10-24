@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-66 éléments : 50 livré, 14 à faire, 2 exemple.
+66 éléments : 52 livré, 12 à faire, 2 exemple.
 
 ## G0 : La ligne graphique
 
@@ -655,8 +655,8 @@ Faire de la carte la visualisation du harnais : relier au survol la carte, le fi
 | 11 | `site-fence` | La clôture de chantier | Composant 3D Three.js, conforme à docs/contrat-composant.md | Cloisonner le chantier, comme tout chantier romand. | à faire |
 | 12 | `party-shed` | Le cabanon de la fête | Composant 3D Three.js, conforme à docs/contrat-composant.md | Montrer la pause : le chantier est fermé et l'équipe fait la fête au cabanon en attendant ta décision. | à faire |
 | 13 | `city-car` | La voiture d'ambiance | Composant 3D Three.js, conforme à docs/contrat-composant.md | Faire vivre la ville autour du chantier, sans rien dire du harnais. | à faire |
-| 14 | `city-map` | La carte vivante | Document de référence, pas de code | Assembler et animer la carte du chantier à partir des scènes que GDC envoie : où chaque élément se pose, par où chacun marche, et la vie du chantier qui naît de l'état reçu. | à faire |
-| 15 | `agent-marker` | Le repère d'agent | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Repérer et attraper facilement, sur la carte entière, les agents avec qui on peut ou doit interagir. | à faire |
+| 14 | `city-map` | La carte vivante | Document de référence, pas de code | Assembler et animer la carte du chantier à partir des scènes que GDC envoie : où chaque élément se pose, par où chacun marche, et la vie du chantier qui naît de l'état reçu. | livré |
+| 15 | `agent-marker` | Le repère d'agent | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Repérer et attraper facilement, sur la carte entière, les agents avec qui on peut ou doit interagir. | livré |
 | 16 | `panel-rail` | Le rail d'un panneau | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Fermer un panneau du bord (l'arbre, le fil, le planning) en une bande fine qui garde ses badges, le rouvrir et, pour le planning, le redimensionner : une décision qui attend Pierre-Alain reste visible. | livré |
 | 17 | `site-schedule` | Le planning du chantier | Élément d'interface HTML (élément personnalisé), conforme à docs/contrat-composant.md, partie interface | Lire en bas du panneau l'histoire du chantier en Gantt, de l'étape à l'application, à la fiche et au lot : le passé avec ses vraies dates, le futur à la file, sans date. | à faire |
 
@@ -884,11 +884,12 @@ Une clôture mobile : panneaux en treillis gris (maille de 0,45 m) sur plots en 
 
 ### Le cabanon de la fête (`party-shed`)
 
-Un petit cabanon en bois, avec un auvent et une table haute. Sous l'auvent, une lanterne à facettes tourne lentement (un tour en 8 secondes environ) et projette trois taches de couleur qui glissent au sol et sur le mur : elles ne s'allument et ne s'éteignent jamais, donc aucun flash (WCAG 2.3.1). Des notes de musique, des formes en 3D et non une police, montent doucement depuis la porte et s'effacent, trois au plus à la fois. Les trois teintes de fête sont des lumières (bloc fete de src/lumiere.json), choisies loin des six couleurs d'état et des couleurs d'équipe (ΔE 2000 d'au moins 20, mesuré) et proposées sur planche à Pierre-Alain. L'assemblage le pose près de la baraque, hors de la clôture (à confirmer sur la scène de référence) ; en régime pause, les ouvriers s'y rassemblent (talk, idle, jamais celebrate, qui reste aux agents) ; les agents restent où GDC les place. Fiche validée par Pierre-Alain le 21 octobre 2026.
+Un petit cabanon en bois, avec un auvent et une table haute. Sous l'auvent, une lanterne à facettes tourne lentement (un tour en 8 secondes environ) et projette trois taches de couleur qui glissent au sol et sur le mur : elles ne s'allument et ne s'éteignent jamais, donc aucun flash (WCAG 2.3.1). Des notes de musique, des formes en 3D et non une police, montent doucement depuis la porte et s'effacent, trois au plus à la fois. Les trois teintes de fête sont des lumières (bloc fete de src/lumiere.json), choisies loin des six couleurs d'état et des couleurs d'équipe (ΔE 2000 d'au moins 20, mesuré) et proposées sur planche à Pierre-Alain. L'assemblage le pose près de la baraque, hors de la clôture (à confirmer sur la scène de référence) ; en régime pause, les ouvriers s'y rassemblent (talk, idle, jamais celebrate, qui reste aux agents) ; les agents restent où GDC les place. Fiche validée par Pierre-Alain le 21 octobre 2026. Choix de Pierre-Alain du 23 octobre 2026 : les trois teintes magenta #FF3DCB, cyan ciel #2EDCFF et vert lime #9CFF4A (ΔE 2000 de 24,7 au moins) ; une note s'efface en rapetissant ; le cabanon est posé près de la zone des transformations (au fond à droite, l'avant vers la voie), l'équipe y sort par le portail, qui se ferme une fois qu'elle est passée.
 
 - Fichier : `components/site/party-shed/index.js`
 - Fabriqué par : modeleur
-- Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces)
+- Production : Pièces d'un kit Blender assemblées par le code selon les données (avancement, nombre de pièces) ; modèle `ENV_PARTY_SHED_A_v001`
+- Modèles : `ENV_PARTY_SHED_A_v001.glb`
 - États : `closed`, `party`
 - Ancres : `label`, `door`, `gather`
 - Données reçues par setState : aucune
