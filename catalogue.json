@@ -2177,23 +2177,28 @@
       "category": "kit",
       "name": "Le kit des villas romandes",
       "purpose": "Les maisons d'une banlieue de Suisse romande : crépi clair, toit à pans, volets, haie de thuyas, reconnaissables d'un coup d'œil.",
-      "description": "Script Blender blender/assets/villa-kit.py. Le corps en crépi clair (MAT_SURFACE, ou MAT_PLASTER crème si la planche de palette le retient), une ou deux teintes, jamais vive. Les toits : deux pans ou quatre pans (pavillon), en tuile brune (MAT_ROOF_TILE) ou en ardoise graphite (MAT_PAINTED_METAL_GRAPHITE) ; un cube moderne à toit plat, en crépi blanc. Les cotes de la famille des bâtiments (bible, 18.2) : étage de 3 m, porte et fenêtres × 1,2 ; volets peints (MAT_SHUTTER) aux fenêtres. Les vitres sont à part : le script pose une ancre par fenêtre (WIN_*), l'assemblage y met des vitres instanciées que city-night allume. Six variantes, combinaisons tirées par le script : quatre à toit de tuiles brunes, une à toit d'ardoise graphite, un cube moderne à toit plat ; rez avec combles (8 m au plus, pour le côté caméra) ou rez avec un étage (10 m, pour les rangées du fond et des côtés) ; avec ou sans garage accolé à toit plat. Le jardin, l'allée et la haie (nature-kit) sont posés par l'assemblage. Écarté : le chalet, une image de montagne, pas de banlieue romande. Qualité basse (détail minimal de 0,60 m pour la ville, city-plan et bible 18.3) : volets fondus dans la façade, cheminées et avant-toits fins supprimés. Environ 64 villas dans la ville, fusionnées par matériau : environ 5 appels de dessin. Fiche validée par Pierre-Alain le 23 octobre 2026 : tuiles, ardoise et un cube moderne ; critère ajouté le même jour avec son accord : jamais confondue avec un bâtiment d'application terminé.",
+      "description": "Script Blender blender/assets/villa-kit.py. Le corps en crépi clair, blanc cassé (MAT_SURFACE) ou crème (MAT_PLASTER #EDE3D0), jamais vif. Les toits : deux pans ou quatre pans (pavillon), en tuile vieillie (MAT_ROOF_TILE #A17272) ou en ardoise graphite (MAT_PAINTED_METAL_GRAPHITE) ; un cube moderne à toit plat, en crépi blanc. Les cotes de la famille des bâtiments (bible, 18.2) : étage de 3 m, porte et fenêtres × 1,2 ; volets en bois (MAT_WOOD, décision de Pierre-Alain du 24 octobre 2026, sans matériau de volet) aux fenêtres des villas A à E ; menuiseries et portes graphite ; seuil ou terrasse en béton. Les vitres sont à part : le script pose un vide par fenêtre (ENV_VILLA_KIT_A_VILLA_<X>_WIN_nn, origine au centre de la vitre, −Y vers l'extérieur, mis à l'échelle pour les baies du cube moderne), et la pièce WINDOW_PANE (un carré de verre de 1,50 m) que l'assemblage instancie sur ces vides, en composant leur transformation avec celle de la villa ; city-night les allume. Six variantes, combinaisons tirées par le script : quatre à toit de tuiles brunes, une à toit d'ardoise graphite, un cube moderne à toit plat ; rez avec combles (8 m au plus, pour le côté caméra) ou rez avec un étage (10 m, pour les rangées du fond et des côtés) ; avec ou sans garage accolé à toit plat. Le jardin, l'allée et la haie (nature-kit) sont posés par l'assemblage. Écarté : le chalet, une image de montagne, pas de banlieue romande. Qualité basse (détail minimal de 0,60 m pour la ville, city-plan et bible 18.3) : volets, dormants, cheminées, seuils et avant-toits supprimés ; la dalle du toit plat couvre tout le dessus. Environ 64 villas dans la ville, fusionnées par matériau : environ 5 appels de dessin. Fiche validée par Pierre-Alain le 23 octobre 2026 : tuiles, ardoise et un cube moderne ; critère ajouté le même jour avec son accord : jamais confondue avec un bâtiment d'application terminé. Version 1.0.0 (ENV_VILLA_KIT_A_v001), brief, planche et constat du contrôleur validés par Pierre-Alain le 24 octobre 2026 : 900 triangles par villa en haute et 300 en basse au plus, pour que le GLB tienne sous 8 000 (2 756 triangles, 7 matériaux) ; A 432 / 18, B 400 / 18, C 600 / 32, D 530 / 18, E 488 / 32, F 160 / 26 ; 144 vides de fenêtre ; A, B, E et F à 7,90 m au plus cheminée comprise, C et D à 9,90 m. La villa E garde son ardoise graphite : le contexte la sépare toujours d'un bâtiment d'application, posé sur sa parcelle dans le chantier clôturé (décision de Pierre-Alain du 24 octobre 2026).",
       "budget": {
         "triangles": 8000,
         "materials": 7
       },
       "acceptance": [
         "Chaque pièce est un nœud nommé selon la convention (bible, section 9) ; les six variantes s'assemblent sans retouche",
-        "Une villa : 1 200 triangles en haute, 400 en basse",
+        "Une villa : 900 triangles en haute, 300 en basse au plus (le GLB entier sous 8 000)",
         "On reconnaît une villa romande à 8 px par mètre : la silhouette du toit, les volets, la haie",
         "Côté caméra, aucune villa ne dépasse 8 m",
         "Aucune couleur d'état, ni orange, ni corail",
         "Les vitres prennent la nuit (city-night) sans casser la fusion de la ville",
         "Jamais confondue avec un bâtiment d'application (building, type house) terminé : planche côte à côte"
       ],
-      "status": "à faire",
+      "status": "livré",
       "role": "modeleur",
-      "production": "blender"
+      "production": "blender",
+      "version": "1.0.0",
+      "blender": "ENV_VILLA_KIT_A_v001",
+      "assets": [
+        "ENV_VILLA_KIT_A_v001.glb"
+      ]
     },
     {
       "id": "apartment-kit",

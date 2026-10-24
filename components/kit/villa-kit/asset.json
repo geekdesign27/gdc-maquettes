@@ -1,0 +1,13 @@
+{
+  "nom": "ENV_VILLA_KIT_A_v001",
+  "id": "villa-kit",
+  "bible": "WORKSITE 1.2",
+  "blender": "5.3.0 Beta",
+  "script": "blender/assets/villa-kit.py",
+  "script_sha256": "abaf017c758bd54e0f49ec99bc8bc66f3e088aa533ff9667cf1f78adb0cd8679",
+  "commun_sha256": "e8cb480c62b7bdb8b54460ec91e343989e89e93987616cc2711afd5dbcdf2f80",
+  "palette_sha256": "028f1055493a2d25d665642cf946eb3c7160e4274b9724dd07878deff0dbc0ec",
+  "glb_sha256": "a752f062efb363de8a80b430f0a6f14b02899173cb0b8243c392e4ea9cbefdc5",
+  "animations": [],
+  "statut": "a valider"
+}
