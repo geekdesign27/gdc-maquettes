@@ -47,9 +47,12 @@ export function create(THREE, entry, plan, assets, ctx) {
   const kit = assets[entry.assets[0]].scene;
   const manquantes = new Set();
 
-  // Qualite basse (bible 18.3) : la piece <PIECE>_LOW du kit quand elle existe, sinon la piece elle-meme.
+  // Qualite basse (bible 18.3) : la piece <PIECE>_LOW du kit quand elle existe, sinon la piece elle-meme ; une piece
+  // du plan marquee basse: false (les marquages et les lampadaires de road-kit) n'est pas posee.
   const basse = ctx.quality === "low";
+  let posees = 0;
   for (const p of plan.pieces) {
+    if (basse && p.basse === false) continue;
     const source =
       (basse && kit.getObjectByName(p.piece + "_LOW")) ||
       kit.getObjectByName(p.piece);
@@ -60,7 +63,10 @@ export function create(THREE, entry, plan, assets, ctx) {
     const piece = source.clone();
     piece.position.set(...versThree(p.position));
     piece.rotation.set(0, THREE.MathUtils.degToRad(p.rotation), 0);
+    // echelle (facultative, axes de Blender) : une piece etiree par l'assemblage, le troncon de road-kit
+    if (p.echelle) piece.scale.set(p.echelle[0], p.echelle[2], p.echelle[1]);
     root.add(piece);
+    posees += 1;
   }
 
   // Les socles maquette (bible, 18.5) : dessus a y = 0, aretes arrondies en classe C3.
@@ -90,7 +96,7 @@ export function create(THREE, entry, plan, assets, ctx) {
   return {
     root,
     manquantes: [...manquantes],
-    pieces: plan.pieces.length,
+    pieces: posees, // les pieces vraiment posees (en basse, sans celles marquees basse: false)
     setState() {},
     update() {
       return false;

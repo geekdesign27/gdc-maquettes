@@ -90,7 +90,9 @@ def monte_demonstration(plan):
     racine = plan["prefixe"] + "DEMO"
     for i, p in enumerate(plan["pieces"]):
         nom = "%s_%03d_%s" % (racine, i, p["piece"][len(plan["prefixe"]):])
-        c.instance(nom, sources[p["piece"]], tuple(p["position"]), p["rotation"])
+        o = c.instance(nom, sources[p["piece"]], tuple(p["position"]), p["rotation"])
+        if p.get("echelle"):  # une piece etiree par l'assemblage (le troncon de road-kit)
+            o.scale = tuple(p["echelle"])
     for k, s in enumerate(plan["socles"]):
         l, p, h = s["taille"]
         socle = c.boite("%s_PLINTH_%d" % (racine, k), (l, p, h), (s["centre"][0], s["centre"][1], -h), mat=s["materiau"],

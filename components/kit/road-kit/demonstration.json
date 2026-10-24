@@ -1,0 +1,554 @@
+{
+ "prefixe": "ENV_ROAD_KIT_A_",
+ "socles": [
+  {
+   "taille": [
+    70.0,
+    80.0,
+    0.6
+   ],
+   "centre": [
+    20.0,
+    25.0
+   ],
+   "materiau": "MAT_LANDSCAPE",
+   "chanfrein": 0.1
+  }
+ ],
+ "pieces": [
+  {
+   "piece": "ENV_ROAD_KIT_A_CROSS",
+   "position": [
+    0,
+    0,
+    0.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_TEE",
+   "position": [
+    50,
+    0,
+    0.0
+   ],
+   "rotation": 90
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_TEE",
+   "position": [
+    50,
+    50,
+    0.0
+   ],
+   "rotation": 180
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_ROUNDABOUT",
+   "position": [
+    0,
+    50,
+    0.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_STRAIGHT",
+   "position": [
+    -10.0,
+    0,
+    0.0
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_DASH",
+   "position": [
+    -10.0,
+    0,
+    0.0
+   ],
+   "rotation": 0,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_STRAIGHT",
+   "position": [
+    0,
+    -10.0,
+    0.0
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_DASH",
+   "position": [
+    0,
+    -10.0,
+    0.0
+   ],
+   "rotation": 90,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_STRAIGHT",
+   "position": [
+    50,
+    -10.0,
+    0.0
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_DASH",
+   "position": [
+    50,
+    -10.0,
+    0.0
+   ],
+   "rotation": 90,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_STRAIGHT",
+   "position": [
+    25.0,
+    0,
+    0.0
+   ],
+   "rotation": 0,
+   "echelle": [
+    4.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_CROSSING",
+   "position": [
+    8.0,
+    0,
+    0.0
+   ],
+   "rotation": 0,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_CROSSING",
+   "position": [
+    42.0,
+    0,
+    0.0
+   ],
+   "rotation": 0,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_DASH",
+   "position": [
+    13.0,
+    0,
+    0.0
+   ],
+   "rotation": 0,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_DASH",
+   "position": [
+    19.0,
+    0,
+    0.0
+   ],
+   "rotation": 0,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_DASH",
+   "position": [
+    25.0,
+    0,
+    0.0
+   ],
+   "rotation": 0,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_DASH",
+   "position": [
+    31.0,
+    0,
+    0.0
+   ],
+   "rotation": 0,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_DASH",
+   "position": [
+    37.0,
+    0,
+    0.0
+   ],
+   "rotation": 0,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_STRAIGHT",
+   "position": [
+    0,
+    20.0,
+    0.0
+   ],
+   "rotation": 90,
+   "echelle": [
+    3.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_CROSSING",
+   "position": [
+    0,
+    32.0,
+    0.0
+   ],
+   "rotation": 90,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_DASH",
+   "position": [
+    0,
+    8.5,
+    0.0
+   ],
+   "rotation": 90,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_DASH",
+   "position": [
+    0,
+    14.5,
+    0.0
+   ],
+   "rotation": 90,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_DASH",
+   "position": [
+    0,
+    20.5,
+    0.0
+   ],
+   "rotation": 90,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_DASH",
+   "position": [
+    0,
+    26.5,
+    0.0
+   ],
+   "rotation": 90,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_STRAIGHT",
+   "position": [
+    30.0,
+    50,
+    0.0
+   ],
+   "rotation": 0,
+   "echelle": [
+    3.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_DASH",
+   "position": [
+    18.0,
+    50,
+    0.0
+   ],
+   "rotation": 0,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_DASH",
+   "position": [
+    24.0,
+    50,
+    0.0
+   ],
+   "rotation": 0,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_DASH",
+   "position": [
+    30.0,
+    50,
+    0.0
+   ],
+   "rotation": 0,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_DASH",
+   "position": [
+    36.0,
+    50,
+    0.0
+   ],
+   "rotation": 0,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_DASH",
+   "position": [
+    42.0,
+    50,
+    0.0
+   ],
+   "rotation": 0,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_STRAIGHT",
+   "position": [
+    50,
+    25.0,
+    0.0
+   ],
+   "rotation": 90,
+   "echelle": [
+    4.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_CROSSING",
+   "position": [
+    50,
+    42.0,
+    0.0
+   ],
+   "rotation": 90,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_DASH",
+   "position": [
+    50,
+    10.5,
+    0.0
+   ],
+   "rotation": 90,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_DASH",
+   "position": [
+    50,
+    16.5,
+    0.0
+   ],
+   "rotation": 90,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_DASH",
+   "position": [
+    50,
+    22.5,
+    0.0
+   ],
+   "rotation": 90,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_DASH",
+   "position": [
+    50,
+    28.5,
+    0.0
+   ],
+   "rotation": 90,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_DASH",
+   "position": [
+    50,
+    34.5,
+    0.0
+   ],
+   "rotation": 90,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_LAMP_POLE",
+   "position": [
+    12.5,
+    -3.5,
+    0.0
+   ],
+   "rotation": 0,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_LAMP_HEAD",
+   "position": [
+    12.5,
+    -3.5,
+    0.0
+   ],
+   "rotation": 0,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_LAMP_POLE",
+   "position": [
+    37.5,
+    3.5,
+    0.0
+   ],
+   "rotation": 180,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_LAMP_HEAD",
+   "position": [
+    37.5,
+    3.5,
+    0.0
+   ],
+   "rotation": 180,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_LAMP_POLE",
+   "position": [
+    3.5,
+    20,
+    0.0
+   ],
+   "rotation": 90,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_LAMP_HEAD",
+   "position": [
+    3.5,
+    20,
+    0.0
+   ],
+   "rotation": 90,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_LAMP_POLE",
+   "position": [
+    46.5,
+    25,
+    0.0
+   ],
+   "rotation": 270,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_LAMP_HEAD",
+   "position": [
+    46.5,
+    25,
+    0.0
+   ],
+   "rotation": 270,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_LAMP_POLE",
+   "position": [
+    30,
+    53.5,
+    0.0
+   ],
+   "rotation": 180,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_LAMP_HEAD",
+   "position": [
+    30,
+    53.5,
+    0.0
+   ],
+   "rotation": 180,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_LAMP_POLE",
+   "position": [
+    8.485,
+    58.485,
+    0.0
+   ],
+   "rotation": 135,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_LAMP_HEAD",
+   "position": [
+    8.485,
+    58.485,
+    0.0
+   ],
+   "rotation": 135,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_LAMP_POLE",
+   "position": [
+    -8.485,
+    41.515,
+    0.0
+   ],
+   "rotation": 315,
+   "basse": false
+  },
+  {
+   "piece": "ENV_ROAD_KIT_A_LAMP_HEAD",
+   "position": [
+    -8.485,
+    41.515,
+    0.0
+   ],
+   "rotation": 315,
+   "basse": false
+  }
+ ]
+}
