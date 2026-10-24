@@ -6,7 +6,7 @@
   "script": "blender/assets/road-kit.py",
   "script_sha256": "53b594700aa0d17a8d8e5e2dad4f21272b61ed54eff3fa2c83d0b0ff9f6cb9c9",
   "commun_sha256": "e8cb480c62b7bdb8b54460ec91e343989e89e93987616cc2711afd5dbcdf2f80",
-  "palette_sha256": "4bc8171a929e1280ede0f531e271993458475f88a046e4086ca0659b08a01033",
+  "palette_sha256": "028f1055493a2d25d665642cf946eb3c7160e4274b9724dd07878deff0dbc0ec",
   "glb_sha256": "1b4a5ad4f0e3d50e8a9c969dd5cb27fadd3dcda2f4a19ce68fafc8d8ff80bda8",
   "animations": [],
   "statut": "a valider"

@@ -6,8 +6,8 @@
   "script": "blender/assets/excavator.py",
   "script_sha256": "fa3469b1a40e6725529ac2b0245ec521d5bc5dbf8e90bf85d2c03ff3b156f550",
   "commun_sha256": "e8cb480c62b7bdb8b54460ec91e343989e89e93987616cc2711afd5dbcdf2f80",
-  "palette_sha256": "4bc8171a929e1280ede0f531e271993458475f88a046e4086ca0659b08a01033",
-  "glb_sha256": "8a0b96239f67f56eb4f56c508ff173cf9eb9e837143a88185b4c5485b10ad225",
+  "palette_sha256": "028f1055493a2d25d665642cf946eb3c7160e4274b9724dd07878deff0dbc0ec",
+  "glb_sha256": "4876bd88cd9f30585865d2e588244daf3ed77a0826678ec060008ebf3dba86f7",
   "animations": [
     "ANM_EXCAVATOR_A_DIGGING"
   ],

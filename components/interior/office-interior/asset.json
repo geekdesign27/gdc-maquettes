@@ -6,7 +6,7 @@
   "script": "blender/assets/office-interior.py",
   "script_sha256": "12224ffff9948c307a9f4c277bac5ebb243e84b79510ae8a2e13dc2d1e53aa21",
   "commun_sha256": "e8cb480c62b7bdb8b54460ec91e343989e89e93987616cc2711afd5dbcdf2f80",
-  "palette_sha256": "4bc8171a929e1280ede0f531e271993458475f88a046e4086ca0659b08a01033",
+  "palette_sha256": "028f1055493a2d25d665642cf946eb3c7160e4274b9724dd07878deff0dbc0ec",
   "glb_sha256": "ad81da80ae26bcb22962b8bd8c8a4c3552b2113f49c80821616562d249543702",
   "animations": [],
   "statut": "a valider"

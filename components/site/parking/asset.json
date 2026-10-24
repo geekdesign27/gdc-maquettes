@@ -6,8 +6,8 @@
   "script": "blender/assets/parking.py",
   "script_sha256": "c5b32d5eed32851dc72db108580bcebd96807c48cd1b8a5fd4fc0838337f98c4",
   "commun_sha256": "e8cb480c62b7bdb8b54460ec91e343989e89e93987616cc2711afd5dbcdf2f80",
-  "palette_sha256": "4bc8171a929e1280ede0f531e271993458475f88a046e4086ca0659b08a01033",
-  "glb_sha256": "4834f8d0cda7e6ee3acafc34eda03ea42fa039f4520129dc10ada721f6be5360",
+  "palette_sha256": "028f1055493a2d25d665642cf946eb3c7160e4274b9724dd07878deff0dbc0ec",
+  "glb_sha256": "b29e4fbfa37011945d7d2f8e0230bd70547602cc9e498e10731cdb8cc14f5e32",
   "animations": [],
   "statut": "a valider"
 }

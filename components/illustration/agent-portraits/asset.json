@@ -5,7 +5,7 @@
   "script": "blender/assets/agent-portraits.py",
   "script_sha256": "b63be28edb340b81a241bde44ddc978a6c9413e734199d2e7ca2bd3ae1fe3ec9",
   "commun_sha256": "e8cb480c62b7bdb8b54460ec91e343989e89e93987616cc2711afd5dbcdf2f80",
-  "palette_sha256": "4bc8171a929e1280ede0f531e271993458475f88a046e4086ca0659b08a01033",
+  "palette_sha256": "028f1055493a2d25d665642cf946eb3c7160e4274b9724dd07878deff0dbc0ec",
   "sources": {
     "blender/assets/character-kit.py": "e7b23d888bb694810d3cae80441648995dd69ef0cb2f5e8a09ef58d1c551042c",
     "components/kit/character-kit/equipe.json": "9691b93331924f53ecff7e6b7e7d8af8c87db22d3c238685e531c8db7ef3ab9e",

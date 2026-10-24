@@ -6,8 +6,8 @@
   "script": "blender/assets/party-shed.py",
   "script_sha256": "6d9d22aad87092dc625bad4139dde2440f764582b8caf1d2f494424089013c9e",
   "commun_sha256": "e8cb480c62b7bdb8b54460ec91e343989e89e93987616cc2711afd5dbcdf2f80",
-  "palette_sha256": "4bc8171a929e1280ede0f531e271993458475f88a046e4086ca0659b08a01033",
-  "glb_sha256": "13c9cd6a1a5cf7ee35df076e922001628347846c7f4e3c14b29c5fcabc92cde1",
+  "palette_sha256": "028f1055493a2d25d665642cf946eb3c7160e4274b9724dd07878deff0dbc0ec",
+  "glb_sha256": "086f3aa1a7132d76d385ce0e292a229bd0f825cc778aa32cbc3d949db81c70d2",
   "animations": [],
   "statut": "a valider"
 }

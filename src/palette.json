@@ -19,7 +19,10 @@
     "aluminium": "#C9CED3",
     "skip_olive": "#8B8B4B",
     "skip_moss": "#5B6241",
-    "skip_plum": "#8B4B72"
+    "skip_plum": "#8B4B72",
+    "foliage_dark": "#355A5A",
+    "roof_tile": "#A17272",
+    "plaster": "#EDE3D0"
   },
   "personnages": {
     "skin_a": "#F2C8B6",
@@ -238,6 +241,21 @@
     "MAT_FABRIC_CIVIL_C": {
       "couleur": "civil_c",
       "rugosite": 0.85,
+      "metal": 0.0
+    },
+    "MAT_FOLIAGE_DARK": {
+      "couleur": "foliage_dark",
+      "rugosite": 0.9,
+      "metal": 0.0
+    },
+    "MAT_ROOF_TILE": {
+      "couleur": "roof_tile",
+      "rugosite": 0.85,
+      "metal": 0.0
+    },
+    "MAT_PLASTER": {
+      "couleur": "plaster",
+      "rugosite": 0.9,
       "metal": 0.0
     }
   },

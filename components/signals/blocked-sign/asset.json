@@ -6,7 +6,7 @@
   "script": "blender/assets/blocked-sign.py",
   "script_sha256": "eef83d6c372df49c3e8f2d86df8610cc75d63e4ca8f4c80d459a5c0d758b5f06",
   "commun_sha256": "e8cb480c62b7bdb8b54460ec91e343989e89e93987616cc2711afd5dbcdf2f80",
-  "palette_sha256": "4bc8171a929e1280ede0f531e271993458475f88a046e4086ca0659b08a01033",
+  "palette_sha256": "028f1055493a2d25d665642cf946eb3c7160e4274b9724dd07878deff0dbc0ec",
   "glb_sha256": "2781ca07410a2f16f69ec324fa9a06ca599a7c73b0ef76e73326863f3ac24556",
   "animations": [],
   "statut": "a valider"
