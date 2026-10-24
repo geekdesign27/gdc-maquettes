@@ -16,6 +16,7 @@ export const tokens = {
   lumiere: {
     projecteurs: { couleur: lumiere.projecteurs.couleur },
     fete: { couleurs: lumiere.fete.couleurs, opacite: lumiere.fete.opacite }, // le cabanon de la fete (party-shed)
+    voitures: { contact: lumiere.voitures.contact, lueur: lumiere.fenetres.couleur }, // les voitures de la ville (city-car)
   },
 };
 

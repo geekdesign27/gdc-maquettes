@@ -1,0 +1,13 @@
+{
+  "nom": "VEH_CITY_CAR_A_v001",
+  "id": "city-car",
+  "bible": "WORKSITE 1.2",
+  "blender": "5.3.0 Beta",
+  "script": "blender/assets/city-car.py",
+  "script_sha256": "21b1d3ec56e46dc6329fc160de60ffeae51f124920f27e2a18491fcfe978ef84",
+  "commun_sha256": "e8cb480c62b7bdb8b54460ec91e343989e89e93987616cc2711afd5dbcdf2f80",
+  "palette_sha256": "4bc8171a929e1280ede0f531e271993458475f88a046e4086ca0659b08a01033",
+  "glb_sha256": "042d47b26c97364c21e0946b0f6eaa268eab3956a9d2e1cb645cfb537e37c97f",
+  "animations": [],
+  "statut": "a valider"
+}

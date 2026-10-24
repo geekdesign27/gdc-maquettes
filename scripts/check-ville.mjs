@@ -641,6 +641,41 @@ rapportCamionPlus();
   rapports.push('portail : fermé en régime fermé et en pause, ouvert en régime ouvert ; rotation de 1,5 s, une fois, directe avec moins d\'animations ; sans portail, closed ne change rien');
 }
 
+// --- La flotte des voitures (city-car, decision de Pierre-Alain du 24 octobre 2026) : un composant pour toute la flotte,
+// 5 appels de dessin (5 InstancedMesh), aucune ombre portee ; 2 voitures au plus en basse ; une voiture absente de
+// data.cars est cachee ; driving fait tourner les roues des voitures moving, parked et reducedMotion rien
+{
+  const mod = modules['city-car'];
+  const assets = await chargeur.assetsPour(mod.meta);
+  const flotte = (o) => { const ims = []; o.root.traverse((x) => { if (x.isInstancedMesh) ims.push(x); }); return ims; };
+  const haute = mod.create(THREE, { count: 6 }, makeContext({ quality: 'high' }, assets));
+  const ims = flotte(haute);
+  verifie(ims.length === 5 && ims.every((x) => !x.castShadow), `voitures : ${ims.length} InstancedMesh au lieu de 5, ou une ombre portée`);
+  const cars = [{ x: 0, z: 0, heading: 0, color: 'a', moving: true }, { x: 5, z: 0, heading: Math.PI / 2, color: 'c', moving: false }];
+  haute.setState('driving', { cars, lights: true });
+  const corps = ims.find((x) => x.name.endsWith('BODY'));
+  const roues = ims.find((x) => x.name.endsWith('WHEELS'));
+  verifie(corps.count === 2 && roues.count === 8, `voitures : ${corps.count} voitures montrées pour 2 dans data.cars`);
+  const m0 = new THREE.Matrix4(), m1 = new THREE.Matrix4();
+  roues.getMatrixAt(0, m0); roues.getMatrixAt(4, m1);
+  const avant0 = m0.clone(), avant1 = m1.clone();
+  verifie(haute.update(0.1) === true, 'voitures : driving ne demande pas d\'image');
+  roues.getMatrixAt(0, m0); roues.getMatrixAt(4, m1);
+  verifie(!m0.equals(avant0) && m1.equals(avant1), 'voitures : les roues de la voiture qui roule ne tournent pas, ou celles de la voiture arrêtée tournent');
+  haute.setState('parked', {});
+  verifie(haute.update(0.1) === false, 'voitures : parked demande une image');
+  haute.dispose();
+  const basse = mod.create(THREE, { count: 6 }, makeContext({ quality: 'low' }, assets));
+  basse.setState('driving', {});
+  verifie(flotte(basse).find((x) => x.name.endsWith('BODY')).count === 2, 'voitures : plus de 2 en qualité basse');
+  basse.dispose();
+  const fixe = mod.create(THREE, { count: 3 }, makeContext({ quality: 'high', reducedMotion: true }, assets));
+  fixe.setState('driving', {});
+  verifie(fixe.update(0.1) === false, 'voitures : avec moins d\'animations, les roues tournent');
+  fixe.dispose();
+  rapports.push('voitures : une flotte en 5 InstancedMesh, sans ombre portée ; 2 au plus en basse ; une voiture absente de data.cars est cachée ; seules les roues des voitures qui roulent tournent ; immobiles garées ou avec moins d\'animations');
+}
+
 // --- Le cabanon de la fete (party-shed, lot G8) : pres de la zone des transformations, hors des voies et des lieux, en
 // couleur meme dans une zone grise ; la fete en pause, ferme sinon ; son ancre gather au point de rassemblement. Joue,
 // le portail reste ouvert tant que l'equipe passe vers le cabanon, puis se ferme
