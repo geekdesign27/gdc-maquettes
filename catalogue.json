@@ -2147,7 +2147,7 @@
       "category": "kit",
       "name": "Le kit de la nature",
       "purpose": "Les arbres, les haies et les parcs qui rendent la ville belle et verte.",
-      "description": "Script Blender blender/assets/nature-kit.py. Le feuillu, en deux tailles (5 m et 8 m) : couronne en boule facettée (MAT_LANDSCAPE) sur un tronc (MAT_WOOD), 150 / 40 triangles. Le conifère : un sapin en cône (MAT_FOLIAGE_DARK), 80 / 24. La haie de thuyas, posée par 4 m (MAT_FOLIAGE_DARK), 24 / 12 : la haie qui entoure les villas romandes. Le buisson, 40 triangles en haute, fondu dans la haie en basse. Le banc de parc, supprimé en basse. La fontaine de village : bassin rectangulaire en béton (MAT_CONCRETE), sa borne, une eau opaque (MAT_WATER) qui ne coule pas, environ 300 / 100 triangles, posée sur la place de la ville (city-plan). Le sapin et la haie sont foncés pour se distinguer de la pelouse en niveaux de gris. Plafonds : 400 arbres en haute, 150 en basse. Rien ne bouge : aucun arbre ne se balance. Fusionné par matériau dans la ville, le kit y prend environ 5 appels de dessin. La modification de palette du lot G9 se fait en une seule fois, avant ce kit, le premier à en avoir besoin : MAT_FOLIAGE_DARK, MAT_WATER, MAT_ROOF_TILE, MAT_SHUTTER et, si la planche le demande, MAT_PLASTER (crépi crème) ; chaque teinte est proposée sur planche, à plus de 15 en ΔE 2000 des couleurs d'état, d'équipe, de l'orange des engins, du gilet, de la brique et des bennes ; tous les modèles sont ensuite reconstruits une seule fois. Fiche validée par Pierre-Alain le 23 octobre 2026, avec le principe d'une seule modification de palette pour le lot.",
+      "description": "Script Blender blender/assets/nature-kit.py. Le feuillu (TREE) : couronne en boule facettée (MAT_LANDSCAPE, le vert sauge de l'herbe, choix de Pierre-Alain du 24 octobre 2026 : il se lit à ses facettes, à son tronc et à son ombre) sur un tronc (MAT_WOOD), environ 5 m, que l'assemblage agrandit jusqu'à 8 m : une seule pièce pour les deux tailles ; 92 / 28 triangles. Le sapin (FIR) : deux cônes empilés (MAT_FOLIAGE_DARK), environ 7 m ; 56 / 20. La haie de thuyas (HEDGE), un bloc de 4 m que l'assemblage étire (MAT_FOLIAGE_DARK), 26 / 10 : la haie qui entoure les villas romandes. Le buisson (BUSH, MAT_FOLIAGE_DARK), 40 triangles en haute, absent en basse. Le banc de parc (BENCH), assise en bois sur pieds en béton, 36 triangles, absent en basse. La fontaine de village : bassin rectangulaire en béton (MAT_CONCRETE), sa borne, une eau en verre opaque (MAT_GLASS, sans matériau d'eau) qui ne coule pas, une borne de 1,40 m et son bec de 0,15 m, 232 / 44 triangles, posée sur la place de la ville (city-plan). Le sapin et la haie sont foncés pour se distinguer de la pelouse en niveaux de gris. Plafonds : 400 arbres en haute, 150 en basse. Rien ne bouge : aucun arbre ne se balance. Fusionné par matériau dans la ville, le kit y prend environ 5 appels de dessin. La modification de palette du lot G9 est faite en une seule fois, avant ce kit (7e494d0) : MAT_FOLIAGE_DARK #355A5A, MAT_ROOF_TILE #A17272 et MAT_PLASTER #EDE3D0, choisis sur planche par Pierre-Alain le 24 octobre 2026, à plus de 15 en ΔE 2000 des couleurs d'état, d'équipe, de l'orange des engins, des gilets, de la brique et des bennes ; ni MAT_WATER ni MAT_SHUTTER ; tous les modèles reconstruits une seule fois. Fiche validée par Pierre-Alain le 23 octobre 2026, avec le principe d'une seule modification de palette pour le lot. Version 1.0.0 (ENV_NATURE_KIT_A_v001), brief, planche et constat du contrôleur validés par Pierre-Alain le 24 octobre 2026 : 584 triangles et 5 matériaux pour tout le GLB ; pièces basses TREE_LOW, FIR_LOW, HEDGE_LOW et FOUNTAIN_LOW, ni banc ni buisson en basse. Vigilance pour city-night : l'eau de la fontaine est en MAT_GLASS et ne doit pas s'allumer avec les vitres.",
       "budget": {
         "triangles": 800,
         "materials": 5
@@ -2160,9 +2160,14 @@
         "Qualité basse : plus rien sous 0,30 m",
         "Les teintes nouvelles de la palette validées sur planche par Pierre-Alain avant la fabrication, tous les modèles reconstruits une fois"
       ],
-      "status": "à faire",
+      "status": "livré",
       "role": "modeleur ; directeur artistique (la planche de palette)",
-      "production": "blender"
+      "production": "blender",
+      "blender": "ENV_NATURE_KIT_A_v001",
+      "assets": [
+        "ENV_NATURE_KIT_A_v001.glb"
+      ],
+      "version": "1.0.0"
     },
     {
       "id": "villa-kit",

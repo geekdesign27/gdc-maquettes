@@ -1,0 +1,322 @@
+{
+ "prefixe": "ENV_NATURE_KIT_A_",
+ "socles": [
+  {
+   "taille": [
+    40.0,
+    40.0,
+    0.6
+   ],
+   "centre": [
+    0.0,
+    0.0
+   ],
+   "materiau": "MAT_LANDSCAPE",
+   "chanfrein": 0.1
+  }
+ ],
+ "pieces": [
+  {
+   "piece": "ENV_NATURE_KIT_A_FOUNTAIN",
+   "position": [
+    0,
+    0,
+    0.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_BENCH",
+   "position": [
+    -0.8,
+    2.8,
+    0.0
+   ],
+   "rotation": 0,
+   "basse": false
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_BENCH",
+   "position": [
+    -3.8,
+    -0.4,
+    0.0
+   ],
+   "rotation": 90,
+   "basse": false
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_HEDGE",
+   "position": [
+    10.0,
+    -15.55,
+    0.0
+   ],
+   "rotation": 0,
+   "echelle": [
+    3.0,
+    1,
+    1
+   ]
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_HEDGE",
+   "position": [
+    10.0,
+    -7.45,
+    0.0
+   ],
+   "rotation": 0,
+   "echelle": [
+    3.0,
+    1,
+    1
+   ]
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_HEDGE",
+   "position": [
+    15.55,
+    -11.5,
+    0.0
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.8,
+    1,
+    1
+   ]
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_HEDGE",
+   "position": [
+    4.45,
+    -13.9,
+    0.0
+   ],
+   "rotation": 90,
+   "echelle": [
+    0.6,
+    1,
+    1
+   ]
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_HEDGE",
+   "position": [
+    4.45,
+    -9.1,
+    0.0
+   ],
+   "rotation": 90,
+   "echelle": [
+    0.6,
+    1,
+    1
+   ]
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_BUSH",
+   "position": [
+    7.0,
+    -13.5,
+    0.0
+   ],
+   "rotation": 0,
+   "basse": false
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_BUSH",
+   "position": [
+    8.2,
+    -13.0,
+    0.0
+   ],
+   "rotation": 0,
+   "basse": false
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_BUSH",
+   "position": [
+    13.0,
+    -9.5,
+    0.0
+   ],
+   "rotation": 0,
+   "basse": false
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_BUSH",
+   "position": [
+    13.6,
+    -13.8,
+    0.0
+   ],
+   "rotation": 0,
+   "basse": false
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_BUSH",
+   "position": [
+    10.5,
+    -11.5,
+    0.0
+   ],
+   "rotation": 0,
+   "basse": false
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_BUSH",
+   "position": [
+    2.6,
+    1.9,
+    0.0
+   ],
+   "rotation": 0,
+   "basse": false
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_BUSH",
+   "position": [
+    3.3,
+    1.2,
+    0.0
+   ],
+   "rotation": 0,
+   "basse": false
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_BUSH",
+   "position": [
+    -2.8,
+    -2.4,
+    0.0
+   ],
+   "rotation": 0,
+   "basse": false
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_TREE",
+   "position": [
+    -13.0,
+    13.0,
+    0.0
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.6,
+    1.6,
+    1.6
+   ]
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_TREE",
+   "position": [
+    -3.0,
+    15.0,
+    0.0
+   ],
+   "rotation": 40,
+   "echelle": [
+    1.6,
+    1.6,
+    1.6
+   ]
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_TREE",
+   "position": [
+    -15.0,
+    3.0,
+    0.0
+   ],
+   "rotation": 75,
+   "echelle": [
+    1.6,
+    1.6,
+    1.6
+   ]
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_FIR",
+   "position": [
+    6.0,
+    15.5,
+    0.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_FIR",
+   "position": [
+    10.0,
+    13.0,
+    0.0
+   ],
+   "rotation": 15
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_FIR",
+   "position": [
+    13.5,
+    16.0,
+    0.0
+   ],
+   "rotation": 30
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_FIR",
+   "position": [
+    -16.0,
+    -8.0,
+    0.0
+   ],
+   "rotation": 10
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_TREE",
+   "position": [
+    5.0,
+    7.0,
+    0.0
+   ],
+   "rotation": 20
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_TREE",
+   "position": [
+    15.0,
+    5.0,
+    0.0
+   ],
+   "rotation": 55
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_TREE",
+   "position": [
+    -8.0,
+    -9.0,
+    0.0
+   ],
+   "rotation": 10
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_TREE",
+   "position": [
+    -12.0,
+    -15.0,
+    0.0
+   ],
+   "rotation": 35
+  },
+  {
+   "piece": "ENV_NATURE_KIT_A_TREE",
+   "position": [
+    -6.0,
+    7.5,
+    0.0
+   ],
+   "rotation": 60
+  }
+ ]
+}

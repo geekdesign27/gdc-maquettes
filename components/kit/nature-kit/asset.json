@@ -1,0 +1,13 @@
+{
+  "nom": "ENV_NATURE_KIT_A_v001",
+  "id": "nature-kit",
+  "bible": "WORKSITE 1.2",
+  "blender": "5.3.0 Beta",
+  "script": "blender/assets/nature-kit.py",
+  "script_sha256": "311eddb20966068768d6bf8a1789d290b3fc26c5ee5762740123d2cf994e0696",
+  "commun_sha256": "e8cb480c62b7bdb8b54460ec91e343989e89e93987616cc2711afd5dbcdf2f80",
+  "palette_sha256": "028f1055493a2d25d665642cf946eb3c7160e4274b9724dd07878deff0dbc0ec",
+  "glb_sha256": "555f6dd2f8e70784f5bde407dffb4ca9e1a086cba7be5025f8a633c0a9cb2f2d",
+  "animations": [],
+  "statut": "a valider"
+}
