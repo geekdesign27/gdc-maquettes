@@ -303,12 +303,17 @@ export async function creeCarte(THREE, options) {
     if (!doucement) m.inst.update(60);
   }
   // Joue, le portail ne se ferme qu'une fois les ouvriers passes : en pause, ils sortent vers le cabanon de la fete ; a
-  // la fermeture, ils en reviennent jusqu'au vestiaire. Il s'ouvre tout de suite.
+  // la fermeture, ils rentrent au vestiaire, du chantier ou du cabanon. Tant que l'equipe marche, il est ouvert, et
+  // s'ouvre s'il etait ferme (de la pause a la fermeture, l'equipe revient du cabanon). Appele une fois les marches de
+  // l'equipe lancees ; en regime ouvert, il s'ouvre tout de suite.
   let portailEnAttente = false;
   function portails(transition) {
-    portailEnAttente = transition && anime && regime !== "ouvert";
-    if (portailEnAttente) return;
-    for (const m of membres.values()) if (m.id === "site-fence") portailDe(m, transition);
+    portailEnAttente = transition && anime && regime !== "ouvert" && ouvriersEnMarche();
+    for (const m of membres.values()) {
+      if (m.id !== "site-fence") continue;
+      if (!portailEnAttente) portailDe(m, transition);
+      else if (m.state !== "default") etat(m, "default", {});
+    }
   }
   const ouvriersEnMarche = () => [...acteurs.values()].some((a) => a.marche && a.m.vie);
 
@@ -912,7 +917,6 @@ export async function creeCarte(THREE, options) {
         if (m.id === "floodlight") projecteurDe(m);
         if (m.id === "party-shed") feteDe(m, transition);
       }
-      portails(transition);
     }
     const specs = new Map(voulusPar(scene).map((s) => [s.cle, s]));
     let k = 0;
@@ -946,6 +950,7 @@ export async function creeCarte(THREE, options) {
       if (regime === "pause" && !v.usager) pause(v, k++, !transition);
       else tacheSuivante(v);
     }
+    if (ancien !== regime) portails(transition); // apres les marches de l'equipe, qu'il attend
   }
   // Une lecture interrompue par la scene suivante : les marches et les impulsions finissent net, l'etat recu s'applique.
   function termine() {

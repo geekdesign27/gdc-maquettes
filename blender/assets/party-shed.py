@@ -11,6 +11,8 @@ formes, pas une police).
 Production mixte : chaque piece est un noeud ENV_PARTY_SHED_A_<PIECE>, que le composant assemble et anime.
 - BODY : le cabanon, son toit et son auvent, les poteaux et la table, fixes et fusionnes (bois, graphite, la vitre) ;
 - DOOR : la porte, origine au gond (le composant la tourne) ;
+- BODY_LOW et DOOR_LOW : les memes en qualite basse (bible 18.3), sans ce qui mesure moins de 0,30 m : couvre-joints,
+  cadre de porte, appui de fenetre, pied de table, traverses et poignee de la porte ;
 - LANTERN : le pivot de la lanterne (son axe vertical) ; dessous, LANTERN_CAP (le chapeau et la tige, graphite) et
   LANTERN_FACETS_A, _B et _C (les facettes, en trois groupes alternes, verre eteint) : le composant les rallume chacune
   dans une teinte de fete ;
@@ -63,7 +65,7 @@ def _piece(c, nom, objets, lisser=True, origine=(0, 0, 0)):
     return o
 
 
-def _corps(c):
+def _corps(c, basse=False):
     """Le cabanon : murs en bois a pignon, le toit a deux pans prolonge en auvent sur deux poteaux, les couvre-joints,
     la fenetre de cote, la table haute."""
     y0, y1 = Y_AVANT, Y_AVANT + PROFOND
@@ -119,10 +121,16 @@ def _corps(c):
     plateau = c.cylindre(P + "BODY_TABLE_TOP", 0.40, 0.06, (tx, ty, 1.05), mat="MAT_WOOD", cotes=12)
     fut = c.cylindre(P + "BODY_TABLE_LEG", 0.05, 1.05, (tx, ty, 0), mat="MAT_PAINTED_METAL_GRAPHITE", cotes=6)
     pied = c.cylindre(P + "BODY_TABLE_FOOT", 0.26, 0.04, (tx, ty, 0), mat="MAT_PAINTED_METAL_GRAPHITE", cotes=8)
+    if basse:  # qualite basse (bible 18.3) : sous 0,30 m, couvre-joints, cadre, appui et pied de table disparaissent
+        for o in [appui, pied] + lattes + cadre:
+            maillage = o.data
+            bpy.data.objects.remove(o)
+            bpy.data.meshes.remove(maillage)
+        return _piece(c, "BODY_LOW", [murs, poutre, vitre, plateau, fut] + pans + poteaux)
     return _piece(c, "BODY", [murs, poutre, vitre, appui, plateau, fut, pied] + pans + poteaux + lattes + cadre)
 
 
-def _porte(c):
+def _porte(c, basse=False):
     """La porte, origine au gond (son bord droit), une traverse en Z qui dit « porte de cabanon »."""
     x0 = X_PORTE - PORTE[0] / 2 + 0.02
     x1 = X_PORTE + PORTE[0] / 2 - 0.02
@@ -139,6 +147,12 @@ def _porte(c):
     z.location = (a + b) / 2
     c.applique(z)
     poignee = c.boite(P + "DOOR_HANDLE", (0.16, 0.06, 0.05), (x0 + 0.15, Y_AVANT - 0.10, 1.05), mat="MAT_PAINTED_METAL_GRAPHITE")
+    if basse:  # qualite basse : la feuille seule
+        for o in [z, poignee] + traverses:
+            maillage = o.data
+            bpy.data.objects.remove(o)
+            bpy.data.meshes.remove(maillage)
+        return _piece(c, "DOOR_LOW", [feuille], origine=(x1, Y_AVANT, 0))
     return _piece(c, "DOOR", [feuille, z, poignee] + traverses, origine=(x1, Y_AVANT, 0))
 
 
@@ -209,8 +223,9 @@ def _note(c):
 
 
 def construit(c):
-    _corps(c)
-    _porte(c)
+    for basse in (False, True):
+        _corps(c, basse)
+        _porte(c, basse)
     _lanterne(c)
     _note(c)
     c.ancre("ANCHOR_LABEL", (0, Y_AVANT + PROFOND / 2, H_FAITE + 0.8))
@@ -222,8 +237,14 @@ def construit(c):
 
 
 def exemple_atelier(c):
-    """Atelier seulement (jamais exporte) : la porte ouverte, comme en fete, sur un socle de terre (bible 18.5)."""
-    porte = bpy.data.objects[P + "DOOR"]
+    """Atelier seulement (jamais exporte) : la porte ouverte, comme en fete, sur un socle de terre (bible 18.5) ; les
+    pieces de l'autre qualite sont cachees."""
+    import os
+    s = "_LOW" if os.environ.get("GDC_ATELIER_QUALITE") == "low" else ""
+    for nom in ("BODY", "DOOR"):
+        cachee = bpy.data.objects[P + nom + ("" if s else "_LOW")]
+        cachee.hide_render = cachee.hide_viewport = True
+    porte = bpy.data.objects[P + "DOOR" + s]
     porte.rotation_euler = (0, 0, math.radians(100))
     socle = c.boite(P + "DEMO_PLINTH", (5.0, 6.5, 0.60), (0, -0.4, -0.60), mat="MAT_EARTH", chanfrein=0.10, segments=3)
     c.lisse(socle)

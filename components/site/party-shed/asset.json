@@ -4,10 +4,10 @@
   "bible": "WORKSITE 1.2",
   "blender": "5.3.0 Beta",
   "script": "blender/assets/party-shed.py",
-  "script_sha256": "d585163c2f439e853cb083bbe0b054d84b15bc78932bb9058e8f5e6f86ea9a16",
+  "script_sha256": "6d9d22aad87092dc625bad4139dde2440f764582b8caf1d2f494424089013c9e",
   "commun_sha256": "e8cb480c62b7bdb8b54460ec91e343989e89e93987616cc2711afd5dbcdf2f80",
   "palette_sha256": "4bc8171a929e1280ede0f531e271993458475f88a046e4086ca0659b08a01033",
-  "glb_sha256": "17effeb76d483ed033f90a9385c50e20ac8c064f01326dee3832f5cb785a70ac",
+  "glb_sha256": "13c9cd6a1a5cf7ee35df076e922001628347846c7f4e3c14b29c5fcabc92cde1",
   "animations": [],
   "statut": "a valider"
 }

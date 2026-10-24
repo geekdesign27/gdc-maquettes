@@ -702,8 +702,29 @@ rapportCamionPlus();
   }
   verifie(tempsOuvert > 10 && !portailOuvert(), `portail : en pause jouée, ouvert ${tempsOuvert.toFixed(1)} s puis ${portailOuvert() ? 'resté ouvert' : 'fermé'} (il attend l'équipe)`);
   verifie(allume(cabanon(joue)) === 5, 'cabanon : en pause jouée, pas en fête');
+  // de la pause a la fermeture (l'equipe revient du cabanon), puis de la fermeture a la pause (elle sort du vestiaire) :
+  // jamais personne dans le portail d'entree ferme (constat D-4, B1)
+  const ferme = (o) => {
+    let n = 0, f = 0;
+    o.traverse((x) => { if (x.isInstancedMesh && x.name.startsWith('ENV_SITE_FENCE_A_GATE_LEAF_FRAME')) for (let i = 0; i < x.count; i++) { const m = new THREE.Matrix4(); x.getMatrixAt(i, m); n++; if (Math.abs(new THREE.Vector3().setFromMatrixColumn(m, 0).normalize().z) < 0.5) f++; } });
+    return n > 0 && f === n;
+  };
+  const portailEntree = () => { let r = null; joue.root.traverse((x) => { if (!r && x.userData.component === 'site-fence' && Math.abs(x.position.x - imp.points.portail[0]) < 0.01 && Math.abs(x.position.z - imp.points.portail[1]) < 0.01) r = x; }); return r; };
+  const dansLePortail = () => { let n = 0; joue.root.traverse((x) => { if (x.userData.component === 'character' && x.visible && Math.hypot(x.position.x - imp.points.portail[0], x.position.z - imp.points.portail[1]) < 1.6) n++; }); return n; };
+  const traversees = {};
+  for (const [de, vers, action] of [['pause', 'ferme', 'fermeture'], ['ferme', 'pause', 'pause']]) {
+    const s = { ...s8, chantier: { ...s8.chantier, regime: vers }, actions: [{ ts: vers === 'ferme' ? '2099-01-02T00:00:00.000Z' : '2099-01-03T00:00:00.000Z', action, element: 'chantier', id: 'chantier', de, vers }] };
+    await joue.applique(s);
+    let n = 0;
+    for (let t = 0; t < 150; t += 0.1) {
+      joue.update(0.1);
+      if (ferme(portailEntree()) && dansLePortail()) n++;
+    }
+    traversees[`${de} → ${vers}`] = n;
+    verifie(n === 0 && ferme(portailEntree()), `portail : de ${de} à ${vers} joué, ${n} images avec quelqu'un dans le portail fermé${ferme(portailEntree()) ? '' : ', et il reste ouvert'}`);
+  }
   joue.dispose();
-  rapports.push(`cabanon : dans la zone des transformations, en couleur dans une zone grise, en fête seulement en pause ; l'équipe s'y rassemble ; en pause jouée, le portail reste ouvert ${tempsOuvert.toFixed(1)} s le temps qu'elle passe`);
+  rapports.push(`cabanon : dans la zone des transformations, en couleur dans une zone grise, en fête seulement en pause ; l'équipe s'y rassemble ; en pause jouée, le portail reste ouvert ${tempsOuvert.toFixed(1)} s le temps qu'elle passe ; personne dans le portail fermé, de la pause à la fermeture ni de la fermeture à la pause`);
 }
 
 // --- La lampe frontale et les personnes de la vie du chantier (character 1.2.0, plan D-3) : la nuit, toute personne

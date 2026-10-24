@@ -31,11 +31,11 @@ const NOTE = {
   effacement: 0.5,
   echelle: 2, // la croche du modele fait 0,45 m ; a la camera de la carte, il en faut le double pour la lire
 };
-// les notes figees (reducedMotion) : devant l'auvent, au-dessus de la porte
+// les notes figees (reducedMotion) : au-dessus du toit de l'auvent, a l'aplomb de la porte vue de la camera
 const NOTES_FIXES = [
-  [1.2, 2.95, 1.95],
-  [1.85, 3.5, 2.0],
-  [2.5, 4.05, 1.95],
+  [0.4, 3.8, 1.1],
+  [0.85, 4.3, 1.0],
+  [1.3, 4.8, 1.05],
 ];
 
 export const meta = {
@@ -69,10 +69,13 @@ export function create(THREE, params, ctx) {
     if (!o) throw new Error(`pièce absente du modèle : ${nom}`);
     return o;
   };
+  // qualite basse (bible 18.3) : les pieces _LOW, sans ce qui mesure moins de 0,30 m ; l'autre qualite est retiree de la
+  // copie (elle ne compte pas au budget)
+  for (const nom of ["BODY", "DOOR"]) objet(basse ? nom : nom + "_LOW").removeFromParent();
   modele.traverse((o) => {
     if (o.isMesh) o.castShadow = o.receiveShadow = !basse;
   });
-  const porte = objet("DOOR");
+  const porte = objet(basse ? "DOOR_LOW" : "DOOR");
   const lanterne = objet("LANTERN");
   const note = objet("NOTE");
   note.visible = false; // la piece source des notes : repetee par instance
