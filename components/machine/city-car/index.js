@@ -28,7 +28,6 @@ const DISQUE = {
   cotes: 20,
 };
 const LUEUR = { largeur: 0.34, hauteur: 0.2 };
-const PEINTURE = { rugosite: 0.55 }; // satinee, comme le metal peint de la palette
 
 export const meta = {
   id: "city-car",
@@ -95,7 +94,7 @@ export function create(THREE, params, ctx) {
   };
   const peinture = new THREE.MeshStandardMaterial({
     name: "CITY_CAR_PAINT",
-    roughness: PEINTURE.rugosite,
+    roughness: ctx.tokens.materiaux.MAT_PAINTED_METAL_GRAPHITE.rugosite, // satinee, comme le metal peint de la palette
     metalness: 0,
   });
   const caisse = piece("BODY");
@@ -213,24 +212,21 @@ export function create(THREE, params, ctx) {
     }));
   const roulent = (v) =>
     etat === "driving" && !ctx.reducedMotion && v.moving !== false;
-  const poseRoues = () => {
+  // les roues, a chaque image ou elles tournent : sans allocation ; la sphere englobante ne change qu'avec les places
+  const ici = new THREE.Vector3();
+  const essieux = roues.map((p) => new THREE.Matrix4().makeTranslation(p.x, p.y, p.z));
+  const poseRoues = (bornes = false) => {
     voitures.forEach((v, i) => {
-      place.compose(
-        new THREE.Vector3(v.x, 0, v.z),
-        q.setFromAxisAngle(axeY, v.heading),
-        un,
-      );
+      place.compose(ici.set(v.x, 0, v.z), q.setFromAxisAngle(axeY, v.heading), un);
       tourne.makeRotationX(roulent(v) ? angle : 0);
-      roues.forEach((p, k) => {
-        m.copy(place)
-          .multiply(new THREE.Matrix4().makeTranslation(p.x, p.y, p.z))
-          .multiply(tourne);
+      essieux.forEach((e, k) => {
+        m.copy(place).multiply(e).multiply(tourne);
         pneus.setMatrixAt(4 * i + k, m);
       });
     });
     pneus.count = 4 * voitures.length;
     pneus.instanceMatrix.needsUpdate = true;
-    pneus.computeBoundingSphere();
+    if (bornes) pneus.computeBoundingSphere();
   };
   const pose = () => {
     voitures.forEach((v, i) => {
@@ -249,7 +245,7 @@ export function create(THREE, params, ctx) {
       im.computeBoundingSphere();
     }
     if (corps.instanceColor) corps.instanceColor.needsUpdate = true;
-    poseRoues();
+    poseRoues(true);
   };
 
   voitures = enFile(); // avant le premier setState : garees en file
