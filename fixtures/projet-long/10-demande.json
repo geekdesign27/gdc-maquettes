@@ -58,7 +58,7 @@
   ],
   "chantier": {
     "regime": "ouvert",
-    "depuis": "2026-10-22T14:12:16.633Z",
+    "depuis": "2026-10-25T17:20:07.129Z",
     "raison": "activité de moins de trente minutes"
   },
   "plan": {
@@ -93,7 +93,7 @@
             "nom": "Le panneau du permis"
           }
         ],
-        "activee": "2026-10-22T14:12:16.728Z",
+        "activee": "2026-10-25T17:20:07.219Z",
         "par_ce_projet": true
       },
       {
@@ -126,7 +126,7 @@
             "nom": "Le chantier, une parcelle par application"
           }
         ],
-        "activee": "2026-10-22T14:12:16.729Z",
+        "activee": "2026-10-25T17:20:07.220Z",
         "par_ce_projet": true
       },
       {
@@ -265,7 +265,7 @@
       "ancre": "panneau-permis",
       "nom": "Le permis de construire",
       "etat": "granted",
-      "source": "décision du projet du 2026-10-22T14:12:15.330Z"
+      "source": "décision du projet du 2026-10-25T17:20:05.864Z"
     },
     {
       "element": "parking",
@@ -283,7 +283,7 @@
       "nom": "Claire, l'architecte",
       "etat": "waiting",
       "lieu": "bureau-architecte",
-      "source": "activité du projet, 2026-10-22T14:12:10.703Z"
+      "source": "activité du projet, 2026-10-25T17:20:01.467Z"
     },
     {
       "element": "character",
@@ -292,7 +292,7 @@
       "nom": "Lina, le designer UX/UI",
       "etat": "celebrate",
       "lieu": "bureau-etudes",
-      "source": "activité du projet, 2026-10-22T14:12:14.601Z"
+      "source": "activité du projet, 2026-10-25T17:20:05.147Z"
     },
     {
       "element": "character",
@@ -307,7 +307,7 @@
   ],
   "actions": [
     {
-      "ts": "2026-10-27T14:12:16.729Z",
+      "ts": "2026-10-30T17:20:07.220Z",
       "action": "quantite",
       "element": "parking",
       "id": "parking",
@@ -315,7 +315,7 @@
       "de": 0,
       "vers": 1,
       "phrase": "Le carnet des demandes : 1 demande à trier",
-      "cause": "evt:projet/61752b17"
+      "cause": "evt:projet/9407319b"
     }
   ]
 }

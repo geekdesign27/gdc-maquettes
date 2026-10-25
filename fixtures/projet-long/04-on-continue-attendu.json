@@ -58,7 +58,7 @@
   ],
   "chantier": {
     "regime": "pause",
-    "depuis": "2026-10-22T14:12:10.703Z",
+    "depuis": "2026-10-25T17:20:01.467Z",
     "raison": "personne n'avance et 1 décision t'attend"
   },
   "plan": {
@@ -93,7 +93,7 @@
             "nom": "Le panneau du permis"
           }
         ],
-        "activee": "2026-10-22T14:12:10.807Z",
+        "activee": "2026-10-25T17:20:01.568Z",
         "par_ce_projet": true
       },
       {
@@ -285,7 +285,7 @@
       "nom": "Claire, l'architecte",
       "etat": "waiting",
       "lieu": "bureau-client",
-      "source": "activité du projet, 2026-10-22T14:12:10.703Z",
+      "source": "activité du projet, 2026-10-25T17:20:01.467Z",
       "motif": "decision",
       "decision": "decision-on-continue"
     },
@@ -302,7 +302,7 @@
   ],
   "actions": [
     {
-      "ts": "2026-10-22T14:12:10.807Z",
+      "ts": "2026-10-25T17:20:01.568Z",
       "action": "pause",
       "element": "chantier",
       "id": "chantier",
@@ -313,7 +313,7 @@
       "deduit": "dossier"
     },
     {
-      "ts": "2026-10-22T14:12:10.807Z",
+      "ts": "2026-10-25T17:20:01.568Z",
       "action": "change",
       "element": "architect-office",
       "id": "bureau-architecte",
@@ -321,10 +321,10 @@
       "de": "active",
       "vers": "idle",
       "phrase": "Le bureau d'architecte : active → idle",
-      "cause": "evt:projet:activite/60f45507"
+      "cause": "evt:projet:activite/f467d525"
     },
     {
-      "ts": "2026-10-22T14:12:10.807Z",
+      "ts": "2026-10-25T17:20:01.568Z",
       "action": "change",
       "element": "client-office",
       "id": "bureau-client",
@@ -336,7 +336,7 @@
       "deduit": "dossier"
     },
     {
-      "ts": "2026-10-22T14:12:10.807Z",
+      "ts": "2026-10-25T17:20:01.568Z",
       "action": "quantite",
       "element": "client-office",
       "id": "bureau-client",
@@ -347,7 +347,7 @@
       "deduit": "dossier"
     },
     {
-      "ts": "2026-10-22T14:12:10.807Z",
+      "ts": "2026-10-25T17:20:01.568Z",
       "action": "apparait",
       "element": "decision-sign",
       "id": "decision-on-continue",
@@ -359,7 +359,7 @@
       "deduit": "dossier"
     },
     {
-      "ts": "2026-10-22T14:12:10.807Z",
+      "ts": "2026-10-25T17:20:01.568Z",
       "action": "deplace",
       "element": "character",
       "id": "architecte",
@@ -368,10 +368,10 @@
       "vers": "bureau-client",
       "motif": "decision",
       "phrase": "Claire, l'architecte va du bureau d'architecte au bureau du client : ta décision l'attend",
-      "cause": "evt:projet:activite/60f45507"
+      "cause": "evt:projet:activite/f467d525"
     },
     {
-      "ts": "2026-10-22T14:12:10.807Z",
+      "ts": "2026-10-25T17:20:01.568Z",
       "action": "change",
       "element": "character",
       "id": "architecte",
@@ -379,7 +379,7 @@
       "de": "typing",
       "vers": "waiting",
       "phrase": "Claire, l'architecte : typing → waiting",
-      "cause": "evt:projet:activite/60f45507"
+      "cause": "evt:projet:activite/f467d525"
     }
   ]
 }

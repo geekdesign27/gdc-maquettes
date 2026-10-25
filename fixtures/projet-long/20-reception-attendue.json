@@ -58,7 +58,7 @@
   ],
   "chantier": {
     "regime": "pause",
-    "depuis": "2026-10-22T14:12:28.119Z",
+    "depuis": "2026-10-25T17:20:18.390Z",
     "raison": "personne n'avance et 1 décision t'attend"
   },
   "plan": {
@@ -93,7 +93,7 @@
             "nom": "Le panneau du permis"
           }
         ],
-        "activee": "2026-10-22T14:12:28.266Z",
+        "activee": "2026-10-25T17:20:18.554Z",
         "par_ce_projet": true
       },
       {
@@ -126,7 +126,7 @@
             "nom": "Le chantier, une parcelle par application"
           }
         ],
-        "activee": "2026-10-22T14:12:28.266Z",
+        "activee": "2026-10-25T17:20:18.554Z",
         "par_ce_projet": true
       },
       {
@@ -154,7 +154,7 @@
             "nom": "La cabane de la garantie"
           }
         ],
-        "activee": "2026-10-22T14:12:28.266Z",
+        "activee": "2026-10-25T17:20:18.554Z",
         "par_ce_projet": true
       },
       {
@@ -333,7 +333,7 @@
       "ancre": "panneau-permis",
       "nom": "Le permis de construire",
       "etat": "granted",
-      "source": "décision du projet du 2026-10-22T14:12:15.330Z"
+      "source": "décision du projet du 2026-10-25T17:20:05.864Z"
     },
     {
       "element": "parking",
@@ -351,7 +351,7 @@
       "nom": "Claire, l'architecte",
       "etat": "waiting",
       "lieu": "aire-reception",
-      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-22T14:12:28.119Z",
+      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-25T17:20:18.390Z",
       "ref": {
         "application": "bureau",
         "fiche": "001-cloturer-un-audit"
@@ -366,7 +366,7 @@
       "nom": "Lina, le designer UX/UI",
       "etat": "celebrate",
       "lieu": "bureau-etudes",
-      "source": "activité du projet, 2026-10-22T14:12:14.601Z"
+      "source": "activité du projet, 2026-10-25T17:20:05.147Z"
     },
     {
       "element": "character",
@@ -375,7 +375,7 @@
       "nom": "Emma, la développeuse interface",
       "etat": "waiting",
       "lieu": "aire-reception",
-      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-22T14:12:25.979Z",
+      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-25T17:20:16.246Z",
       "ref": {
         "application": "bureau",
         "fiche": "001-cloturer-un-audit"
@@ -390,7 +390,7 @@
       "nom": "Olivier, le surveillant de chantier",
       "etat": "waiting",
       "lieu": "aire-reception",
-      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-22T14:12:28.044Z",
+      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-25T17:20:18.308Z",
       "ref": {
         "application": "bureau",
         "fiche": "001-cloturer-un-audit"
@@ -417,17 +417,17 @@
   ],
   "actions": [
     {
-      "ts": "2026-11-09T14:12:28.266Z",
+      "ts": "2026-11-12T17:20:18.554Z",
       "action": "pause",
       "element": "chantier",
       "id": "chantier",
       "de": "ouvert",
       "vers": "pause",
       "phrase": "Le chantier s'arrête : il attend ta décision",
-      "cause": "evt:001-cloturer-un-audit/f8e89749"
+      "cause": "evt:001-cloturer-un-audit/af38c091"
     },
     {
-      "ts": "2026-11-09T14:12:28.266Z",
+      "ts": "2026-11-12T17:20:18.554Z",
       "action": "change",
       "element": "building",
       "id": "bureau",
@@ -438,10 +438,10 @@
       "ref": {
         "application": "bureau"
       },
-      "cause": "evt:001-cloturer-un-audit/f8e89749"
+      "cause": "evt:001-cloturer-un-audit/af38c091"
     },
     {
-      "ts": "2026-11-09T14:12:28.266Z",
+      "ts": "2026-11-12T17:20:18.554Z",
       "action": "change",
       "element": "client-office",
       "id": "bureau-client",
@@ -449,20 +449,20 @@
       "de": "idle",
       "vers": "waiting",
       "phrase": "Le bureau du client : idle → waiting",
-      "cause": "evt:001-cloturer-un-audit/f8e89749"
+      "cause": "evt:001-cloturer-un-audit/af38c091"
     },
     {
-      "ts": "2026-11-09T14:12:28.266Z",
+      "ts": "2026-11-12T17:20:18.554Z",
       "action": "quantite",
       "element": "client-office",
       "id": "bureau-client",
       "nom": "Le bureau du client",
       "vers": 1,
       "phrase": "Le bureau du client : 1",
-      "cause": "evt:001-cloturer-un-audit/f8e89749"
+      "cause": "evt:001-cloturer-un-audit/af38c091"
     },
     {
-      "ts": "2026-11-09T14:12:28.266Z",
+      "ts": "2026-11-12T17:20:18.554Z",
       "action": "apparait",
       "element": "decision-sign",
       "id": "decision-001-cloturer-un-audit-livre",
@@ -474,10 +474,10 @@
         "application": "bureau",
         "fiche": "001-cloturer-un-audit"
       },
-      "cause": "evt:001-cloturer-un-audit/f8e89749"
+      "cause": "evt:001-cloturer-un-audit/af38c091"
     },
     {
-      "ts": "2026-11-09T14:12:28.266Z",
+      "ts": "2026-11-12T17:20:18.554Z",
       "action": "change",
       "element": "reception-area",
       "id": "aire-reception",
@@ -485,10 +485,10 @@
       "de": "idle",
       "vers": "waiting",
       "phrase": "L'aire de réception : idle → waiting",
-      "cause": "evt:001-cloturer-un-audit:activite/c027f519"
+      "cause": "evt:001-cloturer-un-audit:activite/7b900424"
     },
     {
-      "ts": "2026-11-09T14:12:28.266Z",
+      "ts": "2026-11-12T17:20:18.554Z",
       "action": "deplace",
       "element": "character",
       "id": "architecte",
@@ -501,10 +501,10 @@
         "application": "bureau",
         "fiche": "001-cloturer-un-audit"
       },
-      "cause": "evt:001-cloturer-un-audit:activite/c027f519"
+      "cause": "evt:001-cloturer-un-audit:activite/7b900424"
     },
     {
-      "ts": "2026-11-09T14:12:28.266Z",
+      "ts": "2026-11-12T17:20:18.554Z",
       "action": "deplace",
       "element": "character",
       "id": "developpeur-interface",
@@ -517,10 +517,10 @@
         "application": "bureau",
         "fiche": "001-cloturer-un-audit"
       },
-      "cause": "evt:001-cloturer-un-audit/f8e89749"
+      "cause": "evt:001-cloturer-un-audit/af38c091"
     },
     {
-      "ts": "2026-11-09T14:12:28.266Z",
+      "ts": "2026-11-12T17:20:18.554Z",
       "action": "change",
       "element": "character",
       "id": "developpeur-interface",
@@ -532,10 +532,10 @@
         "application": "bureau",
         "fiche": "001-cloturer-un-audit"
       },
-      "cause": "evt:001-cloturer-un-audit/f8e89749"
+      "cause": "evt:001-cloturer-un-audit/af38c091"
     },
     {
-      "ts": "2026-11-09T14:12:28.266Z",
+      "ts": "2026-11-12T17:20:18.554Z",
       "action": "deplace",
       "element": "character",
       "id": "surveillant",
@@ -548,10 +548,10 @@
         "application": "bureau",
         "fiche": "001-cloturer-un-audit"
       },
-      "cause": "evt:001-cloturer-un-audit/f8e89749"
+      "cause": "evt:001-cloturer-un-audit/af38c091"
     },
     {
-      "ts": "2026-11-09T14:12:28.266Z",
+      "ts": "2026-11-12T17:20:18.554Z",
       "action": "change",
       "element": "character",
       "id": "surveillant",
@@ -563,7 +563,7 @@
         "application": "bureau",
         "fiche": "001-cloturer-un-audit"
       },
-      "cause": "evt:001-cloturer-un-audit/f8e89749"
+      "cause": "evt:001-cloturer-un-audit/af38c091"
     }
   ]
 }

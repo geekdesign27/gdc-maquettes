@@ -1,7 +1,7 @@
 {
   "sequence": "volume",
   "description": "Huit applications et cent fiches, jouées avec le vrai binaire en quelques minutes (tout tombe le même jour), pour la liste virtuelle et la fluidité du planning.",
-  "gdc": "0.20.0",
+  "gdc": "0.22.3",
   "etapes": [
     {
       "numero": 1,

@@ -58,7 +58,7 @@
   ],
   "chantier": {
     "regime": "pause",
-    "depuis": "2026-10-22T14:13:05.989Z",
+    "depuis": "2026-10-25T17:20:55.495Z",
     "raison": "personne n'avance et 1 décision t'attend"
   },
   "plan": {
@@ -93,7 +93,7 @@
             "nom": "Le panneau du permis"
           }
         ],
-        "activee": "2026-10-22T14:13:06.297Z",
+        "activee": "2026-10-25T17:20:55.822Z",
         "par_ce_projet": true
       },
       {
@@ -126,7 +126,7 @@
             "nom": "Le chantier, une parcelle par application"
           }
         ],
-        "activee": "2026-10-22T14:13:06.297Z",
+        "activee": "2026-10-25T17:20:55.822Z",
         "par_ce_projet": true
       },
       {
@@ -154,7 +154,7 @@
             "nom": "La cabane de la garantie"
           }
         ],
-        "activee": "2026-10-22T14:13:06.297Z",
+        "activee": "2026-10-25T17:20:55.822Z",
         "par_ce_projet": true
       },
       {
@@ -175,7 +175,7 @@
             "nom": "Le carnet des demandes"
           }
         ],
-        "activee": "2026-10-22T14:13:06.297Z",
+        "activee": "2026-10-25T17:20:55.822Z",
         "par_ce_projet": true
       }
     ],
@@ -527,7 +527,7 @@
       "ancre": "panneau-permis",
       "nom": "Le permis de construire (périmé : Le cahier des besoins (PRD), Le profil du projet a changé)",
       "etat": "expired",
-      "source": "décision du projet du 2026-10-22T14:12:15.330Z"
+      "source": "décision du projet du 2026-10-25T17:20:05.864Z"
     },
     {
       "element": "parking",
@@ -545,7 +545,7 @@
       "nom": "Claire, l'architecte",
       "etat": "waiting",
       "lieu": "bureau-client",
-      "source": "activité de la fiche 003-reparer-la-signature-du-rapport, 2026-10-22T14:12:53.159Z",
+      "source": "activité de la fiche 003-reparer-la-signature-du-rapport, 2026-10-25T17:20:42.198Z",
       "ref": {
         "application": "bureau",
         "fiche": "003-reparer-la-signature-du-rapport"
@@ -560,7 +560,7 @@
       "nom": "Lina, le designer UX/UI",
       "etat": "celebrate",
       "lieu": "bureau-etudes",
-      "source": "activité du projet, 2026-10-22T14:12:14.601Z"
+      "source": "activité du projet, 2026-10-25T17:20:05.147Z"
     },
     {
       "element": "character",
@@ -569,7 +569,7 @@
       "nom": "Emma, la développeuse interface",
       "etat": "celebrate",
       "lieu": "baraque",
-      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-22T14:12:25.979Z",
+      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-25T17:20:16.246Z",
       "ref": {
         "application": "bureau",
         "fiche": "001-cloturer-un-audit"
@@ -582,7 +582,7 @@
       "nom": "Olivier, le surveillant de chantier",
       "etat": "celebrate",
       "lieu": "baraque",
-      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-22T14:12:28.044Z",
+      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-25T17:20:18.308Z",
       "ref": {
         "application": "bureau",
         "fiche": "001-cloturer-un-audit"
@@ -607,7 +607,7 @@
   ],
   "actions": [
     {
-      "ts": "2026-10-22T14:13:06.297Z",
+      "ts": "2026-10-25T17:20:55.822Z",
       "action": "change",
       "element": "building",
       "id": "admin",
@@ -618,10 +618,10 @@
       "ref": {
         "application": "admin"
       },
-      "cause": "evt:005-gerer-les-droits-des-auditeurs/c750aab8"
+      "cause": "evt:005-gerer-les-droits-des-auditeurs/0cb79186"
     },
     {
-      "ts": "2026-10-22T14:13:06.297Z",
+      "ts": "2026-10-25T17:20:55.822Z",
       "action": "apparait",
       "element": "survey-poles",
       "id": "gabarits-005-gerer-les-droits-des-auditeurs",
@@ -633,7 +633,7 @@
         "application": "admin",
         "fiche": "005-gerer-les-droits-des-auditeurs"
       },
-      "cause": "evt:005-gerer-les-droits-des-auditeurs/c750aab8"
+      "cause": "evt:005-gerer-les-droits-des-auditeurs/0cb79186"
     }
   ]
 }

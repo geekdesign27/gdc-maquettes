@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "maintenant": "2026-10-27T14:12:17.894Z",
+  "maintenant": "2026-10-30T17:20:08.295Z",
   "fuseau": "UTC",
-  "debut": "2026-10-22T14:12:09.697Z",
-  "depuis": "evt:projet/61752b17",
+  "debut": "2026-10-25T17:20:00.538Z",
+  "depuis": "evt:projet/9407319b",
   "complet": false,
   "lignes": [
     {
@@ -16,7 +16,7 @@
       "etat": "en_cours",
       "barres": [
         {
-          "debut": "2026-10-27T14:12:17.540Z",
+          "debut": "2026-10-30T17:20:07.961Z",
           "fin": null
         }
       ]
@@ -44,9 +44,9 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-27T14:12:17.540Z",
+          "debut": "2026-10-30T17:20:07.961Z",
           "fin": null,
-          "commence_par": "evt:001-cloturer-un-audit/c61bbc31",
+          "commence_par": "evt:001-cloturer-un-audit/9966799f",
           "finit_par": null,
           "fin_type": null
         }
@@ -145,15 +145,15 @@
   "jalons": [],
   "jours": [
     {
-      "date": "2026-10-27",
+      "date": "2026-10-30",
       "evenements": 4,
       "actif": true
     }
   ],
   "evenements": [
     {
-      "id": "evt:001-cloturer-un-audit/809ee55c",
-      "ts": "2026-10-27T14:12:17.540Z",
+      "id": "evt:001-cloturer-un-audit/0ab7e113",
+      "ts": "2026-10-30T17:20:07.961Z",
       "kind": "bail",
       "phrase": "Une session reprend « Clôturer un audit »",
       "ref": {
@@ -163,8 +163,8 @@
       "trait": false
     },
     {
-      "id": "evt:001-cloturer-un-audit/c61bbc31",
-      "ts": "2026-10-27T14:12:17.540Z",
+      "id": "evt:001-cloturer-un-audit/9966799f",
+      "ts": "2026-10-30T17:20:07.961Z",
       "kind": "run",
       "phrase": "La fiche « Clôturer un audit » est ouverte",
       "ref": {
@@ -174,8 +174,8 @@
       "trait": true
     },
     {
-      "id": "evt:001-cloturer-un-audit/e9f934c8",
-      "ts": "2026-10-27T14:12:17.758Z",
+      "id": "evt:001-cloturer-un-audit/02cb46a0",
+      "ts": "2026-10-30T17:20:08.145Z",
       "kind": "critere",
       "phrase": "Un critère d'acceptation est noté pour « Clôturer un audit »",
       "ref": {
@@ -188,27 +188,27 @@
   "regime": [
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:09.697Z",
-      "a": "2026-10-22T14:42:12.549Z"
+      "de": "2026-10-25T17:20:00.538Z",
+      "a": "2026-10-25T17:50:03.111Z"
     },
     {
       "valeur": "ferme",
-      "de": "2026-10-22T14:42:12.549Z",
-      "a": "2026-10-24T14:12:13.774Z"
+      "de": "2026-10-25T17:50:03.111Z",
+      "a": "2026-10-27T17:20:04.414Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-24T14:12:13.774Z",
-      "a": "2026-10-24T14:42:15.330Z"
+      "de": "2026-10-27T17:20:04.414Z",
+      "a": "2026-10-27T17:50:05.864Z"
     },
     {
       "valeur": "ferme",
-      "de": "2026-10-24T14:42:15.330Z",
-      "a": "2026-10-27T14:12:16.633Z"
+      "de": "2026-10-27T17:50:05.864Z",
+      "a": "2026-10-30T17:20:07.129Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-27T14:12:16.633Z",
+      "de": "2026-10-30T17:20:07.129Z",
       "a": null
     }
   ],

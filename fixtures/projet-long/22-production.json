@@ -58,7 +58,7 @@
   ],
   "chantier": {
     "regime": "ouvert",
-    "depuis": "2026-10-22T14:12:37.001Z",
+    "depuis": "2026-10-25T17:20:27.413Z",
     "raison": "activité de moins de trente minutes"
   },
   "plan": {
@@ -93,7 +93,7 @@
             "nom": "Le panneau du permis"
           }
         ],
-        "activee": "2026-10-22T14:12:37.218Z",
+        "activee": "2026-10-25T17:20:27.556Z",
         "par_ce_projet": true
       },
       {
@@ -126,7 +126,7 @@
             "nom": "Le chantier, une parcelle par application"
           }
         ],
-        "activee": "2026-10-22T14:12:37.218Z",
+        "activee": "2026-10-25T17:20:27.556Z",
         "par_ce_projet": true
       },
       {
@@ -154,7 +154,7 @@
             "nom": "La cabane de la garantie"
           }
         ],
-        "activee": "2026-10-22T14:12:37.218Z",
+        "activee": "2026-10-25T17:20:27.556Z",
         "par_ce_projet": true
       },
       {
@@ -329,7 +329,7 @@
       "ancre": "panneau-permis",
       "nom": "Le permis de construire",
       "etat": "granted",
-      "source": "décision du projet du 2026-10-22T14:12:15.330Z"
+      "source": "décision du projet du 2026-10-25T17:20:05.864Z"
     },
     {
       "element": "parking",
@@ -347,7 +347,7 @@
       "nom": "Claire, l'architecte",
       "etat": "waiting",
       "lieu": "bureau-architecte",
-      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-22T14:12:32.185Z",
+      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-25T17:20:22.472Z",
       "ref": {
         "application": "bureau",
         "fiche": "001-cloturer-un-audit"
@@ -360,7 +360,7 @@
       "nom": "Lina, le designer UX/UI",
       "etat": "celebrate",
       "lieu": "bureau-etudes",
-      "source": "activité du projet, 2026-10-22T14:12:14.601Z"
+      "source": "activité du projet, 2026-10-25T17:20:05.147Z"
     },
     {
       "element": "character",
@@ -369,7 +369,7 @@
       "nom": "Emma, la développeuse interface",
       "etat": "celebrate",
       "lieu": "baraque",
-      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-22T14:12:25.979Z",
+      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-25T17:20:16.246Z",
       "ref": {
         "application": "bureau",
         "fiche": "001-cloturer-un-audit"
@@ -382,7 +382,7 @@
       "nom": "Olivier, le surveillant de chantier",
       "etat": "celebrate",
       "lieu": "baraque",
-      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-22T14:12:28.044Z",
+      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-25T17:20:18.308Z",
       "ref": {
         "application": "bureau",
         "fiche": "001-cloturer-un-audit"
@@ -407,7 +407,7 @@
   ],
   "actions": [
     {
-      "ts": "2026-11-11T14:12:37.218Z",
+      "ts": "2026-11-14T17:20:27.556Z",
       "action": "change",
       "element": "building",
       "id": "bureau",
@@ -418,7 +418,7 @@
       "ref": {
         "application": "bureau"
       },
-      "cause": "evt:001-cloturer-un-audit/59f037c9"
+      "cause": "evt:001-cloturer-un-audit/11e62ce1"
     }
   ]
 }

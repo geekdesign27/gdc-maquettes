@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "maintenant": "2026-10-22T14:13:14.303Z",
+  "maintenant": "2026-10-25T17:21:03.179Z",
   "fuseau": "UTC",
-  "debut": "2026-10-22T14:12:09.697Z",
-  "depuis": "evt:004-saisir-un-constat-hors-ligne/de40e60e",
+  "debut": "2026-10-25T17:20:00.538Z",
+  "depuis": "evt:004-saisir-un-constat-hors-ligne/54e60084",
   "complet": false,
   "lignes": [
     {
@@ -16,8 +16,8 @@
       "etat": "faite",
       "barres": [
         {
-          "debut": "2026-10-22T14:12:19.720Z",
-          "fin": "2026-10-22T14:13:13.432Z"
+          "debut": "2026-10-25T17:20:09.986Z",
+          "fin": "2026-10-25T17:21:02.385Z"
         }
       ]
     },
@@ -44,18 +44,18 @@
       "barres": [
         {
           "stade": "excavation",
-          "debut": "2026-10-22T14:13:10.725Z",
-          "fin": "2026-10-22T14:13:13.006Z",
-          "commence_par": "evt:004-saisir-un-constat-hors-ligne/de40e60e",
-          "finit_par": "evt:004-saisir-un-constat-hors-ligne/70e2fc6e",
+          "debut": "2026-10-25T17:21:00.015Z",
+          "fin": "2026-10-25T17:21:02.005Z",
+          "commence_par": "evt:004-saisir-un-constat-hors-ligne/54e60084",
+          "finit_par": "evt:004-saisir-un-constat-hors-ligne/17060414",
           "fin_type": "normale"
         },
         {
           "stade": "foundations",
-          "debut": "2026-10-22T14:13:13.006Z",
-          "fin": "2026-10-22T14:13:13.432Z",
-          "commence_par": "evt:004-saisir-un-constat-hors-ligne/70e2fc6e",
-          "finit_par": "evt:004-saisir-un-constat-hors-ligne/9958f34e",
+          "debut": "2026-10-25T17:21:02.005Z",
+          "fin": "2026-10-25T17:21:02.385Z",
+          "commence_par": "evt:004-saisir-un-constat-hors-ligne/17060414",
+          "finit_par": "evt:004-saisir-un-constat-hors-ligne/c361a00b",
           "fin_type": "normale"
         }
       ]
@@ -71,8 +71,8 @@
         "lot": "L1"
       },
       "etat": "prevu",
-      "prevu_le": "2026-10-22T14:13:13.006Z",
-      "prevu_par": "evt:004-saisir-un-constat-hors-ligne/70e2fc6e"
+      "prevu_le": "2026-10-25T17:21:02.005Z",
+      "prevu_par": "evt:004-saisir-un-constat-hors-ligne/17060414"
     },
     {
       "id": "etape:6",
@@ -84,7 +84,7 @@
       "etat": "en_cours",
       "barres": [
         {
-          "debut": "2026-10-22T14:12:21.533Z",
+          "debut": "2026-10-25T17:20:11.701Z",
           "fin": null
         }
       ]
@@ -112,9 +112,9 @@
       "barres": [
         {
           "stade": "structure",
-          "debut": "2026-10-22T14:13:13.432Z",
+          "debut": "2026-10-25T17:21:02.385Z",
           "fin": null,
-          "commence_par": "evt:004-saisir-un-constat-hors-ligne/9958f34e",
+          "commence_par": "evt:004-saisir-un-constat-hors-ligne/c361a00b",
           "finit_par": null,
           "fin_type": null
         }
@@ -134,9 +134,9 @@
       "barres": [
         {
           "statut": "en_cours",
-          "debut": "2026-10-22T14:13:13.151Z",
+          "debut": "2026-10-25T17:21:02.153Z",
           "fin": null,
-          "commence_par": "evt:004-saisir-un-constat-hors-ligne/5244c0ad",
+          "commence_par": "evt:004-saisir-un-constat-hors-ligne/b83b27a3",
           "finit_par": null,
           "fin_type": null
         }
@@ -154,10 +154,10 @@
       "demandee": null,
       "demandee_par": null,
       "demandee_source": null,
-      "prise": "2026-10-22T14:12:12.549Z",
-      "prise_par": "evt:projet/f95df430",
+      "prise": "2026-10-25T17:20:03.111Z",
+      "prise_par": "evt:projet/20d06837",
       "perimee_depuis": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git",
         "pieces": [
           "prd",
@@ -174,10 +174,10 @@
       "demandee": null,
       "demandee_par": null,
       "demandee_source": null,
-      "prise": "2026-10-22T14:12:15.330Z",
-      "prise_par": "evt:projet/1c835438",
+      "prise": "2026-10-25T17:20:05.864Z",
+      "prise_par": "evt:projet/eb8a507e",
       "perimee_depuis": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git",
         "pieces": [
           "prd",
@@ -191,7 +191,7 @@
       "decision": "on-continue",
       "nom": "On continue",
       "etat": "attendue",
-      "demandee": "2026-10-22T14:12:31.000Z",
+      "demandee": "2026-10-25T17:20:21.000Z",
       "demandee_par": null,
       "demandee_source": "git",
       "prise": null,
@@ -200,15 +200,15 @@
   ],
   "jours": [
     {
-      "date": "2026-10-22",
+      "date": "2026-10-25",
       "evenements": 119,
       "actif": true
     }
   ],
   "evenements": [
     {
-      "id": "evt:004-saisir-un-constat-hors-ligne/70e2fc6e",
-      "ts": "2026-10-22T14:13:13.006Z",
+      "id": "evt:004-saisir-un-constat-hors-ligne/17060414",
+      "ts": "2026-10-25T17:21:02.005Z",
       "kind": "lot",
       "phrase": "Le lot « Le stockage local chiffré » est prévu dans « Saisir un constat hors ligne »",
       "ref": {
@@ -219,8 +219,8 @@
       "trait": true
     },
     {
-      "id": "evt:004-saisir-un-constat-hors-ligne/5244c0ad",
-      "ts": "2026-10-22T14:13:13.151Z",
+      "id": "evt:004-saisir-un-constat-hors-ligne/b83b27a3",
+      "ts": "2026-10-25T17:21:02.153Z",
       "kind": "lot_etat",
       "phrase": "Le lot « Le stockage local chiffré » commence",
       "ref": {
@@ -231,8 +231,8 @@
       "trait": true
     },
     {
-      "id": "evt:004-saisir-un-constat-hors-ligne/9958f34e",
-      "ts": "2026-10-22T14:13:13.432Z",
+      "id": "evt:004-saisir-un-constat-hors-ligne/c361a00b",
+      "ts": "2026-10-25T17:21:02.385Z",
       "kind": "preuve",
       "phrase": "L'essai qui échoue d'abord est enregistré pour « Saisir un constat hors ligne »",
       "ref": {
@@ -245,97 +245,97 @@
   "regime": [
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:09.697Z",
-      "a": "2026-10-22T14:12:18.726Z"
+      "de": "2026-10-25T17:20:00.538Z",
+      "a": "2026-10-25T17:20:09.063Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-10-22T14:12:18.726Z",
-      "a": "2026-10-22T14:12:19.720Z"
+      "de": "2026-10-25T17:20:09.063Z",
+      "a": "2026-10-25T17:20:09.986Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:19.720Z",
-      "a": "2026-10-22T14:12:28.117Z"
+      "de": "2026-10-25T17:20:09.986Z",
+      "a": "2026-10-25T17:20:18.387Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-10-22T14:12:28.117Z",
-      "a": "2026-10-22T14:12:29.041Z"
+      "de": "2026-10-25T17:20:18.387Z",
+      "a": "2026-10-25T17:20:19.284Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:29.041Z",
-      "a": "2026-10-22T14:12:32.183Z"
+      "de": "2026-10-25T17:20:19.284Z",
+      "a": "2026-10-25T17:20:22.470Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-10-22T14:12:32.183Z",
-      "a": "2026-10-22T14:12:32.296Z"
+      "de": "2026-10-25T17:20:22.470Z",
+      "a": "2026-10-25T17:20:22.600Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:32.296Z",
-      "a": "2026-10-22T14:12:38.724Z"
+      "de": "2026-10-25T17:20:22.600Z",
+      "a": "2026-10-25T17:20:28.687Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-10-22T14:12:38.724Z",
-      "a": "2026-10-22T14:12:38.868Z"
+      "de": "2026-10-25T17:20:28.687Z",
+      "a": "2026-10-25T17:20:28.836Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:38.868Z",
-      "a": "2026-10-22T14:12:40.546Z"
+      "de": "2026-10-25T17:20:28.836Z",
+      "a": "2026-10-25T17:20:30.201Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-10-22T14:12:40.546Z",
-      "a": "2026-10-22T14:12:40.686Z"
+      "de": "2026-10-25T17:20:30.201Z",
+      "a": "2026-10-25T17:20:30.314Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:40.686Z",
-      "a": "2026-10-22T14:12:43.149Z"
+      "de": "2026-10-25T17:20:30.314Z",
+      "a": "2026-10-25T17:20:32.537Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-10-22T14:12:43.149Z",
-      "a": "2026-10-22T14:12:43.296Z"
+      "de": "2026-10-25T17:20:32.537Z",
+      "a": "2026-10-25T17:20:32.679Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:43.296Z",
-      "a": "2026-10-22T14:12:48.782Z"
+      "de": "2026-10-25T17:20:32.679Z",
+      "a": "2026-10-25T17:20:38.182Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-10-22T14:12:48.782Z",
-      "a": "2026-10-22T14:12:48.907Z"
+      "de": "2026-10-25T17:20:38.182Z",
+      "a": "2026-10-25T17:20:38.342Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:48.907Z",
-      "a": "2026-10-22T14:12:50.540Z"
+      "de": "2026-10-25T17:20:38.342Z",
+      "a": "2026-10-25T17:20:39.773Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-10-22T14:12:50.540Z",
-      "a": "2026-10-22T14:12:50.669Z"
+      "de": "2026-10-25T17:20:39.773Z",
+      "a": "2026-10-25T17:20:39.906Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:50.669Z",
-      "a": "2026-10-22T14:12:53.158Z"
+      "de": "2026-10-25T17:20:39.906Z",
+      "a": "2026-10-25T17:20:42.196Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-10-22T14:12:53.158Z",
-      "a": "2026-10-22T14:12:53.289Z"
+      "de": "2026-10-25T17:20:42.196Z",
+      "a": "2026-10-25T17:20:42.303Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:53.289Z",
+      "de": "2026-10-25T17:20:42.303Z",
       "a": null
     }
   ],

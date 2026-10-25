@@ -58,7 +58,7 @@
   ],
   "chantier": {
     "regime": "pause",
-    "depuis": "2026-10-22T14:12:11.365Z",
+    "depuis": "2026-10-25T17:20:02.048Z",
     "raison": "personne n'avance et 1 décision t'attend"
   },
   "plan": {
@@ -93,7 +93,7 @@
             "nom": "Le panneau du permis"
           }
         ],
-        "activee": "2026-10-22T14:12:11.970Z",
+        "activee": "2026-10-25T17:20:02.596Z",
         "par_ce_projet": true
       },
       {
@@ -285,7 +285,7 @@
       "nom": "Claire, l'architecte",
       "etat": "waiting",
       "lieu": "bureau-client",
-      "source": "activité du projet, 2026-10-22T14:12:10.703Z",
+      "source": "activité du projet, 2026-10-25T17:20:01.467Z",
       "motif": "decision",
       "decision": "decision-on-continue"
     },

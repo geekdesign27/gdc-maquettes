@@ -58,7 +58,7 @@
   ],
   "chantier": {
     "regime": "ouvert",
-    "depuis": "2026-10-22T14:12:12.549Z",
+    "depuis": "2026-10-25T17:20:03.111Z",
     "raison": "activité de moins de trente minutes"
   },
   "plan": {
@@ -93,7 +93,7 @@
             "nom": "Le panneau du permis"
           }
         ],
-        "activee": "2026-10-22T14:12:13.176Z",
+        "activee": "2026-10-25T17:20:03.876Z",
         "par_ce_projet": true
       },
       {
@@ -274,7 +274,7 @@
       "nom": "Claire, l'architecte",
       "etat": "waiting",
       "lieu": "bureau-architecte",
-      "source": "activité du projet, 2026-10-22T14:12:10.703Z"
+      "source": "activité du projet, 2026-10-25T17:20:01.467Z"
     },
     {
       "element": "character",
@@ -289,17 +289,17 @@
   ],
   "actions": [
     {
-      "ts": "2026-10-22T14:12:13.176Z",
+      "ts": "2026-10-25T17:20:03.877Z",
       "action": "ouverture",
       "element": "chantier",
       "id": "chantier",
       "de": "pause",
       "vers": "ouvert",
       "phrase": "Le chantier ouvre",
-      "cause": "evt:projet/f95df430"
+      "cause": "evt:projet/20d06837"
     },
     {
-      "ts": "2026-10-22T14:12:13.176Z",
+      "ts": "2026-10-25T17:20:03.877Z",
       "action": "change",
       "element": "client-office",
       "id": "bureau-client",
@@ -307,10 +307,10 @@
       "de": "waiting",
       "vers": "idle",
       "phrase": "Le bureau du client : waiting → idle",
-      "cause": "evt:projet/f95df430"
+      "cause": "evt:projet/20d06837"
     },
     {
-      "ts": "2026-10-22T14:12:13.176Z",
+      "ts": "2026-10-25T17:20:03.877Z",
       "action": "deplace",
       "element": "character",
       "id": "architecte",
@@ -318,16 +318,16 @@
       "de": "bureau-client",
       "vers": "bureau-architecte",
       "phrase": "Claire, l'architecte va du bureau du client au bureau d'architecte",
-      "cause": "evt:projet/f95df430"
+      "cause": "evt:projet/20d06837"
     },
     {
-      "ts": "2026-10-22T14:12:13.176Z",
+      "ts": "2026-10-25T17:20:03.877Z",
       "action": "disparait",
       "element": "decision-sign",
       "id": "decision-on-continue",
       "nom": "Ta décision « On continue »",
       "phrase": "Ta décision « On continue » disparaît",
-      "cause": "evt:projet/f95df430"
+      "cause": "evt:projet/20d06837"
     }
   ]
 }

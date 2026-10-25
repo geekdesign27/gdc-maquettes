@@ -58,7 +58,7 @@
   ],
   "chantier": {
     "regime": "ouvert",
-    "depuis": "2026-10-22T14:12:13.859Z",
+    "depuis": "2026-10-25T17:20:04.476Z",
     "raison": "des agents travaillent"
   },
   "plan": {
@@ -93,7 +93,7 @@
             "nom": "Le panneau du permis"
           }
         ],
-        "activee": "2026-10-22T14:12:13.969Z",
+        "activee": "2026-10-25T17:20:04.595Z",
         "par_ce_projet": true
       },
       {
@@ -274,7 +274,7 @@
       "nom": "Claire, l'architecte",
       "etat": "waiting",
       "lieu": "bureau-architecte",
-      "source": "activité du projet, 2026-10-22T14:12:10.703Z"
+      "source": "activité du projet, 2026-10-25T17:20:01.467Z"
     },
     {
       "element": "character",
@@ -283,7 +283,7 @@
       "nom": "Lina, le designer UX/UI",
       "etat": "typing",
       "lieu": "bureau-etudes",
-      "source": "activité du projet, 2026-10-22T14:12:13.859Z"
+      "source": "activité du projet, 2026-10-25T17:20:04.476Z"
     },
     {
       "element": "character",
@@ -298,7 +298,7 @@
   ],
   "actions": [
     {
-      "ts": "2026-10-22T14:12:13.970Z",
+      "ts": "2026-10-25T17:20:04.596Z",
       "action": "change",
       "element": "design-office",
       "id": "bureau-etudes",
@@ -306,10 +306,10 @@
       "de": "idle",
       "vers": "active",
       "phrase": "Le bureau d'études : idle → active",
-      "cause": "evt:projet:activite/5f803675"
+      "cause": "evt:projet:activite/3066eff0"
     },
     {
-      "ts": "2026-10-22T14:12:13.970Z",
+      "ts": "2026-10-25T17:20:04.596Z",
       "action": "apparait",
       "element": "character",
       "id": "designer",
@@ -317,7 +317,7 @@
       "etat": "typing",
       "lieu": "bureau-etudes",
       "phrase": "Lina, le designer UX/UI apparaît (Le bureau d'études)",
-      "cause": "evt:projet:activite/5f803675"
+      "cause": "evt:projet:activite/3066eff0"
     }
   ]
 }

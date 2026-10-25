@@ -58,7 +58,7 @@
   ],
   "chantier": {
     "regime": "ouvert",
-    "depuis": "2026-10-22T14:12:57.722Z",
+    "depuis": "2026-10-25T17:20:47.246Z",
     "raison": "activité de moins de trente minutes"
   },
   "plan": {
@@ -93,7 +93,7 @@
             "nom": "Le panneau du permis"
           }
         ],
-        "activee": "2026-10-22T14:12:57.927Z",
+        "activee": "2026-10-25T17:20:47.463Z",
         "par_ce_projet": true
       },
       {
@@ -126,7 +126,7 @@
             "nom": "Le chantier, une parcelle par application"
           }
         ],
-        "activee": "2026-10-22T14:12:57.927Z",
+        "activee": "2026-10-25T17:20:47.463Z",
         "par_ce_projet": true
       },
       {
@@ -154,7 +154,7 @@
             "nom": "La cabane de la garantie"
           }
         ],
-        "activee": "2026-10-22T14:12:57.927Z",
+        "activee": "2026-10-25T17:20:47.463Z",
         "par_ce_projet": true
       },
       {
@@ -175,7 +175,7 @@
             "nom": "Le carnet des demandes"
           }
         ],
-        "activee": "2026-10-22T14:12:57.927Z",
+        "activee": "2026-10-25T17:20:47.463Z",
         "par_ce_projet": true
       }
     ],
@@ -406,7 +406,7 @@
       "ancre": "panneau-permis",
       "nom": "Le permis de construire",
       "etat": "granted",
-      "source": "décision du projet du 2026-10-22T14:12:15.330Z"
+      "source": "décision du projet du 2026-10-25T17:20:05.864Z"
     },
     {
       "element": "parking",
@@ -424,7 +424,7 @@
       "nom": "Claire, l'architecte",
       "etat": "waiting",
       "lieu": "bureau-architecte",
-      "source": "activité de la fiche 003-reparer-la-signature-du-rapport, 2026-10-22T14:12:53.159Z",
+      "source": "activité de la fiche 003-reparer-la-signature-du-rapport, 2026-10-25T17:20:42.198Z",
       "ref": {
         "application": "bureau",
         "fiche": "003-reparer-la-signature-du-rapport"
@@ -437,7 +437,7 @@
       "nom": "Lina, le designer UX/UI",
       "etat": "celebrate",
       "lieu": "bureau-etudes",
-      "source": "activité du projet, 2026-10-22T14:12:14.601Z"
+      "source": "activité du projet, 2026-10-25T17:20:05.147Z"
     },
     {
       "element": "character",
@@ -446,7 +446,7 @@
       "nom": "Emma, la développeuse interface",
       "etat": "celebrate",
       "lieu": "baraque",
-      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-22T14:12:25.979Z",
+      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-25T17:20:16.246Z",
       "ref": {
         "application": "bureau",
         "fiche": "001-cloturer-un-audit"
@@ -459,7 +459,7 @@
       "nom": "Olivier, le surveillant de chantier",
       "etat": "celebrate",
       "lieu": "baraque",
-      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-22T14:12:28.044Z",
+      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-25T17:20:18.308Z",
       "ref": {
         "application": "bureau",
         "fiche": "001-cloturer-un-audit"
@@ -484,7 +484,7 @@
   ],
   "actions": [
     {
-      "ts": "2026-10-22T14:12:57.927Z",
+      "ts": "2026-10-25T17:20:47.463Z",
       "action": "apparait",
       "element": "crane",
       "id": "grue-003-reparer-la-signature-du-rapport",
@@ -496,10 +496,10 @@
         "application": "bureau",
         "fiche": "003-reparer-la-signature-du-rapport"
       },
-      "cause": "evt:003-reparer-la-signature-du-rapport/d7697564"
+      "cause": "evt:003-reparer-la-signature-du-rapport/25b0f0f8"
     },
     {
-      "ts": "2026-10-22T14:12:57.927Z",
+      "ts": "2026-10-25T17:20:47.463Z",
       "action": "deplace",
       "element": "character",
       "id": "helene",
@@ -513,10 +513,10 @@
         "application": "bureau",
         "fiche": "003-reparer-la-signature-du-rapport"
       },
-      "cause": "evt:003-reparer-la-signature-du-rapport/7d862f77"
+      "cause": "evt:003-reparer-la-signature-du-rapport/427d7e79"
     },
     {
-      "ts": "2026-10-22T14:12:57.927Z",
+      "ts": "2026-10-25T17:20:47.463Z",
       "action": "disparait",
       "element": "defect-sign",
       "id": "defaut-002-signer-un-rapport",
@@ -526,7 +526,7 @@
         "application": "bureau",
         "fiche": "002-signer-un-rapport"
       },
-      "cause": "evt:003-reparer-la-signature-du-rapport/7d862f77"
+      "cause": "evt:003-reparer-la-signature-du-rapport/427d7e79"
     }
   ]
 }

@@ -58,7 +58,7 @@
   ],
   "chantier": {
     "regime": "pause",
-    "depuis": "2026-10-22T14:12:18.727Z",
+    "depuis": "2026-10-25T17:20:09.100Z",
     "raison": "personne n'avance et 1 décision t'attend"
   },
   "plan": {
@@ -93,7 +93,7 @@
             "nom": "Le panneau du permis"
           }
         ],
-        "activee": "2026-10-22T14:12:18.872Z",
+        "activee": "2026-10-25T17:20:09.237Z",
         "par_ce_projet": true
       },
       {
@@ -126,7 +126,7 @@
             "nom": "Le chantier, une parcelle par application"
           }
         ],
-        "activee": "2026-10-22T14:12:18.872Z",
+        "activee": "2026-10-25T17:20:09.237Z",
         "par_ce_projet": true
       },
       {
@@ -308,7 +308,7 @@
       "ancre": "panneau-permis",
       "nom": "Le permis de construire",
       "etat": "granted",
-      "source": "décision du projet du 2026-10-22T14:12:15.330Z"
+      "source": "décision du projet du 2026-10-25T17:20:05.864Z"
     },
     {
       "element": "parking",
@@ -326,7 +326,7 @@
       "nom": "Claire, l'architecte",
       "etat": "waiting",
       "lieu": "panneau-feu-vert",
-      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-22T14:12:18.727Z",
+      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-25T17:20:09.100Z",
       "ref": {
         "application": "bureau",
         "fiche": "001-cloturer-un-audit"
@@ -341,7 +341,7 @@
       "nom": "Lina, le designer UX/UI",
       "etat": "celebrate",
       "lieu": "bureau-etudes",
-      "source": "activité du projet, 2026-10-22T14:12:14.601Z"
+      "source": "activité du projet, 2026-10-25T17:20:05.147Z"
     },
     {
       "element": "character",
@@ -356,17 +356,17 @@
   ],
   "actions": [
     {
-      "ts": "2026-10-22T14:12:18.872Z",
+      "ts": "2026-10-25T17:20:09.237Z",
       "action": "pause",
       "element": "chantier",
       "id": "chantier",
       "de": "ouvert",
       "vers": "pause",
       "phrase": "Le chantier s'arrête : il attend ta décision",
-      "cause": "evt:001-cloturer-un-audit/e7c01356"
+      "cause": "evt:001-cloturer-un-audit/cfd159f9"
     },
     {
-      "ts": "2026-10-22T14:12:18.872Z",
+      "ts": "2026-10-25T17:20:09.237Z",
       "action": "change",
       "element": "client-office",
       "id": "bureau-client",
@@ -374,20 +374,20 @@
       "de": "idle",
       "vers": "waiting",
       "phrase": "Le bureau du client : idle → waiting",
-      "cause": "evt:001-cloturer-un-audit/e7c01356"
+      "cause": "evt:001-cloturer-un-audit/cfd159f9"
     },
     {
-      "ts": "2026-10-22T14:12:18.872Z",
+      "ts": "2026-10-25T17:20:09.237Z",
       "action": "quantite",
       "element": "client-office",
       "id": "bureau-client",
       "nom": "Le bureau du client",
       "vers": 1,
       "phrase": "Le bureau du client : 1",
-      "cause": "evt:001-cloturer-un-audit/e7c01356"
+      "cause": "evt:001-cloturer-un-audit/cfd159f9"
     },
     {
-      "ts": "2026-10-22T14:12:18.872Z",
+      "ts": "2026-10-25T17:20:09.237Z",
       "action": "apparait",
       "element": "decision-sign",
       "id": "decision-001-cloturer-un-audit-plan",
@@ -399,10 +399,10 @@
         "application": "bureau",
         "fiche": "001-cloturer-un-audit"
       },
-      "cause": "evt:001-cloturer-un-audit/e7c01356"
+      "cause": "evt:001-cloturer-un-audit/cfd159f9"
     },
     {
-      "ts": "2026-10-22T14:12:18.872Z",
+      "ts": "2026-10-25T17:20:09.237Z",
       "action": "deplace",
       "element": "character",
       "id": "architecte",
@@ -415,7 +415,7 @@
         "application": "bureau",
         "fiche": "001-cloturer-un-audit"
       },
-      "cause": "evt:001-cloturer-un-audit:activite/f96d0a32"
+      "cause": "evt:001-cloturer-un-audit:activite/a78a6c56"
     }
   ]
 }

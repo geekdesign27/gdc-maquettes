@@ -1,7 +1,7 @@
 {
   "sequence": "trois-applications",
   "description": "Le même projet avec trois applications à des étapes différentes : une surélévation, une consultation, deux feux verts attendus (une pause), un contrôle sur un bâtiment, une fiche abandonnée (ADR 0013).",
-  "gdc": "0.20.0",
+  "gdc": "0.22.3",
   "etapes": [
     {
       "numero": 1,

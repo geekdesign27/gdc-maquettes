@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "maintenant": "2026-10-24T14:12:15.898Z",
+  "maintenant": "2026-10-27T17:20:06.455Z",
   "fuseau": "UTC",
-  "debut": "2026-10-22T14:12:09.697Z",
-  "depuis": "evt:projet/f95df430",
+  "debut": "2026-10-25T17:20:00.538Z",
+  "depuis": "evt:projet/20d06837",
   "complet": false,
   "lignes": [
     {
@@ -16,8 +16,8 @@
       "etat": "faite",
       "barres": [
         {
-          "debut": "2026-10-22T14:12:12.549Z",
-          "fin": "2026-10-24T14:12:15.330Z"
+          "debut": "2026-10-25T17:20:03.111Z",
+          "fin": "2026-10-27T17:20:05.864Z"
         }
       ]
     },
@@ -40,24 +40,24 @@
       "decision": "permis-de-construire",
       "nom": "Le permis de construire",
       "etat": "accordee",
-      "demandee": "2026-10-22T14:12:31.000Z",
+      "demandee": "2026-10-25T17:20:21.000Z",
       "demandee_par": null,
       "demandee_source": "git",
-      "prise": "2026-10-24T14:12:15.330Z",
-      "prise_par": "evt:projet/1c835438"
+      "prise": "2026-10-27T17:20:05.864Z",
+      "prise_par": "evt:projet/eb8a507e"
     }
   ],
   "jours": [
     {
-      "date": "2026-10-24",
+      "date": "2026-10-27",
       "evenements": 4,
       "actif": true
     }
   ],
   "evenements": [
     {
-      "id": "evt:projet/1c835438",
-      "ts": "2026-10-24T14:12:15.330Z",
+      "id": "evt:projet/eb8a507e",
+      "ts": "2026-10-27T17:20:05.864Z",
       "kind": "decision",
       "phrase": "Tu accordes « Le permis de construire »",
       "trait": false
@@ -66,17 +66,17 @@
   "regime": [
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:09.697Z",
-      "a": "2026-10-22T14:42:12.549Z"
+      "de": "2026-10-25T17:20:00.538Z",
+      "a": "2026-10-25T17:50:03.111Z"
     },
     {
       "valeur": "ferme",
-      "de": "2026-10-22T14:42:12.549Z",
-      "a": "2026-10-24T14:12:13.774Z"
+      "de": "2026-10-25T17:50:03.111Z",
+      "a": "2026-10-27T17:20:04.414Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-24T14:12:13.774Z",
+      "de": "2026-10-27T17:20:04.414Z",
       "a": null
     }
   ],

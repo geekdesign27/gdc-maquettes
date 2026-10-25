@@ -1,7 +1,7 @@
 {
   "sequence": "projet-type",
   "description": "Un projet type, de l'ouverture à la mise en production, déroulé avec le vrai binaire GDC : une décision refusée puis accordée, un lot abandonné, un défaut puis sa réparation, un permis périmé. À chaque pas, la scène et les actions qui y mènent (ADR 0012), la chronologie et ce qui a changé depuis le pas précédent.",
-  "gdc": "0.20.0",
+  "gdc": "0.22.3",
   "etapes": [
     {
       "numero": 1,
