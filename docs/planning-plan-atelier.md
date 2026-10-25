@@ -101,6 +101,26 @@ Le constat de D-1c rassure sur le processeur (60 images/s une fois la carte lanc
 
 Le rejeu de la carte (`gdc scene --a <date>`), avec l'option `instant` partout et les cibles déjà arrêtées : moins de 100 ms par pas, moins d'une seconde pour une reconstruction complète.
 
+#### D-5 : la mesure du rejeu (25 octobre 2026)
+
+La mesure se fait dans la galerie avec `galerie.rejeu()`, sur `trois-applications`, `projet-long` et `volume`, avec et sans la ville. Le détail est dans le constat `D5-rejeu.md` (dossier de notes des sessions).
+
+- **Une fois le code mis en route, les deux cibles sont tenues, même processeur ralenti quatre fois.**
+  - La reconstruction complète de la carte depuis une scène prend 21 à 61 ms (médiane) à ×1, et 338 ms au pire à ×4.
+  - Le passage d'une scène à la suivante, posée sans actions, prend 7 à 19 ms à ×1, et 90 ms au pire à ×4 (une fois 129 ms, sur 27 pas).
+- **La toute première passe d'une page peut les manquer.** Le code n'y est pas encore optimisé, et les modèles et les programmes de rendu servent pour la première fois.
+  - À ×1, la reconstruction reste sous 0,7 s, mais quelques pas atteignent 105 à 176 ms.
+  - À ×4, avec la ville, la reconstruction atteint 1,9 s.
+  - À essayer avec la seconde version : charger tous les modèles et compiler les programmes au démarrage.
+- **La ville autour fait un tiers de la reconstruction.** Elle ne dépend pas de la date : un rejeu peut la garder.
+- **Aucune fuite de mémoire** d'une reconstruction à l'autre.
+- **`instant` reste à faire, et c'est une affaire d'image, pas de temps.** Trois choses empêchent encore un saut d'arriver tout de suite à l'état final :
+  - la carte ne finit pas ce qui est en cours quand aucune action n'est en attente : fondus de zone, impulsions, grues, camion qui repart ;
+  - elle rappelle `setState` sur tout à chaque scène, si bien que bureaux, camion et bâtiment rejouent leur animation ;
+  - une douzaine de composants n'ont qu'un chemin sans transition, `reducedMotion`, figé à la création.
+  
+  Le constat les détaille composant par composant et propose deux voies : une option par appel (nouvelles versions), ou `update(grand dt)` par la carte. **À décider avec Pierre-Alain.**
+
 ## 5. Ce que l'atelier attend de GDC
 
 Rien d'autre que ta section 8 : la 0.20 avec ses quatre séquences (`projet-type`, `trois-applications`, `projet-long`, `volume`), chacune avec, à chaque pas, la scène, la chronologie complète et la mise à jour depuis le pas précédent. I-6 et I-7 démarrent à sa livraison ; tout le reste avance d'ici là.
@@ -124,7 +144,7 @@ GDC a tout accepté (`docs/planning-derniers-mots-de-gdc.md`, même jour) : `pan
 | Piste | Fait | Reste |
 |---|---|---|
 | Interface | I-1 à I-7 : fiches `site-schedule` et `panel-rail`, `floor-selector` 1.1.0, `panel-rail` 1.0.0, les panneaux dans la galerie, la lecture par `index.json`, `trigger-feed` 1.1.0, `site-schedule` 1.0.0 fabriqué ; I-8 (la caméra qui suit la sélection) livrée avec `city-map` | `site-schedule` attend la validation de Pierre-Alain (planche de neuf questions) ; le retour à GDC `docs/planning-retour-atelier-I6-I7.md` est à lui transmettre |
-| 3D | D-1, D-1b, D-1c (correction 1 : l'ombre une image sur deux), D-2 (13 projecteurs), D-3 (`character-kit` v003, `character` 1.2.0), D-4 (`site-fence` 1.1.0, `party-shed`, `city-car`) | D-1c, corrections 2, 3 et 5 non décidées (ombre des seules grandes masses, repères de la galerie, variantes de matériau) ; D-5, la mesure du rejeu, avant la seconde version |
+| 3D | D-1, D-1b, D-1c (correction 1 : l'ombre une image sur deux ; correction 3 : les repères de la galerie), D-5 (la mesure du rejeu), D-2 (13 projecteurs), D-3 (`character-kit` v003, `character` 1.2.0), D-4 (`site-fence` 1.1.0, `party-shed`, `city-car`) | D-1c, corrections 2 et 5 non décidées (ombre des seules grandes masses, variantes de matériau) ; l'option `instant` du rejeu, à décider pour la seconde version (constat de D-5) |
 | Ville | V-1 (fiches G9), V-2 (projecteurs), V-3 : `city-ground`, `road-kit`, `nature-kit`, `villa-kit`, `apartment-kit`, `city-plan` 1.1.0, `city-night`, `city-traffic` | La mesure sur le portable de 13 à 14 pouces de référence, que seul Pierre-Alain peut faire |
 | Carte | `city-map` et `agent-marker` 1.0.0 livrés ; la deuxième rangée de parcelles et la grille des panneaux (`volume`) | Points de DA notés pour plus tard : la charge de la grue, un usager sans casque, le gris lavé sombre, deux agents GDC pour une même personne ; le groupe de repères déplié qui couvre une étiquette dans un cadre très bas |
 

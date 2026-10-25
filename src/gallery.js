@@ -44,6 +44,7 @@ const heureDemandee = new URLSearchParams(location.search).get('heure');
 const options = { theme: 'light', quality: 'high', reducedMotion: false, anchors: true, planche: false, silhouette: false, gris: false, heure: Object.hasOwn(MOMENTS, heureDemandee ?? '') ? heureDemandee : 'jour' };
 let current = { entry: null, inst: null, state: null, voisins: [] };
 let dirty = true;
+let enPause = false; // la boucle attend, le temps d'une mesure qui dessine elle-meme (galerie.rejeu)
 
 // La scene de reference : camera orthographique a 45 degres et 35 degres d'elevation (bible, section 8),
 // lumiere directionnelle douce, ambiance moderee, rendu a la demande. Reglages : src/lumiere.json (partages avec le studio Blender).
@@ -469,6 +470,15 @@ function relaieSurvol(source, ref) {
   current.ville?.carte.surligne(h).then(() => { dirty = true; });
 }
 
+// les options de la carte de la galerie, pour la ville affichee et pour la mesure du rejeu (galerie.rejeu)
+function optionsCarte() {
+  const q = new URLSearchParams(location.search);
+  // la carte regle elle-meme la lumiere sur l'heure (l'heure reelle, ou le moment que l'on choisit en bas)
+  const lumieres = { ciel, soleil: sun, scene: options.silhouette ? null : scene };
+  // la ville suit l'heure reelle, comme dans GDC ; ?heure=nuit dans l'adresse la fixe pour une capture
+  return { components: byId, chargeur: charge, ...options, heure: Object.hasOwn(MOMENTS, heureDemandee ?? '') ? heureDemandee : undefined, lumieres, force: q.get('ouvriers') === 'max', villeAutour: villeAutour ?? undefined };
+}
+
 async function instanceVille(id, state) {
   const nom = id.slice(VILLE_ID.length + 1);
   const index = SEQUENCES[nom];
@@ -476,10 +486,7 @@ async function instanceVille(id, state) {
   const scenes = await Promise.all(index.etapes.map((e) => fichierGdc(nom, e.fichier)));
   const sceneDe = (s) => scenes[etapes.indexOf(s)];
   const q = new URLSearchParams(location.search);
-  // la carte regle elle-meme la lumiere sur l'heure (l'heure reelle, ou le moment que l'on choisit en bas)
-  const lumieres = { ciel, soleil: sun, scene: options.silhouette ? null : scene };
-  // la ville suit l'heure reelle, comme dans GDC ; ?heure=nuit dans l'adresse la fixe pour une capture
-  const carte = await creeCarte(THREE, { components: byId, chargeur: charge, ...options, heure: Object.hasOwn(MOMENTS, heureDemandee ?? '') ? heureDemandee : undefined, lumieres, force: q.get('ouvriers') === 'max', villeAutour: villeAutour ?? undefined });
+  const carte = await creeCarte(THREE, optionsCarte());
   const premier = etapes.includes(state) ? state : etapes[0];
   await carte.applique(sceneDe(premier));
   const actionsJusqua = (s) => etapes.slice(0, etapes.indexOf(s) + 1).flatMap((x) => sceneDe(x).actions || []);
@@ -796,6 +803,71 @@ window.galerie = {
       };
       requestAnimationFrame(pas);
     });
+  },
+  // Le rejeu (plan D-5) : sur la sequence de la ville affichee, avec ses options (?ville=, l'heure), la reconstruction
+  // complete de la carte depuis la scene de chaque etape (creeCarte, applique, premier rendu), puis le passage de chaque
+  // etape a la suivante sur une seule carte, pose sans actions (le saut, le plus proche d'un pas de rejeu aujourd'hui),
+  // et le retour de la derniere a la premiere. Millisecondes, le GPU attendu a chaque rendu (lecture d'un pixel).
+  // memoire : les geometries et textures restees apres chaque carte liberee, par rapport a avant la mesure.
+  // La carte affichee est mise de cote, et la boucle en pause, le temps de la mesure.
+  async rejeu({ etapes = null } = {}) {
+    if (!current.ville) throw new Error('galerie.rejeu : choisir une ville');
+    const { nom, index } = current.ville;
+    const liste = index.etapes.filter((e) => !etapes || etapes.includes(e.numero));
+    const scenes = await Promise.all(liste.map((e) => fichierGdc(nom, e.fichier)));
+    const gl = renderer.getContext();
+    const pixel = new Uint8Array(4);
+    const rend = () => { renderer.shadowMap.needsUpdate = true; renderer.render(scene, camera); gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixel); };
+    const ms = (t) => +(performance.now() - t).toFixed(1);
+    const affichee = current.inst.root;
+    enPause = true;
+    scene.remove(affichee);
+    const avant = { ...renderer.info.memory };
+    const reste = () => `${renderer.info.memory.geometries - avant.geometries} / ${renderer.info.memory.textures - avant.textures}`;
+    const out = { sequence: nom, ville: villeAutour ?? null, heure: options.heure, reconstruction: [], pas: [], memoire: [] };
+    try {
+      // la reconstruction depuis chaque scene : une carte neuve chaque fois, liberee ensuite
+      for (const [i, sc] of scenes.entries()) {
+        let t = performance.now();
+        const carte = await creeCarte(THREE, optionsCarte());
+        const cree = ms(t);
+        t = performance.now();
+        await carte.applique(sc);
+        const applique = ms(t);
+        scene.add(carte.root);
+        t = performance.now();
+        rend();
+        const rendu = ms(t);
+        out.reconstruction.push({ etape: liste[i].numero, cree, applique, rendu, total: +(cree + applique + rendu).toFixed(1) });
+        scene.remove(carte.root);
+        carte.dispose();
+        out.memoire.push(reste());
+      }
+      // le passage d'une etape a la suivante, sur une seule carte, puis le retour au debut
+      const carte = await creeCarte(THREE, optionsCarte());
+      await carte.applique(scenes[0]);
+      scene.add(carte.root);
+      rend();
+      const sauts = [...scenes.keys()].slice(1).map((i) => [i - 1, i]);
+      if (scenes.length > 1) sauts.push([scenes.length - 1, 0]);
+      for (const [de, a] of sauts) {
+        let t = performance.now();
+        await carte.applique(scenes[a], { actions: false });
+        const applique = ms(t);
+        t = performance.now();
+        rend();
+        const rendu = ms(t);
+        out.pas.push({ de: liste[de].numero, a: liste[a].numero, applique, rendu, total: +(applique + rendu).toFixed(1) });
+      }
+      scene.remove(carte.root);
+      carte.dispose();
+      out.memoire.push(reste());
+    } finally {
+      scene.add(affichee);
+      enPause = false;
+      dirty = true;
+    }
+    return out;
   },
 };
 
@@ -1251,6 +1323,7 @@ let dernierGeste = performance.now();
 for (const evt of ['pointerdown', 'pointermove', 'wheel', 'keydown']) addEventListener(evt, () => { dernierGeste = performance.now(); }, { passive: true });
 function loop() {
   const dt = Math.min(clock.getDelta(), 0.1);
+  if (enPause) return requestAnimationFrame(loop);
   current.ville?.carte?.endorsVille?.(document.hidden || performance.now() - dernierGeste > AMBIANCE.sommeil * 1000);
   let continu = false;
   let ambiance = false;
