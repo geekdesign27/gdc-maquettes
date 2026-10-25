@@ -86,8 +86,11 @@ const grid = new THREE.GridHelper(60, 60, 0x999999, 0xcccccc);
 grid.position.y = -0.61; // sous les socles de 0,60 m (bible 18.5) : elle ne traverse plus la fouille du batiment
 scene.add(grid);
 
+// la taille de la scene, lue ici seulement : les reperes la reprennent (plan D-1c, correction 3)
+let tailleScene = [1, 1];
 function resize() {
   const { clientWidth: w, clientHeight: h } = stage;
+  tailleScene = [w, h];
   renderer.setSize(w, h, false);
   // la scene de reference (60 x 50 m, 14 m de plus par application) se cadre en entier sur un portable de 13 pouces ;
   // on zoome a la molette
@@ -837,6 +840,7 @@ function dessineAgents() {
     repereAgents?.remove();
     repereAgents = null;
     agentsEcran = [];
+    reperes.agents = null;
     return;
   }
   if (!repereAgents) {
@@ -849,19 +853,33 @@ function dessineAgents() {
     });
     stage.append(repereAgents);
   }
-  agentsEcran = current.ville.carte.agents().map((a) => ({ ...a, tete: projette(a.tete), pieds: projette(a.pieds) }));
+  // un agent n'est reprojete que s'il a bouge, ou la vue
+  const avant = new Map(agentsEcran.map((a) => [a.id, a]));
+  agentsEcran = current.ville.carte.agents().map((a) => {
+    const p = avant.get(a.id);
+    const monde = [...a.tete.toArray(), ...a.pieds.toArray()];
+    if (p && !reperes.vueBouge && monde.every((x, i) => x === p.monde[i])) return { ...a, tete: p.tete, pieds: p.pieds, monde };
+    return { ...a, tete: projette(a.tete), pieds: projette(a.pieds), monde };
+  });
   const survole = agentsEcran.find((a) => a.id === agentSurvoleVille);
-  // les etiquettes de lieu et les pastilles deja posees (drawAnchors) : le repere monte au-dessus de celles qu'il recouvrirait
-  const cadre = stage.getBoundingClientRect();
-  const obstacles = [...$('anchors').querySelectorAll('.anchor')]
-    .map((t) => t.getBoundingClientRect())
-    .filter((r) => r.width && r.height)
-    .map((r) => ({ x: r.left - cadre.left, y: r.top - cadre.top, width: r.width, height: r.height }));
-  repereAgents.data = {
+  // les etiquettes de lieu et les pastilles deja posees (drawAnchors) : le repere monte au-dessus de celles qu'il
+  // recouvrirait ; mesurees seulement quand une etiquette a bouge ou change
+  if (!reperes.obstacles || reperes.etiquettesBougent) {
+    const cadre = stage.getBoundingClientRect();
+    reperes.obstacles = [...$('anchors').querySelectorAll('.anchor')]
+      .map((t) => t.getBoundingClientRect())
+      .filter((r) => r.width && r.height)
+      .map((r) => ({ x: r.left - cadre.left, y: r.top - cadre.top, width: r.width, height: r.height }));
+  }
+  const data = {
     agents: agentsEcran.map((a) => ({ id: a.personne, name: a.name, state: a.state, x: a.tete[0], y: a.tete[1] })),
     hovered: survole ? survole.personne : null,
-    obstacles,
+    obstacles: reperes.obstacles,
   };
+  const sig = JSON.stringify([data.agents, data.hovered]);
+  if (sig === reperes.agents && !reperes.etiquettesBougent) return;
+  reperes.agents = sig;
+  repereAgents.data = data;
 }
 let appui = null;
 let survolVille = 'null';
@@ -1014,7 +1032,7 @@ async function report() {
 // titre ; un passage (une decision du client) a un contour ; la pastille d'un batiment ne montre que son numero, le titre
 // au survol.
 const tmp = new THREE.Vector3();
-let etiquettes = { inst: null, tags: new Map(), cadres: null };
+let etiquettes = { inst: null, tags: new Map(), points: new Map(), cadres: null };
 function remplit(tag, r) {
   tag.replaceChildren();
   tag.className = 'anchor repere' + (r.passage ? ' passage' : '') + (r.pastille ? ' pastille' : '') + (r.attenue ? ' attenue' : '');
@@ -1033,9 +1051,31 @@ const projette = (v) => {
   tmp.copy(v);
   current.inst.root.localToWorld(tmp);
   tmp.project(camera);
-  const { clientWidth: w, clientHeight: h } = stage;
+  const [w, h] = tailleScene;
   return [((tmp.x + 1) / 2) * w, ((1 - tmp.y) / 2) * h];
 };
+// Les reperes ne se recalculent que lorsque la camera, la taille de la scene ou un point bougent (plan D-1c,
+// correction 3) : la projection, les positions ecrites et la mesure des etiquettes sont gardees d'une image a l'autre.
+// La galerie seulement : chez GDC, les reperes sont les siens. vueBouge : la camera, la taille ou la racine ont change
+// depuis l'image d'avant ; etiquettesBougent : une etiquette a ete deplacee ou refaite a cette image.
+const reperes = { vue: new Float64Array(50), vueBouge: true, etiquettesBougent: true, obstacles: null, agents: null };
+function vueDesReperes() {
+  let i = 0;
+  let bouge = false;
+  const garde = (x) => { if (reperes.vue[i] !== x) { reperes.vue[i] = x; bouge = true; } i++; };
+  for (const x of camera.matrixWorld.elements) garde(x);
+  for (const x of camera.projectionMatrix.elements) garde(x);
+  for (const x of current.inst.root.matrixWorld.elements) garde(x);
+  garde(tailleScene[0]);
+  garde(tailleScene[1]);
+  return bouge;
+}
+// une pastille de la ville survolee s'elargit (son titre) : le repere d'agent, qui l'evite, la remesure
+for (const evt of ['pointerover', 'pointerout']) $('anchors').addEventListener(evt, (ev) => {
+  if (!current.ville || !ev.target.closest?.('.pastille')) return;
+  reperes.etiquettesBougent = true;
+  dirty = true;
+});
 // le nom de chaque zone, sous son coin le plus proche de la camera ; sa bordure est peinte au sol (scene-reference.js)
 function dessineCadres(layer) {
   if (!etiquettes.cadres) {
@@ -1050,28 +1090,33 @@ function dessineCadres(layer) {
   }
   // la ville : une zone jamais activee a son nom attenue, jusqu'a ce que sa couleur arrive
   const frais = current.ville ? current.inst.cadres() : null;
-  for (const [i, { c, nom }] of etiquettes.cadres.entries()) {
-    if (frais) nom.classList.toggle('attenue', !frais[i].activee);
-    const g = c.coins.map(projette).reduce((a, b) => (b[1] > a[1] ? b : a));
-    nom.style.left = `${g[0]}px`;
-    nom.style.top = `${g[1]}px`;
+  for (const [i, e] of etiquettes.cadres.entries()) {
+    if (frais) e.nom.classList.toggle('attenue', !frais[i].activee);
+    // les coins sont fixes : le nom ne se replace que si la vue bouge
+    if (e.pose && !reperes.vueBouge) continue;
+    const g = e.c.coins.map(projette).reduce((a, b) => (b[1] > a[1] ? b : a));
+    e.nom.style.left = `${g[0]}px`;
+    e.nom.style.top = `${g[1]}px`;
+    e.pose = true;
+    reperes.etiquettesBougent = true;
   }
 }
 function drawAnchors() {
+  reperes.vueBouge = current.inst ? vueDesReperes() : true;
   dessineEtiquettes();
   // le repere d'agent apres les etiquettes : il evite celles qui sont deja posees
   dessineAgents();
+  reperes.etiquettesBougent = false;
 }
 function dessineEtiquettes() {
   const layer = $('anchors');
-  if (!options.anchors || options.silhouette || !current.inst) { layer.replaceChildren(); etiquettes = { inst: null, tags: new Map(), cadres: null }; return; }
-  if (etiquettes.inst !== current.inst) { layer.replaceChildren(); etiquettes = { inst: current.inst, tags: new Map(), cadres: null }; }
+  if (!options.anchors || options.silhouette || !current.inst) { layer.replaceChildren(); etiquettes = { inst: null, tags: new Map(), points: new Map(), cadres: null }; return; }
+  if (etiquettes.inst !== current.inst) { layer.replaceChildren(); etiquettes = { inst: current.inst, tags: new Map(), points: new Map(), cadres: null }; reperes.etiquettesBougent = true; }
   if (current.scene) dessineCadres(layer);
   for (const a of current.mod.meta.anchors) {
     const name = a.replace('*', '0');
     let v;
     try { v = current.inst.anchor(name); } catch { continue; }
-    const [x, y] = projette(v);
     let tag = etiquettes.tags.get(name);
     if (!tag) {
       tag = document.createElement('div');
@@ -1084,10 +1129,17 @@ function dessineEtiquettes() {
     if (current.scene) {
       const r = current.inst.repere(name);
       const sig = JSON.stringify(r);
-      if (tag.dataset.sig !== sig) { remplit(tag, r); tag.dataset.sig = sig; }
+      if (tag.dataset.sig !== sig) { remplit(tag, r); tag.dataset.sig = sig; reperes.etiquettesBougent = true; }
     }
+    // la projection : seulement si la vue ou le point ont bouge
+    const point = v.toArray();
+    const avant = etiquettes.points.get(name);
+    if (avant && !reperes.vueBouge && point.every((x, i) => x === avant[i])) continue;
+    etiquettes.points.set(name, point);
+    const [x, y] = projette(v);
     tag.style.left = `${x}px`;
     tag.style.top = `${y}px`;
+    reperes.etiquettesBougent = true;
   }
 }
 
