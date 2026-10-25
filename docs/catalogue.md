@@ -585,14 +585,15 @@ Liste de boutons fournie par GDC selon le type d'élément ; le texte copié est
 
 ### La fiche d'un agent (`agent-popup`)
 
-Fenêtre avec l'illustration (lot G7) à gauche et trois colonnes à droite ; actions rapides propres à l'agent.
+Fenêtre avec l'illustration (lot G7) à gauche et trois colonnes à droite ; actions rapides propres à l'agent. Version 1.2.0 (proposition P2 de GDC 0.22.3, acceptée par Pierre-Alain le 25 octobre 2026 ; docs/gdc-0.22-pour-l-atelier.md) : sous l'équipe et l'état, une ligne discrète dit quel outil fait travailler l'agent, « avec Claude Code » ou « avec Codex », en texte, sans logo ni couleur de marque ; GDC la remplit avec bail.outil.
 
 - Élément : `<gdc-agent-popup>`
-- Entrées (propriété data) : `id` (identifiant de l'agent) ; `name` (prénom et rôle) ; `team` (équipe (mêmes valeurs que character) : architecture, studies, site, reception, operations avec leur couleur ; client et none sans couleur ; toute autre valeur affichée telle quelle) ; `state` (état (mêmes valeurs que character), affiché par un signe et un mot : work, typing, inspect, read, thinking, talk, walk → Actif (Travaille, Écrit, Inspecte, Lit, Réfléchit, Discute, Se déplace) ; waiting → Attend ta décision ; blocked → Bloqué ; celebrate → Terminé (A fini) ; idle → Au repos, sans signe ; unknown, absent ou autre → Inconnu) ; `doing` (liste de textes : ce qu'il fait) ; `next` (liste de textes : ce qu'il fera) ; `can` (liste de textes : ce qu'il sait faire) ; `actions` (liste de { label, prompt })
+- Entrées (propriété data) : `id` (identifiant de l'agent) ; `name` (prénom et rôle) ; `team` (équipe (mêmes valeurs que character) : architecture, studies, site, reception, operations avec leur couleur ; client et none sans couleur ; toute autre valeur affichée telle quelle) ; `state` (état (mêmes valeurs que character), affiché par un signe et un mot : work, typing, inspect, read, thinking, talk, walk → Actif (Travaille, Écrit, Inspecte, Lit, Réfléchit, Discute, Se déplace) ; waiting → Attend ta décision ; blocked → Bloqué ; celebrate → Terminé (A fini) ; idle → Au repos, sans signe ; unknown, absent ou autre → Inconnu) ; `tool` (l'outil qui fait travailler l'agent (bail.outil du journal) : claude-code → « avec Claude Code » ; codex → « avec Codex » ; absent, vide ou autre → rien ne s'affiche) ; `doing` (liste de textes : ce qu'il fait) ; `next` (liste de textes : ce qu'il fera) ; `can` (liste de textes : ce qu'il sait faire) ; `actions` (liste de { label, prompt })
 - Sorties (événements) : `gdc-close` (fermeture) ; `gdc-copy` (detail.id, detail.text (prompt copié))
 - Critères d'acceptation :
   - Se ferme au clavier
   - Affiche « inconnu » quand le journal ne dit rien
+  - L'outil s'affiche en texte discret, sans logo ni couleur ; absent ou inconnu, rien ne s'affiche
 
 ## G7 : Les illustrations et les icônes
 

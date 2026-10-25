@@ -2,13 +2,15 @@
 // Brief valide par Pierre-Alain le 21 octobre 2026 : fenetre non modale qui prend le focus a son apparition ;
 // « inconnu » quand le journal ne dit rien (bible, 17.4).
 // 1.1.0 : le portrait du lot G7 (ctx.portrait, par l'identifiant), anime selon l'etat ; les initiales en repli.
+// 1.2.0 : l'outil qui travaille (tool), une ligne de texte discrete ; rien quand il est absent ou inconnu
+// (proposition P2 de GDC 0.22.3, acceptee par Pierre-Alain le 25 octobre 2026).
 
 export const meta = {
   id: "agent-popup",
-  version: "1.1.0",
+  version: "1.2.0",
   category: "interface",
   tag: "gdc-agent-popup",
-  inputs: ["id", "name", "team", "state", "doing", "next", "can", "actions"],
+  inputs: ["id", "name", "team", "state", "tool", "doing", "next", "can", "actions"],
   outputs: ["gdc-close", "gdc-copy"],
 };
 
@@ -36,6 +38,11 @@ const GESTES = {
   inspect: "working",
   read: "working",
   thinking: "working",
+};
+// L'outil qui fait travailler l'agent (bail.outil du journal) : du texte, jamais de logo ni de couleur de marque.
+const OUTILS = {
+  "claude-code": "avec Claude Code",
+  codex: "avec Codex",
 };
 const EQUIPES = {
   architecture: ["Architecture", true],
@@ -83,6 +90,7 @@ h2:focus-visible { outline: 2px solid var(--gdc-ink); outline-offset: 2px; }
 .infos { grid-column: 1; display: flex; flex-wrap: wrap; gap: 6px 14px; color: var(--gdc-muted); }
 .infos > span { display: inline-flex; align-items: center; gap: 6px; }
 .etat { color: var(--gdc-ink); font-weight: 500; }
+.outil { grid-column: 1; margin: 0; font-size: 13px; color: var(--gdc-muted); }
 .pastille { width: 10px; height: 10px; border-radius: 50%; background: var(--equipe); }
 .fermer { grid-column: 2; grid-row: 1 / span 2; display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 8px;
   background: none; color: var(--gdc-muted); cursor: pointer; }
@@ -207,6 +215,10 @@ export function define(registry, ctx) {
       fermer.addEventListener("click", () => this.#close());
       const header = document.createElement("header");
       header.append(h2, fermer, infos);
+      // un outil absent ou inconnu n'affiche rien : ce n'est pas un etat de l'agent
+      // (hasOwn : « constructor » ou « toString » ne sont pas des outils)
+      const outil = texte(d.tool);
+      if (Object.hasOwn(OUTILS, outil)) header.append(el("p", "outil", OUTILS[outil]));
 
       const colonnes = el("div", "colonnes");
       for (const [titre, valeurs] of [

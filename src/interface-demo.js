@@ -560,12 +560,12 @@ export const variantes = {
     { titre: "Sans actions", style: "max-width: 420px", data: { id: "bureau-etudes", actions: [] } },
     { titre: "Sans identifiant", style: "max-width: 420px", data: { actions: [{ label: "x", prompt: "y" }] } },
   ],
-  // la fiche d'un agent : Lina au travail, Victor dont le journal ne dit rien
+  // la fiche d'un agent : Lina au travail avec Claude Code, Robin avec Codex, Victor dont le journal ne dit rien
   "agent-popup": [
     {
-      titre: "Lina, au travail",
+      titre: "Lina, au travail avec Claude Code",
       data: {
-        id: "lina", name: "Lina, designer UX/UI", team: "studies", state: "typing",
+        id: "lina", name: "Lina, designer UX/UI", team: "studies", state: "typing", tool: "claude-code",
         doing: ["Dessine l'écran de clôture d'un audit (001-cloturer-un-audit)"],
         next: ["Relire le parcours au clavier", "Passer la maquette à Robin"],
         can: ["Dessiner un écran", "Proposer un parcours", "Vérifier le contraste et le clavier"],
@@ -573,12 +573,22 @@ export const variantes = {
       },
     },
     {
-      titre: "Victor : le journal ne dit rien",
+      titre: "Robin, au travail avec Codex",
+      data: {
+        id: "robin", name: "Robin, développeur serveur", team: "site", state: "work", tool: "codex",
+        doing: ["Écrit la fonction qui clôture un audit (001-cloturer-un-audit)"],
+        next: ["Passer les tests"],
+        can: ["Écrire une fonction serveur", "Corriger un test"],
+        actions: [],
+      },
+    },
+    {
+      titre: "Victor : le journal ne dit rien (sans outil)",
       data: { id: "victor", name: "Victor, chef de chantier", team: "site", state: "unknown", doing: [], next: [], can: [], actions: [] },
     },
     {
-      titre: "Pierre-Alain attend ta décision",
-      data: { id: "client", name: "Pierre-Alain, le client", team: "client", state: "waiting", doing: ["Attend le rapport d'audit"], next: [], can: ["Valider une fiche", "Refuser une fiche"], actions: [] },
+      titre: "Pierre-Alain attend ta décision (outil inconnu : rien ne s'affiche)",
+      data: { id: "client", name: "Pierre-Alain, le client", team: "client", state: "waiting", tool: "autre", doing: ["Attend le rapport d'audit"], next: [], can: ["Valider une fiche", "Refuser une fiche"], actions: [] },
     },
   ],
   // le repere d'agent : sur une carte factice, le pointeur pres d'une silhouette ouvre son repere court
