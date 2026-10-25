@@ -1056,6 +1056,34 @@ rapportCamionPlus();
     } else rapportVille += ` ; en basse ${principal} appels, ${tri} triangles`;
     carte.dispose();
   }
+  // la nuit (city-night) : fenetres de la ville faibles, jamais franches, environ 30 et 40 % ; fixes toute la nuit ; les
+  // tetes des lampadaires allumees, pas l'eau de la fontaine ; taches au sol 150 au plus, a 0,10 au plus ; le jour, rien
+  {
+    const nuit = await creeCarte(THREE, { components: modules, chargeur, theme: 'light', quality: 'high', reducedMotion: true, villeAutour: 'kits', heure: 'nuit' });
+    const objets = {};
+    nuit.root.traverse((o) => {
+      if (/^VILLE_KITS_HAUTE_(VITRES|VITRES_ALLUMEES|LAMPES|MAT_GLASS|TACHES)$/.test(o.name)) objets[o.name.replace('VILLE_KITS_HAUTE_', '')] = o;
+    });
+    const { VITRES: e, VITRES_ALLUMEES: a, LAMPES: l, MAT_GLASS: eau, TACHES: t } = objets;
+    const part = a.count / (a.count + e.count);
+    verifie(a.material.userData.vitre === 'faible', `ville la nuit : les fenêtres allumées sont « ${a.material.userData.vitre} », pas faibles`);
+    verifie(!e.material.userData.vitre, 'ville la nuit : les fenêtres éteintes sont éclairées');
+    verifie(part > 0.25 && part < 0.45, `ville la nuit : ${Math.round(part * 100)} % de fenêtres allumées`);
+    verifie(l && l.material.userData.vitre === 'franche', 'ville la nuit : les têtes des lampadaires ne sont pas allumées');
+    verifie(!eau || !eau.material.userData.vitre, 'ville la nuit : l\'eau de la fontaine s\'allume');
+    const opacite = t ? t.material.color.r * t.material.opacity : 0;
+    verifie(t && t.visible && t.count <= 150 && opacite <= 0.1 + 1e-6, `ville la nuit : taches des lampadaires (${t?.count}, ${opacite.toFixed(3)})`);
+    const avant = a.count;
+    for (let k = 0; k < 60; k++) nuit.update(1);
+    verifie(a.count === avant, 'ville la nuit : des fenêtres changent pendant la nuit');
+    rapportVille += ` ; la nuit, ${a.count} fenêtres allumées sur ${a.count + e.count} (faibles), ${t.count} taches`;
+    nuit.dispose();
+    const jour = await creeCarte(THREE, { components: modules, chargeur, theme: 'light', quality: 'high', reducedMotion: true, villeAutour: 'kits', heure: 'jour' });
+    let tj = null;
+    jour.root.traverse((o) => { if (o.name === 'VILLE_KITS_HAUTE_TACHES') tj = o; });
+    verifie(tj && !tj.visible, 'ville le jour : les taches des lampadaires sont allumées');
+    jour.dispose();
+  }
   const sansVille = await creeCarte(THREE, { components: modules, chargeur, theme: 'light', quality: 'low', reducedMotion: true });
   verifie(sansVille.villeAutour === null && sansVille.vueVille(3) === false, 'sans villeAutour, la carte pose une ville');
   sansVille.dispose();

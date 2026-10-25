@@ -252,7 +252,15 @@ export async function creeCarte(THREE, options) {
           : j <= 0
             ? "nuit"
             : "aube";
-    if (j === jour) return false;
+    // la nuit de la ville (city-night) : ses fenetres allumees sont tirees une fois par nuit (la date du soir), puis
+    // fixes toute la nuit
+    const cle = nuitDe(maintenant());
+    const nuitChange = !!ville?.kits && ville.cleNuit !== cle;
+    if (nuitChange) {
+      ville.kits.nuit(cle);
+      ville.cleNuit = cle;
+    }
+    if (j === jour) return nuitChange;
     jour = j;
     for (const m of membres.values()) {
       if (m.id === "floodlight") projecteurDe(m);
@@ -261,7 +269,13 @@ export async function creeCarte(THREE, options) {
     const r = recetteDe(j, fondTheme);
     if (options.lumieres) regleLumieres(options.lumieres, r);
     vitres.regle(r.fenetres);
+    ville?.kits?.eclaire(r.fenetres); // les taches des lampadaires suivent le fondu
     return true;
+  }
+  // la cle d'une nuit : la date du soir (avant midi, la nuit est encore celle de la veille), sur l'heure du poste
+  function nuitDe(t) {
+    const d = new Date(t - 12 * 3600e3);
+    return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
   }
   // une zone grise n'a pas de fenetre eclairee ; une zone qui se colore s'eclaire a la fin de son fondu
   function fenetresDe(m) {
@@ -2275,6 +2289,11 @@ export async function creeCarte(THREE, options) {
       const scenes = { rues, nature, villas, immeubles };
       const kits = assembleVille(THREE, plan, scenes, { quality: ctxOptions.quality, graine });
       plateau.add(kits.racine);
+      // la nuit (city-night) : les fenetres allumees de la ville, toujours faibles (une fenetre franche dit qu'un agent
+      // travaille la) ; les tetes des lampadaires, franches (ce sont des lampes, pas des fenetres)
+      const { vitres: allumees, lampes } = kits.allumables;
+      for (const v of allumees) vitres.pose(v, "faible");
+      for (const l of lampes) vitres.pose(l, "franche");
       const objets = [sol?.root, kits.racine].filter(Boolean);
       for (const o of objets)
         o.traverse((x) => {

@@ -9,8 +9,13 @@
 // Reperes : ceux du plan (metres, x et z au sol, y vertical). Dans les GLB, une rue va le long de X, la facade d'une
 // villa ou d'un immeuble regarde +Z, et le carrefour en T a sa branche vers -Z.
 import { alea, choisis, entre } from "./graine.js";
+import { lumiere } from "./heure.js";
 
 export const SEUIL_LOIN = 4; // px par metre : en dessous, les pieces basses (city-plan)
+// La nuit (city-night) : la part des fenetres allumees, tiree pour chaque nuit ; les taches des lampadaires au sol, plus
+// faibles que celles des projecteurs (0,22), en blanc chaud ; 150 au plus, en qualite haute seulement.
+export const NUIT = { villas: 0.3, immeubles: 0.4, taches: 150 };
+const TACHE = { rayon: 3.2, opacite: 0.1, sol: 0.06, avant: 0.85, anneaux: 4, cotes: 24 };
 const EPS = 0.01;
 const DEMI_CARREFOUR = 5; // un carrefour fait 10 x 10 m
 const DEMI_GIRATOIRE = 15; // le giratoire et ses trottoirs, 30 x 30 m
@@ -114,7 +119,8 @@ function lisKits(THREE, kits) {
 // fusionne() rend un groupe (un maillage par materiau, ou par usage : les tetes des lampadaires a part) et les vitres.
 function creePoseur(THREE, lecture, { basse, ombres, nom }) {
   const parUsage = new Map(); // cle -> { mat, liste: [{ g, m }], ombre, nom }
-  const vitres = [];
+  const vitres = []; // { m, sorte } : la matrice d'une vitre, et villas ou immeubles
+  const lampes = []; // [x, z] : le sol sous la tete de chaque lampadaire
   const boite = new THREE.BoxGeometry(1, 1, 1).toNonIndexed();
   const ajoute = (cle, mat, g, m, ombre, suffixe) => {
     if (!parUsage.has(cle))
@@ -146,8 +152,13 @@ function creePoseur(THREE, lecture, { basse, ombres, nom }) {
             !lampe && mat.name !== "MAT_ASPHALT",
             lampe ? "LAMPES" : mat.name,
           );
+      const sorte = kit === "villas" ? "villas" : "immeubles";
       for (const v of p.vides)
-        vitres.push(new THREE.Matrix4().multiplyMatrices(m, v));
+        vitres.push({ m: new THREE.Matrix4().multiplyMatrices(m, v), sorte });
+      if (lampe) {
+        const sol = new THREE.Vector3(0, 0, -TACHE.avant).applyMatrix4(m); // sous la tete, cote chaussee
+        lampes.push([sol.x, sol.z]);
+      }
     },
     // une dalle (allee, chemin, raccord) : une boite d'un materiau des kits, du rectangle { x, z }
     plaque(mat, { x, z }, dessus, epaisseur) {
@@ -203,23 +214,29 @@ function creePoseur(THREE, lecture, { basse, ombres, nom }) {
         groupe.add(mesh);
         triangles += n / 3;
       }
+      // les vitres : deux instances, eteintes et allumees ; nuit() les repartit, et la carte eclaire les allumees
+      let eteintes = null;
+      let allumees = null;
       if (vitre && vitres.length) {
-        const inst = new THREE.InstancedMesh(
-          vitre.geometry,
-          vitre.material,
-          vitres.length,
-        );
-        vitres.forEach((m, k) => inst.setMatrixAt(k, m));
-        inst.instanceMatrix.needsUpdate = true;
-        inst.computeBoundingSphere();
-        inst.name = `${nom}_VITRES`;
-        inst.receiveShadow = ombres;
-        groupe.add(inst);
-        jetables.push(inst);
+        const instance = (suffixe) => {
+          const inst = new THREE.InstancedMesh(vitre.geometry, vitre.material, vitres.length);
+          inst.name = `${nom}_${suffixe}`;
+          inst.receiveShadow = ombres;
+          groupe.add(inst);
+          jetables.push(inst);
+          return inst;
+        };
+        eteintes = instance("VITRES");
+        allumees = instance("VITRES_ALLUMEES");
+        vitres.forEach(({ m }, k) => eteintes.setMatrixAt(k, m));
+        eteintes.instanceMatrix.needsUpdate = true;
+        allumees.count = 0;
+        for (const i of [eteintes, allumees]) i.computeBoundingSphere();
         triangles += vitres.length * 2;
       }
       boite.dispose();
-      return { groupe, triangles, vitres: vitres.length, jetables };
+      const lampesMeshes = groupe.children.filter((m) => m.name.endsWith("_LAMPES"));
+      return { groupe, triangles, vitres: vitres.length, liste: vitres, eteintes, allumees, lampes, lampesMeshes, jetables };
     },
   };
 }
@@ -261,6 +278,52 @@ export function assembleVille(
   }
   lecture.libere();
   if (lots.haute) lots.basse.groupe.visible = false;
+  // les taches des lampadaires (qualite haute) : un disque degrade, additif, sans texture, comme le projecteur
+  let taches = null;
+  if (lots.haute && lots.haute.lampes.length) {
+    const { rayon, anneaux, cotes } = TACHE;
+    const pos = [0, 0, 0];
+    const col = [1, 1, 1, 1];
+    for (let a = 1; a <= anneaux; a++) {
+      const r = a / anneaux;
+      const alpha = Math.max(0, 1 - r) ** 1.5; // doux au centre, nul au bord
+      for (let k = 0; k < cotes; k++) {
+        const t = (k / cotes) * Math.PI * 2;
+        pos.push(Math.cos(t) * r * rayon, 0, Math.sin(t) * r * rayon);
+        col.push(1, 1, 1, alpha);
+      }
+    }
+    const idx = [];
+    const sommet = (a, k) => 1 + (a - 1) * cotes + (k % cotes);
+    for (let k = 0; k < cotes; k++) idx.push(0, sommet(1, k + 1), sommet(1, k));
+    for (let a = 1; a < anneaux; a++)
+      for (let k = 0; k < cotes; k++)
+        idx.push(sommet(a, k), sommet(a, k + 1), sommet(a + 1, k), sommet(a, k + 1), sommet(a + 1, k + 1), sommet(a + 1, k));
+    const g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+    g.setAttribute("color", new THREE.Float32BufferAttribute(col, 4));
+    g.setIndex(idx);
+    const mat = new THREE.MeshBasicMaterial({
+      name: "VILLE_LAMPADAIRES_TACHES",
+      color: new THREE.Color(lumiere.fenetres.couleur).multiplyScalar(TACHE.opacite),
+      vertexColors: true,
+      transparent: true,
+      opacity: 0,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    });
+    const n = Math.min(NUIT.taches, lots.haute.lampes.length);
+    taches = new THREE.InstancedMesh(g, mat, n);
+    taches.name = "VILLE_KITS_HAUTE_TACHES";
+    taches.renderOrder = 1;
+    const m = new THREE.Matrix4();
+    lots.haute.lampes.slice(0, n).forEach(([x, z], k) => taches.setMatrixAt(k, m.makeTranslation(x, TACHE.sol, z)));
+    taches.instanceMatrix.needsUpdate = true;
+    taches.computeBoundingSphere();
+    taches.visible = false;
+    lots.haute.groupe.add(taches);
+    jetables.push(g, mat, taches);
+  }
 
   return {
     racine,
@@ -277,6 +340,44 @@ export function assembleVille(
     },
     get loin() {
       return !!lots.haute && lots.basse.groupe.visible;
+    },
+    // la nuit (city-night) : les fenetres allumees de cette nuit, tirees par une graine et la cle de la nuit (sa date) ;
+    // fixes toute la nuit. Rend true s'il faut redessiner.
+    nuit(cle) {
+      for (const lot of Object.values(lots)) {
+        if (!lot.eteintes) continue;
+        const tirage = alea(`ville-nuit:${graine}:${cle}`); // le meme tirage pour les deux lots
+        let e = 0;
+        let a = 0;
+        for (const { m, sorte } of lot.liste) {
+          if (tirage() < NUIT[sorte]) lot.allumees.setMatrixAt(a++, m);
+          else lot.eteintes.setMatrixAt(e++, m);
+        }
+        lot.eteintes.count = e;
+        lot.allumees.count = a;
+        for (const i of [lot.eteintes, lot.allumees]) {
+          i.instanceMatrix.needsUpdate = true;
+          i.computeBoundingSphere();
+        }
+      }
+      return true;
+    },
+    // l'allumage de la nuit, de 0 (le jour) a 1 : les taches des lampadaires suivent le fondu de la carte
+    eclaire(niveau) {
+      if (!taches) return false;
+      taches.material.opacity = niveau;
+      taches.visible = niveau > 0;
+      return true;
+    },
+    // ce que la carte eclaire avec ses vitres de nuit : les fenetres allumees (faibles) et les tetes des lampadaires
+    get allumables() {
+      return {
+        vitres: Object.values(lots).map((l) => l.allumees).filter(Boolean),
+        lampes: Object.values(lots).flatMap((l) => l.lampesMeshes),
+      };
+    },
+    get allumees() {
+      return (lots.haute ?? lots.basse).allumees?.count ?? 0;
     },
     dispose() {
       racine.removeFromParent();
