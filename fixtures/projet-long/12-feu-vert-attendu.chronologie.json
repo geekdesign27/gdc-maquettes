@@ -1,28 +1,13 @@
 {
   "schema": 1,
-  "maintenant": "2026-10-27T14:12:18.872Z",
+  "maintenant": "2026-10-30T17:20:09.237Z",
   "fuseau": "UTC",
-  "debut": "2026-10-22T14:12:09.697Z",
+  "debut": "2026-10-25T17:20:00.538Z",
   "jours": [
     {
-      "date": "2026-10-22",
+      "date": "2026-10-25",
       "evenements": 5,
       "actif": true
-    },
-    {
-      "date": "2026-10-23",
-      "evenements": 0,
-      "actif": false
-    },
-    {
-      "date": "2026-10-24",
-      "evenements": 4,
-      "actif": true
-    },
-    {
-      "date": "2026-10-25",
-      "evenements": 0,
-      "actif": false
     },
     {
       "date": "2026-10-26",
@@ -31,6 +16,21 @@
     },
     {
       "date": "2026-10-27",
+      "evenements": 4,
+      "actif": true
+    },
+    {
+      "date": "2026-10-28",
+      "evenements": 0,
+      "actif": false
+    },
+    {
+      "date": "2026-10-29",
+      "evenements": 0,
+      "actif": false
+    },
+    {
+      "date": "2026-10-30",
       "evenements": 6,
       "actif": true
     }
@@ -38,32 +38,32 @@
   "regime": [
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:09.697Z",
-      "a": "2026-10-22T14:42:12.549Z"
+      "de": "2026-10-25T17:20:00.538Z",
+      "a": "2026-10-25T17:50:03.111Z"
     },
     {
       "valeur": "ferme",
-      "de": "2026-10-22T14:42:12.549Z",
-      "a": "2026-10-24T14:12:13.774Z"
+      "de": "2026-10-25T17:50:03.111Z",
+      "a": "2026-10-27T17:20:04.414Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-24T14:12:13.774Z",
-      "a": "2026-10-24T14:42:15.330Z"
+      "de": "2026-10-27T17:20:04.414Z",
+      "a": "2026-10-27T17:50:05.864Z"
     },
     {
       "valeur": "ferme",
-      "de": "2026-10-24T14:42:15.330Z",
-      "a": "2026-10-27T14:12:16.633Z"
+      "de": "2026-10-27T17:50:05.864Z",
+      "a": "2026-10-30T17:20:07.129Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-27T14:12:16.633Z",
-      "a": "2026-10-27T14:12:18.726Z"
+      "de": "2026-10-30T17:20:07.129Z",
+      "a": "2026-10-30T17:20:09.063Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-10-27T14:12:18.726Z",
+      "de": "2026-10-30T17:20:09.063Z",
       "a": null
     }
   ],
@@ -78,8 +78,8 @@
       "etat": "faite",
       "barres": [
         {
-          "debut": "2026-10-22T14:12:09.697Z",
-          "fin": "2026-10-22T14:12:12.549Z"
+          "debut": "2026-10-25T17:20:00.538Z",
+          "fin": "2026-10-25T17:20:03.111Z"
         }
       ]
     },
@@ -90,7 +90,7 @@
       "nom": "Le compte rendu de l'idée",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -101,7 +101,7 @@
       "nom": "Le cahier des besoins (PRD)",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -112,7 +112,7 @@
       "nom": "Le profil du projet",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -126,8 +126,8 @@
       "etat": "faite",
       "barres": [
         {
-          "debut": "2026-10-22T14:12:12.549Z",
-          "fin": "2026-10-24T14:12:15.330Z"
+          "debut": "2026-10-25T17:20:03.111Z",
+          "fin": "2026-10-27T17:20:05.864Z"
         }
       ]
     },
@@ -138,7 +138,7 @@
       "nom": "Le plan d'ouvrage",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -149,7 +149,7 @@
       "nom": "Les parcours utilisateurs",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -160,7 +160,7 @@
       "nom": "Les flux métier et les états",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -171,7 +171,7 @@
       "nom": "Le plan de gestion des accès",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -182,7 +182,7 @@
       "nom": "La structure porteuse",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -193,7 +193,7 @@
       "nom": "Le descriptif technique (TRD)",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -204,7 +204,7 @@
       "nom": "L'identité visuelle",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -215,7 +215,7 @@
       "nom": "Le règlement du projet",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -226,7 +226,7 @@
       "nom": "Le catalogue des composants",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -237,7 +237,7 @@
       "nom": "La liste des fonctionnalités",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -248,7 +248,7 @@
       "nom": "Le carnet des demandes",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -269,7 +269,7 @@
       "nom": "Le récapitulatif du permis",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -283,7 +283,7 @@
       "etat": "en_cours",
       "barres": [
         {
-          "debut": "2026-10-27T14:12:17.540Z",
+          "debut": "2026-10-30T17:20:07.961Z",
           "fin": null
         }
       ]
@@ -311,9 +311,9 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-27T14:12:17.540Z",
+          "debut": "2026-10-30T17:20:07.961Z",
           "fin": null,
-          "commence_par": "evt:001-cloturer-un-audit/c61bbc31",
+          "commence_par": "evt:001-cloturer-un-audit/9966799f",
           "finit_par": null,
           "fin_type": null
         }
@@ -467,22 +467,22 @@
       "etat": "en_cours",
       "barres": [
         {
-          "debut": "2026-10-27T14:12:16.633Z",
+          "debut": "2026-10-30T17:20:07.129Z",
           "fin": null
         }
       ]
     },
     {
-      "id": "demande:projet/61752b17@10",
+      "id": "demande:projet/9407319b@10",
       "niveau": "demande",
       "parent": "etape:10",
       "nom": "Exporter un audit en PDF",
       "etat": "deposee",
       "barres": [
         {
-          "debut": "2026-10-27T14:12:16.633Z",
+          "debut": "2026-10-30T17:20:07.129Z",
           "fin": null,
-          "commence_par": "evt:projet/61752b17",
+          "commence_par": "evt:projet/9407319b",
           "finit_par": null,
           "fin_type": null
         }
@@ -499,8 +499,8 @@
       "demandee": null,
       "demandee_par": null,
       "demandee_source": null,
-      "prise": "2026-10-22T14:12:11.365Z",
-      "prise_par": "evt:projet/74393a6f",
+      "prise": "2026-10-25T17:20:02.048Z",
+      "prise_par": "evt:projet/b5fef88c",
       "motif": "Il manque les rôles des auditeurs"
     },
     {
@@ -512,8 +512,8 @@
       "demandee": null,
       "demandee_par": null,
       "demandee_source": null,
-      "prise": "2026-10-22T14:12:12.549Z",
-      "prise_par": "evt:projet/f95df430"
+      "prise": "2026-10-25T17:20:03.111Z",
+      "prise_par": "evt:projet/20d06837"
     },
     {
       "id": "jalon:projet/permis-de-construire/1",
@@ -521,11 +521,11 @@
       "decision": "permis-de-construire",
       "nom": "Le permis de construire",
       "etat": "accordee",
-      "demandee": "2026-10-22T14:12:31.000Z",
+      "demandee": "2026-10-25T17:20:21.000Z",
       "demandee_par": null,
       "demandee_source": "git",
-      "prise": "2026-10-24T14:12:15.330Z",
-      "prise_par": "evt:projet/1c835438"
+      "prise": "2026-10-27T17:20:05.864Z",
+      "prise_par": "evt:projet/eb8a507e"
     },
     {
       "id": "jalon:001-cloturer-un-audit/plan/1",
@@ -533,8 +533,8 @@
       "decision": "plan",
       "nom": "Ton feu vert",
       "etat": "attendue",
-      "demandee": "2026-10-27T14:12:18.726Z",
-      "demandee_par": "evt:001-cloturer-un-audit/e7c01356",
+      "demandee": "2026-10-30T17:20:09.063Z",
+      "demandee_par": "evt:001-cloturer-un-audit/cfd159f9",
       "demandee_source": "journal",
       "prise": null,
       "prise_par": null
@@ -584,43 +584,43 @@
   ],
   "evenements": [
     {
-      "id": "evt:projet/39dae671",
-      "ts": "2026-10-22T14:12:09.697Z",
+      "id": "evt:projet/d46a9a03",
+      "ts": "2026-10-25T17:20:00.538Z",
       "kind": "projet-ouvert",
       "phrase": "Le projet « AuditApp » est ouvert",
       "trait": false
     },
     {
-      "id": "evt:projet/74393a6f",
-      "ts": "2026-10-22T14:12:11.365Z",
+      "id": "evt:projet/b5fef88c",
+      "ts": "2026-10-25T17:20:02.048Z",
       "kind": "decision",
       "phrase": "Tu refuses « On continue » : Il manque les rôles des auditeurs",
       "trait": false
     },
     {
-      "id": "evt:projet/f95df430",
-      "ts": "2026-10-22T14:12:12.549Z",
+      "id": "evt:projet/20d06837",
+      "ts": "2026-10-25T17:20:03.111Z",
       "kind": "decision",
       "phrase": "Tu accordes « On continue »",
       "trait": false
     },
     {
-      "id": "evt:projet/1c835438",
-      "ts": "2026-10-24T14:12:15.330Z",
+      "id": "evt:projet/eb8a507e",
+      "ts": "2026-10-27T17:20:05.864Z",
       "kind": "decision",
       "phrase": "Tu accordes « Le permis de construire »",
       "trait": false
     },
     {
-      "id": "evt:projet/61752b17",
-      "ts": "2026-10-27T14:12:16.633Z",
+      "id": "evt:projet/9407319b",
+      "ts": "2026-10-30T17:20:07.129Z",
       "kind": "demande",
       "phrase": "Une demande arrive au carnet : « Exporter un audit en PDF »",
       "trait": false
     },
     {
-      "id": "evt:001-cloturer-un-audit/809ee55c",
-      "ts": "2026-10-27T14:12:17.540Z",
+      "id": "evt:001-cloturer-un-audit/0ab7e113",
+      "ts": "2026-10-30T17:20:07.961Z",
       "kind": "bail",
       "phrase": "Une session reprend « Clôturer un audit »",
       "ref": {
@@ -630,8 +630,8 @@
       "trait": false
     },
     {
-      "id": "evt:001-cloturer-un-audit/c61bbc31",
-      "ts": "2026-10-27T14:12:17.540Z",
+      "id": "evt:001-cloturer-un-audit/9966799f",
+      "ts": "2026-10-30T17:20:07.961Z",
       "kind": "run",
       "phrase": "La fiche « Clôturer un audit » est ouverte",
       "ref": {
@@ -641,8 +641,8 @@
       "trait": true
     },
     {
-      "id": "evt:001-cloturer-un-audit/e9f934c8",
-      "ts": "2026-10-27T14:12:17.758Z",
+      "id": "evt:001-cloturer-un-audit/02cb46a0",
+      "ts": "2026-10-30T17:20:08.145Z",
       "kind": "critere",
       "phrase": "Un critère d'acceptation est noté pour « Clôturer un audit »",
       "ref": {
@@ -652,8 +652,8 @@
       "trait": false
     },
     {
-      "id": "evt:001-cloturer-un-audit/e7c01356",
-      "ts": "2026-10-27T14:12:18.726Z",
+      "id": "evt:001-cloturer-un-audit/cfd159f9",
+      "ts": "2026-10-30T17:20:09.063Z",
       "kind": "gate",
       "phrase": "Ta décision « le feu vert » est attendue pour « Clôturer un audit »",
       "ref": {

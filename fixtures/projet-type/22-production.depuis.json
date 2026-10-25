@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "maintenant": "2026-10-22T14:12:37.657Z",
+  "maintenant": "2026-10-25T17:20:27.903Z",
   "fuseau": "UTC",
-  "debut": "2026-10-22T14:12:09.697Z",
-  "depuis": "evt:001-cloturer-un-audit/6204d74d",
+  "debut": "2026-10-25T17:20:00.538Z",
+  "depuis": "evt:001-cloturer-un-audit/784414df",
   "complet": false,
   "lignes": [
     {
@@ -38,8 +38,8 @@
       "etat": "livree",
       "barres": [],
       "livree": {
-        "date": "2026-10-22T14:12:37.001Z",
-        "par": "evt:001-cloturer-un-audit/59f037c9"
+        "date": "2026-10-25T17:20:27.413Z",
+        "par": "evt:001-cloturer-un-audit/11e62ce1"
       }
     }
   ],
@@ -51,24 +51,24 @@
       "decision": "deploie",
       "nom": "Ta remise des clés",
       "etat": "accordee",
-      "demandee": "2026-10-22T14:12:32.183Z",
-      "demandee_par": "evt:001-cloturer-un-audit/4c390d58",
+      "demandee": "2026-10-25T17:20:22.470Z",
+      "demandee_par": "evt:001-cloturer-un-audit/9cf064a3",
       "demandee_source": "journal",
-      "prise": "2026-10-22T14:12:32.296Z",
-      "prise_par": "evt:001-cloturer-un-audit/c3c74fc1"
+      "prise": "2026-10-25T17:20:22.600Z",
+      "prise_par": "evt:001-cloturer-un-audit/d6519941"
     }
   ],
   "jours": [
     {
-      "date": "2026-10-22",
+      "date": "2026-10-25",
       "evenements": 50,
       "actif": true
     }
   ],
   "evenements": [
     {
-      "id": "evt:001-cloturer-un-audit/4c390d58",
-      "ts": "2026-10-22T14:12:32.183Z",
+      "id": "evt:001-cloturer-un-audit/9cf064a3",
+      "ts": "2026-10-25T17:20:22.470Z",
       "kind": "gate",
       "phrase": "Ta décision « la remise des clés » est attendue pour « Clôturer un audit »",
       "ref": {
@@ -78,8 +78,8 @@
       "trait": false
     },
     {
-      "id": "evt:001-cloturer-un-audit/c3c74fc1",
-      "ts": "2026-10-22T14:12:32.296Z",
+      "id": "evt:001-cloturer-un-audit/d6519941",
+      "ts": "2026-10-25T17:20:22.600Z",
       "kind": "gate",
       "phrase": "Tu accordes « la remise des clés » pour « Clôturer un audit »",
       "ref": {
@@ -89,8 +89,8 @@
       "trait": false
     },
     {
-      "id": "evt:001-cloturer-un-audit/cd2e2902",
-      "ts": "2026-10-22T14:12:33.375Z",
+      "id": "evt:001-cloturer-un-audit/f7a621aa",
+      "ts": "2026-10-25T17:20:23.779Z",
       "kind": "controle",
       "phrase": "Le contrôle « sante » passe sur « Clôturer un audit »",
       "ref": {
@@ -100,8 +100,8 @@
       "trait": true
     },
     {
-      "id": "evt:001-cloturer-un-audit/530092eb",
-      "ts": "2026-10-22T14:12:33.834Z",
+      "id": "evt:001-cloturer-un-audit/0d43ea54",
+      "ts": "2026-10-25T17:20:24.331Z",
       "kind": "controle",
       "phrase": "Le contrôle « apres-deploiement » passe sur « Clôturer un audit »",
       "ref": {
@@ -111,8 +111,8 @@
       "trait": true
     },
     {
-      "id": "evt:001-cloturer-un-audit/a814e122",
-      "ts": "2026-10-22T14:12:33.884Z",
+      "id": "evt:001-cloturer-un-audit/a12e41df",
+      "ts": "2026-10-25T17:20:24.374Z",
       "kind": "constat",
       "phrase": "Une réserve est ouverte sur « Clôturer un audit »",
       "ref": {
@@ -122,8 +122,8 @@
       "trait": false
     },
     {
-      "id": "evt:001-cloturer-un-audit/fd808995",
-      "ts": "2026-10-22T14:12:34.467Z",
+      "id": "evt:001-cloturer-un-audit/cf842213",
+      "ts": "2026-10-25T17:20:24.955Z",
       "kind": "controle",
       "phrase": "Le contrôle « pipeline » passe sur « Clôturer un audit »",
       "ref": {
@@ -133,8 +133,8 @@
       "trait": true
     },
     {
-      "id": "evt:001-cloturer-un-audit/d2836e82",
-      "ts": "2026-10-22T14:12:34.621Z",
+      "id": "evt:001-cloturer-un-audit/52cd2773",
+      "ts": "2026-10-25T17:20:25.071Z",
       "kind": "promotion",
       "phrase": "La mise en production de « Clôturer un audit » avance",
       "ref": {
@@ -144,8 +144,8 @@
       "trait": false
     },
     {
-      "id": "evt:001-cloturer-un-audit/283773aa",
-      "ts": "2026-10-22T14:12:36.067Z",
+      "id": "evt:001-cloturer-un-audit/ec5416fd",
+      "ts": "2026-10-25T17:20:26.388Z",
       "kind": "promotion",
       "phrase": "La mise en production de « Clôturer un audit » avance",
       "ref": {
@@ -155,8 +155,8 @@
       "trait": false
     },
     {
-      "id": "evt:001-cloturer-un-audit/90511d71",
-      "ts": "2026-10-22T14:12:36.602Z",
+      "id": "evt:001-cloturer-un-audit/53df8cfa",
+      "ts": "2026-10-25T17:20:26.967Z",
       "kind": "controle",
       "phrase": "Le contrôle « apres-deploiement » passe sur « Clôturer un audit »",
       "ref": {
@@ -166,8 +166,8 @@
       "trait": true
     },
     {
-      "id": "evt:001-cloturer-un-audit/63935858",
-      "ts": "2026-10-22T14:12:36.935Z",
+      "id": "evt:001-cloturer-un-audit/989faa5b",
+      "ts": "2026-10-25T17:20:27.367Z",
       "kind": "controle",
       "phrase": "Le contrôle « sante » passe sur « Clôturer un audit »",
       "ref": {
@@ -177,8 +177,8 @@
       "trait": true
     },
     {
-      "id": "evt:001-cloturer-un-audit/59f037c9",
-      "ts": "2026-10-22T14:12:37.001Z",
+      "id": "evt:001-cloturer-un-audit/11e62ce1",
+      "ts": "2026-10-25T17:20:27.413Z",
       "kind": "promotion",
       "phrase": "« Clôturer un audit » est en production, vérifiée : la remise des clés",
       "ref": {
@@ -191,37 +191,37 @@
   "regime": [
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:09.697Z",
-      "a": "2026-10-22T14:12:18.726Z"
+      "de": "2026-10-25T17:20:00.538Z",
+      "a": "2026-10-25T17:20:09.063Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-10-22T14:12:18.726Z",
-      "a": "2026-10-22T14:12:19.720Z"
+      "de": "2026-10-25T17:20:09.063Z",
+      "a": "2026-10-25T17:20:09.986Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:19.720Z",
-      "a": "2026-10-22T14:12:28.117Z"
+      "de": "2026-10-25T17:20:09.986Z",
+      "a": "2026-10-25T17:20:18.387Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-10-22T14:12:28.117Z",
-      "a": "2026-10-22T14:12:29.041Z"
+      "de": "2026-10-25T17:20:18.387Z",
+      "a": "2026-10-25T17:20:19.284Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:29.041Z",
-      "a": "2026-10-22T14:12:32.183Z"
+      "de": "2026-10-25T17:20:19.284Z",
+      "a": "2026-10-25T17:20:22.470Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-10-22T14:12:32.183Z",
-      "a": "2026-10-22T14:12:32.296Z"
+      "de": "2026-10-25T17:20:22.470Z",
+      "a": "2026-10-25T17:20:22.600Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:32.296Z",
+      "de": "2026-10-25T17:20:22.600Z",
       "a": null
     }
   ],

@@ -1,11 +1,11 @@
 {
   "schema": 1,
-  "maintenant": "2026-10-22T14:12:11.970Z",
+  "maintenant": "2026-10-25T17:20:02.596Z",
   "fuseau": "UTC",
-  "debut": "2026-10-22T14:12:09.697Z",
+  "debut": "2026-10-25T17:20:00.538Z",
   "jours": [
     {
-      "date": "2026-10-22",
+      "date": "2026-10-25",
       "evenements": 4,
       "actif": true
     }
@@ -13,7 +13,7 @@
   "regime": [
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:09.697Z",
+      "de": "2026-10-25T17:20:00.538Z",
       "a": null
     }
   ],
@@ -28,7 +28,7 @@
       "etat": "en_cours",
       "barres": [
         {
-          "debut": "2026-10-22T14:12:09.697Z",
+          "debut": "2026-10-25T17:20:00.538Z",
           "fin": null
         }
       ]
@@ -40,7 +40,7 @@
       "nom": "Le compte rendu de l'idée",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -51,7 +51,7 @@
       "nom": "Le cahier des besoins (PRD)",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -62,7 +62,7 @@
       "nom": "Le profil du projet",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -83,7 +83,7 @@
       "nom": "Le plan d'ouvrage",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -94,7 +94,7 @@
       "nom": "Les parcours utilisateurs",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -105,7 +105,7 @@
       "nom": "Les flux métier et les états",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -116,7 +116,7 @@
       "nom": "Le plan de gestion des accès",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -127,7 +127,7 @@
       "nom": "La structure porteuse",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -138,7 +138,7 @@
       "nom": "Le descriptif technique (TRD)",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -149,7 +149,7 @@
       "nom": "L'identité visuelle",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -160,7 +160,7 @@
       "nom": "Le règlement du projet",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -171,7 +171,7 @@
       "nom": "Le catalogue des composants",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -182,7 +182,7 @@
       "nom": "La liste des fonctionnalités",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -193,7 +193,7 @@
       "nom": "Le carnet des demandes",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -214,7 +214,7 @@
       "nom": "Le récapitulatif du permis",
       "etat": "remplie",
       "repere": {
-        "date": "2026-10-22T14:12:31.000Z",
+        "date": "2026-10-25T17:20:21.000Z",
         "source": "git"
       }
     },
@@ -299,8 +299,8 @@
       "demandee": null,
       "demandee_par": null,
       "demandee_source": null,
-      "prise": "2026-10-22T14:12:11.365Z",
-      "prise_par": "evt:projet/74393a6f",
+      "prise": "2026-10-25T17:20:02.048Z",
+      "prise_par": "evt:projet/b5fef88c",
       "motif": "Il manque les rôles des auditeurs"
     }
   ],
@@ -343,15 +343,15 @@
   ],
   "evenements": [
     {
-      "id": "evt:projet/39dae671",
-      "ts": "2026-10-22T14:12:09.697Z",
+      "id": "evt:projet/d46a9a03",
+      "ts": "2026-10-25T17:20:00.538Z",
       "kind": "projet-ouvert",
       "phrase": "Le projet « AuditApp » est ouvert",
       "trait": false
     },
     {
-      "id": "evt:projet/74393a6f",
-      "ts": "2026-10-22T14:12:11.365Z",
+      "id": "evt:projet/b5fef88c",
+      "ts": "2026-10-25T17:20:02.048Z",
       "kind": "decision",
       "phrase": "Tu refuses « On continue » : Il manque les rôles des auditeurs",
       "trait": false

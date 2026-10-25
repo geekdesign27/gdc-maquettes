@@ -1,24 +1,24 @@
 {
   "schema": 1,
-  "maintenant": "2026-10-22T14:12:24.611Z",
+  "maintenant": "2026-10-25T17:20:14.875Z",
   "fuseau": "UTC",
-  "debut": "2026-10-22T14:12:09.697Z",
-  "depuis": "evt:001-cloturer-un-audit/9b07a6ea",
+  "debut": "2026-10-25T17:20:00.538Z",
+  "depuis": "evt:001-cloturer-un-audit/c9a6a6fc",
   "complet": false,
   "lignes": [],
   "retirees": [],
   "jalons": [],
   "jours": [
     {
-      "date": "2026-10-22",
+      "date": "2026-10-25",
       "evenements": 25,
       "actif": true
     }
   ],
   "evenements": [
     {
-      "id": "evt:001-cloturer-un-audit/82502e25",
-      "ts": "2026-10-22T14:12:23.956Z",
+      "id": "evt:001-cloturer-un-audit/7150c343",
+      "ts": "2026-10-25T17:20:14.258Z",
       "kind": "controle",
       "phrase": "Le contrôle « qualite » passe sur « Clôturer un audit »",
       "ref": {
@@ -28,8 +28,8 @@
       "trait": true
     },
     {
-      "id": "evt:001-cloturer-un-audit/b958263c",
-      "ts": "2026-10-22T14:12:24.109Z",
+      "id": "evt:001-cloturer-un-audit/8ae21bd3",
+      "ts": "2026-10-25T17:20:14.407Z",
       "kind": "preuve",
       "phrase": "Une preuve est enregistrée pour « Clôturer un audit »",
       "ref": {
@@ -42,17 +42,17 @@
   "regime": [
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:09.697Z",
-      "a": "2026-10-22T14:12:18.726Z"
+      "de": "2026-10-25T17:20:00.538Z",
+      "a": "2026-10-25T17:20:09.063Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-10-22T14:12:18.726Z",
-      "a": "2026-10-22T14:12:19.720Z"
+      "de": "2026-10-25T17:20:09.063Z",
+      "a": "2026-10-25T17:20:09.986Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:19.720Z",
+      "de": "2026-10-25T17:20:09.986Z",
       "a": null
     }
   ],

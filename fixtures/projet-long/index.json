@@ -1,7 +1,7 @@
 {
   "sequence": "projet-long",
   "description": "Le projet type étalé sur plusieurs semaines, avec des jours sans activité, pour juger les plis du planning.",
-  "gdc": "0.20.0",
+  "gdc": "0.22.3",
   "horloge": "decalee",
   "horloge_explication": "Les heures des journaux ont été décalées après coup, de 2 jours après « on-continue », 3 jours après « permis », 1 jours après « feu-vert », 12 jours après « essai-rouge », 2 jours après « reception-attendue », 4 jours après « production ». Les scènes sont celles de projet-type ; les dates d'après git (pièces du dossier, demande des décisions du projet) ne sont pas décalées. Cette séquence sert à l'allure du planning, jamais à juger un fait.",
   "etapes": [

@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "maintenant": "2026-10-22T14:12:22.201Z",
+  "maintenant": "2026-10-25T17:20:12.433Z",
   "fuseau": "UTC",
-  "debut": "2026-10-22T14:12:09.697Z",
-  "depuis": "evt:001-cloturer-un-audit/ad2f4cb7",
+  "debut": "2026-10-25T17:20:00.538Z",
+  "depuis": "evt:001-cloturer-un-audit/eeadcc7f",
   "complet": false,
   "lignes": [
     {
@@ -19,17 +19,17 @@
       "barres": [
         {
           "stade": "excavation",
-          "debut": "2026-10-22T14:12:19.720Z",
-          "fin": "2026-10-22T14:12:21.248Z",
-          "commence_par": "evt:001-cloturer-un-audit/ad2f4cb7",
-          "finit_par": "evt:001-cloturer-un-audit/937fae5d",
+          "debut": "2026-10-25T17:20:09.986Z",
+          "fin": "2026-10-25T17:20:11.392Z",
+          "commence_par": "evt:001-cloturer-un-audit/eeadcc7f",
+          "finit_par": "evt:001-cloturer-un-audit/dcb28212",
           "fin_type": "normale"
         },
         {
           "stade": "foundations",
-          "debut": "2026-10-22T14:12:21.248Z",
+          "debut": "2026-10-25T17:20:11.392Z",
           "fin": null,
-          "commence_par": "evt:001-cloturer-un-audit/937fae5d",
+          "commence_par": "evt:001-cloturer-un-audit/dcb28212",
           "finit_par": null,
           "fin_type": null
         }
@@ -46,8 +46,8 @@
         "lot": "L1"
       },
       "etat": "prevu",
-      "prevu_le": "2026-10-22T14:12:21.248Z",
-      "prevu_par": "evt:001-cloturer-un-audit/937fae5d"
+      "prevu_le": "2026-10-25T17:20:11.392Z",
+      "prevu_par": "evt:001-cloturer-un-audit/dcb28212"
     },
     {
       "id": "lot:001-cloturer-un-audit/L2@5",
@@ -60,8 +60,8 @@
         "lot": "L2"
       },
       "etat": "prevu",
-      "prevu_le": "2026-10-22T14:12:21.396Z",
-      "prevu_par": "evt:001-cloturer-un-audit/48381236"
+      "prevu_le": "2026-10-25T17:20:11.561Z",
+      "prevu_par": "evt:001-cloturer-un-audit/681e232b"
     },
     {
       "id": "etape:6",
@@ -73,7 +73,7 @@
       "etat": "en_cours",
       "barres": [
         {
-          "debut": "2026-10-22T14:12:21.533Z",
+          "debut": "2026-10-25T17:20:11.701Z",
           "fin": null
         }
       ]
@@ -92,9 +92,9 @@
       "barres": [
         {
           "statut": "en_cours",
-          "debut": "2026-10-22T14:12:21.533Z",
+          "debut": "2026-10-25T17:20:11.701Z",
           "fin": null,
-          "commence_par": "evt:001-cloturer-un-audit/cd08aaaf",
+          "commence_par": "evt:001-cloturer-un-audit/2b67a1f1",
           "finit_par": null,
           "fin_type": null
         }
@@ -105,15 +105,15 @@
   "jalons": [],
   "jours": [
     {
-      "date": "2026-10-22",
+      "date": "2026-10-25",
       "evenements": 22,
       "actif": true
     }
   ],
   "evenements": [
     {
-      "id": "evt:001-cloturer-un-audit/937fae5d",
-      "ts": "2026-10-22T14:12:21.248Z",
+      "id": "evt:001-cloturer-un-audit/dcb28212",
+      "ts": "2026-10-25T17:20:11.392Z",
       "kind": "lot",
       "phrase": "Le lot « L'écran de clôture » est prévu dans « Clôturer un audit »",
       "ref": {
@@ -124,8 +124,8 @@
       "trait": true
     },
     {
-      "id": "evt:001-cloturer-un-audit/48381236",
-      "ts": "2026-10-22T14:12:21.396Z",
+      "id": "evt:001-cloturer-un-audit/681e232b",
+      "ts": "2026-10-25T17:20:11.561Z",
       "kind": "lot",
       "phrase": "Le lot « L'export Excel » est prévu dans « Clôturer un audit »",
       "ref": {
@@ -136,8 +136,8 @@
       "trait": true
     },
     {
-      "id": "evt:001-cloturer-un-audit/cd08aaaf",
-      "ts": "2026-10-22T14:12:21.533Z",
+      "id": "evt:001-cloturer-un-audit/2b67a1f1",
+      "ts": "2026-10-25T17:20:11.701Z",
       "kind": "lot_etat",
       "phrase": "Le lot « L'écran de clôture » commence",
       "ref": {
@@ -148,8 +148,8 @@
       "trait": true
     },
     {
-      "id": "evt:001-cloturer-un-audit/7b9541ef",
-      "ts": "2026-10-22T14:12:21.623Z",
+      "id": "evt:001-cloturer-un-audit/49b83b93",
+      "ts": "2026-10-25T17:20:11.801Z",
       "kind": "note",
       "phrase": "Une intention est notée sur « Clôturer un audit »",
       "ref": {
@@ -159,8 +159,8 @@
       "trait": false
     },
     {
-      "id": "evt:001-cloturer-un-audit/49fa782c",
-      "ts": "2026-10-22T14:12:21.624Z",
+      "id": "evt:001-cloturer-un-audit/29ab06dd",
+      "ts": "2026-10-25T17:20:11.802Z",
       "kind": "bail",
       "phrase": "Une session reprend « Clôturer un audit »",
       "ref": {
@@ -173,17 +173,17 @@
   "regime": [
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:09.697Z",
-      "a": "2026-10-22T14:12:18.726Z"
+      "de": "2026-10-25T17:20:00.538Z",
+      "a": "2026-10-25T17:20:09.063Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-10-22T14:12:18.726Z",
-      "a": "2026-10-22T14:12:19.720Z"
+      "de": "2026-10-25T17:20:09.063Z",
+      "a": "2026-10-25T17:20:09.986Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:19.720Z",
+      "de": "2026-10-25T17:20:09.986Z",
       "a": null
     }
   ],

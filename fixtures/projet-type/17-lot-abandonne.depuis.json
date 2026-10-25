@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "maintenant": "2026-10-22T14:12:25.557Z",
+  "maintenant": "2026-10-25T17:20:15.821Z",
   "fuseau": "UTC",
-  "debut": "2026-10-22T14:12:09.697Z",
-  "depuis": "evt:001-cloturer-un-audit/b958263c",
+  "debut": "2026-10-25T17:20:00.538Z",
+  "depuis": "evt:001-cloturer-un-audit/8ae21bd3",
   "complet": false,
   "lignes": [
     {
@@ -17,23 +17,23 @@
         "lot": "L2"
       },
       "etat": "abandonne",
-      "prevu_le": "2026-10-22T14:12:21.396Z",
-      "prevu_par": "evt:001-cloturer-un-audit/48381236"
+      "prevu_le": "2026-10-25T17:20:11.561Z",
+      "prevu_par": "evt:001-cloturer-un-audit/681e232b"
     }
   ],
   "retirees": [],
   "jalons": [],
   "jours": [
     {
-      "date": "2026-10-22",
+      "date": "2026-10-25",
       "evenements": 26,
       "actif": true
     }
   ],
   "evenements": [
     {
-      "id": "evt:001-cloturer-un-audit/26e87bc6",
-      "ts": "2026-10-22T14:12:25.081Z",
+      "id": "evt:001-cloturer-un-audit/d843607c",
+      "ts": "2026-10-25T17:20:15.337Z",
       "kind": "lot_etat",
       "phrase": "Le lot « L'export Excel » est abandonné",
       "ref": {
@@ -47,17 +47,17 @@
   "regime": [
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:09.697Z",
-      "a": "2026-10-22T14:12:18.726Z"
+      "de": "2026-10-25T17:20:00.538Z",
+      "a": "2026-10-25T17:20:09.063Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-10-22T14:12:18.726Z",
-      "a": "2026-10-22T14:12:19.720Z"
+      "de": "2026-10-25T17:20:09.063Z",
+      "a": "2026-10-25T17:20:09.986Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:19.720Z",
+      "de": "2026-10-25T17:20:09.986Z",
       "a": null
     }
   ],

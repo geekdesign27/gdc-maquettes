@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "maintenant": "2026-10-22T14:12:27.606Z",
+  "maintenant": "2026-10-25T17:20:17.882Z",
   "fuseau": "UTC",
-  "debut": "2026-10-22T14:12:09.697Z",
-  "depuis": "evt:001-cloturer-un-audit/506e548b",
+  "debut": "2026-10-25T17:20:00.538Z",
+  "depuis": "evt:001-cloturer-un-audit/ce530243",
   "complet": false,
   "lignes": [
     {
@@ -19,25 +19,25 @@
       "barres": [
         {
           "stade": "structure",
-          "debut": "2026-10-22T14:12:22.697Z",
-          "fin": "2026-10-22T14:12:26.073Z",
-          "commence_par": "evt:001-cloturer-un-audit/9b07a6ea",
-          "finit_par": "evt:001-cloturer-un-audit/c1a18214",
+          "debut": "2026-10-25T17:20:12.901Z",
+          "fin": "2026-10-25T17:20:16.359Z",
+          "commence_par": "evt:001-cloturer-un-audit/c9a6a6fc",
+          "finit_par": "evt:001-cloturer-un-audit/03006c10",
           "fin_type": "normale"
         },
         {
           "stade": "envelope",
-          "debut": "2026-10-22T14:12:26.073Z",
-          "fin": "2026-10-22T14:12:27.031Z",
-          "commence_par": "evt:001-cloturer-un-audit/c1a18214",
-          "finit_par": "evt:001-cloturer-un-audit/d4441e9e",
+          "debut": "2026-10-25T17:20:16.359Z",
+          "fin": "2026-10-25T17:20:17.304Z",
+          "commence_par": "evt:001-cloturer-un-audit/03006c10",
+          "finit_par": "evt:001-cloturer-un-audit/2ed7312d",
           "fin_type": "normale"
         },
         {
           "stade": "finishing",
-          "debut": "2026-10-22T14:12:27.031Z",
+          "debut": "2026-10-25T17:20:17.304Z",
           "fin": null,
-          "commence_par": "evt:001-cloturer-un-audit/d4441e9e",
+          "commence_par": "evt:001-cloturer-un-audit/2ed7312d",
           "finit_par": null,
           "fin_type": null
         }
@@ -48,15 +48,15 @@
   "jalons": [],
   "jours": [
     {
-      "date": "2026-10-22",
+      "date": "2026-10-25",
       "evenements": 32,
       "actif": true
     }
   ],
   "evenements": [
     {
-      "id": "evt:001-cloturer-un-audit/d4441e9e",
-      "ts": "2026-10-22T14:12:27.031Z",
+      "id": "evt:001-cloturer-un-audit/2ed7312d",
+      "ts": "2026-10-25T17:20:17.304Z",
       "kind": "note",
       "phrase": "Une intention est notée sur « Clôturer un audit »",
       "ref": {
@@ -66,8 +66,8 @@
       "trait": false
     },
     {
-      "id": "evt:001-cloturer-un-audit/2d69dd40",
-      "ts": "2026-10-22T14:12:27.032Z",
+      "id": "evt:001-cloturer-un-audit/feefb55d",
+      "ts": "2026-10-25T17:20:17.305Z",
       "kind": "bail",
       "phrase": "Une session reprend « Clôturer un audit »",
       "ref": {
@@ -80,17 +80,17 @@
   "regime": [
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:09.697Z",
-      "a": "2026-10-22T14:12:18.726Z"
+      "de": "2026-10-25T17:20:00.538Z",
+      "a": "2026-10-25T17:20:09.063Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-10-22T14:12:18.726Z",
-      "a": "2026-10-22T14:12:19.720Z"
+      "de": "2026-10-25T17:20:09.063Z",
+      "a": "2026-10-25T17:20:09.986Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:19.720Z",
+      "de": "2026-10-25T17:20:09.986Z",
       "a": null
     }
   ],

@@ -58,7 +58,7 @@
   ],
   "chantier": {
     "regime": "ouvert",
-    "depuis": "2026-10-22T14:13:09.169Z",
+    "depuis": "2026-10-25T17:20:58.629Z",
     "raison": "des agents travaillent"
   },
   "plan": {
@@ -93,7 +93,7 @@
             "nom": "Le panneau du permis"
           }
         ],
-        "activee": "2026-10-22T14:13:09.434Z",
+        "activee": "2026-10-25T17:20:58.882Z",
         "par_ce_projet": true
       },
       {
@@ -126,7 +126,7 @@
             "nom": "Le chantier, une parcelle par application"
           }
         ],
-        "activee": "2026-10-22T14:13:09.434Z",
+        "activee": "2026-10-25T17:20:58.882Z",
         "par_ce_projet": true
       },
       {
@@ -154,7 +154,7 @@
             "nom": "La cabane de la garantie"
           }
         ],
-        "activee": "2026-10-22T14:13:09.434Z",
+        "activee": "2026-10-25T17:20:58.882Z",
         "par_ce_projet": true
       },
       {
@@ -175,7 +175,7 @@
             "nom": "Le carnet des demandes"
           }
         ],
-        "activee": "2026-10-22T14:13:09.434Z",
+        "activee": "2026-10-25T17:20:58.882Z",
         "par_ce_projet": true
       }
     ],
@@ -553,7 +553,7 @@
       "ancre": "panneau-permis",
       "nom": "Le permis de construire (périmé : Le cahier des besoins (PRD), Le profil du projet a changé)",
       "etat": "expired",
-      "source": "décision du projet du 2026-10-22T14:12:15.330Z"
+      "source": "décision du projet du 2026-10-25T17:20:05.864Z"
     },
     {
       "element": "parking",
@@ -571,7 +571,7 @@
       "nom": "Claire, l'architecte",
       "etat": "waiting",
       "lieu": "panneau-feu-vert",
-      "source": "activité de la fiche 005-gerer-les-droits-des-auditeurs, 2026-10-22T14:13:09.169Z",
+      "source": "activité de la fiche 005-gerer-les-droits-des-auditeurs, 2026-10-25T17:20:58.629Z",
       "ref": {
         "application": "admin",
         "fiche": "005-gerer-les-droits-des-auditeurs"
@@ -586,7 +586,7 @@
       "nom": "Lina, le designer UX/UI",
       "etat": "celebrate",
       "lieu": "bureau-etudes",
-      "source": "activité du projet, 2026-10-22T14:12:14.601Z"
+      "source": "activité du projet, 2026-10-25T17:20:05.147Z"
     },
     {
       "element": "character",
@@ -595,7 +595,7 @@
       "nom": "Emma, la développeuse interface",
       "etat": "celebrate",
       "lieu": "baraque",
-      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-22T14:12:25.979Z",
+      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-25T17:20:16.246Z",
       "ref": {
         "application": "bureau",
         "fiche": "001-cloturer-un-audit"
@@ -608,7 +608,7 @@
       "nom": "Olivier, le surveillant de chantier",
       "etat": "celebrate",
       "lieu": "baraque",
-      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-22T14:12:28.044Z",
+      "source": "activité de la fiche 001-cloturer-un-audit, 2026-10-25T17:20:18.308Z",
       "ref": {
         "application": "bureau",
         "fiche": "001-cloturer-un-audit"
@@ -621,7 +621,7 @@
       "nom": "Sarah, l'expert sécurité",
       "etat": "thinking",
       "lieu": "batiment:terrain",
-      "source": "activité de la fiche 004-saisir-un-constat-hors-ligne, 2026-10-22T14:13:07.492Z",
+      "source": "activité de la fiche 004-saisir-un-constat-hors-ligne, 2026-10-25T17:20:57.083Z",
       "ref": {
         "application": "terrain",
         "fiche": "004-saisir-un-constat-hors-ligne"
@@ -652,7 +652,7 @@
   ],
   "actions": [
     {
-      "ts": "2026-10-22T14:13:09.434Z",
+      "ts": "2026-10-25T17:20:58.882Z",
       "action": "quantite",
       "element": "client-office",
       "id": "bureau-client",
@@ -660,10 +660,10 @@
       "de": 1,
       "vers": 3,
       "phrase": "Le bureau du client : 3",
-      "cause": "evt:005-gerer-les-droits-des-auditeurs/f0cf4049"
+      "cause": "evt:005-gerer-les-droits-des-auditeurs/4c3467d5"
     },
     {
-      "ts": "2026-10-22T14:13:09.434Z",
+      "ts": "2026-10-25T17:20:58.882Z",
       "action": "apparait",
       "element": "decision-sign",
       "id": "decision-004-saisir-un-constat-hors-ligne-plan",
@@ -675,10 +675,10 @@
         "application": "terrain",
         "fiche": "004-saisir-un-constat-hors-ligne"
       },
-      "cause": "evt:004-saisir-un-constat-hors-ligne/1632e54d"
+      "cause": "evt:004-saisir-un-constat-hors-ligne/5e926cbc"
     },
     {
-      "ts": "2026-10-22T14:13:09.434Z",
+      "ts": "2026-10-25T17:20:58.882Z",
       "action": "apparait",
       "element": "decision-sign",
       "id": "decision-005-gerer-les-droits-des-auditeurs-plan",
@@ -690,10 +690,10 @@
         "application": "admin",
         "fiche": "005-gerer-les-droits-des-auditeurs"
       },
-      "cause": "evt:005-gerer-les-droits-des-auditeurs/f0cf4049"
+      "cause": "evt:005-gerer-les-droits-des-auditeurs/4c3467d5"
     },
     {
-      "ts": "2026-10-22T14:13:09.434Z",
+      "ts": "2026-10-25T17:20:58.882Z",
       "action": "deplace",
       "element": "character",
       "id": "architecte",
@@ -706,7 +706,7 @@
         "application": "admin",
         "fiche": "005-gerer-les-droits-des-auditeurs"
       },
-      "cause": "evt:005-gerer-les-droits-des-auditeurs:activite/b10316ff"
+      "cause": "evt:005-gerer-les-droits-des-auditeurs:activite/3e8bd467"
     }
   ]
 }

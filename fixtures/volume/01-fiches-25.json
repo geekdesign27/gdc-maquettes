@@ -58,7 +58,7 @@
   ],
   "chantier": {
     "regime": "pause",
-    "depuis": "2026-10-22T14:13:42.963Z",
+    "depuis": "2026-10-25T17:21:31.142Z",
     "raison": "personne n'avance et 5 décisions t'attendent"
   },
   "plan": {
@@ -93,7 +93,7 @@
             "nom": "Le panneau du permis"
           }
         ],
-        "activee": "2026-10-22T14:13:43.939Z",
+        "activee": "2026-10-25T17:21:31.861Z",
         "par_ce_projet": true
       },
       {
@@ -126,7 +126,7 @@
             "nom": "Le chantier, une parcelle par application"
           }
         ],
-        "activee": "2026-10-22T14:13:43.939Z",
+        "activee": "2026-10-25T17:21:31.861Z",
         "par_ce_projet": true
       },
       {
@@ -1084,7 +1084,7 @@
       "nom": "Claire, l'architecte",
       "etat": "waiting",
       "lieu": "panneau-feu-vert",
-      "source": "activité de la fiche 025-fonction-25-de-application-de-bureau, 2026-10-22T14:13:42.963Z",
+      "source": "activité de la fiche 025-fonction-25-de-application-de-bureau, 2026-10-25T17:21:31.142Z",
       "ref": {
         "application": "bureau",
         "fiche": "025-fonction-25-de-application-de-bureau"

@@ -1,11 +1,11 @@
 {
   "schema": 1,
-  "maintenant": "2026-10-22T14:12:09.865Z",
+  "maintenant": "2026-10-25T17:20:00.700Z",
   "fuseau": "UTC",
-  "debut": "2026-10-22T14:12:09.697Z",
+  "debut": "2026-10-25T17:20:00.538Z",
   "jours": [
     {
-      "date": "2026-10-22",
+      "date": "2026-10-25",
       "evenements": 1,
       "actif": true
     }
@@ -13,7 +13,7 @@
   "regime": [
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:09.697Z",
+      "de": "2026-10-25T17:20:00.538Z",
       "a": null
     }
   ],
@@ -28,7 +28,7 @@
       "etat": "en_cours",
       "barres": [
         {
-          "debut": "2026-10-22T14:12:09.697Z",
+          "debut": "2026-10-25T17:20:00.538Z",
           "fin": null
         }
       ]
@@ -284,8 +284,8 @@
   ],
   "evenements": [
     {
-      "id": "evt:projet/39dae671",
-      "ts": "2026-10-22T14:12:09.697Z",
+      "id": "evt:projet/d46a9a03",
+      "ts": "2026-10-25T17:20:00.538Z",
       "kind": "projet-ouvert",
       "phrase": "Le projet « AuditApp » est ouvert",
       "trait": false

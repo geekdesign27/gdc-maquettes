@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "maintenant": "2026-10-22T14:12:28.614Z",
+  "maintenant": "2026-10-25T17:20:18.887Z",
   "fuseau": "UTC",
-  "debut": "2026-10-22T14:12:09.697Z",
-  "depuis": "evt:001-cloturer-un-audit/2d69dd40",
+  "debut": "2026-10-25T17:20:00.538Z",
+  "depuis": "evt:001-cloturer-un-audit/feefb55d",
   "complet": false,
   "lignes": [
     {
@@ -16,8 +16,8 @@
       "etat": "faite",
       "barres": [
         {
-          "debut": "2026-10-22T14:12:21.533Z",
-          "fin": "2026-10-22T14:12:28.117Z"
+          "debut": "2026-10-25T17:20:11.701Z",
+          "fin": "2026-10-25T17:20:18.387Z"
         }
       ]
     },
@@ -44,26 +44,26 @@
       "barres": [
         {
           "stade": "structure",
-          "debut": "2026-10-22T14:12:22.697Z",
-          "fin": "2026-10-22T14:12:26.073Z",
-          "commence_par": "evt:001-cloturer-un-audit/9b07a6ea",
-          "finit_par": "evt:001-cloturer-un-audit/c1a18214",
+          "debut": "2026-10-25T17:20:12.901Z",
+          "fin": "2026-10-25T17:20:16.359Z",
+          "commence_par": "evt:001-cloturer-un-audit/c9a6a6fc",
+          "finit_par": "evt:001-cloturer-un-audit/03006c10",
           "fin_type": "normale"
         },
         {
           "stade": "envelope",
-          "debut": "2026-10-22T14:12:26.073Z",
-          "fin": "2026-10-22T14:12:27.031Z",
-          "commence_par": "evt:001-cloturer-un-audit/c1a18214",
-          "finit_par": "evt:001-cloturer-un-audit/d4441e9e",
+          "debut": "2026-10-25T17:20:16.359Z",
+          "fin": "2026-10-25T17:20:17.304Z",
+          "commence_par": "evt:001-cloturer-un-audit/03006c10",
+          "finit_par": "evt:001-cloturer-un-audit/2ed7312d",
           "fin_type": "normale"
         },
         {
           "stade": "finishing",
-          "debut": "2026-10-22T14:12:27.031Z",
-          "fin": "2026-10-22T14:12:28.117Z",
-          "commence_par": "evt:001-cloturer-un-audit/d4441e9e",
-          "finit_par": "evt:001-cloturer-un-audit/f8e89749",
+          "debut": "2026-10-25T17:20:17.304Z",
+          "fin": "2026-10-25T17:20:18.387Z",
+          "commence_par": "evt:001-cloturer-un-audit/2ed7312d",
+          "finit_par": "evt:001-cloturer-un-audit/af38c091",
           "fin_type": "normale"
         }
       ]
@@ -78,7 +78,7 @@
       "etat": "en_cours",
       "barres": [
         {
-          "debut": "2026-10-22T14:12:28.117Z",
+          "debut": "2026-10-25T17:20:18.387Z",
           "fin": null
         }
       ]
@@ -106,9 +106,9 @@
       "barres": [
         {
           "stade": "inspection",
-          "debut": "2026-10-22T14:12:28.117Z",
+          "debut": "2026-10-25T17:20:18.387Z",
           "fin": null,
-          "commence_par": "evt:001-cloturer-un-audit/f8e89749",
+          "commence_par": "evt:001-cloturer-un-audit/af38c091",
           "finit_par": null,
           "fin_type": null
         }
@@ -123,8 +123,8 @@
       "decision": "livre",
       "nom": "Ta réception",
       "etat": "attendue",
-      "demandee": "2026-10-22T14:12:28.117Z",
-      "demandee_par": "evt:001-cloturer-un-audit/f8e89749",
+      "demandee": "2026-10-25T17:20:18.387Z",
+      "demandee_par": "evt:001-cloturer-un-audit/af38c091",
       "demandee_source": "journal",
       "prise": null,
       "prise_par": null
@@ -132,15 +132,15 @@
   ],
   "jours": [
     {
-      "date": "2026-10-22",
+      "date": "2026-10-25",
       "evenements": 35,
       "actif": true
     }
   ],
   "evenements": [
     {
-      "id": "evt:001-cloturer-un-audit/f8e89749",
-      "ts": "2026-10-22T14:12:28.117Z",
+      "id": "evt:001-cloturer-un-audit/af38c091",
+      "ts": "2026-10-25T17:20:18.387Z",
       "kind": "gate",
       "phrase": "Ta décision « la réception » est attendue pour « Clôturer un audit »",
       "ref": {
@@ -153,22 +153,22 @@
   "regime": [
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:09.697Z",
-      "a": "2026-10-22T14:12:18.726Z"
+      "de": "2026-10-25T17:20:00.538Z",
+      "a": "2026-10-25T17:20:09.063Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-10-22T14:12:18.726Z",
-      "a": "2026-10-22T14:12:19.720Z"
+      "de": "2026-10-25T17:20:09.063Z",
+      "a": "2026-10-25T17:20:09.986Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:19.720Z",
-      "a": "2026-10-22T14:12:28.117Z"
+      "de": "2026-10-25T17:20:09.986Z",
+      "a": "2026-10-25T17:20:18.387Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-10-22T14:12:28.117Z",
+      "de": "2026-10-25T17:20:18.387Z",
       "a": null
     }
   ],

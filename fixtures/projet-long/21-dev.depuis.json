@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "maintenant": "2026-11-11T14:12:31.392Z",
+  "maintenant": "2026-11-14T17:20:21.659Z",
   "fuseau": "UTC",
-  "debut": "2026-10-22T14:12:09.697Z",
-  "depuis": "evt:001-cloturer-un-audit/f8e89749",
+  "debut": "2026-10-25T17:20:00.538Z",
+  "depuis": "evt:001-cloturer-un-audit/af38c091",
   "complet": false,
   "lignes": [
     {
@@ -16,8 +16,8 @@
       "etat": "faite",
       "barres": [
         {
-          "debut": "2026-11-09T14:12:28.117Z",
-          "fin": "2026-11-11T14:12:31.203Z"
+          "debut": "2026-11-12T17:20:18.387Z",
+          "fin": "2026-11-14T17:20:21.456Z"
         }
       ]
     },
@@ -44,10 +44,10 @@
       "barres": [
         {
           "stade": "inspection",
-          "debut": "2026-11-09T14:12:28.117Z",
-          "fin": "2026-11-11T14:12:31.203Z",
-          "commence_par": "evt:001-cloturer-un-audit/f8e89749",
-          "finit_par": "evt:001-cloturer-un-audit/6204d74d",
+          "debut": "2026-11-12T17:20:18.387Z",
+          "fin": "2026-11-14T17:20:21.456Z",
+          "commence_par": "evt:001-cloturer-un-audit/af38c091",
+          "finit_par": "evt:001-cloturer-un-audit/784414df",
           "fin_type": "normale"
         }
       ]
@@ -61,29 +61,29 @@
       "decision": "livre",
       "nom": "Ta réception",
       "etat": "accordee",
-      "demandee": "2026-11-09T14:12:28.117Z",
-      "demandee_par": "evt:001-cloturer-un-audit/f8e89749",
+      "demandee": "2026-11-12T17:20:18.387Z",
+      "demandee_par": "evt:001-cloturer-un-audit/af38c091",
       "demandee_source": "journal",
-      "prise": "2026-11-11T14:12:29.041Z",
-      "prise_par": "evt:001-cloturer-un-audit/744889e6"
+      "prise": "2026-11-14T17:20:19.284Z",
+      "prise_par": "evt:001-cloturer-un-audit/6f7aaa6f"
     }
   ],
   "jours": [
     {
-      "date": "2026-11-10",
+      "date": "2026-11-13",
       "evenements": 0,
       "actif": false
     },
     {
-      "date": "2026-11-11",
+      "date": "2026-11-14",
       "evenements": 3,
       "actif": true
     }
   ],
   "evenements": [
     {
-      "id": "evt:001-cloturer-un-audit/744889e6",
-      "ts": "2026-11-11T14:12:29.041Z",
+      "id": "evt:001-cloturer-un-audit/6f7aaa6f",
+      "ts": "2026-11-14T17:20:19.284Z",
       "kind": "gate",
       "phrase": "Tu accordes « la réception » pour « Clôturer un audit »",
       "ref": {
@@ -93,8 +93,8 @@
       "trait": false
     },
     {
-      "id": "evt:001-cloturer-un-audit/1b896245",
-      "ts": "2026-11-11T14:12:29.834Z",
+      "id": "evt:001-cloturer-un-audit/8825872c",
+      "ts": "2026-11-14T17:20:20.091Z",
       "kind": "publication",
       "phrase": "La proposition de modification de « Clôturer un audit » est ouverte",
       "ref": {
@@ -104,8 +104,8 @@
       "trait": false
     },
     {
-      "id": "evt:001-cloturer-un-audit/6204d74d",
-      "ts": "2026-11-11T14:12:31.203Z",
+      "id": "evt:001-cloturer-un-audit/784414df",
+      "ts": "2026-11-14T17:20:21.456Z",
       "kind": "fusion",
       "phrase": "« Clôturer un audit » entre dans dev",
       "ref": {
@@ -118,67 +118,67 @@
   "regime": [
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:09.697Z",
-      "a": "2026-10-22T14:42:12.549Z"
+      "de": "2026-10-25T17:20:00.538Z",
+      "a": "2026-10-25T17:50:03.111Z"
     },
     {
       "valeur": "ferme",
-      "de": "2026-10-22T14:42:12.549Z",
-      "a": "2026-10-24T14:12:13.774Z"
+      "de": "2026-10-25T17:50:03.111Z",
+      "a": "2026-10-27T17:20:04.414Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-24T14:12:13.774Z",
-      "a": "2026-10-24T14:42:15.330Z"
+      "de": "2026-10-27T17:20:04.414Z",
+      "a": "2026-10-27T17:50:05.864Z"
     },
     {
       "valeur": "ferme",
-      "de": "2026-10-24T14:42:15.330Z",
-      "a": "2026-10-27T14:12:16.633Z"
+      "de": "2026-10-27T17:50:05.864Z",
+      "a": "2026-10-30T17:20:07.129Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-27T14:12:16.633Z",
-      "a": "2026-10-27T14:12:18.726Z"
+      "de": "2026-10-30T17:20:07.129Z",
+      "a": "2026-10-30T17:20:09.063Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-10-27T14:12:18.726Z",
-      "a": "2026-10-27T14:12:19.720Z"
+      "de": "2026-10-30T17:20:09.063Z",
+      "a": "2026-10-30T17:20:09.986Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-27T14:12:19.720Z",
-      "a": "2026-10-27T14:42:19.720Z"
+      "de": "2026-10-30T17:20:09.986Z",
+      "a": "2026-10-30T17:50:09.986Z"
     },
     {
       "valeur": "ferme",
-      "de": "2026-10-27T14:42:19.720Z",
-      "a": "2026-10-28T14:12:21.248Z"
+      "de": "2026-10-30T17:50:09.986Z",
+      "a": "2026-10-31T17:20:11.392Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-28T14:12:21.248Z",
-      "a": "2026-10-28T14:42:22.697Z"
+      "de": "2026-10-31T17:20:11.392Z",
+      "a": "2026-10-31T17:50:12.901Z"
     },
     {
       "valeur": "ferme",
-      "de": "2026-10-28T14:42:22.697Z",
-      "a": "2026-11-09T14:12:23.956Z"
+      "de": "2026-10-31T17:50:12.901Z",
+      "a": "2026-11-12T17:20:14.258Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-11-09T14:12:23.956Z",
-      "a": "2026-11-09T14:12:28.117Z"
+      "de": "2026-11-12T17:20:14.258Z",
+      "a": "2026-11-12T17:20:18.387Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-11-09T14:12:28.117Z",
-      "a": "2026-11-11T14:12:29.041Z"
+      "de": "2026-11-12T17:20:18.387Z",
+      "a": "2026-11-14T17:20:19.284Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-11-11T14:12:29.041Z",
+      "de": "2026-11-14T17:20:19.284Z",
       "a": null
     }
   ],

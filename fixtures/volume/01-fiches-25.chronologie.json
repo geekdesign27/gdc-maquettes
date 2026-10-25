@@ -1,11 +1,11 @@
 {
   "schema": 1,
-  "maintenant": "2026-10-22T14:13:44.023Z",
+  "maintenant": "2026-10-25T17:21:31.936Z",
   "fuseau": "UTC",
-  "debut": "2026-10-22T14:13:19.417Z",
+  "debut": "2026-10-25T17:21:07.912Z",
   "jours": [
     {
-      "date": "2026-10-22",
+      "date": "2026-10-25",
       "evenements": 145,
       "actif": true
     }
@@ -13,12 +13,12 @@
   "regime": [
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:13:19.417Z",
-      "a": "2026-10-22T14:13:19.683Z"
+      "de": "2026-10-25T17:21:07.912Z",
+      "a": "2026-10-25T17:21:08.220Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-10-22T14:13:19.683Z",
+      "de": "2026-10-25T17:21:08.220Z",
       "a": null
     }
   ],
@@ -33,7 +33,7 @@
       "etat": "en_cours",
       "barres": [
         {
-          "debut": "2026-10-22T14:13:19.417Z",
+          "debut": "2026-10-25T17:21:07.912Z",
           "fin": null
         }
       ]
@@ -188,7 +188,7 @@
       "etat": "en_cours",
       "barres": [
         {
-          "debut": "2026-10-22T14:13:19.516Z",
+          "debut": "2026-10-25T17:21:08.016Z",
           "fin": null
         }
       ]
@@ -216,9 +216,9 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-22T14:13:19.516Z",
+          "debut": "2026-10-25T17:21:08.016Z",
           "fin": null,
-          "commence_par": "evt:001-fonction-1-de-application-de-bureau/c85a61c0",
+          "commence_par": "evt:001-fonction-1-de-application-de-bureau/bc10bbb8",
           "finit_par": null,
           "fin_type": null
         }
@@ -237,10 +237,10 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-22T14:13:26.965Z",
-          "fin": "2026-10-22T14:13:27.286Z",
-          "commence_par": "evt:009-fonction-9-de-application-de-bureau/138cfa05",
-          "finit_par": "evt:009-fonction-9-de-application-de-bureau/d550ece3",
+          "debut": "2026-10-25T17:21:15.557Z",
+          "fin": "2026-10-25T17:21:15.888Z",
+          "commence_par": "evt:009-fonction-9-de-application-de-bureau/1a2732ee",
+          "finit_par": "evt:009-fonction-9-de-application-de-bureau/260e0162",
           "fin_type": "normale"
         }
       ]
@@ -258,10 +258,10 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-22T14:13:35.239Z",
-          "fin": "2026-10-22T14:13:35.536Z",
-          "commence_par": "evt:017-fonction-17-de-application-de-bureau/05a6dc7b",
-          "finit_par": "evt:017-fonction-17-de-application-de-bureau/aa6cd1b0",
+          "debut": "2026-10-25T17:21:23.965Z",
+          "fin": "2026-10-25T17:21:24.264Z",
+          "commence_par": "evt:017-fonction-17-de-application-de-bureau/977e4936",
+          "finit_par": "evt:017-fonction-17-de-application-de-bureau/96997dd7",
           "fin_type": "normale"
         }
       ]
@@ -279,9 +279,9 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-22T14:13:42.764Z",
+          "debut": "2026-10-25T17:21:30.952Z",
           "fin": null,
-          "commence_par": "evt:025-fonction-25-de-application-de-bureau/c0dfdf4a",
+          "commence_par": "evt:025-fonction-25-de-application-de-bureau/e24d7249",
           "finit_par": null,
           "fin_type": null
         }
@@ -310,10 +310,10 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-22T14:13:19.807Z",
-          "fin": "2026-10-22T14:13:20.083Z",
-          "commence_par": "evt:002-fonction-2-de-application-terrain/d402b1e3",
-          "finit_par": "evt:002-fonction-2-de-application-terrain/50ff73f0",
+          "debut": "2026-10-25T17:21:08.395Z",
+          "fin": "2026-10-25T17:21:08.759Z",
+          "commence_par": "evt:002-fonction-2-de-application-terrain/ea9af8a1",
+          "finit_par": "evt:002-fonction-2-de-application-terrain/abd7a735",
           "fin_type": "normale"
         }
       ]
@@ -331,10 +331,10 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-22T14:13:28.259Z",
-          "fin": "2026-10-22T14:13:28.574Z",
-          "commence_par": "evt:010-fonction-10-de-application-terrain/79d91fe8",
-          "finit_par": "evt:010-fonction-10-de-application-terrain/7b1552c4",
+          "debut": "2026-10-25T17:21:16.912Z",
+          "fin": "2026-10-25T17:21:17.235Z",
+          "commence_par": "evt:010-fonction-10-de-application-terrain/4d2ad93e",
+          "finit_par": "evt:010-fonction-10-de-application-terrain/9fbdd1ed",
           "fin_type": "normale"
         }
       ]
@@ -352,9 +352,9 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-22T14:13:36.674Z",
+          "debut": "2026-10-25T17:21:25.340Z",
           "fin": null,
-          "commence_par": "evt:018-fonction-18-de-application-terrain/8d0d79f3",
+          "commence_par": "evt:018-fonction-18-de-application-terrain/afcc76d1",
           "finit_par": null,
           "fin_type": null
         }
@@ -383,10 +383,10 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-22T14:13:20.744Z",
-          "fin": "2026-10-22T14:13:21.047Z",
-          "commence_par": "evt:003-fonction-3-de-administration/73876cae",
-          "finit_par": "evt:003-fonction-3-de-administration/447a5648",
+          "debut": "2026-10-25T17:21:09.455Z",
+          "fin": "2026-10-25T17:21:09.813Z",
+          "commence_par": "evt:003-fonction-3-de-administration/387d3b5d",
+          "finit_par": "evt:003-fonction-3-de-administration/f9834c7e",
           "fin_type": "normale"
         }
       ]
@@ -404,10 +404,10 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-22T14:13:29.764Z",
-          "fin": "2026-10-22T14:13:30.034Z",
-          "commence_par": "evt:011-fonction-11-de-administration/ae8cac82",
-          "finit_par": "evt:011-fonction-11-de-administration/367bc68e",
+          "debut": "2026-10-25T17:21:18.327Z",
+          "fin": "2026-10-25T17:21:18.660Z",
+          "commence_par": "evt:011-fonction-11-de-administration/157605b4",
+          "finit_par": "evt:011-fonction-11-de-administration/9e39bd20",
           "fin_type": "normale"
         }
       ]
@@ -425,9 +425,9 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-22T14:13:36.846Z",
+          "debut": "2026-10-25T17:21:25.497Z",
           "fin": null,
-          "commence_par": "evt:019-fonction-19-de-administration/f6967e7c",
+          "commence_par": "evt:019-fonction-19-de-administration/5d4350cf",
           "finit_par": null,
           "fin_type": null
         }
@@ -456,10 +456,10 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-22T14:13:22.159Z",
-          "fin": "2026-10-22T14:13:22.471Z",
-          "commence_par": "evt:004-fonction-4-de-portail-client/04bbd927",
-          "finit_par": "evt:004-fonction-4-de-portail-client/47d4367c",
+          "debut": "2026-10-25T17:21:10.835Z",
+          "fin": "2026-10-25T17:21:11.134Z",
+          "commence_par": "evt:004-fonction-4-de-portail-client/f8a8ddd3",
+          "finit_par": "evt:004-fonction-4-de-portail-client/6a75b750",
           "fin_type": "normale"
         }
       ]
@@ -477,9 +477,9 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-22T14:13:31.134Z",
+          "debut": "2026-10-25T17:21:19.650Z",
           "fin": null,
-          "commence_par": "evt:012-fonction-12-de-portail-client/d6cdee3f",
+          "commence_par": "evt:012-fonction-12-de-portail-client/932fd1b0",
           "finit_par": null,
           "fin_type": null
         }
@@ -498,10 +498,10 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-22T14:13:37.124Z",
-          "fin": "2026-10-22T14:13:37.422Z",
-          "commence_par": "evt:020-fonction-20-de-portail-client/61ebbc31",
-          "finit_par": "evt:020-fonction-20-de-portail-client/11318b42",
+          "debut": "2026-10-25T17:21:25.801Z",
+          "fin": "2026-10-25T17:21:26.076Z",
+          "commence_par": "evt:020-fonction-20-de-portail-client/b8988f7e",
+          "finit_par": "evt:020-fonction-20-de-portail-client/b0b8e5e8",
           "fin_type": "normale"
         }
       ]
@@ -529,10 +529,10 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-22T14:13:23.925Z",
-          "fin": "2026-10-22T14:13:24.244Z",
-          "commence_par": "evt:005-fonction-5-de-facturation/5abf9cc0",
-          "finit_par": "evt:005-fonction-5-de-facturation/b5cb1e2d",
+          "debut": "2026-10-25T17:21:12.414Z",
+          "fin": "2026-10-25T17:21:12.903Z",
+          "commence_par": "evt:005-fonction-5-de-facturation/96790921",
+          "finit_par": "evt:005-fonction-5-de-facturation/77cd8692",
           "fin_type": "normale"
         }
       ]
@@ -550,9 +550,9 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-22T14:13:31.318Z",
+          "debut": "2026-10-25T17:21:19.805Z",
           "fin": null,
-          "commence_par": "evt:013-fonction-13-de-facturation/2bd5fd75",
+          "commence_par": "evt:013-fonction-13-de-facturation/21051900",
           "finit_par": null,
           "fin_type": null
         }
@@ -571,10 +571,10 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-22T14:13:38.092Z",
-          "fin": "2026-10-22T14:13:38.358Z",
-          "commence_par": "evt:021-fonction-21-de-facturation/2748a9cb",
-          "finit_par": "evt:021-fonction-21-de-facturation/63a9bbc4",
+          "debut": "2026-10-25T17:21:26.711Z",
+          "fin": "2026-10-25T17:21:27.017Z",
+          "commence_par": "evt:021-fonction-21-de-facturation/c5c5508b",
+          "finit_par": "evt:021-fonction-21-de-facturation/cdb866bb",
           "fin_type": "normale"
         }
       ]
@@ -602,9 +602,9 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-22T14:13:25.405Z",
+          "debut": "2026-10-25T17:21:14.011Z",
           "fin": null,
-          "commence_par": "evt:006-fonction-6-de-rapports/b42aa315",
+          "commence_par": "evt:006-fonction-6-de-rapports/382a1d55",
           "finit_par": null,
           "fin_type": null
         }
@@ -623,10 +623,10 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-22T14:13:31.593Z",
-          "fin": "2026-10-22T14:13:31.887Z",
-          "commence_par": "evt:014-fonction-14-de-rapports/1b980f9d",
-          "finit_par": "evt:014-fonction-14-de-rapports/002072ea",
+          "debut": "2026-10-25T17:21:20.119Z",
+          "fin": "2026-10-25T17:21:20.437Z",
+          "commence_par": "evt:014-fonction-14-de-rapports/708842fa",
+          "finit_par": "evt:014-fonction-14-de-rapports/9b8f3826",
           "fin_type": "normale"
         }
       ]
@@ -644,10 +644,10 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-22T14:13:39.337Z",
-          "fin": "2026-10-22T14:13:39.660Z",
-          "commence_par": "evt:022-fonction-22-de-rapports/37c2e8ac",
-          "finit_par": "evt:022-fonction-22-de-rapports/cbad940d",
+          "debut": "2026-10-25T17:21:27.912Z",
+          "fin": "2026-10-25T17:21:28.222Z",
+          "commence_par": "evt:022-fonction-22-de-rapports/9e6f9bb7",
+          "finit_par": "evt:022-fonction-22-de-rapports/c8b75e75",
           "fin_type": "normale"
         }
       ]
@@ -675,9 +675,9 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-22T14:13:25.589Z",
+          "debut": "2026-10-25T17:21:14.185Z",
           "fin": null,
-          "commence_par": "evt:007-fonction-7-de-synchronisation/1f4b9bf1",
+          "commence_par": "evt:007-fonction-7-de-synchronisation/6c00639e",
           "finit_par": null,
           "fin_type": null
         }
@@ -696,10 +696,10 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-22T14:13:32.585Z",
-          "fin": "2026-10-22T14:13:32.867Z",
-          "commence_par": "evt:015-fonction-15-de-synchronisation/54a36fb3",
-          "finit_par": "evt:015-fonction-15-de-synchronisation/5b83f47e",
+          "debut": "2026-10-25T17:21:21.068Z",
+          "fin": "2026-10-25T17:21:21.434Z",
+          "commence_par": "evt:015-fonction-15-de-synchronisation/8ab0f5d8",
+          "finit_par": "evt:015-fonction-15-de-synchronisation/fa5b1b1f",
           "fin_type": "normale"
         }
       ]
@@ -717,10 +717,10 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-22T14:13:40.897Z",
-          "fin": "2026-10-22T14:13:41.233Z",
-          "commence_par": "evt:023-fonction-23-de-synchronisation/75f65f5c",
-          "finit_par": "evt:023-fonction-23-de-synchronisation/dbff46c3",
+          "debut": "2026-10-25T17:21:29.387Z",
+          "fin": "2026-10-25T17:21:29.675Z",
+          "commence_par": "evt:023-fonction-23-de-synchronisation/0622ebd8",
+          "finit_par": "evt:023-fonction-23-de-synchronisation/33fef5ec",
           "fin_type": "normale"
         }
       ]
@@ -748,10 +748,10 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-22T14:13:25.927Z",
-          "fin": "2026-10-22T14:13:26.242Z",
-          "commence_par": "evt:008-fonction-8-de-site-public/39e549e8",
-          "finit_par": "evt:008-fonction-8-de-site-public/6b960477",
+          "debut": "2026-10-25T17:21:14.543Z",
+          "fin": "2026-10-25T17:21:14.908Z",
+          "commence_par": "evt:008-fonction-8-de-site-public/3df54e35",
+          "finit_par": "evt:008-fonction-8-de-site-public/2c6fc460",
           "fin_type": "normale"
         }
       ]
@@ -769,10 +769,10 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-22T14:13:33.828Z",
-          "fin": "2026-10-22T14:13:34.132Z",
-          "commence_par": "evt:016-fonction-16-de-site-public/a42a7325",
-          "finit_par": "evt:016-fonction-16-de-site-public/c2bb235e",
+          "debut": "2026-10-25T17:21:22.514Z",
+          "fin": "2026-10-25T17:21:22.857Z",
+          "commence_par": "evt:016-fonction-16-de-site-public/715e5d52",
+          "finit_par": "evt:016-fonction-16-de-site-public/8d9d6830",
           "fin_type": "normale"
         }
       ]
@@ -790,9 +790,9 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-10-22T14:13:42.560Z",
+          "debut": "2026-10-25T17:21:30.784Z",
           "fin": null,
-          "commence_par": "evt:024-fonction-24-de-site-public/238e6245",
+          "commence_par": "evt:024-fonction-24-de-site-public/928eae7d",
           "finit_par": null,
           "fin_type": null
         }
@@ -808,7 +808,7 @@
       "etat": "en_cours",
       "barres": [
         {
-          "debut": "2026-10-22T14:13:20.083Z",
+          "debut": "2026-10-25T17:21:08.759Z",
           "fin": null
         }
       ]
@@ -848,17 +848,17 @@
       "barres": [
         {
           "stade": "excavation",
-          "debut": "2026-10-22T14:13:27.286Z",
-          "fin": "2026-10-22T14:13:27.966Z",
-          "commence_par": "evt:009-fonction-9-de-application-de-bureau/d550ece3",
-          "finit_par": "evt:009-fonction-9-de-application-de-bureau/09c3dcf5",
+          "debut": "2026-10-25T17:21:15.888Z",
+          "fin": "2026-10-25T17:21:16.583Z",
+          "commence_par": "evt:009-fonction-9-de-application-de-bureau/260e0162",
+          "finit_par": "evt:009-fonction-9-de-application-de-bureau/2349d244",
           "fin_type": "normale"
         },
         {
           "stade": "foundations",
-          "debut": "2026-10-22T14:13:27.966Z",
+          "debut": "2026-10-25T17:21:16.583Z",
           "fin": null,
-          "commence_par": "evt:009-fonction-9-de-application-de-bureau/09c3dcf5",
+          "commence_par": "evt:009-fonction-9-de-application-de-bureau/2349d244",
           "finit_par": null,
           "fin_type": null
         }
@@ -875,8 +875,8 @@
         "lot": "L1"
       },
       "etat": "prevu",
-      "prevu_le": "2026-10-22T14:13:27.966Z",
-      "prevu_par": "evt:009-fonction-9-de-application-de-bureau/09c3dcf5"
+      "prevu_le": "2026-10-25T17:21:16.583Z",
+      "prevu_par": "evt:009-fonction-9-de-application-de-bureau/2349d244"
     },
     {
       "id": "fiche:017-fonction-17-de-application-de-bureau@5",
@@ -891,18 +891,18 @@
       "barres": [
         {
           "stade": "excavation",
-          "debut": "2026-10-22T14:13:35.536Z",
-          "fin": "2026-10-22T14:13:36.309Z",
-          "commence_par": "evt:017-fonction-17-de-application-de-bureau/aa6cd1b0",
-          "finit_par": "evt:017-fonction-17-de-application-de-bureau/242f9230",
+          "debut": "2026-10-25T17:21:24.264Z",
+          "fin": "2026-10-25T17:21:24.909Z",
+          "commence_par": "evt:017-fonction-17-de-application-de-bureau/96997dd7",
+          "finit_par": "evt:017-fonction-17-de-application-de-bureau/8472db58",
           "fin_type": "normale"
         },
         {
           "stade": "foundations",
-          "debut": "2026-10-22T14:13:36.309Z",
-          "fin": "2026-10-22T14:13:36.541Z",
-          "commence_par": "evt:017-fonction-17-de-application-de-bureau/242f9230",
-          "finit_par": "evt:017-fonction-17-de-application-de-bureau/e8471064",
+          "debut": "2026-10-25T17:21:24.909Z",
+          "fin": "2026-10-25T17:21:25.181Z",
+          "commence_par": "evt:017-fonction-17-de-application-de-bureau/8472db58",
+          "finit_par": "evt:017-fonction-17-de-application-de-bureau/99ae1d0f",
           "fin_type": "normale"
         }
       ]
@@ -918,8 +918,8 @@
         "lot": "L1"
       },
       "etat": "prevu",
-      "prevu_le": "2026-10-22T14:13:36.309Z",
-      "prevu_par": "evt:017-fonction-17-de-application-de-bureau/242f9230"
+      "prevu_le": "2026-10-25T17:21:24.909Z",
+      "prevu_par": "evt:017-fonction-17-de-application-de-bureau/8472db58"
     },
     {
       "id": "fiche:025-fonction-25-de-application-de-bureau@5",
@@ -956,9 +956,9 @@
       "barres": [
         {
           "stade": "excavation",
-          "debut": "2026-10-22T14:13:20.083Z",
+          "debut": "2026-10-25T17:21:08.759Z",
           "fin": null,
-          "commence_par": "evt:002-fonction-2-de-application-terrain/50ff73f0",
+          "commence_par": "evt:002-fonction-2-de-application-terrain/abd7a735",
           "finit_par": null,
           "fin_type": null
         }
@@ -977,18 +977,18 @@
       "barres": [
         {
           "stade": "excavation",
-          "debut": "2026-10-22T14:13:28.574Z",
-          "fin": "2026-10-22T14:13:29.276Z",
-          "commence_par": "evt:010-fonction-10-de-application-terrain/7b1552c4",
-          "finit_par": "evt:010-fonction-10-de-application-terrain/f7135155",
+          "debut": "2026-10-25T17:21:17.235Z",
+          "fin": "2026-10-25T17:21:17.872Z",
+          "commence_par": "evt:010-fonction-10-de-application-terrain/9fbdd1ed",
+          "finit_par": "evt:010-fonction-10-de-application-terrain/47aa7c76",
           "fin_type": "normale"
         },
         {
           "stade": "foundations",
-          "debut": "2026-10-22T14:13:29.276Z",
-          "fin": "2026-10-22T14:13:29.600Z",
-          "commence_par": "evt:010-fonction-10-de-application-terrain/f7135155",
-          "finit_par": "evt:010-fonction-10-de-application-terrain/740a39fc",
+          "debut": "2026-10-25T17:21:17.872Z",
+          "fin": "2026-10-25T17:21:18.144Z",
+          "commence_par": "evt:010-fonction-10-de-application-terrain/47aa7c76",
+          "finit_par": "evt:010-fonction-10-de-application-terrain/749a3969",
           "fin_type": "normale"
         }
       ]
@@ -1004,8 +1004,8 @@
         "lot": "L1"
       },
       "etat": "prevu",
-      "prevu_le": "2026-10-22T14:13:29.276Z",
-      "prevu_par": "evt:010-fonction-10-de-application-terrain/f7135155"
+      "prevu_le": "2026-10-25T17:21:17.872Z",
+      "prevu_par": "evt:010-fonction-10-de-application-terrain/47aa7c76"
     },
     {
       "id": "fiche:018-fonction-18-de-application-terrain@5",
@@ -1042,17 +1042,17 @@
       "barres": [
         {
           "stade": "excavation",
-          "debut": "2026-10-22T14:13:21.047Z",
-          "fin": "2026-10-22T14:13:21.812Z",
-          "commence_par": "evt:003-fonction-3-de-administration/447a5648",
-          "finit_par": "evt:003-fonction-3-de-administration/8978bca1",
+          "debut": "2026-10-25T17:21:09.813Z",
+          "fin": "2026-10-25T17:21:10.562Z",
+          "commence_par": "evt:003-fonction-3-de-administration/f9834c7e",
+          "finit_par": "evt:003-fonction-3-de-administration/84b99efb",
           "fin_type": "normale"
         },
         {
           "stade": "foundations",
-          "debut": "2026-10-22T14:13:21.812Z",
+          "debut": "2026-10-25T17:21:10.562Z",
           "fin": null,
-          "commence_par": "evt:003-fonction-3-de-administration/8978bca1",
+          "commence_par": "evt:003-fonction-3-de-administration/84b99efb",
           "finit_par": null,
           "fin_type": null
         }
@@ -1069,8 +1069,8 @@
         "lot": "L1"
       },
       "etat": "prevu",
-      "prevu_le": "2026-10-22T14:13:21.812Z",
-      "prevu_par": "evt:003-fonction-3-de-administration/8978bca1"
+      "prevu_le": "2026-10-25T17:21:10.562Z",
+      "prevu_par": "evt:003-fonction-3-de-administration/84b99efb"
     },
     {
       "id": "fiche:011-fonction-11-de-administration@5",
@@ -1085,18 +1085,18 @@
       "barres": [
         {
           "stade": "excavation",
-          "debut": "2026-10-22T14:13:30.034Z",
-          "fin": "2026-10-22T14:13:30.741Z",
-          "commence_par": "evt:011-fonction-11-de-administration/367bc68e",
-          "finit_par": "evt:011-fonction-11-de-administration/e30f7ab7",
+          "debut": "2026-10-25T17:21:18.660Z",
+          "fin": "2026-10-25T17:21:19.309Z",
+          "commence_par": "evt:011-fonction-11-de-administration/9e39bd20",
+          "finit_par": "evt:011-fonction-11-de-administration/1c2c969c",
           "fin_type": "normale"
         },
         {
           "stade": "foundations",
-          "debut": "2026-10-22T14:13:30.741Z",
-          "fin": "2026-10-22T14:13:30.989Z",
-          "commence_par": "evt:011-fonction-11-de-administration/e30f7ab7",
-          "finit_par": "evt:011-fonction-11-de-administration/7010bb9b",
+          "debut": "2026-10-25T17:21:19.309Z",
+          "fin": "2026-10-25T17:21:19.523Z",
+          "commence_par": "evt:011-fonction-11-de-administration/1c2c969c",
+          "finit_par": "evt:011-fonction-11-de-administration/db2e2ceb",
           "fin_type": "normale"
         }
       ]
@@ -1112,8 +1112,8 @@
         "lot": "L1"
       },
       "etat": "prevu",
-      "prevu_le": "2026-10-22T14:13:30.741Z",
-      "prevu_par": "evt:011-fonction-11-de-administration/e30f7ab7"
+      "prevu_le": "2026-10-25T17:21:19.309Z",
+      "prevu_par": "evt:011-fonction-11-de-administration/1c2c969c"
     },
     {
       "id": "fiche:019-fonction-19-de-administration@5",
@@ -1150,18 +1150,18 @@
       "barres": [
         {
           "stade": "excavation",
-          "debut": "2026-10-22T14:13:22.471Z",
-          "fin": "2026-10-22T14:13:23.395Z",
-          "commence_par": "evt:004-fonction-4-de-portail-client/47d4367c",
-          "finit_par": "evt:004-fonction-4-de-portail-client/614ab29b",
+          "debut": "2026-10-25T17:21:11.134Z",
+          "fin": "2026-10-25T17:21:11.891Z",
+          "commence_par": "evt:004-fonction-4-de-portail-client/6a75b750",
+          "finit_par": "evt:004-fonction-4-de-portail-client/feea39be",
           "fin_type": "normale"
         },
         {
           "stade": "foundations",
-          "debut": "2026-10-22T14:13:23.395Z",
-          "fin": "2026-10-22T14:13:23.744Z",
-          "commence_par": "evt:004-fonction-4-de-portail-client/614ab29b",
-          "finit_par": "evt:004-fonction-4-de-portail-client/521673eb",
+          "debut": "2026-10-25T17:21:11.891Z",
+          "fin": "2026-10-25T17:21:12.238Z",
+          "commence_par": "evt:004-fonction-4-de-portail-client/feea39be",
+          "finit_par": "evt:004-fonction-4-de-portail-client/0b8ebc44",
           "fin_type": "normale"
         }
       ]
@@ -1177,8 +1177,8 @@
         "lot": "L1"
       },
       "etat": "prevu",
-      "prevu_le": "2026-10-22T14:13:23.395Z",
-      "prevu_par": "evt:004-fonction-4-de-portail-client/614ab29b"
+      "prevu_le": "2026-10-25T17:21:11.891Z",
+      "prevu_par": "evt:004-fonction-4-de-portail-client/feea39be"
     },
     {
       "id": "fiche:012-fonction-12-de-portail-client@5",
@@ -1205,9 +1205,9 @@
       "barres": [
         {
           "stade": "excavation",
-          "debut": "2026-10-22T14:13:37.422Z",
+          "debut": "2026-10-25T17:21:26.076Z",
           "fin": null,
-          "commence_par": "evt:020-fonction-20-de-portail-client/11318b42",
+          "commence_par": "evt:020-fonction-20-de-portail-client/b0b8e5e8",
           "finit_par": null,
           "fin_type": null
         }
@@ -1236,18 +1236,18 @@
       "barres": [
         {
           "stade": "excavation",
-          "debut": "2026-10-22T14:13:24.244Z",
-          "fin": "2026-10-22T14:13:24.990Z",
-          "commence_par": "evt:005-fonction-5-de-facturation/b5cb1e2d",
-          "finit_par": "evt:005-fonction-5-de-facturation/ccbde389",
+          "debut": "2026-10-25T17:21:12.903Z",
+          "fin": "2026-10-25T17:21:13.566Z",
+          "commence_par": "evt:005-fonction-5-de-facturation/77cd8692",
+          "finit_par": "evt:005-fonction-5-de-facturation/43f7e20d",
           "fin_type": "normale"
         },
         {
           "stade": "foundations",
-          "debut": "2026-10-22T14:13:24.990Z",
-          "fin": "2026-10-22T14:13:25.258Z",
-          "commence_par": "evt:005-fonction-5-de-facturation/ccbde389",
-          "finit_par": "evt:005-fonction-5-de-facturation/754091a2",
+          "debut": "2026-10-25T17:21:13.566Z",
+          "fin": "2026-10-25T17:21:13.843Z",
+          "commence_par": "evt:005-fonction-5-de-facturation/43f7e20d",
+          "finit_par": "evt:005-fonction-5-de-facturation/906bdb53",
           "fin_type": "normale"
         }
       ]
@@ -1263,8 +1263,8 @@
         "lot": "L1"
       },
       "etat": "prevu",
-      "prevu_le": "2026-10-22T14:13:24.990Z",
-      "prevu_par": "evt:005-fonction-5-de-facturation/ccbde389"
+      "prevu_le": "2026-10-25T17:21:13.566Z",
+      "prevu_par": "evt:005-fonction-5-de-facturation/43f7e20d"
     },
     {
       "id": "fiche:013-fonction-13-de-facturation@5",
@@ -1291,17 +1291,17 @@
       "barres": [
         {
           "stade": "excavation",
-          "debut": "2026-10-22T14:13:38.358Z",
-          "fin": "2026-10-22T14:13:39.038Z",
-          "commence_par": "evt:021-fonction-21-de-facturation/63a9bbc4",
-          "finit_par": "evt:021-fonction-21-de-facturation/62345f40",
+          "debut": "2026-10-25T17:21:27.017Z",
+          "fin": "2026-10-25T17:21:27.658Z",
+          "commence_par": "evt:021-fonction-21-de-facturation/cdb866bb",
+          "finit_par": "evt:021-fonction-21-de-facturation/95c6e557",
           "fin_type": "normale"
         },
         {
           "stade": "foundations",
-          "debut": "2026-10-22T14:13:39.038Z",
+          "debut": "2026-10-25T17:21:27.658Z",
           "fin": null,
-          "commence_par": "evt:021-fonction-21-de-facturation/62345f40",
+          "commence_par": "evt:021-fonction-21-de-facturation/95c6e557",
           "finit_par": null,
           "fin_type": null
         }
@@ -1318,8 +1318,8 @@
         "lot": "L1"
       },
       "etat": "prevu",
-      "prevu_le": "2026-10-22T14:13:39.038Z",
-      "prevu_par": "evt:021-fonction-21-de-facturation/62345f40"
+      "prevu_le": "2026-10-25T17:21:27.658Z",
+      "prevu_par": "evt:021-fonction-21-de-facturation/95c6e557"
     },
     {
       "id": "application:rapports@5",
@@ -1356,9 +1356,9 @@
       "barres": [
         {
           "stade": "excavation",
-          "debut": "2026-10-22T14:13:31.887Z",
+          "debut": "2026-10-25T17:21:20.437Z",
           "fin": null,
-          "commence_par": "evt:014-fonction-14-de-rapports/002072ea",
+          "commence_par": "evt:014-fonction-14-de-rapports/9b8f3826",
           "finit_par": null,
           "fin_type": null
         }
@@ -1377,18 +1377,18 @@
       "barres": [
         {
           "stade": "excavation",
-          "debut": "2026-10-22T14:13:39.660Z",
-          "fin": "2026-10-22T14:13:40.375Z",
-          "commence_par": "evt:022-fonction-22-de-rapports/cbad940d",
-          "finit_par": "evt:022-fonction-22-de-rapports/31e415d3",
+          "debut": "2026-10-25T17:21:28.222Z",
+          "fin": "2026-10-25T17:21:28.972Z",
+          "commence_par": "evt:022-fonction-22-de-rapports/c8b75e75",
+          "finit_par": "evt:022-fonction-22-de-rapports/2263f9bd",
           "fin_type": "normale"
         },
         {
           "stade": "foundations",
-          "debut": "2026-10-22T14:13:40.375Z",
-          "fin": "2026-10-22T14:13:40.699Z",
-          "commence_par": "evt:022-fonction-22-de-rapports/31e415d3",
-          "finit_par": "evt:022-fonction-22-de-rapports/839672c0",
+          "debut": "2026-10-25T17:21:28.972Z",
+          "fin": "2026-10-25T17:21:29.238Z",
+          "commence_par": "evt:022-fonction-22-de-rapports/2263f9bd",
+          "finit_par": "evt:022-fonction-22-de-rapports/4eca5436",
           "fin_type": "normale"
         }
       ]
@@ -1404,8 +1404,8 @@
         "lot": "L1"
       },
       "etat": "prevu",
-      "prevu_le": "2026-10-22T14:13:40.375Z",
-      "prevu_par": "evt:022-fonction-22-de-rapports/31e415d3"
+      "prevu_le": "2026-10-25T17:21:28.972Z",
+      "prevu_par": "evt:022-fonction-22-de-rapports/2263f9bd"
     },
     {
       "id": "application:synchro@5",
@@ -1442,17 +1442,17 @@
       "barres": [
         {
           "stade": "excavation",
-          "debut": "2026-10-22T14:13:32.867Z",
-          "fin": "2026-10-22T14:13:33.543Z",
-          "commence_par": "evt:015-fonction-15-de-synchronisation/5b83f47e",
-          "finit_par": "evt:015-fonction-15-de-synchronisation/6422d0a7",
+          "debut": "2026-10-25T17:21:21.434Z",
+          "fin": "2026-10-25T17:21:22.256Z",
+          "commence_par": "evt:015-fonction-15-de-synchronisation/fa5b1b1f",
+          "finit_par": "evt:015-fonction-15-de-synchronisation/5622bf8d",
           "fin_type": "normale"
         },
         {
           "stade": "foundations",
-          "debut": "2026-10-22T14:13:33.543Z",
+          "debut": "2026-10-25T17:21:22.256Z",
           "fin": null,
-          "commence_par": "evt:015-fonction-15-de-synchronisation/6422d0a7",
+          "commence_par": "evt:015-fonction-15-de-synchronisation/5622bf8d",
           "finit_par": null,
           "fin_type": null
         }
@@ -1469,8 +1469,8 @@
         "lot": "L1"
       },
       "etat": "prevu",
-      "prevu_le": "2026-10-22T14:13:33.543Z",
-      "prevu_par": "evt:015-fonction-15-de-synchronisation/6422d0a7"
+      "prevu_le": "2026-10-25T17:21:22.256Z",
+      "prevu_par": "evt:015-fonction-15-de-synchronisation/5622bf8d"
     },
     {
       "id": "fiche:023-fonction-23-de-synchronisation@5",
@@ -1485,18 +1485,18 @@
       "barres": [
         {
           "stade": "excavation",
-          "debut": "2026-10-22T14:13:41.233Z",
-          "fin": "2026-10-22T14:13:42.050Z",
-          "commence_par": "evt:023-fonction-23-de-synchronisation/dbff46c3",
-          "finit_par": "evt:023-fonction-23-de-synchronisation/6d30bfde",
+          "debut": "2026-10-25T17:21:29.675Z",
+          "fin": "2026-10-25T17:21:30.413Z",
+          "commence_par": "evt:023-fonction-23-de-synchronisation/33fef5ec",
+          "finit_par": "evt:023-fonction-23-de-synchronisation/9088fbc1",
           "fin_type": "normale"
         },
         {
           "stade": "foundations",
-          "debut": "2026-10-22T14:13:42.050Z",
-          "fin": "2026-10-22T14:13:42.376Z",
-          "commence_par": "evt:023-fonction-23-de-synchronisation/6d30bfde",
-          "finit_par": "evt:023-fonction-23-de-synchronisation/64e3d971",
+          "debut": "2026-10-25T17:21:30.413Z",
+          "fin": "2026-10-25T17:21:30.648Z",
+          "commence_par": "evt:023-fonction-23-de-synchronisation/9088fbc1",
+          "finit_par": "evt:023-fonction-23-de-synchronisation/081845cd",
           "fin_type": "normale"
         }
       ]
@@ -1512,8 +1512,8 @@
         "lot": "L1"
       },
       "etat": "prevu",
-      "prevu_le": "2026-10-22T14:13:42.050Z",
-      "prevu_par": "evt:023-fonction-23-de-synchronisation/6d30bfde"
+      "prevu_le": "2026-10-25T17:21:30.413Z",
+      "prevu_par": "evt:023-fonction-23-de-synchronisation/9088fbc1"
     },
     {
       "id": "application:site@5",
@@ -1538,9 +1538,9 @@
       "barres": [
         {
           "stade": "excavation",
-          "debut": "2026-10-22T14:13:26.242Z",
+          "debut": "2026-10-25T17:21:14.908Z",
           "fin": null,
-          "commence_par": "evt:008-fonction-8-de-site-public/6b960477",
+          "commence_par": "evt:008-fonction-8-de-site-public/2c6fc460",
           "finit_par": null,
           "fin_type": null
         }
@@ -1559,18 +1559,18 @@
       "barres": [
         {
           "stade": "excavation",
-          "debut": "2026-10-22T14:13:34.132Z",
-          "fin": "2026-10-22T14:13:34.784Z",
-          "commence_par": "evt:016-fonction-16-de-site-public/c2bb235e",
-          "finit_par": "evt:016-fonction-16-de-site-public/36e1000e",
+          "debut": "2026-10-25T17:21:22.857Z",
+          "fin": "2026-10-25T17:21:23.503Z",
+          "commence_par": "evt:016-fonction-16-de-site-public/8d9d6830",
+          "finit_par": "evt:016-fonction-16-de-site-public/cd7a362e",
           "fin_type": "normale"
         },
         {
           "stade": "foundations",
-          "debut": "2026-10-22T14:13:34.784Z",
-          "fin": "2026-10-22T14:13:35.088Z",
-          "commence_par": "evt:016-fonction-16-de-site-public/36e1000e",
-          "finit_par": "evt:016-fonction-16-de-site-public/72f4aeb0",
+          "debut": "2026-10-25T17:21:23.503Z",
+          "fin": "2026-10-25T17:21:23.787Z",
+          "commence_par": "evt:016-fonction-16-de-site-public/cd7a362e",
+          "finit_par": "evt:016-fonction-16-de-site-public/f72c7839",
           "fin_type": "normale"
         }
       ]
@@ -1586,8 +1586,8 @@
         "lot": "L1"
       },
       "etat": "prevu",
-      "prevu_le": "2026-10-22T14:13:34.784Z",
-      "prevu_par": "evt:016-fonction-16-de-site-public/36e1000e"
+      "prevu_le": "2026-10-25T17:21:23.503Z",
+      "prevu_par": "evt:016-fonction-16-de-site-public/cd7a362e"
     },
     {
       "id": "fiche:024-fonction-24-de-site-public@5",
@@ -1611,7 +1611,7 @@
       "etat": "en_cours",
       "barres": [
         {
-          "debut": "2026-10-22T14:13:22.018Z",
+          "debut": "2026-10-25T17:21:10.712Z",
           "fin": null
         }
       ]
@@ -1664,9 +1664,9 @@
       "barres": [
         {
           "statut": "en_cours",
-          "debut": "2026-10-22T14:13:28.121Z",
+          "debut": "2026-10-25T17:21:16.784Z",
           "fin": null,
-          "commence_par": "evt:009-fonction-9-de-application-de-bureau/ad1b722d",
+          "commence_par": "evt:009-fonction-9-de-application-de-bureau/1eb1a5fc",
           "finit_par": null,
           "fin_type": null
         }
@@ -1685,9 +1685,9 @@
       "barres": [
         {
           "stade": "finishing",
-          "debut": "2026-10-22T14:13:36.541Z",
+          "debut": "2026-10-25T17:21:25.181Z",
           "fin": null,
-          "commence_par": "evt:017-fonction-17-de-application-de-bureau/e8471064",
+          "commence_par": "evt:017-fonction-17-de-application-de-bureau/99ae1d0f",
           "finit_par": null,
           "fin_type": null
         }
@@ -1707,9 +1707,9 @@
       "barres": [
         {
           "statut": "en_cours",
-          "debut": "2026-10-22T14:13:36.438Z",
+          "debut": "2026-10-25T17:21:25.080Z",
           "fin": null,
-          "commence_par": "evt:017-fonction-17-de-application-de-bureau/36cf2535",
+          "commence_par": "evt:017-fonction-17-de-application-de-bureau/60657c27",
           "finit_par": null,
           "fin_type": null
         }
@@ -1762,9 +1762,9 @@
       "barres": [
         {
           "stade": "envelope",
-          "debut": "2026-10-22T14:13:29.600Z",
+          "debut": "2026-10-25T17:21:18.144Z",
           "fin": null,
-          "commence_par": "evt:010-fonction-10-de-application-terrain/740a39fc",
+          "commence_par": "evt:010-fonction-10-de-application-terrain/749a3969",
           "finit_par": null,
           "fin_type": null
         }
@@ -1784,10 +1784,10 @@
       "barres": [
         {
           "statut": "fini",
-          "debut": "2026-10-22T14:13:29.435Z",
-          "fin": "2026-10-22T14:13:29.600Z",
-          "commence_par": "evt:010-fonction-10-de-application-terrain/10ebcf26",
-          "finit_par": "evt:010-fonction-10-de-application-terrain/740a39fc",
+          "debut": "2026-10-25T17:21:18.004Z",
+          "fin": "2026-10-25T17:21:18.144Z",
+          "commence_par": "evt:010-fonction-10-de-application-terrain/5c091665",
+          "finit_par": "evt:010-fonction-10-de-application-terrain/749a3969",
           "fin_type": "normale"
         }
       ]
@@ -1840,9 +1840,9 @@
       "barres": [
         {
           "statut": "en_cours",
-          "debut": "2026-10-22T14:13:22.018Z",
+          "debut": "2026-10-25T17:21:10.712Z",
           "fin": null,
-          "commence_par": "evt:003-fonction-3-de-administration/ba0f4ab8",
+          "commence_par": "evt:003-fonction-3-de-administration/52a20a61",
           "finit_par": null,
           "fin_type": null
         }
@@ -1861,9 +1861,9 @@
       "barres": [
         {
           "stade": "finishing",
-          "debut": "2026-10-22T14:13:30.989Z",
+          "debut": "2026-10-25T17:21:19.523Z",
           "fin": null,
-          "commence_par": "evt:011-fonction-11-de-administration/7010bb9b",
+          "commence_par": "evt:011-fonction-11-de-administration/db2e2ceb",
           "finit_par": null,
           "fin_type": null
         }
@@ -1883,9 +1883,9 @@
       "barres": [
         {
           "statut": "en_cours",
-          "debut": "2026-10-22T14:13:30.889Z",
+          "debut": "2026-10-25T17:21:19.434Z",
           "fin": null,
-          "commence_par": "evt:011-fonction-11-de-administration/e2ff9a83",
+          "commence_par": "evt:011-fonction-11-de-administration/4c0fcd4e",
           "finit_par": null,
           "fin_type": null
         }
@@ -1926,9 +1926,9 @@
       "barres": [
         {
           "stade": "envelope",
-          "debut": "2026-10-22T14:13:23.744Z",
+          "debut": "2026-10-25T17:21:12.238Z",
           "fin": null,
-          "commence_par": "evt:004-fonction-4-de-portail-client/521673eb",
+          "commence_par": "evt:004-fonction-4-de-portail-client/0b8ebc44",
           "finit_par": null,
           "fin_type": null
         }
@@ -1948,10 +1948,10 @@
       "barres": [
         {
           "statut": "fini",
-          "debut": "2026-10-22T14:13:23.565Z",
-          "fin": "2026-10-22T14:13:23.744Z",
-          "commence_par": "evt:004-fonction-4-de-portail-client/a37803b5",
-          "finit_par": "evt:004-fonction-4-de-portail-client/521673eb",
+          "debut": "2026-10-25T17:21:12.076Z",
+          "fin": "2026-10-25T17:21:12.238Z",
+          "commence_par": "evt:004-fonction-4-de-portail-client/3975b25b",
+          "finit_par": "evt:004-fonction-4-de-portail-client/0b8ebc44",
           "fin_type": "normale"
         }
       ]
@@ -2003,9 +2003,9 @@
       "barres": [
         {
           "stade": "finishing",
-          "debut": "2026-10-22T14:13:25.258Z",
+          "debut": "2026-10-25T17:21:13.843Z",
           "fin": null,
-          "commence_par": "evt:005-fonction-5-de-facturation/754091a2",
+          "commence_par": "evt:005-fonction-5-de-facturation/906bdb53",
           "finit_par": null,
           "fin_type": null
         }
@@ -2025,9 +2025,9 @@
       "barres": [
         {
           "statut": "en_cours",
-          "debut": "2026-10-22T14:13:25.159Z",
+          "debut": "2026-10-25T17:21:13.725Z",
           "fin": null,
-          "commence_par": "evt:005-fonction-5-de-facturation/1cb8d612",
+          "commence_par": "evt:005-fonction-5-de-facturation/93d3ace9",
           "finit_par": null,
           "fin_type": null
         }
@@ -2071,9 +2071,9 @@
       "barres": [
         {
           "statut": "en_cours",
-          "debut": "2026-10-22T14:13:39.197Z",
+          "debut": "2026-10-25T17:21:27.793Z",
           "fin": null,
-          "commence_par": "evt:021-fonction-21-de-facturation/8985a678",
+          "commence_par": "evt:021-fonction-21-de-facturation/b2bdd94c",
           "finit_par": null,
           "fin_type": null
         }
@@ -2126,9 +2126,9 @@
       "barres": [
         {
           "stade": "envelope",
-          "debut": "2026-10-22T14:13:40.699Z",
+          "debut": "2026-10-25T17:21:29.238Z",
           "fin": null,
-          "commence_par": "evt:022-fonction-22-de-rapports/839672c0",
+          "commence_par": "evt:022-fonction-22-de-rapports/4eca5436",
           "finit_par": null,
           "fin_type": null
         }
@@ -2148,10 +2148,10 @@
       "barres": [
         {
           "statut": "fini",
-          "debut": "2026-10-22T14:13:40.529Z",
-          "fin": "2026-10-22T14:13:40.699Z",
-          "commence_par": "evt:022-fonction-22-de-rapports/6779257a",
-          "finit_par": "evt:022-fonction-22-de-rapports/839672c0",
+          "debut": "2026-10-25T17:21:29.111Z",
+          "fin": "2026-10-25T17:21:29.238Z",
+          "commence_par": "evt:022-fonction-22-de-rapports/47514e0f",
+          "finit_par": "evt:022-fonction-22-de-rapports/4eca5436",
           "fin_type": "normale"
         }
       ]
@@ -2204,9 +2204,9 @@
       "barres": [
         {
           "statut": "en_cours",
-          "debut": "2026-10-22T14:13:33.697Z",
+          "debut": "2026-10-25T17:21:22.386Z",
           "fin": null,
-          "commence_par": "evt:015-fonction-15-de-synchronisation/c795e267",
+          "commence_par": "evt:015-fonction-15-de-synchronisation/fffce766",
           "finit_par": null,
           "fin_type": null
         }
@@ -2225,9 +2225,9 @@
       "barres": [
         {
           "stade": "finishing",
-          "debut": "2026-10-22T14:13:42.376Z",
+          "debut": "2026-10-25T17:21:30.648Z",
           "fin": null,
-          "commence_par": "evt:023-fonction-23-de-synchronisation/64e3d971",
+          "commence_par": "evt:023-fonction-23-de-synchronisation/081845cd",
           "finit_par": null,
           "fin_type": null
         }
@@ -2247,9 +2247,9 @@
       "barres": [
         {
           "statut": "en_cours",
-          "debut": "2026-10-22T14:13:42.230Z",
+          "debut": "2026-10-25T17:21:30.545Z",
           "fin": null,
-          "commence_par": "evt:023-fonction-23-de-synchronisation/2362b8c5",
+          "commence_par": "evt:023-fonction-23-de-synchronisation/ebbc2da9",
           "finit_par": null,
           "fin_type": null
         }
@@ -2290,9 +2290,9 @@
       "barres": [
         {
           "stade": "envelope",
-          "debut": "2026-10-22T14:13:35.088Z",
+          "debut": "2026-10-25T17:21:23.787Z",
           "fin": null,
-          "commence_par": "evt:016-fonction-16-de-site-public/72f4aeb0",
+          "commence_par": "evt:016-fonction-16-de-site-public/f72c7839",
           "finit_par": null,
           "fin_type": null
         }
@@ -2312,10 +2312,10 @@
       "barres": [
         {
           "statut": "fini",
-          "debut": "2026-10-22T14:13:34.941Z",
-          "fin": "2026-10-22T14:13:35.088Z",
-          "commence_par": "evt:016-fonction-16-de-site-public/469cc372",
-          "finit_par": "evt:016-fonction-16-de-site-public/72f4aeb0",
+          "debut": "2026-10-25T17:21:23.644Z",
+          "fin": "2026-10-25T17:21:23.787Z",
+          "commence_par": "evt:016-fonction-16-de-site-public/6e27452c",
+          "finit_par": "evt:016-fonction-16-de-site-public/f72c7839",
           "fin_type": "normale"
         }
       ]
@@ -3140,8 +3140,8 @@
       "decision": "plan",
       "nom": "Ton feu vert",
       "etat": "attendue",
-      "demandee": "2026-10-22T14:13:19.683Z",
-      "demandee_par": "evt:001-fonction-1-de-application-de-bureau/8b221dad",
+      "demandee": "2026-10-25T17:21:08.220Z",
+      "demandee_par": "evt:001-fonction-1-de-application-de-bureau/2b101ef0",
       "demandee_source": "journal",
       "prise": null,
       "prise_par": null
@@ -3152,11 +3152,11 @@
       "decision": "plan",
       "nom": "Ton feu vert",
       "etat": "accordee",
-      "demandee": "2026-10-22T14:13:19.968Z",
-      "demandee_par": "evt:002-fonction-2-de-application-terrain/b3a7c3fe",
+      "demandee": "2026-10-25T17:21:08.588Z",
+      "demandee_par": "evt:002-fonction-2-de-application-terrain/ddcac271",
       "demandee_source": "journal",
-      "prise": "2026-10-22T14:13:20.083Z",
-      "prise_par": "evt:002-fonction-2-de-application-terrain/50ff73f0"
+      "prise": "2026-10-25T17:21:08.759Z",
+      "prise_par": "evt:002-fonction-2-de-application-terrain/abd7a735"
     },
     {
       "id": "jalon:003-fonction-3-de-administration/plan/1",
@@ -3164,11 +3164,11 @@
       "decision": "plan",
       "nom": "Ton feu vert",
       "etat": "accordee",
-      "demandee": "2026-10-22T14:13:20.915Z",
-      "demandee_par": "evt:003-fonction-3-de-administration/4be9fbce",
+      "demandee": "2026-10-25T17:21:09.637Z",
+      "demandee_par": "evt:003-fonction-3-de-administration/835c5d4a",
       "demandee_source": "journal",
-      "prise": "2026-10-22T14:13:21.047Z",
-      "prise_par": "evt:003-fonction-3-de-administration/447a5648"
+      "prise": "2026-10-25T17:21:09.813Z",
+      "prise_par": "evt:003-fonction-3-de-administration/f9834c7e"
     },
     {
       "id": "jalon:004-fonction-4-de-portail-client/plan/1",
@@ -3176,11 +3176,11 @@
       "decision": "plan",
       "nom": "Ton feu vert",
       "etat": "accordee",
-      "demandee": "2026-10-22T14:13:22.335Z",
-      "demandee_par": "evt:004-fonction-4-de-portail-client/ddaf0ca9",
+      "demandee": "2026-10-25T17:21:10.994Z",
+      "demandee_par": "evt:004-fonction-4-de-portail-client/2094b472",
       "demandee_source": "journal",
-      "prise": "2026-10-22T14:13:22.471Z",
-      "prise_par": "evt:004-fonction-4-de-portail-client/47d4367c"
+      "prise": "2026-10-25T17:21:11.134Z",
+      "prise_par": "evt:004-fonction-4-de-portail-client/6a75b750"
     },
     {
       "id": "jalon:005-fonction-5-de-facturation/plan/1",
@@ -3188,11 +3188,11 @@
       "decision": "plan",
       "nom": "Ton feu vert",
       "etat": "accordee",
-      "demandee": "2026-10-22T14:13:24.110Z",
-      "demandee_par": "evt:005-fonction-5-de-facturation/449d875d",
+      "demandee": "2026-10-25T17:21:12.596Z",
+      "demandee_par": "evt:005-fonction-5-de-facturation/ffdd30f7",
       "demandee_source": "journal",
-      "prise": "2026-10-22T14:13:24.244Z",
-      "prise_par": "evt:005-fonction-5-de-facturation/b5cb1e2d"
+      "prise": "2026-10-25T17:21:12.903Z",
+      "prise_par": "evt:005-fonction-5-de-facturation/77cd8692"
     },
     {
       "id": "jalon:007-fonction-7-de-synchronisation/plan/1",
@@ -3200,8 +3200,8 @@
       "decision": "plan",
       "nom": "Ton feu vert",
       "etat": "attendue",
-      "demandee": "2026-10-22T14:13:25.778Z",
-      "demandee_par": "evt:007-fonction-7-de-synchronisation/9cb91994",
+      "demandee": "2026-10-25T17:21:14.370Z",
+      "demandee_par": "evt:007-fonction-7-de-synchronisation/66829900",
       "demandee_source": "journal",
       "prise": null,
       "prise_par": null
@@ -3212,11 +3212,11 @@
       "decision": "plan",
       "nom": "Ton feu vert",
       "etat": "accordee",
-      "demandee": "2026-10-22T14:13:26.115Z",
-      "demandee_par": "evt:008-fonction-8-de-site-public/78014e2a",
+      "demandee": "2026-10-25T17:21:14.726Z",
+      "demandee_par": "evt:008-fonction-8-de-site-public/c370dde6",
       "demandee_source": "journal",
-      "prise": "2026-10-22T14:13:26.242Z",
-      "prise_par": "evt:008-fonction-8-de-site-public/6b960477"
+      "prise": "2026-10-25T17:21:14.908Z",
+      "prise_par": "evt:008-fonction-8-de-site-public/2c6fc460"
     },
     {
       "id": "jalon:009-fonction-9-de-application-de-bureau/plan/1",
@@ -3224,11 +3224,11 @@
       "decision": "plan",
       "nom": "Ton feu vert",
       "etat": "accordee",
-      "demandee": "2026-10-22T14:13:27.151Z",
-      "demandee_par": "evt:009-fonction-9-de-application-de-bureau/2c1325c6",
+      "demandee": "2026-10-25T17:21:15.705Z",
+      "demandee_par": "evt:009-fonction-9-de-application-de-bureau/3b844727",
       "demandee_source": "journal",
-      "prise": "2026-10-22T14:13:27.286Z",
-      "prise_par": "evt:009-fonction-9-de-application-de-bureau/d550ece3"
+      "prise": "2026-10-25T17:21:15.888Z",
+      "prise_par": "evt:009-fonction-9-de-application-de-bureau/260e0162"
     },
     {
       "id": "jalon:010-fonction-10-de-application-terrain/plan/1",
@@ -3236,11 +3236,11 @@
       "decision": "plan",
       "nom": "Ton feu vert",
       "etat": "accordee",
-      "demandee": "2026-10-22T14:13:28.440Z",
-      "demandee_par": "evt:010-fonction-10-de-application-terrain/8090ef39",
+      "demandee": "2026-10-25T17:21:17.083Z",
+      "demandee_par": "evt:010-fonction-10-de-application-terrain/53000812",
       "demandee_source": "journal",
-      "prise": "2026-10-22T14:13:28.574Z",
-      "prise_par": "evt:010-fonction-10-de-application-terrain/7b1552c4"
+      "prise": "2026-10-25T17:21:17.235Z",
+      "prise_par": "evt:010-fonction-10-de-application-terrain/9fbdd1ed"
     },
     {
       "id": "jalon:011-fonction-11-de-administration/plan/1",
@@ -3248,11 +3248,11 @@
       "decision": "plan",
       "nom": "Ton feu vert",
       "etat": "accordee",
-      "demandee": "2026-10-22T14:13:29.917Z",
-      "demandee_par": "evt:011-fonction-11-de-administration/0610a3c2",
+      "demandee": "2026-10-25T17:21:18.493Z",
+      "demandee_par": "evt:011-fonction-11-de-administration/2b31df56",
       "demandee_source": "journal",
-      "prise": "2026-10-22T14:13:30.034Z",
-      "prise_par": "evt:011-fonction-11-de-administration/367bc68e"
+      "prise": "2026-10-25T17:21:18.660Z",
+      "prise_par": "evt:011-fonction-11-de-administration/9e39bd20"
     },
     {
       "id": "jalon:013-fonction-13-de-facturation/plan/1",
@@ -3260,8 +3260,8 @@
       "decision": "plan",
       "nom": "Ton feu vert",
       "etat": "attendue",
-      "demandee": "2026-10-22T14:13:31.477Z",
-      "demandee_par": "evt:013-fonction-13-de-facturation/cb3e373f",
+      "demandee": "2026-10-25T17:21:19.967Z",
+      "demandee_par": "evt:013-fonction-13-de-facturation/5c4b643e",
       "demandee_source": "journal",
       "prise": null,
       "prise_par": null
@@ -3272,11 +3272,11 @@
       "decision": "plan",
       "nom": "Ton feu vert",
       "etat": "accordee",
-      "demandee": "2026-10-22T14:13:31.754Z",
-      "demandee_par": "evt:014-fonction-14-de-rapports/0aa355d3",
+      "demandee": "2026-10-25T17:21:20.297Z",
+      "demandee_par": "evt:014-fonction-14-de-rapports/01dd60c9",
       "demandee_source": "journal",
-      "prise": "2026-10-22T14:13:31.887Z",
-      "prise_par": "evt:014-fonction-14-de-rapports/002072ea"
+      "prise": "2026-10-25T17:21:20.437Z",
+      "prise_par": "evt:014-fonction-14-de-rapports/9b8f3826"
     },
     {
       "id": "jalon:015-fonction-15-de-synchronisation/plan/1",
@@ -3284,11 +3284,11 @@
       "decision": "plan",
       "nom": "Ton feu vert",
       "etat": "accordee",
-      "demandee": "2026-10-22T14:13:32.744Z",
-      "demandee_par": "evt:015-fonction-15-de-synchronisation/f9b61657",
+      "demandee": "2026-10-25T17:21:21.245Z",
+      "demandee_par": "evt:015-fonction-15-de-synchronisation/81284b99",
       "demandee_source": "journal",
-      "prise": "2026-10-22T14:13:32.867Z",
-      "prise_par": "evt:015-fonction-15-de-synchronisation/5b83f47e"
+      "prise": "2026-10-25T17:21:21.434Z",
+      "prise_par": "evt:015-fonction-15-de-synchronisation/fa5b1b1f"
     },
     {
       "id": "jalon:016-fonction-16-de-site-public/plan/1",
@@ -3296,11 +3296,11 @@
       "decision": "plan",
       "nom": "Ton feu vert",
       "etat": "accordee",
-      "demandee": "2026-10-22T14:13:34.007Z",
-      "demandee_par": "evt:016-fonction-16-de-site-public/1b4e62e2",
+      "demandee": "2026-10-25T17:21:22.687Z",
+      "demandee_par": "evt:016-fonction-16-de-site-public/0dd1f036",
       "demandee_source": "journal",
-      "prise": "2026-10-22T14:13:34.132Z",
-      "prise_par": "evt:016-fonction-16-de-site-public/c2bb235e"
+      "prise": "2026-10-25T17:21:22.857Z",
+      "prise_par": "evt:016-fonction-16-de-site-public/8d9d6830"
     },
     {
       "id": "jalon:017-fonction-17-de-application-de-bureau/plan/1",
@@ -3308,11 +3308,11 @@
       "decision": "plan",
       "nom": "Ton feu vert",
       "etat": "accordee",
-      "demandee": "2026-10-22T14:13:35.408Z",
-      "demandee_par": "evt:017-fonction-17-de-application-de-bureau/e5ad7f23",
+      "demandee": "2026-10-25T17:21:24.114Z",
+      "demandee_par": "evt:017-fonction-17-de-application-de-bureau/c44d2ff6",
       "demandee_source": "journal",
-      "prise": "2026-10-22T14:13:35.536Z",
-      "prise_par": "evt:017-fonction-17-de-application-de-bureau/aa6cd1b0"
+      "prise": "2026-10-25T17:21:24.264Z",
+      "prise_par": "evt:017-fonction-17-de-application-de-bureau/96997dd7"
     },
     {
       "id": "jalon:019-fonction-19-de-administration/plan/1",
@@ -3320,8 +3320,8 @@
       "decision": "plan",
       "nom": "Ton feu vert",
       "etat": "attendue",
-      "demandee": "2026-10-22T14:13:37.001Z",
-      "demandee_par": "evt:019-fonction-19-de-administration/6eeb5995",
+      "demandee": "2026-10-25T17:21:25.648Z",
+      "demandee_par": "evt:019-fonction-19-de-administration/8d259520",
       "demandee_source": "journal",
       "prise": null,
       "prise_par": null
@@ -3332,11 +3332,11 @@
       "decision": "plan",
       "nom": "Ton feu vert",
       "etat": "accordee",
-      "demandee": "2026-10-22T14:13:37.283Z",
-      "demandee_par": "evt:020-fonction-20-de-portail-client/4dd39574",
+      "demandee": "2026-10-25T17:21:25.944Z",
+      "demandee_par": "evt:020-fonction-20-de-portail-client/16bdcd46",
       "demandee_source": "journal",
-      "prise": "2026-10-22T14:13:37.422Z",
-      "prise_par": "evt:020-fonction-20-de-portail-client/11318b42"
+      "prise": "2026-10-25T17:21:26.076Z",
+      "prise_par": "evt:020-fonction-20-de-portail-client/b0b8e5e8"
     },
     {
       "id": "jalon:021-fonction-21-de-facturation/plan/1",
@@ -3344,11 +3344,11 @@
       "decision": "plan",
       "nom": "Ton feu vert",
       "etat": "accordee",
-      "demandee": "2026-10-22T14:13:38.240Z",
-      "demandee_par": "evt:021-fonction-21-de-facturation/795055eb",
+      "demandee": "2026-10-25T17:21:26.859Z",
+      "demandee_par": "evt:021-fonction-21-de-facturation/9eaa7fc4",
       "demandee_source": "journal",
-      "prise": "2026-10-22T14:13:38.358Z",
-      "prise_par": "evt:021-fonction-21-de-facturation/63a9bbc4"
+      "prise": "2026-10-25T17:21:27.017Z",
+      "prise_par": "evt:021-fonction-21-de-facturation/cdb866bb"
     },
     {
       "id": "jalon:022-fonction-22-de-rapports/plan/1",
@@ -3356,11 +3356,11 @@
       "decision": "plan",
       "nom": "Ton feu vert",
       "etat": "accordee",
-      "demandee": "2026-10-22T14:13:39.525Z",
-      "demandee_par": "evt:022-fonction-22-de-rapports/320cc2cc",
+      "demandee": "2026-10-25T17:21:28.068Z",
+      "demandee_par": "evt:022-fonction-22-de-rapports/5041113f",
       "demandee_source": "journal",
-      "prise": "2026-10-22T14:13:39.660Z",
-      "prise_par": "evt:022-fonction-22-de-rapports/cbad940d"
+      "prise": "2026-10-25T17:21:28.222Z",
+      "prise_par": "evt:022-fonction-22-de-rapports/c8b75e75"
     },
     {
       "id": "jalon:023-fonction-23-de-synchronisation/plan/1",
@@ -3368,11 +3368,11 @@
       "decision": "plan",
       "nom": "Ton feu vert",
       "etat": "accordee",
-      "demandee": "2026-10-22T14:13:41.093Z",
-      "demandee_par": "evt:023-fonction-23-de-synchronisation/e20d0603",
+      "demandee": "2026-10-25T17:21:29.537Z",
+      "demandee_par": "evt:023-fonction-23-de-synchronisation/8991dfd8",
       "demandee_source": "journal",
-      "prise": "2026-10-22T14:13:41.233Z",
-      "prise_par": "evt:023-fonction-23-de-synchronisation/dbff46c3"
+      "prise": "2026-10-25T17:21:29.675Z",
+      "prise_par": "evt:023-fonction-23-de-synchronisation/33fef5ec"
     },
     {
       "id": "jalon:025-fonction-25-de-application-de-bureau/plan/1",
@@ -3380,8 +3380,8 @@
       "decision": "plan",
       "nom": "Ton feu vert",
       "etat": "attendue",
-      "demandee": "2026-10-22T14:13:42.961Z",
-      "demandee_par": "evt:025-fonction-25-de-application-de-bureau/5199f222",
+      "demandee": "2026-10-25T17:21:31.108Z",
+      "demandee_par": "evt:025-fonction-25-de-application-de-bureau/45e4cc16",
       "demandee_source": "journal",
       "prise": null,
       "prise_par": null
@@ -3781,26 +3781,15 @@
   ],
   "evenements": [
     {
-      "id": "evt:projet/d1ba146f",
-      "ts": "2026-10-22T14:13:19.417Z",
+      "id": "evt:projet/d9d4f4b7",
+      "ts": "2026-10-25T17:21:07.912Z",
       "kind": "projet-ouvert",
       "phrase": "Le projet « Volume » est ouvert",
       "trait": false
     },
     {
-      "id": "evt:001-fonction-1-de-application-de-bureau/8136d347",
-      "ts": "2026-10-22T14:13:19.516Z",
-      "kind": "bail",
-      "phrase": "Une session reprend « Fonction 1 de « Application de bureau » »",
-      "ref": {
-        "application": "bureau",
-        "fiche": "001-fonction-1-de-application-de-bureau"
-      },
-      "trait": false
-    },
-    {
-      "id": "evt:001-fonction-1-de-application-de-bureau/c85a61c0",
-      "ts": "2026-10-22T14:13:19.516Z",
+      "id": "evt:001-fonction-1-de-application-de-bureau/bc10bbb8",
+      "ts": "2026-10-25T17:21:08.016Z",
       "kind": "run",
       "phrase": "La fiche « Fonction 1 de « Application de bureau » » est ouverte",
       "ref": {
@@ -3810,8 +3799,19 @@
       "trait": true
     },
     {
-      "id": "evt:001-fonction-1-de-application-de-bureau/8b221dad",
-      "ts": "2026-10-22T14:13:19.683Z",
+      "id": "evt:001-fonction-1-de-application-de-bureau/ac17ab16",
+      "ts": "2026-10-25T17:21:08.017Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 1 de « Application de bureau » »",
+      "ref": {
+        "application": "bureau",
+        "fiche": "001-fonction-1-de-application-de-bureau"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:001-fonction-1-de-application-de-bureau/2b101ef0",
+      "ts": "2026-10-25T17:21:08.220Z",
       "kind": "gate",
       "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 1 de « Application de bureau » »",
       "ref": {
@@ -3821,19 +3821,8 @@
       "trait": false
     },
     {
-      "id": "evt:002-fonction-2-de-application-terrain/bfcd4ae6",
-      "ts": "2026-10-22T14:13:19.807Z",
-      "kind": "bail",
-      "phrase": "Une session reprend « Fonction 2 de « Application terrain » »",
-      "ref": {
-        "application": "terrain",
-        "fiche": "002-fonction-2-de-application-terrain"
-      },
-      "trait": false
-    },
-    {
-      "id": "evt:002-fonction-2-de-application-terrain/d402b1e3",
-      "ts": "2026-10-22T14:13:19.807Z",
+      "id": "evt:002-fonction-2-de-application-terrain/ea9af8a1",
+      "ts": "2026-10-25T17:21:08.395Z",
       "kind": "run",
       "phrase": "La fiche « Fonction 2 de « Application terrain » » est ouverte",
       "ref": {
@@ -3843,8 +3832,19 @@
       "trait": true
     },
     {
-      "id": "evt:002-fonction-2-de-application-terrain/b3a7c3fe",
-      "ts": "2026-10-22T14:13:19.968Z",
+      "id": "evt:002-fonction-2-de-application-terrain/fa669b4e",
+      "ts": "2026-10-25T17:21:08.396Z",
+      "kind": "bail",
+      "phrase": "Une session reprend « Fonction 2 de « Application terrain » »",
+      "ref": {
+        "application": "terrain",
+        "fiche": "002-fonction-2-de-application-terrain"
+      },
+      "trait": false
+    },
+    {
+      "id": "evt:002-fonction-2-de-application-terrain/ddcac271",
+      "ts": "2026-10-25T17:21:08.588Z",
       "kind": "gate",
       "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 2 de « Application terrain » »",
       "ref": {
@@ -3854,8 +3854,8 @@
       "trait": false
     },
     {
-      "id": "evt:002-fonction-2-de-application-terrain/50ff73f0",
-      "ts": "2026-10-22T14:13:20.083Z",
+      "id": "evt:002-fonction-2-de-application-terrain/abd7a735",
+      "ts": "2026-10-25T17:21:08.759Z",
       "kind": "gate",
       "phrase": "Tu accordes « le feu vert » pour « Fonction 2 de « Application terrain » »",
       "ref": {
@@ -3865,8 +3865,8 @@
       "trait": false
     },
     {
-      "id": "evt:003-fonction-3-de-administration/73876cae",
-      "ts": "2026-10-22T14:13:20.744Z",
+      "id": "evt:003-fonction-3-de-administration/387d3b5d",
+      "ts": "2026-10-25T17:21:09.455Z",
       "kind": "run",
       "phrase": "La fiche « Fonction 3 de « Administration » » est ouverte",
       "ref": {
@@ -3876,8 +3876,8 @@
       "trait": true
     },
     {
-      "id": "evt:003-fonction-3-de-administration/bacd0a47",
-      "ts": "2026-10-22T14:13:20.745Z",
+      "id": "evt:003-fonction-3-de-administration/6897017d",
+      "ts": "2026-10-25T17:21:09.456Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 3 de « Administration » »",
       "ref": {
@@ -3887,8 +3887,8 @@
       "trait": false
     },
     {
-      "id": "evt:003-fonction-3-de-administration/4be9fbce",
-      "ts": "2026-10-22T14:13:20.915Z",
+      "id": "evt:003-fonction-3-de-administration/835c5d4a",
+      "ts": "2026-10-25T17:21:09.637Z",
       "kind": "gate",
       "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 3 de « Administration » »",
       "ref": {
@@ -3898,8 +3898,8 @@
       "trait": false
     },
     {
-      "id": "evt:003-fonction-3-de-administration/447a5648",
-      "ts": "2026-10-22T14:13:21.047Z",
+      "id": "evt:003-fonction-3-de-administration/f9834c7e",
+      "ts": "2026-10-25T17:21:09.813Z",
       "kind": "gate",
       "phrase": "Tu accordes « le feu vert » pour « Fonction 3 de « Administration » »",
       "ref": {
@@ -3909,8 +3909,8 @@
       "trait": false
     },
     {
-      "id": "evt:003-fonction-3-de-administration/8978bca1",
-      "ts": "2026-10-22T14:13:21.812Z",
+      "id": "evt:003-fonction-3-de-administration/84b99efb",
+      "ts": "2026-10-25T17:21:10.562Z",
       "kind": "lot",
       "phrase": "Le lot « Le lot de la fonction 3 » est prévu dans « Fonction 3 de « Administration » »",
       "ref": {
@@ -3921,8 +3921,8 @@
       "trait": true
     },
     {
-      "id": "evt:003-fonction-3-de-administration/ba0f4ab8",
-      "ts": "2026-10-22T14:13:22.018Z",
+      "id": "evt:003-fonction-3-de-administration/52a20a61",
+      "ts": "2026-10-25T17:21:10.712Z",
       "kind": "lot_etat",
       "phrase": "Le lot « Le lot de la fonction 3 » commence",
       "ref": {
@@ -3933,8 +3933,8 @@
       "trait": true
     },
     {
-      "id": "evt:004-fonction-4-de-portail-client/04bbd927",
-      "ts": "2026-10-22T14:13:22.159Z",
+      "id": "evt:004-fonction-4-de-portail-client/f8a8ddd3",
+      "ts": "2026-10-25T17:21:10.835Z",
       "kind": "run",
       "phrase": "La fiche « Fonction 4 de « Portail client » » est ouverte",
       "ref": {
@@ -3944,8 +3944,8 @@
       "trait": true
     },
     {
-      "id": "evt:004-fonction-4-de-portail-client/f8d9f6ec",
-      "ts": "2026-10-22T14:13:22.160Z",
+      "id": "evt:004-fonction-4-de-portail-client/710b7b76",
+      "ts": "2026-10-25T17:21:10.836Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 4 de « Portail client » »",
       "ref": {
@@ -3955,8 +3955,8 @@
       "trait": false
     },
     {
-      "id": "evt:004-fonction-4-de-portail-client/ddaf0ca9",
-      "ts": "2026-10-22T14:13:22.335Z",
+      "id": "evt:004-fonction-4-de-portail-client/2094b472",
+      "ts": "2026-10-25T17:21:10.994Z",
       "kind": "gate",
       "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 4 de « Portail client » »",
       "ref": {
@@ -3966,8 +3966,8 @@
       "trait": false
     },
     {
-      "id": "evt:004-fonction-4-de-portail-client/47d4367c",
-      "ts": "2026-10-22T14:13:22.471Z",
+      "id": "evt:004-fonction-4-de-portail-client/6a75b750",
+      "ts": "2026-10-25T17:21:11.134Z",
       "kind": "gate",
       "phrase": "Tu accordes « le feu vert » pour « Fonction 4 de « Portail client » »",
       "ref": {
@@ -3977,8 +3977,8 @@
       "trait": false
     },
     {
-      "id": "evt:004-fonction-4-de-portail-client/614ab29b",
-      "ts": "2026-10-22T14:13:23.395Z",
+      "id": "evt:004-fonction-4-de-portail-client/feea39be",
+      "ts": "2026-10-25T17:21:11.891Z",
       "kind": "lot",
       "phrase": "Le lot « Le lot de la fonction 4 » est prévu dans « Fonction 4 de « Portail client » »",
       "ref": {
@@ -3989,8 +3989,8 @@
       "trait": true
     },
     {
-      "id": "evt:004-fonction-4-de-portail-client/a37803b5",
-      "ts": "2026-10-22T14:13:23.565Z",
+      "id": "evt:004-fonction-4-de-portail-client/3975b25b",
+      "ts": "2026-10-25T17:21:12.076Z",
       "kind": "lot_etat",
       "phrase": "Le lot « Le lot de la fonction 4 » commence",
       "ref": {
@@ -4001,8 +4001,8 @@
       "trait": true
     },
     {
-      "id": "evt:004-fonction-4-de-portail-client/521673eb",
-      "ts": "2026-10-22T14:13:23.744Z",
+      "id": "evt:004-fonction-4-de-portail-client/0b8ebc44",
+      "ts": "2026-10-25T17:21:12.238Z",
       "kind": "lot_etat",
       "phrase": "Le lot « Le lot de la fonction 4 » est fini",
       "ref": {
@@ -4013,8 +4013,8 @@
       "trait": true
     },
     {
-      "id": "evt:005-fonction-5-de-facturation/5abf9cc0",
-      "ts": "2026-10-22T14:13:23.925Z",
+      "id": "evt:005-fonction-5-de-facturation/96790921",
+      "ts": "2026-10-25T17:21:12.414Z",
       "kind": "run",
       "phrase": "La fiche « Fonction 5 de « Facturation » » est ouverte",
       "ref": {
@@ -4024,8 +4024,8 @@
       "trait": true
     },
     {
-      "id": "evt:005-fonction-5-de-facturation/ce45f4ac",
-      "ts": "2026-10-22T14:13:23.926Z",
+      "id": "evt:005-fonction-5-de-facturation/880d1e50",
+      "ts": "2026-10-25T17:21:12.415Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 5 de « Facturation » »",
       "ref": {
@@ -4035,8 +4035,8 @@
       "trait": false
     },
     {
-      "id": "evt:005-fonction-5-de-facturation/449d875d",
-      "ts": "2026-10-22T14:13:24.110Z",
+      "id": "evt:005-fonction-5-de-facturation/ffdd30f7",
+      "ts": "2026-10-25T17:21:12.596Z",
       "kind": "gate",
       "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 5 de « Facturation » »",
       "ref": {
@@ -4046,8 +4046,8 @@
       "trait": false
     },
     {
-      "id": "evt:005-fonction-5-de-facturation/b5cb1e2d",
-      "ts": "2026-10-22T14:13:24.244Z",
+      "id": "evt:005-fonction-5-de-facturation/77cd8692",
+      "ts": "2026-10-25T17:21:12.903Z",
       "kind": "gate",
       "phrase": "Tu accordes « le feu vert » pour « Fonction 5 de « Facturation » »",
       "ref": {
@@ -4057,8 +4057,8 @@
       "trait": false
     },
     {
-      "id": "evt:005-fonction-5-de-facturation/ccbde389",
-      "ts": "2026-10-22T14:13:24.990Z",
+      "id": "evt:005-fonction-5-de-facturation/43f7e20d",
+      "ts": "2026-10-25T17:21:13.566Z",
       "kind": "lot",
       "phrase": "Le lot « Le lot de la fonction 5 » est prévu dans « Fonction 5 de « Facturation » »",
       "ref": {
@@ -4069,8 +4069,8 @@
       "trait": true
     },
     {
-      "id": "evt:005-fonction-5-de-facturation/1cb8d612",
-      "ts": "2026-10-22T14:13:25.159Z",
+      "id": "evt:005-fonction-5-de-facturation/93d3ace9",
+      "ts": "2026-10-25T17:21:13.725Z",
       "kind": "lot_etat",
       "phrase": "Le lot « Le lot de la fonction 5 » commence",
       "ref": {
@@ -4081,8 +4081,8 @@
       "trait": true
     },
     {
-      "id": "evt:005-fonction-5-de-facturation/754091a2",
-      "ts": "2026-10-22T14:13:25.258Z",
+      "id": "evt:005-fonction-5-de-facturation/906bdb53",
+      "ts": "2026-10-25T17:21:13.843Z",
       "kind": "note",
       "phrase": "Une intention est notée sur « Fonction 5 de « Facturation » »",
       "ref": {
@@ -4092,8 +4092,8 @@
       "trait": false
     },
     {
-      "id": "evt:005-fonction-5-de-facturation/8dd8c2bc",
-      "ts": "2026-10-22T14:13:25.259Z",
+      "id": "evt:005-fonction-5-de-facturation/1cb356c5",
+      "ts": "2026-10-25T17:21:13.845Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 5 de « Facturation » »",
       "ref": {
@@ -4103,8 +4103,8 @@
       "trait": false
     },
     {
-      "id": "evt:006-fonction-6-de-rapports/b42aa315",
-      "ts": "2026-10-22T14:13:25.405Z",
+      "id": "evt:006-fonction-6-de-rapports/382a1d55",
+      "ts": "2026-10-25T17:21:14.011Z",
       "kind": "run",
       "phrase": "La fiche « Fonction 6 de « Rapports » » est ouverte",
       "ref": {
@@ -4114,8 +4114,8 @@
       "trait": true
     },
     {
-      "id": "evt:006-fonction-6-de-rapports/6f969073",
-      "ts": "2026-10-22T14:13:25.406Z",
+      "id": "evt:006-fonction-6-de-rapports/c699b733",
+      "ts": "2026-10-25T17:21:14.012Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 6 de « Rapports » »",
       "ref": {
@@ -4125,8 +4125,8 @@
       "trait": false
     },
     {
-      "id": "evt:007-fonction-7-de-synchronisation/1f4b9bf1",
-      "ts": "2026-10-22T14:13:25.589Z",
+      "id": "evt:007-fonction-7-de-synchronisation/6c00639e",
+      "ts": "2026-10-25T17:21:14.185Z",
       "kind": "run",
       "phrase": "La fiche « Fonction 7 de « Synchronisation » » est ouverte",
       "ref": {
@@ -4136,8 +4136,8 @@
       "trait": true
     },
     {
-      "id": "evt:007-fonction-7-de-synchronisation/579d8092",
-      "ts": "2026-10-22T14:13:25.591Z",
+      "id": "evt:007-fonction-7-de-synchronisation/dd439ee4",
+      "ts": "2026-10-25T17:21:14.186Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 7 de « Synchronisation » »",
       "ref": {
@@ -4147,8 +4147,8 @@
       "trait": false
     },
     {
-      "id": "evt:007-fonction-7-de-synchronisation/9cb91994",
-      "ts": "2026-10-22T14:13:25.778Z",
+      "id": "evt:007-fonction-7-de-synchronisation/66829900",
+      "ts": "2026-10-25T17:21:14.370Z",
       "kind": "gate",
       "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 7 de « Synchronisation » »",
       "ref": {
@@ -4158,8 +4158,8 @@
       "trait": false
     },
     {
-      "id": "evt:008-fonction-8-de-site-public/39e549e8",
-      "ts": "2026-10-22T14:13:25.927Z",
+      "id": "evt:008-fonction-8-de-site-public/3df54e35",
+      "ts": "2026-10-25T17:21:14.543Z",
       "kind": "run",
       "phrase": "La fiche « Fonction 8 de « Site public » » est ouverte",
       "ref": {
@@ -4169,8 +4169,8 @@
       "trait": true
     },
     {
-      "id": "evt:008-fonction-8-de-site-public/e3ddabd5",
-      "ts": "2026-10-22T14:13:25.928Z",
+      "id": "evt:008-fonction-8-de-site-public/4c98e253",
+      "ts": "2026-10-25T17:21:14.544Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 8 de « Site public » »",
       "ref": {
@@ -4180,8 +4180,8 @@
       "trait": false
     },
     {
-      "id": "evt:008-fonction-8-de-site-public/78014e2a",
-      "ts": "2026-10-22T14:13:26.115Z",
+      "id": "evt:008-fonction-8-de-site-public/c370dde6",
+      "ts": "2026-10-25T17:21:14.726Z",
       "kind": "gate",
       "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 8 de « Site public » »",
       "ref": {
@@ -4191,8 +4191,8 @@
       "trait": false
     },
     {
-      "id": "evt:008-fonction-8-de-site-public/6b960477",
-      "ts": "2026-10-22T14:13:26.242Z",
+      "id": "evt:008-fonction-8-de-site-public/2c6fc460",
+      "ts": "2026-10-25T17:21:14.908Z",
       "kind": "gate",
       "phrase": "Tu accordes « le feu vert » pour « Fonction 8 de « Site public » »",
       "ref": {
@@ -4202,19 +4202,8 @@
       "trait": false
     },
     {
-      "id": "evt:009-fonction-9-de-application-de-bureau/138cfa05",
-      "ts": "2026-10-22T14:13:26.965Z",
-      "kind": "run",
-      "phrase": "La fiche « Fonction 9 de « Application de bureau » » est ouverte",
-      "ref": {
-        "application": "bureau",
-        "fiche": "009-fonction-9-de-application-de-bureau"
-      },
-      "trait": true
-    },
-    {
-      "id": "evt:009-fonction-9-de-application-de-bureau/ba9789f3",
-      "ts": "2026-10-22T14:13:26.966Z",
+      "id": "evt:009-fonction-9-de-application-de-bureau/06b78944",
+      "ts": "2026-10-25T17:21:15.557Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 9 de « Application de bureau » »",
       "ref": {
@@ -4224,8 +4213,19 @@
       "trait": false
     },
     {
-      "id": "evt:009-fonction-9-de-application-de-bureau/2c1325c6",
-      "ts": "2026-10-22T14:13:27.151Z",
+      "id": "evt:009-fonction-9-de-application-de-bureau/1a2732ee",
+      "ts": "2026-10-25T17:21:15.557Z",
+      "kind": "run",
+      "phrase": "La fiche « Fonction 9 de « Application de bureau » » est ouverte",
+      "ref": {
+        "application": "bureau",
+        "fiche": "009-fonction-9-de-application-de-bureau"
+      },
+      "trait": true
+    },
+    {
+      "id": "evt:009-fonction-9-de-application-de-bureau/3b844727",
+      "ts": "2026-10-25T17:21:15.705Z",
       "kind": "gate",
       "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 9 de « Application de bureau » »",
       "ref": {
@@ -4235,8 +4235,8 @@
       "trait": false
     },
     {
-      "id": "evt:009-fonction-9-de-application-de-bureau/d550ece3",
-      "ts": "2026-10-22T14:13:27.286Z",
+      "id": "evt:009-fonction-9-de-application-de-bureau/260e0162",
+      "ts": "2026-10-25T17:21:15.888Z",
       "kind": "gate",
       "phrase": "Tu accordes « le feu vert » pour « Fonction 9 de « Application de bureau » »",
       "ref": {
@@ -4246,8 +4246,8 @@
       "trait": false
     },
     {
-      "id": "evt:009-fonction-9-de-application-de-bureau/09c3dcf5",
-      "ts": "2026-10-22T14:13:27.966Z",
+      "id": "evt:009-fonction-9-de-application-de-bureau/2349d244",
+      "ts": "2026-10-25T17:21:16.583Z",
       "kind": "lot",
       "phrase": "Le lot « Le lot de la fonction 9 » est prévu dans « Fonction 9 de « Application de bureau » »",
       "ref": {
@@ -4258,8 +4258,8 @@
       "trait": true
     },
     {
-      "id": "evt:009-fonction-9-de-application-de-bureau/ad1b722d",
-      "ts": "2026-10-22T14:13:28.121Z",
+      "id": "evt:009-fonction-9-de-application-de-bureau/1eb1a5fc",
+      "ts": "2026-10-25T17:21:16.784Z",
       "kind": "lot_etat",
       "phrase": "Le lot « Le lot de la fonction 9 » commence",
       "ref": {
@@ -4270,8 +4270,8 @@
       "trait": true
     },
     {
-      "id": "evt:010-fonction-10-de-application-terrain/79d91fe8",
-      "ts": "2026-10-22T14:13:28.259Z",
+      "id": "evt:010-fonction-10-de-application-terrain/4d2ad93e",
+      "ts": "2026-10-25T17:21:16.912Z",
       "kind": "run",
       "phrase": "La fiche « Fonction 10 de « Application terrain » » est ouverte",
       "ref": {
@@ -4281,8 +4281,8 @@
       "trait": true
     },
     {
-      "id": "evt:010-fonction-10-de-application-terrain/cbcc2e58",
-      "ts": "2026-10-22T14:13:28.260Z",
+      "id": "evt:010-fonction-10-de-application-terrain/f736687d",
+      "ts": "2026-10-25T17:21:16.913Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 10 de « Application terrain » »",
       "ref": {
@@ -4292,8 +4292,8 @@
       "trait": false
     },
     {
-      "id": "evt:010-fonction-10-de-application-terrain/8090ef39",
-      "ts": "2026-10-22T14:13:28.440Z",
+      "id": "evt:010-fonction-10-de-application-terrain/53000812",
+      "ts": "2026-10-25T17:21:17.083Z",
       "kind": "gate",
       "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 10 de « Application terrain » »",
       "ref": {
@@ -4303,8 +4303,8 @@
       "trait": false
     },
     {
-      "id": "evt:010-fonction-10-de-application-terrain/7b1552c4",
-      "ts": "2026-10-22T14:13:28.574Z",
+      "id": "evt:010-fonction-10-de-application-terrain/9fbdd1ed",
+      "ts": "2026-10-25T17:21:17.235Z",
       "kind": "gate",
       "phrase": "Tu accordes « le feu vert » pour « Fonction 10 de « Application terrain » »",
       "ref": {
@@ -4314,8 +4314,8 @@
       "trait": false
     },
     {
-      "id": "evt:010-fonction-10-de-application-terrain/f7135155",
-      "ts": "2026-10-22T14:13:29.276Z",
+      "id": "evt:010-fonction-10-de-application-terrain/47aa7c76",
+      "ts": "2026-10-25T17:21:17.872Z",
       "kind": "lot",
       "phrase": "Le lot « Le lot de la fonction 10 » est prévu dans « Fonction 10 de « Application terrain » »",
       "ref": {
@@ -4326,8 +4326,8 @@
       "trait": true
     },
     {
-      "id": "evt:010-fonction-10-de-application-terrain/10ebcf26",
-      "ts": "2026-10-22T14:13:29.435Z",
+      "id": "evt:010-fonction-10-de-application-terrain/5c091665",
+      "ts": "2026-10-25T17:21:18.004Z",
       "kind": "lot_etat",
       "phrase": "Le lot « Le lot de la fonction 10 » commence",
       "ref": {
@@ -4338,8 +4338,8 @@
       "trait": true
     },
     {
-      "id": "evt:010-fonction-10-de-application-terrain/740a39fc",
-      "ts": "2026-10-22T14:13:29.600Z",
+      "id": "evt:010-fonction-10-de-application-terrain/749a3969",
+      "ts": "2026-10-25T17:21:18.144Z",
       "kind": "lot_etat",
       "phrase": "Le lot « Le lot de la fonction 10 » est fini",
       "ref": {
@@ -4350,8 +4350,8 @@
       "trait": true
     },
     {
-      "id": "evt:011-fonction-11-de-administration/ae8cac82",
-      "ts": "2026-10-22T14:13:29.764Z",
+      "id": "evt:011-fonction-11-de-administration/157605b4",
+      "ts": "2026-10-25T17:21:18.327Z",
       "kind": "run",
       "phrase": "La fiche « Fonction 11 de « Administration » » est ouverte",
       "ref": {
@@ -4361,8 +4361,8 @@
       "trait": true
     },
     {
-      "id": "evt:011-fonction-11-de-administration/b9574a1d",
-      "ts": "2026-10-22T14:13:29.765Z",
+      "id": "evt:011-fonction-11-de-administration/c46358e5",
+      "ts": "2026-10-25T17:21:18.328Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 11 de « Administration » »",
       "ref": {
@@ -4372,8 +4372,8 @@
       "trait": false
     },
     {
-      "id": "evt:011-fonction-11-de-administration/0610a3c2",
-      "ts": "2026-10-22T14:13:29.917Z",
+      "id": "evt:011-fonction-11-de-administration/2b31df56",
+      "ts": "2026-10-25T17:21:18.493Z",
       "kind": "gate",
       "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 11 de « Administration » »",
       "ref": {
@@ -4383,8 +4383,8 @@
       "trait": false
     },
     {
-      "id": "evt:011-fonction-11-de-administration/367bc68e",
-      "ts": "2026-10-22T14:13:30.034Z",
+      "id": "evt:011-fonction-11-de-administration/9e39bd20",
+      "ts": "2026-10-25T17:21:18.660Z",
       "kind": "gate",
       "phrase": "Tu accordes « le feu vert » pour « Fonction 11 de « Administration » »",
       "ref": {
@@ -4394,8 +4394,8 @@
       "trait": false
     },
     {
-      "id": "evt:011-fonction-11-de-administration/e30f7ab7",
-      "ts": "2026-10-22T14:13:30.741Z",
+      "id": "evt:011-fonction-11-de-administration/1c2c969c",
+      "ts": "2026-10-25T17:21:19.309Z",
       "kind": "lot",
       "phrase": "Le lot « Le lot de la fonction 11 » est prévu dans « Fonction 11 de « Administration » »",
       "ref": {
@@ -4406,8 +4406,8 @@
       "trait": true
     },
     {
-      "id": "evt:011-fonction-11-de-administration/e2ff9a83",
-      "ts": "2026-10-22T14:13:30.889Z",
+      "id": "evt:011-fonction-11-de-administration/4c0fcd4e",
+      "ts": "2026-10-25T17:21:19.434Z",
       "kind": "lot_etat",
       "phrase": "Le lot « Le lot de la fonction 11 » commence",
       "ref": {
@@ -4418,8 +4418,8 @@
       "trait": true
     },
     {
-      "id": "evt:011-fonction-11-de-administration/7010bb9b",
-      "ts": "2026-10-22T14:13:30.989Z",
+      "id": "evt:011-fonction-11-de-administration/db2e2ceb",
+      "ts": "2026-10-25T17:21:19.523Z",
       "kind": "note",
       "phrase": "Une intention est notée sur « Fonction 11 de « Administration » »",
       "ref": {
@@ -4429,8 +4429,8 @@
       "trait": false
     },
     {
-      "id": "evt:011-fonction-11-de-administration/a103025e",
-      "ts": "2026-10-22T14:13:30.990Z",
+      "id": "evt:011-fonction-11-de-administration/a8acc94a",
+      "ts": "2026-10-25T17:21:19.524Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 11 de « Administration » »",
       "ref": {
@@ -4440,8 +4440,8 @@
       "trait": false
     },
     {
-      "id": "evt:012-fonction-12-de-portail-client/d6cdee3f",
-      "ts": "2026-10-22T14:13:31.134Z",
+      "id": "evt:012-fonction-12-de-portail-client/932fd1b0",
+      "ts": "2026-10-25T17:21:19.650Z",
       "kind": "run",
       "phrase": "La fiche « Fonction 12 de « Portail client » » est ouverte",
       "ref": {
@@ -4451,8 +4451,8 @@
       "trait": true
     },
     {
-      "id": "evt:012-fonction-12-de-portail-client/5921e6b8",
-      "ts": "2026-10-22T14:13:31.135Z",
+      "id": "evt:012-fonction-12-de-portail-client/ef86d877",
+      "ts": "2026-10-25T17:21:19.650Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 12 de « Portail client » »",
       "ref": {
@@ -4462,8 +4462,8 @@
       "trait": false
     },
     {
-      "id": "evt:013-fonction-13-de-facturation/2bd5fd75",
-      "ts": "2026-10-22T14:13:31.318Z",
+      "id": "evt:013-fonction-13-de-facturation/21051900",
+      "ts": "2026-10-25T17:21:19.805Z",
       "kind": "run",
       "phrase": "La fiche « Fonction 13 de « Facturation » » est ouverte",
       "ref": {
@@ -4473,8 +4473,8 @@
       "trait": true
     },
     {
-      "id": "evt:013-fonction-13-de-facturation/000eead6",
-      "ts": "2026-10-22T14:13:31.319Z",
+      "id": "evt:013-fonction-13-de-facturation/b99e6f8a",
+      "ts": "2026-10-25T17:21:19.806Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 13 de « Facturation » »",
       "ref": {
@@ -4484,8 +4484,8 @@
       "trait": false
     },
     {
-      "id": "evt:013-fonction-13-de-facturation/cb3e373f",
-      "ts": "2026-10-22T14:13:31.477Z",
+      "id": "evt:013-fonction-13-de-facturation/5c4b643e",
+      "ts": "2026-10-25T17:21:19.967Z",
       "kind": "gate",
       "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 13 de « Facturation » »",
       "ref": {
@@ -4495,8 +4495,8 @@
       "trait": false
     },
     {
-      "id": "evt:014-fonction-14-de-rapports/1b980f9d",
-      "ts": "2026-10-22T14:13:31.593Z",
+      "id": "evt:014-fonction-14-de-rapports/708842fa",
+      "ts": "2026-10-25T17:21:20.119Z",
       "kind": "run",
       "phrase": "La fiche « Fonction 14 de « Rapports » » est ouverte",
       "ref": {
@@ -4506,8 +4506,8 @@
       "trait": true
     },
     {
-      "id": "evt:014-fonction-14-de-rapports/cb77a688",
-      "ts": "2026-10-22T14:13:31.594Z",
+      "id": "evt:014-fonction-14-de-rapports/84fc9558",
+      "ts": "2026-10-25T17:21:20.120Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 14 de « Rapports » »",
       "ref": {
@@ -4517,8 +4517,8 @@
       "trait": false
     },
     {
-      "id": "evt:014-fonction-14-de-rapports/0aa355d3",
-      "ts": "2026-10-22T14:13:31.754Z",
+      "id": "evt:014-fonction-14-de-rapports/01dd60c9",
+      "ts": "2026-10-25T17:21:20.297Z",
       "kind": "gate",
       "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 14 de « Rapports » »",
       "ref": {
@@ -4528,8 +4528,8 @@
       "trait": false
     },
     {
-      "id": "evt:014-fonction-14-de-rapports/002072ea",
-      "ts": "2026-10-22T14:13:31.887Z",
+      "id": "evt:014-fonction-14-de-rapports/9b8f3826",
+      "ts": "2026-10-25T17:21:20.437Z",
       "kind": "gate",
       "phrase": "Tu accordes « le feu vert » pour « Fonction 14 de « Rapports » »",
       "ref": {
@@ -4539,8 +4539,8 @@
       "trait": false
     },
     {
-      "id": "evt:015-fonction-15-de-synchronisation/54a36fb3",
-      "ts": "2026-10-22T14:13:32.585Z",
+      "id": "evt:015-fonction-15-de-synchronisation/8ab0f5d8",
+      "ts": "2026-10-25T17:21:21.068Z",
       "kind": "run",
       "phrase": "La fiche « Fonction 15 de « Synchronisation » » est ouverte",
       "ref": {
@@ -4550,8 +4550,8 @@
       "trait": true
     },
     {
-      "id": "evt:015-fonction-15-de-synchronisation/0b74ef92",
-      "ts": "2026-10-22T14:13:32.586Z",
+      "id": "evt:015-fonction-15-de-synchronisation/e82a535e",
+      "ts": "2026-10-25T17:21:21.069Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 15 de « Synchronisation » »",
       "ref": {
@@ -4561,8 +4561,8 @@
       "trait": false
     },
     {
-      "id": "evt:015-fonction-15-de-synchronisation/f9b61657",
-      "ts": "2026-10-22T14:13:32.744Z",
+      "id": "evt:015-fonction-15-de-synchronisation/81284b99",
+      "ts": "2026-10-25T17:21:21.245Z",
       "kind": "gate",
       "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 15 de « Synchronisation » »",
       "ref": {
@@ -4572,8 +4572,8 @@
       "trait": false
     },
     {
-      "id": "evt:015-fonction-15-de-synchronisation/5b83f47e",
-      "ts": "2026-10-22T14:13:32.867Z",
+      "id": "evt:015-fonction-15-de-synchronisation/fa5b1b1f",
+      "ts": "2026-10-25T17:21:21.434Z",
       "kind": "gate",
       "phrase": "Tu accordes « le feu vert » pour « Fonction 15 de « Synchronisation » »",
       "ref": {
@@ -4583,8 +4583,8 @@
       "trait": false
     },
     {
-      "id": "evt:015-fonction-15-de-synchronisation/6422d0a7",
-      "ts": "2026-10-22T14:13:33.543Z",
+      "id": "evt:015-fonction-15-de-synchronisation/5622bf8d",
+      "ts": "2026-10-25T17:21:22.256Z",
       "kind": "lot",
       "phrase": "Le lot « Le lot de la fonction 15 » est prévu dans « Fonction 15 de « Synchronisation » »",
       "ref": {
@@ -4595,8 +4595,8 @@
       "trait": true
     },
     {
-      "id": "evt:015-fonction-15-de-synchronisation/c795e267",
-      "ts": "2026-10-22T14:13:33.697Z",
+      "id": "evt:015-fonction-15-de-synchronisation/fffce766",
+      "ts": "2026-10-25T17:21:22.386Z",
       "kind": "lot_etat",
       "phrase": "Le lot « Le lot de la fonction 15 » commence",
       "ref": {
@@ -4607,8 +4607,8 @@
       "trait": true
     },
     {
-      "id": "evt:016-fonction-16-de-site-public/a42a7325",
-      "ts": "2026-10-22T14:13:33.828Z",
+      "id": "evt:016-fonction-16-de-site-public/715e5d52",
+      "ts": "2026-10-25T17:21:22.514Z",
       "kind": "run",
       "phrase": "La fiche « Fonction 16 de « Site public » » est ouverte",
       "ref": {
@@ -4618,8 +4618,8 @@
       "trait": true
     },
     {
-      "id": "evt:016-fonction-16-de-site-public/61dba43d",
-      "ts": "2026-10-22T14:13:33.829Z",
+      "id": "evt:016-fonction-16-de-site-public/263c4929",
+      "ts": "2026-10-25T17:21:22.515Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 16 de « Site public » »",
       "ref": {
@@ -4629,8 +4629,8 @@
       "trait": false
     },
     {
-      "id": "evt:016-fonction-16-de-site-public/1b4e62e2",
-      "ts": "2026-10-22T14:13:34.007Z",
+      "id": "evt:016-fonction-16-de-site-public/0dd1f036",
+      "ts": "2026-10-25T17:21:22.687Z",
       "kind": "gate",
       "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 16 de « Site public » »",
       "ref": {
@@ -4640,8 +4640,8 @@
       "trait": false
     },
     {
-      "id": "evt:016-fonction-16-de-site-public/c2bb235e",
-      "ts": "2026-10-22T14:13:34.132Z",
+      "id": "evt:016-fonction-16-de-site-public/8d9d6830",
+      "ts": "2026-10-25T17:21:22.857Z",
       "kind": "gate",
       "phrase": "Tu accordes « le feu vert » pour « Fonction 16 de « Site public » »",
       "ref": {
@@ -4651,8 +4651,8 @@
       "trait": false
     },
     {
-      "id": "evt:016-fonction-16-de-site-public/36e1000e",
-      "ts": "2026-10-22T14:13:34.784Z",
+      "id": "evt:016-fonction-16-de-site-public/cd7a362e",
+      "ts": "2026-10-25T17:21:23.503Z",
       "kind": "lot",
       "phrase": "Le lot « Le lot de la fonction 16 » est prévu dans « Fonction 16 de « Site public » »",
       "ref": {
@@ -4663,8 +4663,8 @@
       "trait": true
     },
     {
-      "id": "evt:016-fonction-16-de-site-public/469cc372",
-      "ts": "2026-10-22T14:13:34.941Z",
+      "id": "evt:016-fonction-16-de-site-public/6e27452c",
+      "ts": "2026-10-25T17:21:23.644Z",
       "kind": "lot_etat",
       "phrase": "Le lot « Le lot de la fonction 16 » commence",
       "ref": {
@@ -4675,8 +4675,8 @@
       "trait": true
     },
     {
-      "id": "evt:016-fonction-16-de-site-public/72f4aeb0",
-      "ts": "2026-10-22T14:13:35.088Z",
+      "id": "evt:016-fonction-16-de-site-public/f72c7839",
+      "ts": "2026-10-25T17:21:23.787Z",
       "kind": "lot_etat",
       "phrase": "Le lot « Le lot de la fonction 16 » est fini",
       "ref": {
@@ -4687,8 +4687,8 @@
       "trait": true
     },
     {
-      "id": "evt:017-fonction-17-de-application-de-bureau/05a6dc7b",
-      "ts": "2026-10-22T14:13:35.239Z",
+      "id": "evt:017-fonction-17-de-application-de-bureau/977e4936",
+      "ts": "2026-10-25T17:21:23.965Z",
       "kind": "run",
       "phrase": "La fiche « Fonction 17 de « Application de bureau » » est ouverte",
       "ref": {
@@ -4698,8 +4698,8 @@
       "trait": true
     },
     {
-      "id": "evt:017-fonction-17-de-application-de-bureau/c9314eee",
-      "ts": "2026-10-22T14:13:35.240Z",
+      "id": "evt:017-fonction-17-de-application-de-bureau/4e9d9145",
+      "ts": "2026-10-25T17:21:23.966Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 17 de « Application de bureau » »",
       "ref": {
@@ -4709,8 +4709,8 @@
       "trait": false
     },
     {
-      "id": "evt:017-fonction-17-de-application-de-bureau/e5ad7f23",
-      "ts": "2026-10-22T14:13:35.408Z",
+      "id": "evt:017-fonction-17-de-application-de-bureau/c44d2ff6",
+      "ts": "2026-10-25T17:21:24.114Z",
       "kind": "gate",
       "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 17 de « Application de bureau » »",
       "ref": {
@@ -4720,8 +4720,8 @@
       "trait": false
     },
     {
-      "id": "evt:017-fonction-17-de-application-de-bureau/aa6cd1b0",
-      "ts": "2026-10-22T14:13:35.536Z",
+      "id": "evt:017-fonction-17-de-application-de-bureau/96997dd7",
+      "ts": "2026-10-25T17:21:24.264Z",
       "kind": "gate",
       "phrase": "Tu accordes « le feu vert » pour « Fonction 17 de « Application de bureau » »",
       "ref": {
@@ -4731,8 +4731,8 @@
       "trait": false
     },
     {
-      "id": "evt:017-fonction-17-de-application-de-bureau/242f9230",
-      "ts": "2026-10-22T14:13:36.309Z",
+      "id": "evt:017-fonction-17-de-application-de-bureau/8472db58",
+      "ts": "2026-10-25T17:21:24.909Z",
       "kind": "lot",
       "phrase": "Le lot « Le lot de la fonction 17 » est prévu dans « Fonction 17 de « Application de bureau » »",
       "ref": {
@@ -4743,8 +4743,8 @@
       "trait": true
     },
     {
-      "id": "evt:017-fonction-17-de-application-de-bureau/36cf2535",
-      "ts": "2026-10-22T14:13:36.438Z",
+      "id": "evt:017-fonction-17-de-application-de-bureau/60657c27",
+      "ts": "2026-10-25T17:21:25.080Z",
       "kind": "lot_etat",
       "phrase": "Le lot « Le lot de la fonction 17 » commence",
       "ref": {
@@ -4755,8 +4755,8 @@
       "trait": true
     },
     {
-      "id": "evt:017-fonction-17-de-application-de-bureau/e8471064",
-      "ts": "2026-10-22T14:13:36.541Z",
+      "id": "evt:017-fonction-17-de-application-de-bureau/99ae1d0f",
+      "ts": "2026-10-25T17:21:25.181Z",
       "kind": "note",
       "phrase": "Une intention est notée sur « Fonction 17 de « Application de bureau » »",
       "ref": {
@@ -4766,8 +4766,8 @@
       "trait": false
     },
     {
-      "id": "evt:017-fonction-17-de-application-de-bureau/c03de440",
-      "ts": "2026-10-22T14:13:36.542Z",
+      "id": "evt:017-fonction-17-de-application-de-bureau/ecb303e6",
+      "ts": "2026-10-25T17:21:25.182Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 17 de « Application de bureau » »",
       "ref": {
@@ -4777,8 +4777,8 @@
       "trait": false
     },
     {
-      "id": "evt:018-fonction-18-de-application-terrain/8d0d79f3",
-      "ts": "2026-10-22T14:13:36.674Z",
+      "id": "evt:018-fonction-18-de-application-terrain/afcc76d1",
+      "ts": "2026-10-25T17:21:25.340Z",
       "kind": "run",
       "phrase": "La fiche « Fonction 18 de « Application terrain » » est ouverte",
       "ref": {
@@ -4788,8 +4788,8 @@
       "trait": true
     },
     {
-      "id": "evt:018-fonction-18-de-application-terrain/325be8bc",
-      "ts": "2026-10-22T14:13:36.675Z",
+      "id": "evt:018-fonction-18-de-application-terrain/0008c9d8",
+      "ts": "2026-10-25T17:21:25.341Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 18 de « Application terrain » »",
       "ref": {
@@ -4799,8 +4799,8 @@
       "trait": false
     },
     {
-      "id": "evt:019-fonction-19-de-administration/f6967e7c",
-      "ts": "2026-10-22T14:13:36.846Z",
+      "id": "evt:019-fonction-19-de-administration/5d4350cf",
+      "ts": "2026-10-25T17:21:25.497Z",
       "kind": "run",
       "phrase": "La fiche « Fonction 19 de « Administration » » est ouverte",
       "ref": {
@@ -4810,8 +4810,8 @@
       "trait": true
     },
     {
-      "id": "evt:019-fonction-19-de-administration/eaa92bda",
-      "ts": "2026-10-22T14:13:36.847Z",
+      "id": "evt:019-fonction-19-de-administration/af1a2b64",
+      "ts": "2026-10-25T17:21:25.497Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 19 de « Administration » »",
       "ref": {
@@ -4821,8 +4821,8 @@
       "trait": false
     },
     {
-      "id": "evt:019-fonction-19-de-administration/6eeb5995",
-      "ts": "2026-10-22T14:13:37.001Z",
+      "id": "evt:019-fonction-19-de-administration/8d259520",
+      "ts": "2026-10-25T17:21:25.648Z",
       "kind": "gate",
       "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 19 de « Administration » »",
       "ref": {
@@ -4832,8 +4832,8 @@
       "trait": false
     },
     {
-      "id": "evt:020-fonction-20-de-portail-client/61ebbc31",
-      "ts": "2026-10-22T14:13:37.124Z",
+      "id": "evt:020-fonction-20-de-portail-client/b8988f7e",
+      "ts": "2026-10-25T17:21:25.801Z",
       "kind": "run",
       "phrase": "La fiche « Fonction 20 de « Portail client » » est ouverte",
       "ref": {
@@ -4843,8 +4843,8 @@
       "trait": true
     },
     {
-      "id": "evt:020-fonction-20-de-portail-client/1cfa9683",
-      "ts": "2026-10-22T14:13:37.125Z",
+      "id": "evt:020-fonction-20-de-portail-client/f2b46f46",
+      "ts": "2026-10-25T17:21:25.802Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 20 de « Portail client » »",
       "ref": {
@@ -4854,8 +4854,8 @@
       "trait": false
     },
     {
-      "id": "evt:020-fonction-20-de-portail-client/4dd39574",
-      "ts": "2026-10-22T14:13:37.283Z",
+      "id": "evt:020-fonction-20-de-portail-client/16bdcd46",
+      "ts": "2026-10-25T17:21:25.944Z",
       "kind": "gate",
       "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 20 de « Portail client » »",
       "ref": {
@@ -4865,8 +4865,8 @@
       "trait": false
     },
     {
-      "id": "evt:020-fonction-20-de-portail-client/11318b42",
-      "ts": "2026-10-22T14:13:37.422Z",
+      "id": "evt:020-fonction-20-de-portail-client/b0b8e5e8",
+      "ts": "2026-10-25T17:21:26.076Z",
       "kind": "gate",
       "phrase": "Tu accordes « le feu vert » pour « Fonction 20 de « Portail client » »",
       "ref": {
@@ -4876,8 +4876,8 @@
       "trait": false
     },
     {
-      "id": "evt:021-fonction-21-de-facturation/2748a9cb",
-      "ts": "2026-10-22T14:13:38.092Z",
+      "id": "evt:021-fonction-21-de-facturation/c5c5508b",
+      "ts": "2026-10-25T17:21:26.711Z",
       "kind": "run",
       "phrase": "La fiche « Fonction 21 de « Facturation » » est ouverte",
       "ref": {
@@ -4887,8 +4887,8 @@
       "trait": true
     },
     {
-      "id": "evt:021-fonction-21-de-facturation/491c4591",
-      "ts": "2026-10-22T14:13:38.093Z",
+      "id": "evt:021-fonction-21-de-facturation/b63d7533",
+      "ts": "2026-10-25T17:21:26.712Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 21 de « Facturation » »",
       "ref": {
@@ -4898,8 +4898,8 @@
       "trait": false
     },
     {
-      "id": "evt:021-fonction-21-de-facturation/795055eb",
-      "ts": "2026-10-22T14:13:38.240Z",
+      "id": "evt:021-fonction-21-de-facturation/9eaa7fc4",
+      "ts": "2026-10-25T17:21:26.859Z",
       "kind": "gate",
       "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 21 de « Facturation » »",
       "ref": {
@@ -4909,8 +4909,8 @@
       "trait": false
     },
     {
-      "id": "evt:021-fonction-21-de-facturation/63a9bbc4",
-      "ts": "2026-10-22T14:13:38.358Z",
+      "id": "evt:021-fonction-21-de-facturation/cdb866bb",
+      "ts": "2026-10-25T17:21:27.017Z",
       "kind": "gate",
       "phrase": "Tu accordes « le feu vert » pour « Fonction 21 de « Facturation » »",
       "ref": {
@@ -4920,8 +4920,8 @@
       "trait": false
     },
     {
-      "id": "evt:021-fonction-21-de-facturation/62345f40",
-      "ts": "2026-10-22T14:13:39.038Z",
+      "id": "evt:021-fonction-21-de-facturation/95c6e557",
+      "ts": "2026-10-25T17:21:27.658Z",
       "kind": "lot",
       "phrase": "Le lot « Le lot de la fonction 21 » est prévu dans « Fonction 21 de « Facturation » »",
       "ref": {
@@ -4932,8 +4932,8 @@
       "trait": true
     },
     {
-      "id": "evt:021-fonction-21-de-facturation/8985a678",
-      "ts": "2026-10-22T14:13:39.197Z",
+      "id": "evt:021-fonction-21-de-facturation/b2bdd94c",
+      "ts": "2026-10-25T17:21:27.793Z",
       "kind": "lot_etat",
       "phrase": "Le lot « Le lot de la fonction 21 » commence",
       "ref": {
@@ -4944,8 +4944,8 @@
       "trait": true
     },
     {
-      "id": "evt:022-fonction-22-de-rapports/37c2e8ac",
-      "ts": "2026-10-22T14:13:39.337Z",
+      "id": "evt:022-fonction-22-de-rapports/9e6f9bb7",
+      "ts": "2026-10-25T17:21:27.912Z",
       "kind": "run",
       "phrase": "La fiche « Fonction 22 de « Rapports » » est ouverte",
       "ref": {
@@ -4955,8 +4955,8 @@
       "trait": true
     },
     {
-      "id": "evt:022-fonction-22-de-rapports/9d2eeecc",
-      "ts": "2026-10-22T14:13:39.337Z",
+      "id": "evt:022-fonction-22-de-rapports/1a66965d",
+      "ts": "2026-10-25T17:21:27.913Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 22 de « Rapports » »",
       "ref": {
@@ -4966,8 +4966,8 @@
       "trait": false
     },
     {
-      "id": "evt:022-fonction-22-de-rapports/320cc2cc",
-      "ts": "2026-10-22T14:13:39.525Z",
+      "id": "evt:022-fonction-22-de-rapports/5041113f",
+      "ts": "2026-10-25T17:21:28.068Z",
       "kind": "gate",
       "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 22 de « Rapports » »",
       "ref": {
@@ -4977,8 +4977,8 @@
       "trait": false
     },
     {
-      "id": "evt:022-fonction-22-de-rapports/cbad940d",
-      "ts": "2026-10-22T14:13:39.660Z",
+      "id": "evt:022-fonction-22-de-rapports/c8b75e75",
+      "ts": "2026-10-25T17:21:28.222Z",
       "kind": "gate",
       "phrase": "Tu accordes « le feu vert » pour « Fonction 22 de « Rapports » »",
       "ref": {
@@ -4988,8 +4988,8 @@
       "trait": false
     },
     {
-      "id": "evt:022-fonction-22-de-rapports/31e415d3",
-      "ts": "2026-10-22T14:13:40.375Z",
+      "id": "evt:022-fonction-22-de-rapports/2263f9bd",
+      "ts": "2026-10-25T17:21:28.972Z",
       "kind": "lot",
       "phrase": "Le lot « Le lot de la fonction 22 » est prévu dans « Fonction 22 de « Rapports » »",
       "ref": {
@@ -5000,8 +5000,8 @@
       "trait": true
     },
     {
-      "id": "evt:022-fonction-22-de-rapports/6779257a",
-      "ts": "2026-10-22T14:13:40.529Z",
+      "id": "evt:022-fonction-22-de-rapports/47514e0f",
+      "ts": "2026-10-25T17:21:29.111Z",
       "kind": "lot_etat",
       "phrase": "Le lot « Le lot de la fonction 22 » commence",
       "ref": {
@@ -5012,8 +5012,8 @@
       "trait": true
     },
     {
-      "id": "evt:022-fonction-22-de-rapports/839672c0",
-      "ts": "2026-10-22T14:13:40.699Z",
+      "id": "evt:022-fonction-22-de-rapports/4eca5436",
+      "ts": "2026-10-25T17:21:29.238Z",
       "kind": "lot_etat",
       "phrase": "Le lot « Le lot de la fonction 22 » est fini",
       "ref": {
@@ -5024,8 +5024,8 @@
       "trait": true
     },
     {
-      "id": "evt:023-fonction-23-de-synchronisation/75f65f5c",
-      "ts": "2026-10-22T14:13:40.897Z",
+      "id": "evt:023-fonction-23-de-synchronisation/0622ebd8",
+      "ts": "2026-10-25T17:21:29.387Z",
       "kind": "run",
       "phrase": "La fiche « Fonction 23 de « Synchronisation » » est ouverte",
       "ref": {
@@ -5035,8 +5035,8 @@
       "trait": true
     },
     {
-      "id": "evt:023-fonction-23-de-synchronisation/864eb43c",
-      "ts": "2026-10-22T14:13:40.899Z",
+      "id": "evt:023-fonction-23-de-synchronisation/c7e499be",
+      "ts": "2026-10-25T17:21:29.387Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 23 de « Synchronisation » »",
       "ref": {
@@ -5046,8 +5046,8 @@
       "trait": false
     },
     {
-      "id": "evt:023-fonction-23-de-synchronisation/e20d0603",
-      "ts": "2026-10-22T14:13:41.093Z",
+      "id": "evt:023-fonction-23-de-synchronisation/8991dfd8",
+      "ts": "2026-10-25T17:21:29.537Z",
       "kind": "gate",
       "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 23 de « Synchronisation » »",
       "ref": {
@@ -5057,8 +5057,8 @@
       "trait": false
     },
     {
-      "id": "evt:023-fonction-23-de-synchronisation/dbff46c3",
-      "ts": "2026-10-22T14:13:41.233Z",
+      "id": "evt:023-fonction-23-de-synchronisation/33fef5ec",
+      "ts": "2026-10-25T17:21:29.675Z",
       "kind": "gate",
       "phrase": "Tu accordes « le feu vert » pour « Fonction 23 de « Synchronisation » »",
       "ref": {
@@ -5068,8 +5068,8 @@
       "trait": false
     },
     {
-      "id": "evt:023-fonction-23-de-synchronisation/6d30bfde",
-      "ts": "2026-10-22T14:13:42.050Z",
+      "id": "evt:023-fonction-23-de-synchronisation/9088fbc1",
+      "ts": "2026-10-25T17:21:30.413Z",
       "kind": "lot",
       "phrase": "Le lot « Le lot de la fonction 23 » est prévu dans « Fonction 23 de « Synchronisation » »",
       "ref": {
@@ -5080,8 +5080,8 @@
       "trait": true
     },
     {
-      "id": "evt:023-fonction-23-de-synchronisation/2362b8c5",
-      "ts": "2026-10-22T14:13:42.230Z",
+      "id": "evt:023-fonction-23-de-synchronisation/ebbc2da9",
+      "ts": "2026-10-25T17:21:30.545Z",
       "kind": "lot_etat",
       "phrase": "Le lot « Le lot de la fonction 23 » commence",
       "ref": {
@@ -5092,8 +5092,8 @@
       "trait": true
     },
     {
-      "id": "evt:023-fonction-23-de-synchronisation/64e3d971",
-      "ts": "2026-10-22T14:13:42.376Z",
+      "id": "evt:023-fonction-23-de-synchronisation/081845cd",
+      "ts": "2026-10-25T17:21:30.648Z",
       "kind": "note",
       "phrase": "Une intention est notée sur « Fonction 23 de « Synchronisation » »",
       "ref": {
@@ -5103,8 +5103,8 @@
       "trait": false
     },
     {
-      "id": "evt:023-fonction-23-de-synchronisation/929db7e9",
-      "ts": "2026-10-22T14:13:42.378Z",
+      "id": "evt:023-fonction-23-de-synchronisation/d2c5e0f0",
+      "ts": "2026-10-25T17:21:30.649Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 23 de « Synchronisation » »",
       "ref": {
@@ -5114,8 +5114,8 @@
       "trait": false
     },
     {
-      "id": "evt:024-fonction-24-de-site-public/238e6245",
-      "ts": "2026-10-22T14:13:42.560Z",
+      "id": "evt:024-fonction-24-de-site-public/928eae7d",
+      "ts": "2026-10-25T17:21:30.784Z",
       "kind": "run",
       "phrase": "La fiche « Fonction 24 de « Site public » » est ouverte",
       "ref": {
@@ -5125,8 +5125,8 @@
       "trait": true
     },
     {
-      "id": "evt:024-fonction-24-de-site-public/d7de2706",
-      "ts": "2026-10-22T14:13:42.561Z",
+      "id": "evt:024-fonction-24-de-site-public/a937805c",
+      "ts": "2026-10-25T17:21:30.785Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 24 de « Site public » »",
       "ref": {
@@ -5136,8 +5136,8 @@
       "trait": false
     },
     {
-      "id": "evt:025-fonction-25-de-application-de-bureau/c0dfdf4a",
-      "ts": "2026-10-22T14:13:42.764Z",
+      "id": "evt:025-fonction-25-de-application-de-bureau/e24d7249",
+      "ts": "2026-10-25T17:21:30.952Z",
       "kind": "run",
       "phrase": "La fiche « Fonction 25 de « Application de bureau » » est ouverte",
       "ref": {
@@ -5147,8 +5147,8 @@
       "trait": true
     },
     {
-      "id": "evt:025-fonction-25-de-application-de-bureau/2994f464",
-      "ts": "2026-10-22T14:13:42.766Z",
+      "id": "evt:025-fonction-25-de-application-de-bureau/ea004c38",
+      "ts": "2026-10-25T17:21:30.953Z",
       "kind": "bail",
       "phrase": "Une session reprend « Fonction 25 de « Application de bureau » »",
       "ref": {
@@ -5158,8 +5158,8 @@
       "trait": false
     },
     {
-      "id": "evt:025-fonction-25-de-application-de-bureau/5199f222",
-      "ts": "2026-10-22T14:13:42.961Z",
+      "id": "evt:025-fonction-25-de-application-de-bureau/45e4cc16",
+      "ts": "2026-10-25T17:21:31.108Z",
       "kind": "gate",
       "phrase": "Ta décision « le feu vert » est attendue pour « Fonction 25 de « Application de bureau » »",
       "ref": {

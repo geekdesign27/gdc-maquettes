@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "maintenant": "2026-10-27T14:12:16.729Z",
+  "maintenant": "2026-10-30T17:20:07.220Z",
   "fuseau": "UTC",
-  "debut": "2026-10-22T14:12:09.697Z",
-  "depuis": "evt:projet/1c835438",
+  "debut": "2026-10-25T17:20:00.538Z",
+  "depuis": "evt:projet/eb8a507e",
   "complet": false,
   "lignes": [
     {
@@ -16,22 +16,22 @@
       "etat": "en_cours",
       "barres": [
         {
-          "debut": "2026-10-27T14:12:16.633Z",
+          "debut": "2026-10-30T17:20:07.129Z",
           "fin": null
         }
       ]
     },
     {
-      "id": "demande:projet/61752b17@10",
+      "id": "demande:projet/9407319b@10",
       "niveau": "demande",
       "parent": "etape:10",
       "nom": "Exporter un audit en PDF",
       "etat": "deposee",
       "barres": [
         {
-          "debut": "2026-10-27T14:12:16.633Z",
+          "debut": "2026-10-30T17:20:07.129Z",
           "fin": null,
-          "commence_par": "evt:projet/61752b17",
+          "commence_par": "evt:projet/9407319b",
           "finit_par": null,
           "fin_type": null
         }
@@ -42,25 +42,25 @@
   "jalons": [],
   "jours": [
     {
-      "date": "2026-10-25",
+      "date": "2026-10-28",
       "evenements": 0,
       "actif": false
     },
     {
-      "date": "2026-10-26",
+      "date": "2026-10-29",
       "evenements": 0,
       "actif": false
     },
     {
-      "date": "2026-10-27",
+      "date": "2026-10-30",
       "evenements": 1,
       "actif": true
     }
   ],
   "evenements": [
     {
-      "id": "evt:projet/61752b17",
-      "ts": "2026-10-27T14:12:16.633Z",
+      "id": "evt:projet/9407319b",
+      "ts": "2026-10-30T17:20:07.129Z",
       "kind": "demande",
       "phrase": "Une demande arrive au carnet : « Exporter un audit en PDF »",
       "trait": false
@@ -69,27 +69,27 @@
   "regime": [
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:09.697Z",
-      "a": "2026-10-22T14:42:12.549Z"
+      "de": "2026-10-25T17:20:00.538Z",
+      "a": "2026-10-25T17:50:03.111Z"
     },
     {
       "valeur": "ferme",
-      "de": "2026-10-22T14:42:12.549Z",
-      "a": "2026-10-24T14:12:13.774Z"
+      "de": "2026-10-25T17:50:03.111Z",
+      "a": "2026-10-27T17:20:04.414Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-24T14:12:13.774Z",
-      "a": "2026-10-24T14:42:15.330Z"
+      "de": "2026-10-27T17:20:04.414Z",
+      "a": "2026-10-27T17:50:05.864Z"
     },
     {
       "valeur": "ferme",
-      "de": "2026-10-24T14:42:15.330Z",
-      "a": "2026-10-27T14:12:16.633Z"
+      "de": "2026-10-27T17:50:05.864Z",
+      "a": "2026-10-30T17:20:07.129Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-27T14:12:16.633Z",
+      "de": "2026-10-30T17:20:07.129Z",
       "a": null
     }
   ],

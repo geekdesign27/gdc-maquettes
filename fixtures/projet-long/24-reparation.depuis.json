@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "maintenant": "2026-11-15T14:12:57.927Z",
+  "maintenant": "2026-11-18T17:20:47.463Z",
   "fuseau": "UTC",
-  "debut": "2026-10-22T14:12:09.697Z",
-  "depuis": "evt:002-signer-un-rapport/f15959cb",
+  "debut": "2026-10-25T17:20:00.538Z",
+  "depuis": "evt:002-signer-un-rapport/b2b4f9f9",
   "complet": false,
   "lignes": [
     {
@@ -16,8 +16,8 @@
       "etat": "faite",
       "barres": [
         {
-          "debut": "2026-10-27T14:12:17.540Z",
-          "fin": "2026-11-15T14:12:48.907Z"
+          "debut": "2026-10-30T17:20:07.961Z",
+          "fin": "2026-11-18T17:20:38.342Z"
         }
       ]
     },
@@ -34,10 +34,10 @@
       "barres": [
         {
           "stade": "plot",
-          "debut": "2026-11-15T14:12:48.457Z",
-          "fin": "2026-11-15T14:12:48.907Z",
-          "commence_par": "evt:003-reparer-la-signature-du-rapport/9f1a624d",
-          "finit_par": "evt:003-reparer-la-signature-du-rapport/88fe0673",
+          "debut": "2026-11-18T17:20:37.847Z",
+          "fin": "2026-11-18T17:20:38.342Z",
+          "commence_par": "evt:003-reparer-la-signature-du-rapport/f7f4b89d",
+          "finit_par": "evt:003-reparer-la-signature-du-rapport/d4ad1477",
           "fin_type": "normale"
         }
       ]
@@ -52,8 +52,8 @@
       "etat": "faite",
       "barres": [
         {
-          "debut": "2026-10-27T14:12:19.720Z",
-          "fin": "2026-11-15T14:12:49.956Z"
+          "debut": "2026-10-30T17:20:09.986Z",
+          "fin": "2026-11-18T17:20:39.302Z"
         }
       ]
     },
@@ -70,18 +70,18 @@
       "barres": [
         {
           "stade": "excavation",
-          "debut": "2026-11-15T14:12:48.907Z",
-          "fin": "2026-11-15T14:12:49.619Z",
-          "commence_par": "evt:003-reparer-la-signature-du-rapport/88fe0673",
-          "finit_par": "evt:003-reparer-la-signature-du-rapport/09ae6adc",
+          "debut": "2026-11-18T17:20:38.342Z",
+          "fin": "2026-11-18T17:20:39.003Z",
+          "commence_par": "evt:003-reparer-la-signature-du-rapport/d4ad1477",
+          "finit_par": "evt:003-reparer-la-signature-du-rapport/9bc4b6f1",
           "fin_type": "normale"
         },
         {
           "stade": "foundations",
-          "debut": "2026-11-15T14:12:49.619Z",
-          "fin": "2026-11-15T14:12:49.956Z",
-          "commence_par": "evt:003-reparer-la-signature-du-rapport/09ae6adc",
-          "finit_par": "evt:003-reparer-la-signature-du-rapport/e6da55f9",
+          "debut": "2026-11-18T17:20:39.003Z",
+          "fin": "2026-11-18T17:20:39.302Z",
+          "commence_par": "evt:003-reparer-la-signature-du-rapport/9bc4b6f1",
+          "finit_par": "evt:003-reparer-la-signature-du-rapport/f41fabb4",
           "fin_type": "normale"
         }
       ]
@@ -97,8 +97,8 @@
         "lot": "L1"
       },
       "etat": "prevu",
-      "prevu_le": "2026-11-15T14:12:49.619Z",
-      "prevu_par": "evt:003-reparer-la-signature-du-rapport/09ae6adc"
+      "prevu_le": "2026-11-18T17:20:39.003Z",
+      "prevu_par": "evt:003-reparer-la-signature-du-rapport/9bc4b6f1"
     },
     {
       "id": "etape:6",
@@ -110,8 +110,8 @@
       "etat": "faite",
       "barres": [
         {
-          "debut": "2026-10-28T14:12:21.533Z",
-          "fin": "2026-11-15T14:12:50.540Z"
+          "debut": "2026-10-31T17:20:11.701Z",
+          "fin": "2026-11-18T17:20:39.773Z"
         }
       ]
     },
@@ -128,18 +128,18 @@
       "barres": [
         {
           "stade": "structure",
-          "debut": "2026-11-15T14:12:49.956Z",
-          "fin": "2026-11-15T14:12:50.365Z",
-          "commence_par": "evt:003-reparer-la-signature-du-rapport/e6da55f9",
-          "finit_par": "evt:003-reparer-la-signature-du-rapport/a6cbca76",
+          "debut": "2026-11-18T17:20:39.302Z",
+          "fin": "2026-11-18T17:20:39.586Z",
+          "commence_par": "evt:003-reparer-la-signature-du-rapport/f41fabb4",
+          "finit_par": "evt:003-reparer-la-signature-du-rapport/30e407d6",
           "fin_type": "normale"
         },
         {
           "stade": "envelope",
-          "debut": "2026-11-15T14:12:50.365Z",
-          "fin": "2026-11-15T14:12:50.540Z",
-          "commence_par": "evt:003-reparer-la-signature-du-rapport/a6cbca76",
-          "finit_par": "evt:003-reparer-la-signature-du-rapport/e02ca138",
+          "debut": "2026-11-18T17:20:39.586Z",
+          "fin": "2026-11-18T17:20:39.773Z",
+          "commence_par": "evt:003-reparer-la-signature-du-rapport/30e407d6",
+          "finit_par": "evt:003-reparer-la-signature-du-rapport/d0f85721",
           "fin_type": "normale"
         }
       ]
@@ -158,10 +158,10 @@
       "barres": [
         {
           "statut": "fini",
-          "debut": "2026-11-15T14:12:49.766Z",
-          "fin": "2026-11-15T14:12:50.365Z",
-          "commence_par": "evt:003-reparer-la-signature-du-rapport/a1485f4b",
-          "finit_par": "evt:003-reparer-la-signature-du-rapport/a6cbca76",
+          "debut": "2026-11-18T17:20:39.149Z",
+          "fin": "2026-11-18T17:20:39.586Z",
+          "commence_par": "evt:003-reparer-la-signature-du-rapport/08a62a0d",
+          "finit_par": "evt:003-reparer-la-signature-du-rapport/30e407d6",
           "fin_type": "normale"
         }
       ]
@@ -176,8 +176,8 @@
       "etat": "faite",
       "barres": [
         {
-          "debut": "2026-11-09T14:12:28.117Z",
-          "fin": "2026-11-15T14:12:53.023Z"
+          "debut": "2026-11-12T17:20:18.387Z",
+          "fin": "2026-11-18T17:20:42.073Z"
         }
       ]
     },
@@ -194,10 +194,10 @@
       "barres": [
         {
           "stade": "inspection",
-          "debut": "2026-11-15T14:12:50.540Z",
-          "fin": "2026-11-15T14:12:53.023Z",
-          "commence_par": "evt:003-reparer-la-signature-du-rapport/e02ca138",
-          "finit_par": "evt:003-reparer-la-signature-du-rapport/d7697564",
+          "debut": "2026-11-18T17:20:39.773Z",
+          "fin": "2026-11-18T17:20:42.073Z",
+          "commence_par": "evt:003-reparer-la-signature-du-rapport/d0f85721",
+          "finit_par": "evt:003-reparer-la-signature-du-rapport/25b0f0f8",
           "fin_type": "normale"
         }
       ]
@@ -214,8 +214,8 @@
       "etat": "livree",
       "barres": [],
       "livree": {
-        "date": "2026-11-15T14:12:57.722Z",
-        "par": "evt:003-reparer-la-signature-du-rapport/7d862f77"
+        "date": "2026-11-18T17:20:47.246Z",
+        "par": "evt:003-reparer-la-signature-du-rapport/427d7e79"
       }
     },
     {
@@ -228,13 +228,13 @@
       "etat": "faite",
       "barres": [
         {
-          "debut": "2026-11-15T14:12:47.137Z",
-          "fin": "2026-11-15T14:12:57.722Z"
+          "debut": "2026-11-18T17:20:36.694Z",
+          "fin": "2026-11-18T17:20:47.246Z"
         }
       ]
     },
     {
-      "id": "defaut:002-signer-un-rapport/f15959cb@9",
+      "id": "defaut:002-signer-un-rapport/b2b4f9f9@9",
       "niveau": "defaut",
       "parent": "etape:9",
       "nom": "Un défaut après la mise en production de « Signer un rapport »",
@@ -245,10 +245,10 @@
       "etat": "ferme",
       "barres": [
         {
-          "debut": "2026-11-15T14:12:47.137Z",
-          "fin": "2026-11-15T14:12:57.722Z",
-          "commence_par": "evt:002-signer-un-rapport/f15959cb",
-          "finit_par": "evt:003-reparer-la-signature-du-rapport/7d862f77",
+          "debut": "2026-11-18T17:20:36.694Z",
+          "fin": "2026-11-18T17:20:47.246Z",
+          "commence_par": "evt:002-signer-un-rapport/b2b4f9f9",
+          "finit_par": "evt:003-reparer-la-signature-du-rapport/427d7e79",
           "fin_type": "normale"
         }
       ]
@@ -265,10 +265,10 @@
       "etat": "faite",
       "barres": [
         {
-          "debut": "2026-11-15T14:12:48.457Z",
-          "fin": "2026-11-15T14:12:57.722Z",
-          "commence_par": "evt:003-reparer-la-signature-du-rapport/9f1a624d",
-          "finit_par": "evt:003-reparer-la-signature-du-rapport/7d862f77",
+          "debut": "2026-11-18T17:20:37.847Z",
+          "fin": "2026-11-18T17:20:47.246Z",
+          "commence_par": "evt:003-reparer-la-signature-du-rapport/f7f4b89d",
+          "finit_par": "evt:003-reparer-la-signature-du-rapport/427d7e79",
           "fin_type": "normale"
         }
       ]
@@ -282,11 +282,11 @@
       "decision": "plan",
       "nom": "Ton feu vert",
       "etat": "accordee",
-      "demandee": "2026-11-15T14:12:48.782Z",
-      "demandee_par": "evt:003-reparer-la-signature-du-rapport/34cacbf8",
+      "demandee": "2026-11-18T17:20:38.182Z",
+      "demandee_par": "evt:003-reparer-la-signature-du-rapport/4f7edc3e",
       "demandee_source": "journal",
-      "prise": "2026-11-15T14:12:48.907Z",
-      "prise_par": "evt:003-reparer-la-signature-du-rapport/88fe0673"
+      "prise": "2026-11-18T17:20:38.342Z",
+      "prise_par": "evt:003-reparer-la-signature-du-rapport/d4ad1477"
     },
     {
       "id": "jalon:003-reparer-la-signature-du-rapport/livre/1",
@@ -294,11 +294,11 @@
       "decision": "livre",
       "nom": "Ta réception",
       "etat": "accordee",
-      "demandee": "2026-11-15T14:12:50.540Z",
-      "demandee_par": "evt:003-reparer-la-signature-du-rapport/e02ca138",
+      "demandee": "2026-11-18T17:20:39.773Z",
+      "demandee_par": "evt:003-reparer-la-signature-du-rapport/d0f85721",
       "demandee_source": "journal",
-      "prise": "2026-11-15T14:12:50.669Z",
-      "prise_par": "evt:003-reparer-la-signature-du-rapport/bdf1145a"
+      "prise": "2026-11-18T17:20:39.906Z",
+      "prise_par": "evt:003-reparer-la-signature-du-rapport/c8c5a081"
     },
     {
       "id": "jalon:003-reparer-la-signature-du-rapport/deploie/1",
@@ -306,24 +306,24 @@
       "decision": "deploie",
       "nom": "Ta remise des clés",
       "etat": "accordee",
-      "demandee": "2026-11-15T14:12:53.158Z",
-      "demandee_par": "evt:003-reparer-la-signature-du-rapport/bf385112",
+      "demandee": "2026-11-18T17:20:42.196Z",
+      "demandee_par": "evt:003-reparer-la-signature-du-rapport/0b52c258",
       "demandee_source": "journal",
-      "prise": "2026-11-15T14:12:53.289Z",
-      "prise_par": "evt:003-reparer-la-signature-du-rapport/18b0b23b"
+      "prise": "2026-11-18T17:20:42.303Z",
+      "prise_par": "evt:003-reparer-la-signature-du-rapport/209e42ac"
     }
   ],
   "jours": [
     {
-      "date": "2026-11-15",
+      "date": "2026-11-18",
       "evenements": 54,
       "actif": true
     }
   ],
   "evenements": [
     {
-      "id": "evt:003-reparer-la-signature-du-rapport/9f1a624d",
-      "ts": "2026-11-15T14:12:48.457Z",
+      "id": "evt:003-reparer-la-signature-du-rapport/f7f4b89d",
+      "ts": "2026-11-18T17:20:37.847Z",
       "kind": "run",
       "phrase": "La fiche « Réparer la signature du rapport » est ouverte, pour réparer « Signer un rapport »",
       "ref": {
@@ -333,8 +333,8 @@
       "trait": true
     },
     {
-      "id": "evt:003-reparer-la-signature-du-rapport/8e48c3f3",
-      "ts": "2026-11-15T14:12:48.458Z",
+      "id": "evt:003-reparer-la-signature-du-rapport/6053953b",
+      "ts": "2026-11-18T17:20:37.852Z",
       "kind": "bail",
       "phrase": "Une session reprend « Réparer la signature du rapport »",
       "ref": {
@@ -344,8 +344,8 @@
       "trait": false
     },
     {
-      "id": "evt:003-reparer-la-signature-du-rapport/e7c53320",
-      "ts": "2026-11-15T14:12:48.661Z",
+      "id": "evt:003-reparer-la-signature-du-rapport/afb83f93",
+      "ts": "2026-11-18T17:20:38.060Z",
       "kind": "critere",
       "phrase": "Un critère d'acceptation est noté pour « Réparer la signature du rapport »",
       "ref": {
@@ -355,8 +355,8 @@
       "trait": false
     },
     {
-      "id": "evt:003-reparer-la-signature-du-rapport/34cacbf8",
-      "ts": "2026-11-15T14:12:48.782Z",
+      "id": "evt:003-reparer-la-signature-du-rapport/4f7edc3e",
+      "ts": "2026-11-18T17:20:38.182Z",
       "kind": "gate",
       "phrase": "Ta décision « le feu vert » est attendue pour « Réparer la signature du rapport »",
       "ref": {
@@ -366,8 +366,8 @@
       "trait": false
     },
     {
-      "id": "evt:003-reparer-la-signature-du-rapport/88fe0673",
-      "ts": "2026-11-15T14:12:48.907Z",
+      "id": "evt:003-reparer-la-signature-du-rapport/d4ad1477",
+      "ts": "2026-11-18T17:20:38.342Z",
       "kind": "gate",
       "phrase": "Tu accordes « le feu vert » pour « Réparer la signature du rapport »",
       "ref": {
@@ -377,8 +377,8 @@
       "trait": false
     },
     {
-      "id": "evt:003-reparer-la-signature-du-rapport/09ae6adc",
-      "ts": "2026-11-15T14:12:49.619Z",
+      "id": "evt:003-reparer-la-signature-du-rapport/9bc4b6f1",
+      "ts": "2026-11-18T17:20:39.003Z",
       "kind": "lot",
       "phrase": "Le lot « Réparer la signature du rapport » est prévu dans « Réparer la signature du rapport »",
       "ref": {
@@ -389,8 +389,8 @@
       "trait": true
     },
     {
-      "id": "evt:003-reparer-la-signature-du-rapport/a1485f4b",
-      "ts": "2026-11-15T14:12:49.766Z",
+      "id": "evt:003-reparer-la-signature-du-rapport/08a62a0d",
+      "ts": "2026-11-18T17:20:39.149Z",
       "kind": "lot_etat",
       "phrase": "Le lot « Réparer la signature du rapport » commence",
       "ref": {
@@ -401,8 +401,8 @@
       "trait": true
     },
     {
-      "id": "evt:003-reparer-la-signature-du-rapport/e6da55f9",
-      "ts": "2026-11-15T14:12:49.956Z",
+      "id": "evt:003-reparer-la-signature-du-rapport/f41fabb4",
+      "ts": "2026-11-18T17:20:39.302Z",
       "kind": "preuve",
       "phrase": "L'essai qui échoue d'abord est enregistré pour « Réparer la signature du rapport »",
       "ref": {
@@ -412,8 +412,8 @@
       "trait": true
     },
     {
-      "id": "evt:003-reparer-la-signature-du-rapport/560f2030",
-      "ts": "2026-11-15T14:12:50.146Z",
+      "id": "evt:003-reparer-la-signature-du-rapport/dc5637f2",
+      "ts": "2026-11-18T17:20:39.443Z",
       "kind": "preuve",
       "phrase": "Une preuve est enregistrée pour « Réparer la signature du rapport »",
       "ref": {
@@ -423,8 +423,8 @@
       "trait": true
     },
     {
-      "id": "evt:003-reparer-la-signature-du-rapport/a6cbca76",
-      "ts": "2026-11-15T14:12:50.365Z",
+      "id": "evt:003-reparer-la-signature-du-rapport/30e407d6",
+      "ts": "2026-11-18T17:20:39.586Z",
       "kind": "lot_etat",
       "phrase": "Le lot « Réparer la signature du rapport » est fini",
       "ref": {
@@ -435,8 +435,8 @@
       "trait": true
     },
     {
-      "id": "evt:003-reparer-la-signature-du-rapport/e02ca138",
-      "ts": "2026-11-15T14:12:50.540Z",
+      "id": "evt:003-reparer-la-signature-du-rapport/d0f85721",
+      "ts": "2026-11-18T17:20:39.773Z",
       "kind": "gate",
       "phrase": "Ta décision « la réception » est attendue pour « Réparer la signature du rapport »",
       "ref": {
@@ -446,8 +446,8 @@
       "trait": false
     },
     {
-      "id": "evt:003-reparer-la-signature-du-rapport/bdf1145a",
-      "ts": "2026-11-15T14:12:50.669Z",
+      "id": "evt:003-reparer-la-signature-du-rapport/c8c5a081",
+      "ts": "2026-11-18T17:20:39.906Z",
       "kind": "gate",
       "phrase": "Tu accordes « la réception » pour « Réparer la signature du rapport »",
       "ref": {
@@ -457,8 +457,8 @@
       "trait": false
     },
     {
-      "id": "evt:003-reparer-la-signature-du-rapport/e2600fb3",
-      "ts": "2026-11-15T14:12:51.635Z",
+      "id": "evt:003-reparer-la-signature-du-rapport/1b219f4a",
+      "ts": "2026-11-18T17:20:40.712Z",
       "kind": "publication",
       "phrase": "La proposition de modification de « Réparer la signature du rapport » est ouverte",
       "ref": {
@@ -468,8 +468,8 @@
       "trait": false
     },
     {
-      "id": "evt:003-reparer-la-signature-du-rapport/d7697564",
-      "ts": "2026-11-15T14:12:53.023Z",
+      "id": "evt:003-reparer-la-signature-du-rapport/25b0f0f8",
+      "ts": "2026-11-18T17:20:42.073Z",
       "kind": "fusion",
       "phrase": "« Réparer la signature du rapport » entre dans dev",
       "ref": {
@@ -479,8 +479,8 @@
       "trait": true
     },
     {
-      "id": "evt:003-reparer-la-signature-du-rapport/bf385112",
-      "ts": "2026-11-15T14:12:53.158Z",
+      "id": "evt:003-reparer-la-signature-du-rapport/0b52c258",
+      "ts": "2026-11-18T17:20:42.196Z",
       "kind": "gate",
       "phrase": "Ta décision « la remise des clés » est attendue pour « Réparer la signature du rapport »",
       "ref": {
@@ -490,8 +490,8 @@
       "trait": false
     },
     {
-      "id": "evt:003-reparer-la-signature-du-rapport/18b0b23b",
-      "ts": "2026-11-15T14:12:53.289Z",
+      "id": "evt:003-reparer-la-signature-du-rapport/209e42ac",
+      "ts": "2026-11-18T17:20:42.303Z",
       "kind": "gate",
       "phrase": "Tu accordes « la remise des clés » pour « Réparer la signature du rapport »",
       "ref": {
@@ -501,8 +501,8 @@
       "trait": false
     },
     {
-      "id": "evt:003-reparer-la-signature-du-rapport/e7add379",
-      "ts": "2026-11-15T14:12:54.320Z",
+      "id": "evt:003-reparer-la-signature-du-rapport/ea487a58",
+      "ts": "2026-11-18T17:20:43.430Z",
       "kind": "controle",
       "phrase": "Le contrôle « sante » passe sur « Réparer la signature du rapport »",
       "ref": {
@@ -512,8 +512,8 @@
       "trait": true
     },
     {
-      "id": "evt:003-reparer-la-signature-du-rapport/f237cbab",
-      "ts": "2026-11-15T14:12:54.767Z",
+      "id": "evt:003-reparer-la-signature-du-rapport/3f087f5b",
+      "ts": "2026-11-18T17:20:43.961Z",
       "kind": "controle",
       "phrase": "Le contrôle « apres-deploiement » passe sur « Réparer la signature du rapport »",
       "ref": {
@@ -523,8 +523,8 @@
       "trait": true
     },
     {
-      "id": "evt:003-reparer-la-signature-du-rapport/9580d9b5",
-      "ts": "2026-11-15T14:12:54.824Z",
+      "id": "evt:003-reparer-la-signature-du-rapport/81aa6b36",
+      "ts": "2026-11-18T17:20:44.009Z",
       "kind": "constat",
       "phrase": "Une réserve est ouverte sur « Réparer la signature du rapport »",
       "ref": {
@@ -534,8 +534,8 @@
       "trait": false
     },
     {
-      "id": "evt:003-reparer-la-signature-du-rapport/9c3ea54f",
-      "ts": "2026-11-15T14:12:55.358Z",
+      "id": "evt:003-reparer-la-signature-du-rapport/f80cfa55",
+      "ts": "2026-11-18T17:20:44.714Z",
       "kind": "controle",
       "phrase": "Le contrôle « pipeline » passe sur « Réparer la signature du rapport »",
       "ref": {
@@ -545,8 +545,8 @@
       "trait": true
     },
     {
-      "id": "evt:003-reparer-la-signature-du-rapport/cc03d901",
-      "ts": "2026-11-15T14:12:55.523Z",
+      "id": "evt:003-reparer-la-signature-du-rapport/6ebfede8",
+      "ts": "2026-11-18T17:20:44.834Z",
       "kind": "promotion",
       "phrase": "La mise en production de « Réparer la signature du rapport » avance",
       "ref": {
@@ -556,8 +556,8 @@
       "trait": false
     },
     {
-      "id": "evt:003-reparer-la-signature-du-rapport/ad057ef5",
-      "ts": "2026-11-15T14:12:56.913Z",
+      "id": "evt:003-reparer-la-signature-du-rapport/a0b51954",
+      "ts": "2026-11-18T17:20:46.154Z",
       "kind": "promotion",
       "phrase": "La mise en production de « Réparer la signature du rapport » avance",
       "ref": {
@@ -567,8 +567,8 @@
       "trait": false
     },
     {
-      "id": "evt:003-reparer-la-signature-du-rapport/f9ca1073",
-      "ts": "2026-11-15T14:12:57.400Z",
+      "id": "evt:003-reparer-la-signature-du-rapport/6392f28b",
+      "ts": "2026-11-18T17:20:46.774Z",
       "kind": "controle",
       "phrase": "Le contrôle « apres-deploiement » passe sur « Réparer la signature du rapport »",
       "ref": {
@@ -578,8 +578,8 @@
       "trait": true
     },
     {
-      "id": "evt:003-reparer-la-signature-du-rapport/9f324aae",
-      "ts": "2026-11-15T14:12:57.670Z",
+      "id": "evt:003-reparer-la-signature-du-rapport/c59d2f55",
+      "ts": "2026-11-18T17:20:47.191Z",
       "kind": "controle",
       "phrase": "Le contrôle « sante » passe sur « Réparer la signature du rapport »",
       "ref": {
@@ -589,8 +589,8 @@
       "trait": true
     },
     {
-      "id": "evt:003-reparer-la-signature-du-rapport/7d862f77",
-      "ts": "2026-11-15T14:12:57.722Z",
+      "id": "evt:003-reparer-la-signature-du-rapport/427d7e79",
+      "ts": "2026-11-18T17:20:47.246Z",
       "kind": "promotion",
       "phrase": "« Réparer la signature du rapport » est en production, vérifiée : la remise des clés",
       "ref": {
@@ -603,147 +603,147 @@
   "regime": [
     {
       "valeur": "ouvert",
-      "de": "2026-10-22T14:12:09.697Z",
-      "a": "2026-10-22T14:42:12.549Z"
+      "de": "2026-10-25T17:20:00.538Z",
+      "a": "2026-10-25T17:50:03.111Z"
     },
     {
       "valeur": "ferme",
-      "de": "2026-10-22T14:42:12.549Z",
-      "a": "2026-10-24T14:12:13.774Z"
+      "de": "2026-10-25T17:50:03.111Z",
+      "a": "2026-10-27T17:20:04.414Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-24T14:12:13.774Z",
-      "a": "2026-10-24T14:42:15.330Z"
+      "de": "2026-10-27T17:20:04.414Z",
+      "a": "2026-10-27T17:50:05.864Z"
     },
     {
       "valeur": "ferme",
-      "de": "2026-10-24T14:42:15.330Z",
-      "a": "2026-10-27T14:12:16.633Z"
+      "de": "2026-10-27T17:50:05.864Z",
+      "a": "2026-10-30T17:20:07.129Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-27T14:12:16.633Z",
-      "a": "2026-10-27T14:12:18.726Z"
+      "de": "2026-10-30T17:20:07.129Z",
+      "a": "2026-10-30T17:20:09.063Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-10-27T14:12:18.726Z",
-      "a": "2026-10-27T14:12:19.720Z"
+      "de": "2026-10-30T17:20:09.063Z",
+      "a": "2026-10-30T17:20:09.986Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-27T14:12:19.720Z",
-      "a": "2026-10-27T14:42:19.720Z"
+      "de": "2026-10-30T17:20:09.986Z",
+      "a": "2026-10-30T17:50:09.986Z"
     },
     {
       "valeur": "ferme",
-      "de": "2026-10-27T14:42:19.720Z",
-      "a": "2026-10-28T14:12:21.248Z"
+      "de": "2026-10-30T17:50:09.986Z",
+      "a": "2026-10-31T17:20:11.392Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-10-28T14:12:21.248Z",
-      "a": "2026-10-28T14:42:22.697Z"
+      "de": "2026-10-31T17:20:11.392Z",
+      "a": "2026-10-31T17:50:12.901Z"
     },
     {
       "valeur": "ferme",
-      "de": "2026-10-28T14:42:22.697Z",
-      "a": "2026-11-09T14:12:23.956Z"
+      "de": "2026-10-31T17:50:12.901Z",
+      "a": "2026-11-12T17:20:14.258Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-11-09T14:12:23.956Z",
-      "a": "2026-11-09T14:12:28.117Z"
+      "de": "2026-11-12T17:20:14.258Z",
+      "a": "2026-11-12T17:20:18.387Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-11-09T14:12:28.117Z",
-      "a": "2026-11-11T14:12:29.041Z"
+      "de": "2026-11-12T17:20:18.387Z",
+      "a": "2026-11-14T17:20:19.284Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-11-11T14:12:29.041Z",
-      "a": "2026-11-11T14:12:32.183Z"
+      "de": "2026-11-14T17:20:19.284Z",
+      "a": "2026-11-14T17:20:22.470Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-11-11T14:12:32.183Z",
-      "a": "2026-11-11T14:12:32.296Z"
+      "de": "2026-11-14T17:20:22.470Z",
+      "a": "2026-11-14T17:20:22.600Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-11-11T14:12:32.296Z",
-      "a": "2026-11-11T14:42:37.001Z"
+      "de": "2026-11-14T17:20:22.600Z",
+      "a": "2026-11-14T17:50:27.413Z"
     },
     {
       "valeur": "ferme",
-      "de": "2026-11-11T14:42:37.001Z",
-      "a": "2026-11-15T14:12:38.288Z"
+      "de": "2026-11-14T17:50:27.413Z",
+      "a": "2026-11-18T17:20:28.387Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-11-15T14:12:38.288Z",
-      "a": "2026-11-15T14:12:38.724Z"
+      "de": "2026-11-18T17:20:28.387Z",
+      "a": "2026-11-18T17:20:28.687Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-11-15T14:12:38.724Z",
-      "a": "2026-11-15T14:12:38.868Z"
+      "de": "2026-11-18T17:20:28.687Z",
+      "a": "2026-11-18T17:20:28.836Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-11-15T14:12:38.868Z",
-      "a": "2026-11-15T14:12:40.546Z"
+      "de": "2026-11-18T17:20:28.836Z",
+      "a": "2026-11-18T17:20:30.201Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-11-15T14:12:40.546Z",
-      "a": "2026-11-15T14:12:40.686Z"
+      "de": "2026-11-18T17:20:30.201Z",
+      "a": "2026-11-18T17:20:30.314Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-11-15T14:12:40.686Z",
-      "a": "2026-11-15T14:12:43.149Z"
+      "de": "2026-11-18T17:20:30.314Z",
+      "a": "2026-11-18T17:20:32.537Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-11-15T14:12:43.149Z",
-      "a": "2026-11-15T14:12:43.296Z"
+      "de": "2026-11-18T17:20:32.537Z",
+      "a": "2026-11-18T17:20:32.679Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-11-15T14:12:43.296Z",
-      "a": "2026-11-15T14:12:48.782Z"
+      "de": "2026-11-18T17:20:32.679Z",
+      "a": "2026-11-18T17:20:38.182Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-11-15T14:12:48.782Z",
-      "a": "2026-11-15T14:12:48.907Z"
+      "de": "2026-11-18T17:20:38.182Z",
+      "a": "2026-11-18T17:20:38.342Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-11-15T14:12:48.907Z",
-      "a": "2026-11-15T14:12:50.540Z"
+      "de": "2026-11-18T17:20:38.342Z",
+      "a": "2026-11-18T17:20:39.773Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-11-15T14:12:50.540Z",
-      "a": "2026-11-15T14:12:50.669Z"
+      "de": "2026-11-18T17:20:39.773Z",
+      "a": "2026-11-18T17:20:39.906Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-11-15T14:12:50.669Z",
-      "a": "2026-11-15T14:12:53.158Z"
+      "de": "2026-11-18T17:20:39.906Z",
+      "a": "2026-11-18T17:20:42.196Z"
     },
     {
       "valeur": "pause",
-      "de": "2026-11-15T14:12:53.158Z",
-      "a": "2026-11-15T14:12:53.289Z"
+      "de": "2026-11-18T17:20:42.196Z",
+      "a": "2026-11-18T17:20:42.303Z"
     },
     {
       "valeur": "ouvert",
-      "de": "2026-11-15T14:12:53.289Z",
+      "de": "2026-11-18T17:20:42.303Z",
       "a": null
     }
   ],
