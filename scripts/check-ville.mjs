@@ -973,6 +973,95 @@ rapportCamionPlus();
   carte.dispose();
 }
 
+// --- La ville autour (lot G9, fiche city-plan ; docs/ville-autour.md) : le plan et l'assemblage des kits, avec les
+// vrais modeles, en qualite haute et basse. Budget par passe, hauteurs de chaque cote, rien dans la place ni dans le
+// terrain du chantier (sauf les arbres du pre, dans la place), rien ne se designe, la bascule au loin.
+{
+  const { planVille, PLACE, HAUTEURS } = await import('../src/ville/ville-autour.js');
+  verifie(JSON.stringify(planVille('gdc')) === JSON.stringify(planVille('gdc')), 'ville autour : la même graine ne rejoue pas la même ville');
+  verifie(JSON.stringify(planVille('gdc')) !== JSON.stringify(planVille('autre')), 'ville autour : deux graines donnent la même ville');
+  const plan = planVille('gdc');
+  const coteDe = (x, z) => plan.pates.find((p) => x >= p.x[0] - 0.01 && x <= p.x[1] + 0.01 && z >= p.z[0] - 0.01 && z <= p.z[1] + 0.01)?.cote;
+  const appels = (racine, filtre = () => true) => {
+    let n = 0;
+    racine.traverse((o) => {
+      let vu = true;
+      for (let x = o; x && x !== racine.parent; x = x.parent) if (!x.visible) vu = false;
+      if (o.isMesh && vu && filtre(o)) n += Array.isArray(o.material) ? o.material.length : 1;
+    });
+    return n;
+  };
+  const PLAFONDS = { high: { principal: 20, ombre: 12, triangles: 250000 }, low: { principal: 15, ombre: 0, triangles: 80000 } };
+  let rapportVille = '';
+  for (const quality of ['high', 'low']) {
+    const carte = await creeCarte(THREE, { components: modules, chargeur, theme: 'light', quality, reducedMotion: true, villeAutour: 'kits' });
+    const v = carte.villeAutour;
+    verifie(v && v.mode === 'kits', `ville autour (${quality}) : la carte ne la pose pas`);
+    const ville = [];
+    carte.root.traverse((o) => {
+      if (o.name === 'VILLE_KITS' || o.name === 'city-ground' || o.name === 'VILLE_PRE') ville.push(o);
+    });
+    const principal = ville.reduce((n, o) => n + appels(o), 0);
+    const ombre = ville.reduce((n, o) => n + appels(o, (m) => m.castShadow), 0);
+    const pl = PLAFONDS[quality];
+    verifie(principal <= pl.principal && ombre <= pl.ombre, `ville autour (${quality}) : ${principal} appels de dessin et ${ombre} dans l'ombre, plafonds ${pl.principal} et ${pl.ombre}`);
+    const tri = quality === 'high' ? v.triangles.haute : v.triangles.basse;
+    verifie(tri <= pl.triangles && v.triangles.basse <= PLAFONDS.low.triangles, `ville autour (${quality}) : ${tri} triangles, plafond ${pl.triangles}`);
+    // les sommets de la ville visible : hauteurs, place et terrain du chantier
+    const T = implantation(1, ['block']).terrain; // le terrain de la carte essayee : vide, un batiment
+    const raccord = (x, z) => plan.raccords.some((r) => x >= r.x[0] - 0.01 && x <= r.x[1] + 0.01 && z >= r.z[0] - 0.01 && z <= r.z[1] + 0.01);
+    let trop = 0;
+    let dedans = 0;
+    const p3 = new THREE.Vector3();
+    for (const o of ville)
+      o.traverse((m) => {
+        if (!m.isMesh || m.isInstancedMesh) return;
+        let vu = true;
+        for (let x = m; x && x !== o.parent; x = x.parent) if (!x.visible) vu = false;
+        if (!vu) return;
+        const pre = o.name === 'VILLE_PRE';
+        const pos = m.geometry.getAttribute('position');
+        m.updateWorldMatrix(true, false);
+        const local = new THREE.Matrix4().copy(o.parent.matrixWorld).invert().multiply(m.matrixWorld);
+        for (let i = 0; i < pos.count; i++) {
+          p3.fromBufferAttribute(pos, i).applyMatrix4(local);
+          const cote = coteDe(p3.x, p3.z);
+          if (cote && p3.y > HAUTEURS[cote] + 0.01) trop++;
+          const dansPlace = p3.x > PLACE.x[0] + 0.01 && p3.x < PLACE.x[1] - 0.01 && p3.z > PLACE.z[0] + 0.01 && p3.z < PLACE.z[1] - 0.01;
+          const dansTerrain = p3.x > T.x[0] && p3.x < T.x[1] && p3.z > T.z[0] && p3.z < T.z[1];
+          // les raccords entrent dans la place par construction (ils rejoignent les routes du chantier) ; les arbres du pre
+          // sont dans la place, jamais sur le terrain
+          if (o.name !== 'city-ground' && ((dansPlace && !pre && !raccord(p3.x, p3.z)) || (pre && dansTerrain))) dedans++;
+        }
+      });
+    verifie(trop === 0, `ville autour (${quality}) : ${trop} sommets au-dessus de la hauteur de leur côté`);
+    verifie(dedans === 0, `ville autour (${quality}) : ${dedans} sommets dans la place du chantier ou sur son terrain`);
+    // rien ne se designe : un rayon traverse la ville
+    let touches = 0;
+    const rayon = new THREE.Raycaster(new THREE.Vector3(60, 100, 40), new THREE.Vector3(0, -1, 0));
+    for (const o of ville)
+      o.traverse((m) => {
+        if (!m.isMesh) return;
+        const hits = [];
+        m.raycast(rayon, hits);
+        touches += hits.length;
+        if (carte.cible(m) !== null) touches++;
+      });
+    verifie(touches === 0, `ville autour (${quality}) : la ville se désigne au clic`);
+    // la bascule au loin, en qualite haute : sous 4 px par metre, les pieces basses
+    if (quality === 'high') {
+      verifie(carte.vueVille(3) === true && carte.villeAutour.loin === true, 'ville autour : pas de pièces basses sous 4 px par mètre');
+      verifie(carte.vueVille(8) === true && carte.villeAutour.loin === false, 'ville autour : les pièces basses restent au-dessus de 4 px par mètre');
+      rapportVille = `ville autour : ${plan.pates.length} pâtés, ${v.vitres} vitres ; en haute ${principal} appels et ${ombre} dans l'ombre, ${v.triangles.haute} triangles (${v.triangles.basse} au loin)`;
+    } else rapportVille += ` ; en basse ${principal} appels, ${tri} triangles`;
+    carte.dispose();
+  }
+  const sansVille = await creeCarte(THREE, { components: modules, chargeur, theme: 'light', quality: 'low', reducedMotion: true });
+  verifie(sansVille.villeAutour === null && sansVille.vueVille(3) === false, 'sans villeAutour, la carte pose une ville');
+  sansVille.dispose();
+  rapports.push(rapportVille);
+}
+
 // --- Le verdict
 if (erreurs.length) {
   console.error(`Carte vivante : ${erreurs.length} erreur(s) sur ${verifies} vérifications`);

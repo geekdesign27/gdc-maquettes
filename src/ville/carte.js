@@ -39,6 +39,7 @@ import {
 } from "./equipe.js";
 import { alea } from "./graine.js";
 import { planVille } from "./ville-autour.js";
+import { assembleVille, arbresDuPre } from "./ville-kits.js";
 import {
   groupFloors,
   anchorFor,
@@ -132,7 +133,7 @@ const dist = (a, b) => Math.hypot(b[0] - a[0], b[1] - a[1]);
 // scene } : la HemisphereLight, la DirectionalLight et la scene de la page, que la carte regle sur l'heure ; sans elles,
 // la page les regle avec recette()), heure ("jour", "aube", "nuit" ou de 0 a 1 : un moment fixe pour les revues ;
 // absente, l'heure du poste), maintenant (l'horloge, Date.now par defaut), villeAutour ("blanc" : la ville fictive
-// autour du chantier, en volumes simples, lot G9 ; absente, pas de ville) }.
+// autour du chantier, en volumes simples, lot G9 ; "kits" : avec les kits de la ville ; absente, pas de ville) }.
 export async function creeCarte(THREE, options) {
   const { components, chargeur } = options;
   // le registre commun des materiaux du chargeur (plan D-1) : ctx.materiau des composants, et les teintes des tenues
@@ -485,6 +486,7 @@ export async function creeCarte(THREE, options) {
     // le plateau recentre sur le terrain, avance vers la camera
     plateau.position.set(RECUL - centre[0], 0, RECUL - centre[2]);
     plateau.updateMatrix();
+    rafraichitPre(); // la ville autour : le pre de la place suit le terrain
   }
 
   // --- placer un element de GDC
@@ -1456,7 +1458,15 @@ export async function creeCarte(THREE, options) {
     signalements,
     // la ville autour (lot G9) : son mode et son plan (ville-autour.js), ou null sans ville
     get villeAutour() {
-      return ville ? { mode: ville.mode, plan: ville.plan } : null;
+      return ville
+        ? { mode: ville.mode, plan: ville.plan, triangles: ville.kits?.triangles ?? null, vitres: ville.kits?.vitres ?? null, loin: ville.kits?.loin ?? false }
+        : null;
+    },
+    // L'hote dit a combien de pixels par metre il affiche la carte (la hauteur de la vue, en pixels, sur sa hauteur au
+    // sol, en metres) : sous 4 px par metre, la ville passe a ses pieces basses (city-plan). Rend true s'il faut
+    // redessiner.
+    vueVille(pxParMetre) {
+      return ville?.kits ? ville.kits.vue(pxParMetre) : false;
     },
     // Une nouvelle scene de GDC. La premiere se pose telle quelle ; les suivantes jouent leurs actions dans l'ordre,
     // puis l'etat recu s'applique. Une scene qui arrive pendant la lecture de la precedente la termine d'abord.
@@ -2197,8 +2207,41 @@ export async function creeCarte(THREE, options) {
   // composition, la camera et le budget avant les kits. Rien ne s'y designe : un rayon la traverse, cible() rend null.
   // Tout est fusionne par materiau : le grand terrain (city-ground), un maillage pour les rues, un pour les volumes.
   let ville = null;
+  // Les kits de la ville (road-kit, nature-kit, villa-kit, apartment-kit), lus par le chargeur comme les modeles d'un
+  // composant.
+  const KITS_VILLE = {
+    id: "ville-autour",
+    category: "site",
+    assets: [
+      "kit:road-kit/ENV_ROAD_KIT_A_v001.glb",
+      "kit:nature-kit/ENV_NATURE_KIT_A_v001.glb",
+      "kit:villa-kit/ENV_VILLA_KIT_A_v001.glb",
+      "kit:apartment-kit/ENV_APARTMENT_KIT_A_v001.glb",
+    ],
+  };
+  // Les arbres du pre (city-ground, la bande libre) : la partie de la place du chantier que le terrain ne couvre pas,
+  // devant et a droite du chantier ; refaits quand le terrain change, absents quand il remplit la place, et en basse.
+  function rafraichitPre() {
+    if (!ville?.scenes || !imp) return;
+    ville.pre?.dispose();
+    ville.pre = null;
+    // en qualite basse, moins d'objets : pas d'arbres sur le pre (le budget de 15 appels de la ville, city-plan)
+    if (ctxOptions.quality !== "high") return;
+    const P = ville.plan.place;
+    const T = imp.terrain;
+    const rectangles = [
+      { x: [P.x[0] + 1.5, P.x[1] - 1], z: [T.z[1] + 2, P.z[1] - 1] },
+      { x: [T.x[1] + 2, P.x[1] - 1], z: [T.z[0], T.z[1]] },
+    ].filter((r) => r.x[1] - r.x[0] > 8 && r.z[1] - r.z[0] > 8);
+    if (!rectangles.length) return;
+    ville.pre = arbresDuPre(THREE, ville.scenes, rectangles, { quality: ctxOptions.quality, graine });
+    ville.pre.racine.traverse((x) => {
+      if (x.isMesh) x.raycast = () => {};
+    });
+    plateau.add(ville.pre.racine);
+  }
   async function coucheVille(mode) {
-    if (mode !== "blanc") {
+    if (mode !== "blanc" && mode !== "kits") {
       signale(`ville autour inconnue : ${mode}`);
       return;
     }
@@ -2225,6 +2268,35 @@ export async function creeCarte(THREE, options) {
       });
       plateau.add(sol.root);
     } else signale("ville autour : city-ground absent de la bibliotheque");
+    if (mode === "kits") {
+      await chargeur.prepare(KITS_VILLE);
+      const a = await chargeur.assetsPour(KITS_VILLE);
+      const [rues, nature, villas, immeubles] = KITS_VILLE.assets.map((n) => a[n].scene);
+      const scenes = { rues, nature, villas, immeubles };
+      const kits = assembleVille(THREE, plan, scenes, { quality: ctxOptions.quality, graine });
+      plateau.add(kits.racine);
+      const objets = [sol?.root, kits.racine].filter(Boolean);
+      for (const o of objets)
+        o.traverse((x) => {
+          if (x.isMesh) x.raycast = () => {};
+        });
+      ville = {
+        mode,
+        plan,
+        objets,
+        kits,
+        scenes,
+        pre: null,
+        libere() {
+          sol?.root.removeFromParent();
+          sol?.dispose();
+          kits.dispose();
+          ville.pre?.dispose();
+        },
+      };
+      rafraichitPre();
+      return;
+    }
     // des boites fusionnees en un maillage : positions et normales de chaque boite, mises a sa taille et a sa place
     const boite = new THREE.BoxGeometry(1, 1, 1).toNonIndexed();
     const pos = boite.getAttribute("position").array;

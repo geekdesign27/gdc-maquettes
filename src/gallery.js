@@ -1179,6 +1179,8 @@ function loop() {
   if (suiviCamera?.update(dt)) { controls.update(); continu = true; }
   // une animation qui s'arrete sur une image sans ombre refaite : une image de plus, qui la refait
   if (continu || ombre.enRetard) dirty = true;
+  // la ville au loin (sous 4 px par metre) passe a ses pieces basses : la galerie dit sa densite a la carte
+  if (villeAutour && current.ville?.carte?.vueVille?.(stage.clientHeight / ((camera.top - camera.bottom) / camera.zoom))) dirty = true;
   if (dirty) {
     caleOmbre();
     ombre.avant(continu);

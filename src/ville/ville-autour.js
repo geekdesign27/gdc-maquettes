@@ -159,12 +159,20 @@ function volumes(p, tirage) {
           largeur: choisis(tirage, [10, 11]),
           profondeur: choisis(tirage, [9, 10]),
           hauteur: haute,
+          // la parcelle de la villa : son jardin et ses haies (ville-kits.js)
+          parcelle: {
+            x: [x0 + (l / nx) * i, x0 + (l / nx) * (i + 1)],
+            z: [z0 + (d / nz) * j, z0 + (d / nz) * (j + 1)],
+          },
         });
   } else if (p.type === "immeubles") {
     // deux immeubles, barre ou plot, de 3 a 6 niveaux (3 m l'etage, 0,6 m d'acrotere)
     const n = l >= 30 && d >= 30 ? 2 : 1;
     for (let k = 0; k < n; k++) {
-      const barre = tirage() < 0.5;
+      // un pate de moins de 20 m de profondeur ne prend qu'une barre (12 m et ses balcons) : un plot de 15 m et ses
+      // balcons deborderait sur le trottoir (constat du controleur du 25 octobre 2026) ; le tirage reste le meme
+      const pile = tirage();
+      const barre = d < 20 || pile < 0.5;
       const niveaux = 3 + Math.floor(tirage() * 4);
       const largeur = barre ? (l >= 30 ? 24 : Math.min(24, l - 6)) : 15;
       const profondeur = barre ? 12 : 15;
