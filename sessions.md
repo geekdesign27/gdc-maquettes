@@ -1,5 +1,31 @@
 # Journal des sessions
 
+## 2026-10-25 — MacBook-Pro-de-Pierre-Alain-2 — main
+
+**Où on en est**
+Les lots G0 à G9 sont fabriqués : 62 éléments livrés, 2 à faire. Le planning de type Gantt (`site-schedule`), le rail des panneaux et le fil des déclencheurs 1.1.0 sont faits sur les séquences de GDC 0.20. La ville fictive autour du chantier (lot G9) est livrée : terrain, routes, nature, villas, immeubles, nuit, circulation.
+
+**Fait et vérifié**
+- `npm run check` : 56 conformes, 0 en erreur ; carte vivante 41 100 vérifications et plus ; `npm run build` passe.
+- Fluidité : registre des matériaux (166 → 59), `building` 2.1.0 (226 maillages → 31), ombre une image sur deux, un squelette par personnage ; la carte tourne à 58 images/s une fois lancée, processeur ralenti ×4.
+
+**Reste à faire**
+- Pierre-Alain : valider `site-schedule` (planche de neuf questions, session « Planning I-6 et I-7 ») et la scène de référence ; transmettre `docs/planning-retour-atelier-I6-I7.md` à GDC ; mesurer la carte avec la ville sur le portable de 13 pouces.
+- Décisions en attente : corrections 2, 3 et 5 du profil processeur (D-1c), points de DA « à revoir plus tard » (`docs/planning-plan-atelier.md`, section 7).
+- Seconde version : le rejeu de la carte à une date passée, avec l'option `instant`.
+
+**Décisions prises**
+- Planning : Gantt par étapes, futur sans date (deux jours actifs par étape), jours vides repliés, rail fin, arbre à gauche et fil à droite (dernière passe de GDC, 22 octobre).
+- Carte : deuxième rangée de parcelles au-delà de 4 applications, grille de 6 panneaux de décision au plus, 13 projecteurs (densité moyenne), repère d'agent plafonné à 80 px.
+- Ville : environ 30 pâtés autour d'une place de 125 × 70 m réservée au chantier, caméra par défaut sur les zones, 6 voitures et 6 passants au plus.
+
+**Pièges rencontrés**
+- Plusieurs sessions dans le même dossier : une a lancé `git reset` sur des fichiers partagés et vidé l'index d'une autre (commit `b51b376`, réparé par `25acd4b`). Règle : indexer seulement ses lignes, jamais `git add -A` ni `git reset` sans restaurer.
+- Un changement de palette réexporte tous les GLB : le faire seul, quand aucune autre session n'exporte.
+
+**Prochaine action**
+Répondre à la planche du planning, puis pousser `main`.
+
 ## 2026-10-20 16:13 — MacBook-Pro-de-Pierre-Alain-2 — main
 
 **Où on en est**
