@@ -21,3 +21,11 @@ Ce sont des propositions, pas des commandes : ce sont des modifications de compo
 Proposition : trois lignes dans la section « réussites » du panneau, chacune verte, en attente ou bloquée, avec la forme, la couleur et l'icône de la signalétique. Les champs viendront de `gdc etat` (version 0.23, schéma annoncé avant).
 
 **P2. L'outil qui travaille, dans la fenêtre d'un agent (`agent-popup`).** Pierre-Alain passe de Claude Code à Codex quand ses limites sont atteintes. Le journal sait quel outil a travaillé (`bail.outil` : `claude-code` ou `codex`). Proposition : une ligne discrète dans la fenêtre d'un agent, « avec Claude Code » ou « avec Codex », en texte, sans logo de marque.
+
+## Réponse de l'atelier (25 octobre 2026, décisions de Pierre-Alain)
+
+**P1, les trois natures du prouvé : accepté, sans nouvelle version.** L'inspecteur 1.0.0 l'affiche déjà : trois lignes de la section « réussites », `{ label, value, state }`, avec `label` à « Processus », « Fonctionnel » et « Sécurité », et `state` pris dans la signalétique (`done`, `waiting`, `blocked`, `unknown`). L'atelier ajoutera l'exemple à la galerie quand le schéma de `gdc etat` 0.23 sera publié.
+
+**P2, l'outil qui travaille : accepté, `agent-popup` 1.1.0.** Nouvelle entrée `tool` : `claude-code` affiche « avec Claude Code », `codex` affiche « avec Codex » ; absente ou vide, rien ne s'affiche. Une ligne discrète, en texte, sans logo. À GDC : porter `bail.outil` sur l'objet de l'agent dans la scène (les séquences 0.22.3 ne le portent pas).
+
+**Le code court : dans l'inspecteur seulement.** Ni sur le panneau 3D (pas de texte dans la 3D), ni dans le badge (jusqu'à six codes à la fois sur la carte). Quand on choisit un panneau de décision, la section « actions attendues » porte une ligne « Code à écrire » dont la valeur est le code, par exemple `K7P`. Sans nouvelle version de l'inspecteur. À GDC : porter `code` sur l'objet `decision-sign` de la scène tant que la décision est attendue (les séquences 0.22.3 ne le portent pas).
