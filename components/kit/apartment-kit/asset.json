@@ -1,0 +1,13 @@
+{
+  "nom": "ENV_APARTMENT_KIT_A_v001",
+  "id": "apartment-kit",
+  "bible": "WORKSITE 1.2",
+  "blender": "5.3.0 Beta",
+  "script": "blender/assets/apartment-kit.py",
+  "script_sha256": "ff86c0c14b0634ab605bfd9206fb79be2862b534faa6920f53643f99046f86d7",
+  "commun_sha256": "e8cb480c62b7bdb8b54460ec91e343989e89e93987616cc2711afd5dbcdf2f80",
+  "palette_sha256": "028f1055493a2d25d665642cf946eb3c7160e4274b9724dd07878deff0dbc0ec",
+  "glb_sha256": "f9ce3c08094ee0024becc81e66e48c6c78cc7488aae2a8cd52093229852aff5f",
+  "animations": [],
+  "statut": "a valider"
+}

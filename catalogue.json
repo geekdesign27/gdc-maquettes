@@ -2208,22 +2208,27 @@
       "category": "kit",
       "name": "Le kit des immeubles locatifs",
       "purpose": "Les immeubles locatifs romands, au fond de la vue : la ligne d'horizon de la ville.",
-      "description": "Script Blender blender/assets/apartment-kit.py, en pièces empilées par l'assemblage. Deux plans au sol : la barre (24 × 12 m) et le plot (15 × 15 m). Les pièces : un rez (700 / 250 triangles), habité ou commercial avec une vitrine, sans enseigne ni texte ; un étage (350 / 120), empilé de 2 à 5 fois ; un toit (500 / 150), plat avec acrotère ou à quatre pans faibles en tuile (MAT_ROOF_TILE). Un immeuble de six niveaux fait environ 3 000 / 1 000 triangles. Façades en crépi clair, balcons filants en béton (MAT_CONCRETE), garde-corps et menuiseries graphite ; les vitres sont instanciées sur des ancres WIN_*, comme celles des villas (city-night). Écarté : les toiles de tente orange ou jaunes des balcons, très romandes, parce que l'orange et le jaune sont pris par le chantier et par l'état « Bloqué ». Posés seulement dans les rangées du fond et des côtés (city-plan), jamais côté caméra ; 19 m au plus. Qualité basse : garde-corps fondus en un bandeau plein, menuiseries fines supprimées. Environ 24 immeubles dans la ville, fusionnés par matériau : environ 5 appels de dessin. Fiche validée par Pierre-Alain le 23 octobre 2026.",
+      "description": "Script Blender blender/assets/apartment-kit.py, en pièces empilées par l'assemblage. Deux plans au sol : la barre (BAR, 24 × 12 m, crépi crème MAT_PLASTER) et le plot (PLOT, 15 × 15 m, blanc cassé MAT_SURFACE). Les pièces, chacune avec sa version basse : un rez (GROUND), habité, ou commercial (GROUND_SHOP) avec une vitrine sans enseigne ni texte, qui laisse 0,60 m de crépi au moins autour d'elle ; un étage (FLOOR), empilé de 2 à 5 fois ; un toit, plat à acrotère et couvertine graphite (ROOF_FLAT) ou à quatre pans en tuile (ROOF_HIP, pente de 22°). Balcons filants en béton (MAT_CONCRETE) : dalle et garde-corps plein d'un seul tenant (choix de Pierre-Alain du 24 octobre 2026, les balcons des locatifs romands des années 60 et 70) ; le graphite ne reste qu'aux menuiseries, aux portes et à la couvertine ; l'avant-toit à quatre pans couvre les balcons, 0,30 m au-delà de leur nez. Les vitres sont instanciées sur des vides (<PIECE>_WIN_nn, origine au centre, −Y vers l'extérieur, vitrine mise à l'échelle), avec la pièce WINDOW_PANE, comme celles des villas (city-night). Écarté : les toiles de tente orange ou jaunes des balcons, très romandes, parce que l'orange et le jaune sont pris par le chantier et par l'état « Bloqué ». Posés seulement dans les rangées du fond et des côtés (city-plan), jamais côté caméra ; 19 m au plus : le toit à quatre pans s'arrête à 5 niveaux, au-delà le toit est plat (18,60 m à 6 niveaux), une règle que l'assemblage reprend. Qualité basse : chaque balcon devient un bloc plein de béton (1,50 × 1,30 m), le toit plat un bloc de 0,60 m, ni dormants, ni seuils, ni couvertine ; plus aucune cote sous 0,60 m. Environ 24 immeubles dans la ville, fusionnés par matériau : environ 5 appels de dessin. Fiche validée par Pierre-Alain le 23 octobre 2026. Version 1.0.0 (ENV_APARTMENT_KIT_A_v001), brief, planche et constat du contrôleur validés par Pierre-Alain le 24 octobre 2026 : 1 706 triangles et 6 matériaux pour tout le GLB, 226 vides de fenêtre ; rez 124 à 128 / 10, étage 172 à 236 / 16 à 22, toits 142 à 194 / 4 à 10 ; un immeuble de six niveaux, vitres comprises, 1 420 à 1 740 / 338 à 368. Les fenêtres derrière les balcons ne se voient qu'à moitié en haute, comme sur un vrai locatif.",
       "budget": {
         "triangles": 6000,
         "materials": 6
       },
       "acceptance": [
         "Chaque pièce est un nœud nommé selon la convention (bible, section 9) ; l'empilement se fait sans retouche, de 3 à 6 niveaux",
-        "Un immeuble de six niveaux : 3 000 triangles en haute, 1 000 en basse",
+        "Un immeuble de six niveaux : 3 000 triangles en haute, 1 000 en basse au plus (mesuré : 1 740 / 368 au plus)",
         "Aucun immeuble côté caméra ; aucun ne cache une zone au cadrage par défaut",
         "Aucune couleur d'état, ni orange, ni corail, ni jaune",
         "Jamais confondu avec un bâtiment d'application (building) terminé : planche côte à côte",
         "Qualité basse : plus rien sous 0,60 m (garde-corps en bandeau plein)"
       ],
-      "status": "à faire",
+      "status": "livré",
       "role": "modeleur",
-      "production": "blender"
+      "production": "blender",
+      "version": "1.0.0",
+      "blender": "ENV_APARTMENT_KIT_A_v001",
+      "assets": [
+        "ENV_APARTMENT_KIT_A_v001.glb"
+      ]
     },
     {
       "id": "city-night",

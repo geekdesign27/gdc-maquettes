@@ -1,0 +1,5160 @@
+{
+ "prefixe": "ENV_APARTMENT_KIT_A_",
+ "socles": [
+  {
+   "taille": [
+    60.0,
+    48.0,
+    0.6
+   ],
+   "centre": [
+    -3.0,
+    -1.0
+   ],
+   "materiau": "MAT_LANDSCAPE",
+   "chanfrein": 0.1
+  }
+ ],
+ "pieces": [
+  {
+   "piece": "ENV_APARTMENT_KIT_A_BAR_GROUND",
+   "position": [
+    -17.0,
+    12.0,
+    0.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -27.5,
+    5.97,
+    1.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -24.5,
+    5.97,
+    1.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -21.5,
+    5.97,
+    1.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -15.5,
+    5.97,
+    1.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -12.5,
+    5.97,
+    1.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -9.5,
+    5.97,
+    1.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -6.5,
+    5.97,
+    1.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -4.97,
+    9.0,
+    1.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -4.97,
+    15.0,
+    1.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -27.5,
+    18.03,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -24.5,
+    18.03,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -21.5,
+    18.03,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -18.5,
+    18.03,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -15.5,
+    18.03,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -12.5,
+    18.03,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -9.5,
+    18.03,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -6.5,
+    18.03,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -29.03,
+    9.0,
+    1.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -29.03,
+    15.0,
+    1.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_BAR_FLOOR",
+   "position": [
+    -17.0,
+    12.0,
+    3.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -27.5,
+    5.97,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -24.5,
+    5.97,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -21.5,
+    5.97,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -18.5,
+    5.97,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -15.5,
+    5.97,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -12.5,
+    5.97,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -9.5,
+    5.97,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -6.5,
+    5.97,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -4.97,
+    9.0,
+    4.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -4.97,
+    15.0,
+    4.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -27.5,
+    18.03,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -24.5,
+    18.03,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -21.5,
+    18.03,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -18.5,
+    18.03,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -15.5,
+    18.03,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -12.5,
+    18.03,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -9.5,
+    18.03,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -6.5,
+    18.03,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -29.03,
+    9.0,
+    4.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -29.03,
+    15.0,
+    4.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_BAR_FLOOR",
+   "position": [
+    -17.0,
+    12.0,
+    6.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -27.5,
+    5.97,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -24.5,
+    5.97,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -21.5,
+    5.97,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -18.5,
+    5.97,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -15.5,
+    5.97,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -12.5,
+    5.97,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -9.5,
+    5.97,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -6.5,
+    5.97,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -4.97,
+    9.0,
+    7.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -4.97,
+    15.0,
+    7.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -27.5,
+    18.03,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -24.5,
+    18.03,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -21.5,
+    18.03,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -18.5,
+    18.03,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -15.5,
+    18.03,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -12.5,
+    18.03,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -9.5,
+    18.03,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -6.5,
+    18.03,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -29.03,
+    9.0,
+    7.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -29.03,
+    15.0,
+    7.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_BAR_FLOOR",
+   "position": [
+    -17.0,
+    12.0,
+    9.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -27.5,
+    5.97,
+    10.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -24.5,
+    5.97,
+    10.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -21.5,
+    5.97,
+    10.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -18.5,
+    5.97,
+    10.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -15.5,
+    5.97,
+    10.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -12.5,
+    5.97,
+    10.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -9.5,
+    5.97,
+    10.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -6.5,
+    5.97,
+    10.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -4.97,
+    9.0,
+    10.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -4.97,
+    15.0,
+    10.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -27.5,
+    18.03,
+    10.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -24.5,
+    18.03,
+    10.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -21.5,
+    18.03,
+    10.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -18.5,
+    18.03,
+    10.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -15.5,
+    18.03,
+    10.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -12.5,
+    18.03,
+    10.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -9.5,
+    18.03,
+    10.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -6.5,
+    18.03,
+    10.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -29.03,
+    9.0,
+    10.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -29.03,
+    15.0,
+    10.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_BAR_FLOOR",
+   "position": [
+    -17.0,
+    12.0,
+    12.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -27.5,
+    5.97,
+    13.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -24.5,
+    5.97,
+    13.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -21.5,
+    5.97,
+    13.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -18.5,
+    5.97,
+    13.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -15.5,
+    5.97,
+    13.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -12.5,
+    5.97,
+    13.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -9.5,
+    5.97,
+    13.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -6.5,
+    5.97,
+    13.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -4.97,
+    9.0,
+    13.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -4.97,
+    15.0,
+    13.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -27.5,
+    18.03,
+    13.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -24.5,
+    18.03,
+    13.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -21.5,
+    18.03,
+    13.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -18.5,
+    18.03,
+    13.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -15.5,
+    18.03,
+    13.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -12.5,
+    18.03,
+    13.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -9.5,
+    18.03,
+    13.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -6.5,
+    18.03,
+    13.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -29.03,
+    9.0,
+    13.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -29.03,
+    15.0,
+    13.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_BAR_FLOOR",
+   "position": [
+    -17.0,
+    12.0,
+    15.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -27.5,
+    5.97,
+    16.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -24.5,
+    5.97,
+    16.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -21.5,
+    5.97,
+    16.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -18.5,
+    5.97,
+    16.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -15.5,
+    5.97,
+    16.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -12.5,
+    5.97,
+    16.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -9.5,
+    5.97,
+    16.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -6.5,
+    5.97,
+    16.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -4.97,
+    9.0,
+    16.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -4.97,
+    15.0,
+    16.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -27.5,
+    18.03,
+    16.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -24.5,
+    18.03,
+    16.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -21.5,
+    18.03,
+    16.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -18.5,
+    18.03,
+    16.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -15.5,
+    18.03,
+    16.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -12.5,
+    18.03,
+    16.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -9.5,
+    18.03,
+    16.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -6.5,
+    18.03,
+    16.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -29.03,
+    9.0,
+    16.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -29.03,
+    15.0,
+    16.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_BAR_ROOF_FLAT",
+   "position": [
+    -17.0,
+    12.0,
+    18.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_PLOT_GROUND",
+   "position": [
+    14.0,
+    13.0,
+    0.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    8.0,
+    5.47,
+    1.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    11.0,
+    5.47,
+    1.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    17.0,
+    5.47,
+    1.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    20.0,
+    5.47,
+    1.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.53,
+    7.0,
+    1.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.53,
+    10.0,
+    1.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.53,
+    13.0,
+    1.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.53,
+    16.0,
+    1.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.53,
+    19.0,
+    1.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    8.0,
+    20.53,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    11.0,
+    20.53,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    14.0,
+    20.53,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    17.0,
+    20.53,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    20.0,
+    20.53,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    6.47,
+    7.0,
+    1.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    6.47,
+    10.0,
+    1.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    6.47,
+    13.0,
+    1.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    6.47,
+    16.0,
+    1.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    6.47,
+    19.0,
+    1.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_PLOT_FLOOR",
+   "position": [
+    14.0,
+    13.0,
+    3.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    8.0,
+    5.47,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    11.0,
+    5.47,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    14.0,
+    5.47,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    17.0,
+    5.47,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    20.0,
+    5.47,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.53,
+    7.0,
+    4.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.53,
+    10.0,
+    4.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.53,
+    13.0,
+    4.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.53,
+    16.0,
+    4.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.53,
+    19.0,
+    4.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    8.0,
+    20.53,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    11.0,
+    20.53,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    14.0,
+    20.53,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    17.0,
+    20.53,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    20.0,
+    20.53,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    6.47,
+    7.0,
+    4.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    6.47,
+    10.0,
+    4.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    6.47,
+    13.0,
+    4.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    6.47,
+    16.0,
+    4.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    6.47,
+    19.0,
+    4.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_PLOT_FLOOR",
+   "position": [
+    14.0,
+    13.0,
+    6.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    8.0,
+    5.47,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    11.0,
+    5.47,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    14.0,
+    5.47,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    17.0,
+    5.47,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    20.0,
+    5.47,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.53,
+    7.0,
+    7.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.53,
+    10.0,
+    7.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.53,
+    13.0,
+    7.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.53,
+    16.0,
+    7.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.53,
+    19.0,
+    7.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    8.0,
+    20.53,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    11.0,
+    20.53,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    14.0,
+    20.53,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    17.0,
+    20.53,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    20.0,
+    20.53,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    6.47,
+    7.0,
+    7.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    6.47,
+    10.0,
+    7.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    6.47,
+    13.0,
+    7.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    6.47,
+    16.0,
+    7.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    6.47,
+    19.0,
+    7.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_PLOT_FLOOR",
+   "position": [
+    14.0,
+    13.0,
+    9.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    8.0,
+    5.47,
+    10.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    11.0,
+    5.47,
+    10.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    14.0,
+    5.47,
+    10.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    17.0,
+    5.47,
+    10.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    20.0,
+    5.47,
+    10.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.53,
+    7.0,
+    10.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.53,
+    10.0,
+    10.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.53,
+    13.0,
+    10.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.53,
+    16.0,
+    10.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.53,
+    19.0,
+    10.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    8.0,
+    20.53,
+    10.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    11.0,
+    20.53,
+    10.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    14.0,
+    20.53,
+    10.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    17.0,
+    20.53,
+    10.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    20.0,
+    20.53,
+    10.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    6.47,
+    7.0,
+    10.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    6.47,
+    10.0,
+    10.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    6.47,
+    13.0,
+    10.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    6.47,
+    16.0,
+    10.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    6.47,
+    19.0,
+    10.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_PLOT_FLOOR",
+   "position": [
+    14.0,
+    13.0,
+    12.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    8.0,
+    5.47,
+    13.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    11.0,
+    5.47,
+    13.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    14.0,
+    5.47,
+    13.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    17.0,
+    5.47,
+    13.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    20.0,
+    5.47,
+    13.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.53,
+    7.0,
+    13.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.53,
+    10.0,
+    13.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.53,
+    13.0,
+    13.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.53,
+    16.0,
+    13.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.53,
+    19.0,
+    13.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    8.0,
+    20.53,
+    13.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    11.0,
+    20.53,
+    13.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    14.0,
+    20.53,
+    13.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    17.0,
+    20.53,
+    13.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    20.0,
+    20.53,
+    13.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    6.47,
+    7.0,
+    13.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    6.47,
+    10.0,
+    13.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    6.47,
+    13.0,
+    13.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    6.47,
+    16.0,
+    13.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    6.47,
+    19.0,
+    13.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_PLOT_ROOF_HIP",
+   "position": [
+    14.0,
+    13.0,
+    15.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_BAR_GROUND_SHOP",
+   "position": [
+    -15.0,
+    -12.0,
+    0.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -22.15,
+    -18.03,
+    1.5
+   ],
+   "rotation": 0,
+   "echelle": [
+    5.6,
+    1.0,
+    1.2
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -13.5,
+    -18.03,
+    1.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -10.5,
+    -18.03,
+    1.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -7.5,
+    -18.03,
+    1.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -4.5,
+    -18.03,
+    1.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -2.97,
+    -15.0,
+    1.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -2.97,
+    -9.0,
+    1.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -25.5,
+    -5.97,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -22.5,
+    -5.97,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -19.5,
+    -5.97,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -16.5,
+    -5.97,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -13.5,
+    -5.97,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -10.5,
+    -5.97,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -7.5,
+    -5.97,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -4.5,
+    -5.97,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -27.03,
+    -15.0,
+    1.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -27.03,
+    -9.0,
+    1.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_BAR_FLOOR",
+   "position": [
+    -15.0,
+    -12.0,
+    3.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -25.5,
+    -18.03,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -22.5,
+    -18.03,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -19.5,
+    -18.03,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -16.5,
+    -18.03,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -13.5,
+    -18.03,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -10.5,
+    -18.03,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -7.5,
+    -18.03,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -4.5,
+    -18.03,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -2.97,
+    -15.0,
+    4.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -2.97,
+    -9.0,
+    4.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -25.5,
+    -5.97,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -22.5,
+    -5.97,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -19.5,
+    -5.97,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -16.5,
+    -5.97,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -13.5,
+    -5.97,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -10.5,
+    -5.97,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -7.5,
+    -5.97,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -4.5,
+    -5.97,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -27.03,
+    -15.0,
+    4.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -27.03,
+    -9.0,
+    4.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_BAR_FLOOR",
+   "position": [
+    -15.0,
+    -12.0,
+    6.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -25.5,
+    -18.03,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -22.5,
+    -18.03,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -19.5,
+    -18.03,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -16.5,
+    -18.03,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -13.5,
+    -18.03,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -10.5,
+    -18.03,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -7.5,
+    -18.03,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -4.5,
+    -18.03,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -2.97,
+    -15.0,
+    7.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -2.97,
+    -9.0,
+    7.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -25.5,
+    -5.97,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -22.5,
+    -5.97,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -19.5,
+    -5.97,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -16.5,
+    -5.97,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -13.5,
+    -5.97,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -10.5,
+    -5.97,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -7.5,
+    -5.97,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -4.5,
+    -5.97,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -27.03,
+    -15.0,
+    7.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -27.03,
+    -9.0,
+    7.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_BAR_FLOOR",
+   "position": [
+    -15.0,
+    -12.0,
+    9.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -25.5,
+    -18.03,
+    10.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -22.5,
+    -18.03,
+    10.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -19.5,
+    -18.03,
+    10.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -16.5,
+    -18.03,
+    10.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -13.5,
+    -18.03,
+    10.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -10.5,
+    -18.03,
+    10.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -7.5,
+    -18.03,
+    10.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -4.5,
+    -18.03,
+    10.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -2.97,
+    -15.0,
+    10.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -2.97,
+    -9.0,
+    10.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -25.5,
+    -5.97,
+    10.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -22.5,
+    -5.97,
+    10.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -19.5,
+    -5.97,
+    10.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -16.5,
+    -5.97,
+    10.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -13.5,
+    -5.97,
+    10.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -10.5,
+    -5.97,
+    10.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -7.5,
+    -5.97,
+    10.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -4.5,
+    -5.97,
+    10.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -27.03,
+    -15.0,
+    10.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    -27.03,
+    -9.0,
+    10.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_BAR_ROOF_HIP",
+   "position": [
+    -15.0,
+    -12.0,
+    12.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_PLOT_GROUND_SHOP",
+   "position": [
+    15.0,
+    -12.0,
+    0.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    10.7,
+    -19.53,
+    1.5
+   ],
+   "rotation": 0,
+   "echelle": [
+    3.3333,
+    1.0,
+    1.2
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    18.0,
+    -19.53,
+    1.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.0,
+    -19.53,
+    1.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    22.53,
+    -18.0,
+    1.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    22.53,
+    -15.0,
+    1.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    22.53,
+    -12.0,
+    1.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    22.53,
+    -9.0,
+    1.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    22.53,
+    -6.0,
+    1.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    9.0,
+    -4.47,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    12.0,
+    -4.47,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    15.0,
+    -4.47,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    18.0,
+    -4.47,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.0,
+    -4.47,
+    1.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    7.47,
+    -18.0,
+    1.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    7.47,
+    -15.0,
+    1.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    7.47,
+    -12.0,
+    1.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    7.47,
+    -9.0,
+    1.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    7.47,
+    -6.0,
+    1.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_PLOT_FLOOR",
+   "position": [
+    15.0,
+    -12.0,
+    3.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    9.0,
+    -19.53,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    12.0,
+    -19.53,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    15.0,
+    -19.53,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    18.0,
+    -19.53,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.0,
+    -19.53,
+    4.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    22.53,
+    -18.0,
+    4.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    22.53,
+    -15.0,
+    4.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    22.53,
+    -12.0,
+    4.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    22.53,
+    -9.0,
+    4.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    22.53,
+    -6.0,
+    4.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    9.0,
+    -4.47,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    12.0,
+    -4.47,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    15.0,
+    -4.47,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    18.0,
+    -4.47,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.0,
+    -4.47,
+    4.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    7.47,
+    -18.0,
+    4.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    7.47,
+    -15.0,
+    4.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    7.47,
+    -12.0,
+    4.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    7.47,
+    -9.0,
+    4.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    7.47,
+    -6.0,
+    4.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_PLOT_FLOOR",
+   "position": [
+    15.0,
+    -12.0,
+    6.0
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    9.0,
+    -19.53,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    12.0,
+    -19.53,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    15.0,
+    -19.53,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    18.0,
+    -19.53,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.0,
+    -19.53,
+    7.65
+   ],
+   "rotation": 0,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    22.53,
+    -18.0,
+    7.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    22.53,
+    -15.0,
+    7.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    22.53,
+    -12.0,
+    7.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    22.53,
+    -9.0,
+    7.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    22.53,
+    -6.0,
+    7.65
+   ],
+   "rotation": 90,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    9.0,
+    -4.47,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    12.0,
+    -4.47,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    15.0,
+    -4.47,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    18.0,
+    -4.47,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    21.0,
+    -4.47,
+    7.65
+   ],
+   "rotation": 180,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    7.47,
+    -18.0,
+    7.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    7.47,
+    -15.0,
+    7.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    7.47,
+    -12.0,
+    7.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    7.47,
+    -9.0,
+    7.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_WINDOW_PANE",
+   "position": [
+    7.47,
+    -6.0,
+    7.65
+   ],
+   "rotation": 270,
+   "echelle": [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  {
+   "piece": "ENV_APARTMENT_KIT_A_PLOT_ROOF_FLAT",
+   "position": [
+    15.0,
+    -12.0,
+    9.0
+   ],
+   "rotation": 0
+  }
+ ]
+}
