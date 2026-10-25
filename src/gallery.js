@@ -756,6 +756,25 @@ window.galerie = {
     const { calls, triangles } = renderer.info.render;
     return { appels: calls, trianglesDessines: triangles, programmes: renderer.info.programs.length, ...measure(current.inst.root) };
   },
+  // Le cout d'une image (city-traffic) : n rendus forces avec l'ombre refaite (une image ordinaire), puis n sans (une
+  // image d'ambiance) ; millisecondes medianes, le GPU attendu a chaque rendu (lecture d'un pixel).
+  cout(n = 30) {
+    const gl = renderer.getContext();
+    const pixel = new Uint8Array(4);
+    const mesureRendus = (ombreRefaite) => {
+      const durees = [];
+      for (let i = 0; i < n; i++) {
+        renderer.shadowMap.needsUpdate = ombreRefaite;
+        const t = performance.now();
+        renderer.render(scene, camera);
+        gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixel);
+        durees.push(performance.now() - t);
+      }
+      durees.sort((a, b) => a - b);
+      return +durees[Math.floor(n / 2)].toFixed(2);
+    };
+    return { ordinaire: mesureRendus(true), ambiance: mesureRendus(false) };
+  },
   // La fluidite : un rendu force a chaque image pendant quelques secondes ; images par seconde et 95e centile (ms).
   fluidite(secondes = 5) {
     return new Promise((ok) => {
@@ -1172,18 +1191,34 @@ function caleOmbre() {
 
 const clock = new THREE.Clock();
 let rapporte = 0;
+// l'ambiance (city-traffic) : la circulation de la ville seule demande une image, au plus 30 fois par seconde, sans
+// refaire l'ombre ; la ville s'endort quand l'onglet est cache ou apres trois minutes sans geste
+const AMBIANCE = { pas: 1 / 30, sommeil: 180 };
+let depuisAmbiance = 0;
+let dernierGeste = performance.now();
+for (const evt of ['pointerdown', 'pointermove', 'wheel', 'keydown']) addEventListener(evt, () => { dernierGeste = performance.now(); }, { passive: true });
 function loop() {
   const dt = Math.min(clock.getDelta(), 0.1);
+  current.ville?.carte?.endorsVille?.(document.hidden || performance.now() - dernierGeste > AMBIANCE.sommeil * 1000);
   let continu = false;
-  for (const x of [current, ...current.voisins]) if (x.inst && x.inst.update(dt)) continu = true;
+  let ambiance = false;
+  for (const x of [current, ...current.voisins]) {
+    const r = x.inst ? x.inst.update(dt) : false;
+    if (r === 'ambiance') ambiance = true;
+    else if (r) continu = true;
+  }
   if (suiviCamera?.update(dt)) { controls.update(); continu = true; }
   // une animation qui s'arrete sur une image sans ombre refaite : une image de plus, qui la refait
   if (continu || ombre.enRetard) dirty = true;
+  depuisAmbiance += dt;
+  const seuleAmbiance = !dirty && ambiance && depuisAmbiance >= AMBIANCE.pas;
+  if (seuleAmbiance) dirty = true;
+  if (dirty) depuisAmbiance = 0;
   // la ville au loin (sous 4 px par metre) passe a ses pieces basses : la galerie dit sa densite a la carte
   if (villeAutour && current.ville?.carte?.vueVille?.(stage.clientHeight / ((camera.top - camera.bottom) / camera.zoom))) dirty = true;
   if (dirty) {
     caleOmbre();
-    ombre.avant(continu);
+    ombre.avant(continu, seuleAmbiance);
     renderer.render(scene, camera);
     if (current.mod === etalon && !options.silhouette) rapportEtalon(etalon.mesureFaces(THREE, renderer, camera, current.inst.root));
     drawAnchors();

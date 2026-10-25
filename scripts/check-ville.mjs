@@ -1084,6 +1084,181 @@ rapportCamionPlus();
     verifie(tj && !tj.visible, 'ville le jour : les taches des lampadaires sont allumées');
     jour.dispose();
   }
+  // la circulation (city-traffic) : les trajets sur une heure, en nombres (voitures a droite, du garage au garage ;
+  // passants de porte a porte, sur les trottoirs, traversant aux passages ; jamais dans le chantier ni sur les raccords) ;
+  // puis la carte : plafonds, budget, aucune ombre, rien ne se designe, l'ambiance, le sommeil, la ville figee
+  {
+    const { assembleVille } = await import('../src/ville/ville-kits.js');
+    const { creeCirculation, CIRCULATION } = await import('../src/ville/circulation.js');
+    const KITS = { id: 'ville-autour', category: 'site', assets: ['kit:road-kit/ENV_ROAD_KIT_A_v001.glb', 'kit:nature-kit/ENV_NATURE_KIT_A_v001.glb', 'kit:villa-kit/ENV_VILLA_KIT_A_v001.glb', 'kit:apartment-kit/ENV_APARTMENT_KIT_A_v001.glb'] };
+    await chargeur.prepare(KITS);
+    const a = await chargeur.assetsPour(KITS);
+    const [rues, nature, villas, immeubles] = KITS.assets.map((n) => a[n].scene);
+    const kits = assembleVille(THREE, plan, { rues, nature, villas, immeubles }, { quality: 'low', graine: 'gdc' });
+    const { lieux } = kits;
+    kits.dispose();
+    const dansPlace = (x, z) => x > PLACE.x[0] && x < PLACE.x[1] && z > PLACE.z[0] && z < PLACE.z[1];
+    const surRaccord = (x, z) => plan.raccords.some((r) => x > r.x[0] && x < r.x[1] && z > r.z[0] && z < r.z[1]);
+    const ETATS = new Set(['walk', 'idle', 'talk']);
+    let resume = '';
+    for (const [quality, nuit] of [['high', false], ['high', true], ['low', false], ['low', true]]) {
+      const c = creeCirculation(plan, lieux, { graine: 'gdc', quality });
+      const { garages, portes } = c.endroits;
+      const plafond = CIRCULATION.plafonds[quality];
+      const [pv, pp] = nuit ? [Math.ceil(plafond.voitures / 2), Math.ceil(plafond.passants / 2)] : [plafond.voitures, plafond.passants];
+      const pres = (p, liste, d) => liste.some((l) => Math.hypot(l[0] - p[0], l[1] - p[1]) < d);
+      const arrets = garages.map((g) => g.arret);
+      const seuils = portes.map((p) => p.chemin[0]);
+      const ecarts = { place: 0, raccord: 0, gauche: 0, apparition: 0, vitesse: 0, chaussee: 0, etat: 0, porte: 0, plafond: 0, traversees: 0 };
+      let [maxV, maxP, droites, fontaine, voitures, passants] = [0, 0, 0, 0, 0, 0];
+      let avant = { voitures: [], passants: [] };
+      const dt = 0.1;
+      for (let i = 0; i < 36000; i++) {
+        const o = c.update(dt, { nuit });
+        maxV = Math.max(maxV, o.voitures.length);
+        maxP = Math.max(maxP, o.passants.length);
+        if (o.voitures.length > pv || o.passants.length > pp) ecarts.plafond++;
+        // une voiture qui apparait sort d'un garage ; une voiture roule a 30 km/h
+        if (o.voitures.length > avant.voitures.length) {
+          voitures++;
+          if (!pres([o.voitures.at(-1).x, o.voitures.at(-1).z], arrets, CIRCULATION.vitesse * dt + 0.05)) ecarts.apparition++;
+        }
+        o.voitures.forEach((v, k) => {
+          if (dansPlace(v.x, v.z)) ecarts.place++;
+          if (surRaccord(v.x, v.z)) ecarts.raccord++;
+          // le pas depuis la voiture la plus proche a l'image d'avant (une voiture qui vient de sortir n'en a pas)
+          const pas = Math.min(...avant.voitures.map((w) => Math.hypot(v.x - w.x, v.z - w.z)));
+          if (k < avant.voitures.length && pas > CIRCULATION.vitesse * dt + 1e-6 && pas < 5) ecarts.vitesse++;
+          // a droite, sur la longueur droite d'une rue (hors carrefours) : le cote de l'axe et le sens s'accordent
+          for (const r of plan.rues) {
+            const h = r.x[1] - r.x[0] > r.z[1] - r.z[0];
+            const [t, off] = h ? [v.x, v.z - (r.z[0] + r.z[1]) / 2] : [v.z, v.x - (r.x[0] + r.x[1]) / 2];
+            const [de, a2] = h ? r.x : r.z;
+            if (t < de || t > a2 || Math.abs(off) > 2.2) continue;
+            const sens = h ? Math.sin(v.heading) : Math.cos(v.heading);
+            if (Math.abs(sens) < 0.98 || Math.abs(off) < 0.5) continue;
+            droites++;
+            // vers +x, la droite est +z ; vers +z, la droite est -x
+            if ((h ? Math.sign(sens) * Math.sign(off) : -Math.sign(sens) * Math.sign(off)) < 0) ecarts.gauche++;
+          }
+        });
+        if (o.passants.length > avant.passants.length) passants++;
+        for (const p of o.passants) {
+          if (!avant.passants.some((q) => q.rang === p.rang) && !pres([p.x, p.z], seuils, CIRCULATION.marche * dt + 0.05)) ecarts.porte++;
+          if (dansPlace(p.x, p.z)) ecarts.place++;
+          if (surRaccord(p.x, p.z)) ecarts.raccord++;
+          if (!ETATS.has(p.etat)) ecarts.etat++;
+          if (p.etat !== 'walk') fontaine++;
+          // sur la chaussee, seulement a un passage pieton (5 bandes de 0,50 m, 4 m de long : a 2 m de son axe)
+          if (p.y === CIRCULATION.sol.chaussee) {
+            const ok = c.reseau.troncons.some((T) => {
+              const [t, off] = T.h ? [p.x, p.z - T.axe] : [p.z, p.x - T.axe];
+              return Math.abs(off) <= 5 && t > T.t0 - 0.01 && t < T.t1 + 0.01 && T.passages.some((tp) => Math.abs(t - tp) <= 2);
+            });
+            if (!ok) ecarts.chaussee++;
+            ecarts.traversees++;
+          }
+        }
+        avant = o;
+      }
+      const nom = `circulation (${quality}${nuit ? ', nuit' : ''})`;
+      verifie(maxV <= pv && maxP <= pp && ecarts.plafond === 0, `${nom} : ${maxV} voitures et ${maxP} passants, plafonds ${pv} et ${pp}`);
+      verifie(voitures > 20 && passants > 15, `${nom} : ${voitures} voitures et ${passants} passants en une heure`);
+      verifie(ecarts.place === 0 && ecarts.raccord === 0, `${nom} : ${ecarts.place} positions dans la place du chantier, ${ecarts.raccord} sur un raccord`);
+      verifie(droites > 1000 && ecarts.gauche === 0, `${nom} : ${ecarts.gauche} positions à gauche sur ${droites}`);
+      verifie(ecarts.apparition === 0 && ecarts.porte === 0, `${nom} : ${ecarts.apparition} voitures hors d'un garage, ${ecarts.porte} passants hors d'une porte à leur apparition`);
+      verifie(ecarts.vitesse === 0, `${nom} : ${ecarts.vitesse} pas de voiture au-dessus de 30 km/h`);
+      verifie(ecarts.chaussee === 0, `${nom} : ${ecarts.chaussee} positions de passant sur la chaussée hors d'un passage piéton`);
+      // en basse, les passages pietons ne sont pas dessines : personne ne traverse, et la fontaine est de l'autre cote
+      verifie(ecarts.etat === 0 && (quality === 'low' || fontaine > 0), `${nom} : ${ecarts.etat} états interdits, ${fontaine} instants à la fontaine`);
+      if (quality === 'low') verifie(ecarts.traversees === 0, `${nom} : ${ecarts.traversees} traversées sans passage dessiné`);
+      if (quality === 'high' && !nuit) resume = `circulation : ${garages.length} garages, ${portes.length} portes ; en une heure, ${voitures} voitures et ${passants} passants (au plus ${maxV} et ${maxP} à la fois), toujours à droite, traversée aux passages`;
+    }
+    // la meme graine rejoue la meme circulation
+    const [c1, c2] = [creeCirculation(plan, lieux), creeCirculation(plan, lieux)];
+    let pareil = true;
+    for (let i = 0; i < 3000; i++) if (JSON.stringify(c1.update(0.1)) !== JSON.stringify(c2.update(0.1))) pareil = false;
+    verifie(pareil, 'circulation : la même graine ne rejoue pas la même circulation');
+    // figee, avec moins d'animations : des voitures garees au bout de leur allee, des passants immobiles
+    const fige = creeCirculation(plan, lieux, { reducedMotion: true });
+    const f0 = JSON.stringify(fige.update(0));
+    const f1 = fige.update(30);
+    verifie(f1.bouge === false && JSON.stringify(fige.update(0)) === f0 && f1.voitures.length === 3 && f1.passants.length === 3 && f1.voitures.every((v) => v.moving === false) && f1.passants.every((p) => p.etat === 'idle'), 'circulation figée : des voitures roulent ou des passants marchent');
+    const fn = fige.update(0, { nuit: true });
+    const fb = creeCirculation(plan, lieux, { reducedMotion: true, quality: 'low' }).update(0, { nuit: true });
+    verifie(fn.voitures.length === 2 && fn.passants.length === 2 && fb.voitures.length === 1 && fb.passants.length === 1, `circulation figée la nuit : ${fn.voitures.length} et ${fn.passants.length} en haute, ${fb.voitures.length} et ${fb.passants.length} en basse, au lieu de la moitié`);
+    // aucun passant fige contre la borne de la fontaine (au bout -X du bassin)
+    const fo = fige.endroits.place.fontaine;
+    verifie(f1.passants.every((p) => p.x - fo[0] > -1.6), 'circulation figée : un passant contre la borne de la fontaine');
+
+    // la carte : budget par passe (toutes les places prises), aucune ombre, rien ne se designe, les passants au loin
+    // le budget de la fiche (catalogue.json) ; la basse, ecrite dans ses criteres : 24 appels (decision du 25 octobre 2026)
+    const catalogue = JSON.parse(await readFile(join(ROOT, 'catalogue.json'), 'utf8'));
+    const fiche = catalogue.items.find((e) => e.id === 'city-traffic').budget;
+    const BUDGET = { high: { appels: fiche.drawCalls, triangles: fiche.triangles }, low: { appels: 24, triangles: fiche.triangles } };
+    for (const quality of ['high', 'low']) {
+      // l'heure fixee : a l'aube ou au crepuscule reels, la lumiere change et la carte demanderait des images ordinaires
+      const carte = await creeCarte(THREE, { components: modules, chargeur, theme: 'light', quality, reducedMotion: false, villeAutour: 'kits', heure: 'jour' });
+      const r = carte.root.getObjectByName('VILLE_CIRCULATION');
+      const groupe = r.getObjectByName('VILLE_PASSANTS');
+      const visibles = groupe.children.map((o) => o.visible);
+      for (const o of groupe.children) o.visible = true;
+      let [n, ombre, tri] = [0, 0, 0];
+      r.traverse((m) => {
+        if (!m.isMesh) return;
+        const k = Array.isArray(m.material) ? m.material.length : 1;
+        n += k;
+        if (m.castShadow) ombre += k;
+        const g = m.geometry;
+        tri += ((g.index ? g.index.count : g.attributes.position.count) / 3) * (m.isInstancedMesh ? m.instanceMatrix.count : 1);
+      });
+      groupe.children.forEach((o, k) => { o.visible = visibles[k]; });
+      const b = BUDGET[quality];
+      verifie(n <= b.appels && ombre === 0 && tri <= b.triangles, `circulation (${quality}) : ${n} appels, ${ombre} dans l'ombre, ${Math.round(tri)} triangles ; budget ${b.appels} appels, ${b.triangles} triangles, aucun dans l'ombre`);
+      let touches = 0;
+      r.traverse((m) => {
+        if (!m.isMesh) return;
+        const hits = [];
+        m.raycast(new THREE.Raycaster(new THREE.Vector3(60, 100, 40), new THREE.Vector3(0, -1, 0)), hits);
+        touches += hits.length;
+        if (carte.cible(m) !== null) touches++;
+      });
+      verifie(touches === 0, `circulation (${quality}) : elle se désigne au clic`);
+      // l'ambiance : sans chantier qui vit, la carte rend "ambiance" quand la ville seule bouge, jamais true pour elle
+      const rendus = {};
+      for (let i = 0; i < 1200; i++) {
+        const x = carte.update(0.1);
+        rendus[String(x)] = (rendus[String(x)] || 0) + 1;
+      }
+      verifie(rendus.ambiance > 600 && !rendus.true, `circulation (${quality}) : la carte rend ${JSON.stringify(rendus)} au lieu d'images d'ambiance`);
+      // endormie, elle ne bouge plus ; reveillee, elle repart
+      carte.endorsVille(true);
+      const e0 = JSON.stringify(carte.villeAutour.circulation);
+      let dort = true;
+      for (let i = 0; i < 300; i++) if (carte.update(0.1)) dort = false;
+      verifie(dort && JSON.stringify(carte.villeAutour.circulation) === e0, `circulation (${quality}) : la ville endormie bouge encore`);
+      carte.endorsVille(false);
+      let repart = false;
+      for (let i = 0; i < 600; i++) if (carte.update(0.1) === 'ambiance') repart = true;
+      verifie(repart, `circulation (${quality}) : la ville ne se réveille pas`);
+      // sous 4 px par metre, plus de passants dessines
+      carte.vueVille(3);
+      const loin = carte.villeAutour.circulation.passantsVisibles;
+      carte.vueVille(8);
+      verifie(loin === false && carte.villeAutour.circulation.passantsVisibles === true, `circulation (${quality}) : les passants restent dessinés sous 4 px par mètre`);
+      if (quality === 'high') resume += ` ; en haute ${n} appels et ${Math.round(tri)} triangles au plus, aucun dans l'ombre`;
+      else resume += ` ; en basse ${n} appels`;
+      carte.dispose();
+    }
+    // avec moins d'animations, la carte ne demande aucune image pour la ville
+    const figee = await creeCarte(THREE, { components: modules, chargeur, theme: 'light', quality: 'high', reducedMotion: true, villeAutour: 'kits', heure: 'jour' });
+    let image = false;
+    for (let i = 0; i < 300; i++) if (figee.update(0.1)) image = true;
+    const ef = figee.villeAutour.circulation;
+    verifie(!image && ef.voitures === 3 && ef.passants === 3, `circulation figée : la carte demande une image, ou ${ef.voitures} voitures et ${ef.passants} passants posés`);
+    figee.dispose();
+    rapports.push(resume);
+  }
   const sansVille = await creeCarte(THREE, { components: modules, chargeur, theme: 'light', quality: 'low', reducedMotion: true });
   verifie(sansVille.villeAutour === null && sansVille.vueVille(3) === false, 'sans villeAutour, la carte pose une ville');
   sansVille.dispose();

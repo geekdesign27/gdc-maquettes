@@ -10,6 +10,7 @@
 // villa ou d'un immeuble regarde +Z, et le carrefour en T a sa branche vers -Z.
 import { alea, choisis, entre } from "./graine.js";
 import { lumiere } from "./heure.js";
+import { reseauRues, PASSAGE } from "./ville-autour.js";
 
 export const SEUIL_LOIN = 4; // px par metre : en dessous, les pieces basses (city-plan)
 // La nuit (city-night) : la part des fenetres allumees, tiree pour chaque nuit ; les taches des lampadaires au sol, plus
@@ -17,16 +18,18 @@ export const SEUIL_LOIN = 4; // px par metre : en dessous, les pieces basses (ci
 export const NUIT = { villas: 0.3, immeubles: 0.4, taches: 150 };
 const TACHE = { rayon: 3.2, opacite: 0.1, sol: 0.06, avant: 0.85, anneaux: 4, cotes: 24 };
 const EPS = 0.01;
-const DEMI_CARREFOUR = 5; // un carrefour fait 10 x 10 m
-const DEMI_GIRATOIRE = 15; // le giratoire et ses trottoirs, 30 x 30 m
 const PAS_TIRETS = 6;
 const PAS_LAMPADAIRES = 25;
-const ECART_PASSAGE = 8; // le passage pieton, juste apres le carrefour (3 m de son bord)
 const TROTTOIR = 4; // l'axe du trottoir, depuis l'axe de la rue
 const ETAGE = 3;
 const HAIE = { retrait: 0.6, longueur: 4 }; // la haie de nature-kit fait 4 m de long et 0,9 m d'epaisseur
 const ALLEE = { largeur: 1.2, dessus: 0.03, epaisseur: 0.06, seuil: 1.2 };
 const CHEMIN = { largeur: 2.5 }; // les chemins en beton des parcs
+const PORTE_IMMEUBLE = 0.8; // le seuil d'un immeuble, devant sa facade
+// les portes de garage des villas C et E (villa-kit.py : garage accole, sa porte sur la facade), dans le repere de la
+// villa posee (x le long de la facade, z vers la rue) ; et la rampe en beton devant (city-plan 1.1.0, city-traffic)
+const GARAGES = { C: [5.0, 3.0], E: [-4.5, 4.0] };
+const RAMPE = { largeur: 3 };
 const ENROBE = { dessus: 0.04, epaisseur: 0.1 }; // les raccords, au niveau des routes du chantier
 const PREFIXES = {
   rues: "ENV_ROAD_KIT_A_",
@@ -258,6 +261,9 @@ export function assembleVille(
   const jetables = [];
   const lots = {};
   const triangles = { haute: 0, basse: 0 };
+  // les lieux de la circulation (city-traffic) : les portes, les allees, les chemins des parcs, la place ; releves a la
+  // premiere passe (les deux versions posent la meme ville)
+  const lieux = { villas: [], immeubles: [], parcs: [], place: null };
   // la version haute (si la qualite le permet) et la basse tirent la meme ville : le tirage est rejoue depuis la meme
   // graine pour chacune, et chaque choix est tire dans les deux, meme ce que la basse ne pose pas
   for (const basse of haute ? [false, true] : [true]) {
@@ -269,7 +275,12 @@ export function assembleVille(
     });
     const detail = !basse; // tirets, passages, lampadaires, buissons, bancs
     poseRues(plan, poseur, { detail, enrobe });
-    posePates(plan, poseur, { detail, tirage, beton });
+    posePates(plan, poseur, {
+      detail,
+      tirage,
+      beton,
+      lieux: Object.keys(lots).length ? null : lieux,
+    });
     const lot = poseur.fusionne(vitre);
     jetables.push(...lot.jetables);
     racine.add(lot.groupe);
@@ -329,6 +340,7 @@ export function assembleVille(
     racine,
     triangles,
     vitres: (lots.haute ?? lots.basse).vitres,
+    lieux,
     // au loin (sous SEUIL_LOIN px par metre), les pieces basses ; en qualite basse, toujours elles
     vue(pxParMetre) {
       if (!lots.haute) return false;
@@ -390,67 +402,10 @@ export function assembleVille(
 // d'une rue rencontre celui d'une autre, y compris quand l'une s'arrete au bord de l'autre (un T) ; les raccords vers
 // les routes du chantier ajoutent une branche a la rue de ceinture.
 function poseRues(plan, { pose, plaque }, { detail, enrobe }) {
-  const rues = plan.rues.map((r) =>
-    r.x[1] - r.x[0] > r.z[1] - r.z[0]
-      ? { h: true, axe: (r.z[0] + r.z[1]) / 2, de: r.x[0], a: r.x[1] }
-      : { h: false, axe: (r.x[0] + r.x[1]) / 2, de: r.z[0], a: r.z[1] },
-  );
-  const proche = (a, b) => Math.abs(a - b) < EPS;
-  const croisements = new Map();
-  const croisement = (x, z) => {
-    const cle = `${x}:${z}`;
-    if (!croisements.has(cle))
-      croisements.set(cle, { x, z, branches: new Set() });
-    return croisements.get(cle);
-  };
-  const H = rues.filter((r) => r.h);
-  const V = rues.filter((r) => !r.h);
-  for (const h of H)
-    for (const v of V) {
-      const [x, z] = [v.axe, h.axe];
-      if (x < h.de - DEMI_CARREFOUR - EPS || x > h.a + DEMI_CARREFOUR + EPS)
-        continue;
-      if (z < v.de - DEMI_CARREFOUR - EPS || z > v.a + DEMI_CARREFOUR + EPS)
-        continue;
-      const c = croisement(x, z);
-      if (h.de < x - DEMI_CARREFOUR - EPS) c.branches.add("-x");
-      if (h.a > x + DEMI_CARREFOUR + EPS) c.branches.add("+x");
-      if (v.de < z - DEMI_CARREFOUR - EPS) c.branches.add("-z");
-      if (v.a > z + DEMI_CARREFOUR + EPS) c.branches.add("+z");
-    }
-  // les raccords : une branche de la rue qu'ils touchent, et leur enrobe jusqu'a la route du chantier
-  for (const r of plan.raccords) {
-    const [cx, cz] = [(r.x[0] + r.x[1]) / 2, (r.z[0] + r.z[1]) / 2];
-    for (const v of V) {
-      if (cz < v.de || cz > v.a) continue;
-      if (proche(v.axe + DEMI_CARREFOUR, r.x[0]))
-        croisement(v.axe, cz).branches.add("+x");
-      if (proche(v.axe - DEMI_CARREFOUR, r.x[1]))
-        croisement(v.axe, cz).branches.add("-x");
-    }
-    for (const h of H) {
-      if (cx < h.de || cx > h.a) continue;
-      if (proche(h.axe + DEMI_CARREFOUR, r.z[0]))
-        croisement(cx, h.axe).branches.add("+z");
-      if (proche(h.axe - DEMI_CARREFOUR, r.z[1]))
-        croisement(cx, h.axe).branches.add("-z");
-    }
-    plaque(enrobe, r, ENROBE.dessus, ENROBE.epaisseur);
-  }
-  // les carrefours : les branches de la rue qui passe s'ajoutent quand un raccord se pose sur elle
-  for (const c of croisements.values()) {
-    for (const r of rues) {
-      const t = r.h ? c.x : c.z;
-      if (!proche(r.axe, r.h ? c.z : c.x) || t < r.de - EPS || t > r.a + EPS)
-        continue;
-      if (r.de < t - DEMI_CARREFOUR - EPS) c.branches.add(r.h ? "-x" : "-z");
-      if (r.a > t + DEMI_CARREFOUR + EPS) c.branches.add(r.h ? "+x" : "+z");
-    }
-    const giratoire = plan.giratoires.some(
-      ([gx, gz]) => proche(gx, c.x) && proche(gz, c.z),
-    );
-    c.demi = giratoire ? DEMI_GIRATOIRE : DEMI_CARREFOUR;
-    if (giratoire) {
+  const { rues, croisements } = reseauRues(plan);
+  for (const r of plan.raccords) plaque(enrobe, r, ENROBE.dessus, ENROBE.epaisseur);
+  for (const c of croisements) {
+    if (c.giratoire) {
       pose("rues", "ROUNDABOUT", c.x, c.z);
       pose("nature", "TREE", c.x, c.z, 0, [1.2, 1.2, 1.2]); // l'arbre de l'ilot (road-kit)
     } else if (c.branches.size === 3) {
@@ -460,21 +415,7 @@ function poseRues(plan, { pose, plaque }, { detail, enrobe }) {
   }
   // les troncons droits entre deux croisements (ou le bord du socle), etires ; leurs tirets, passages et lampadaires
   for (const r of rues) {
-    const bornes = [...croisements.values()]
-      .filter((c) => {
-        const t = r.h ? c.x : c.z;
-        return (
-          proche(r.h ? c.z : c.x, r.axe) &&
-          t >= r.de - DEMI_CARREFOUR - EPS &&
-          t <= r.a + DEMI_CARREFOUR + EPS
-        );
-      })
-      .map((c) => ({ t: r.h ? c.x : c.z, demi: c.demi }))
-      .sort((a, b) => a.t - b.t);
-    if (!bornes.length || bornes[0].t - bornes[0].demi > r.de + EPS)
-      bornes.unshift({ t: r.de, demi: 0 });
-    const fin = bornes[bornes.length - 1];
-    if (fin.t + fin.demi < r.a - EPS) bornes.push({ t: r.a, demi: 0 });
+    const bornes = r.bornes;
     let cote = 1;
     for (let k = 0; k + 1 < bornes.length; k++) {
       const t0 = bornes[k].t + bornes[k].demi;
@@ -493,8 +434,8 @@ function poseRues(plan, { pose, plaque }, { detail, enrobe }) {
         [bornes[k], 1],
         [bornes[k + 1], -1],
       ]) {
-        if (!borne.demi || t1 - t0 < 2 * ECART_PASSAGE) continue;
-        const t = borne.t + sens * (borne.demi + 3);
+        if (!borne.demi || t1 - t0 < 2 * PASSAGE.ecart) continue;
+        const t = borne.t + sens * (borne.demi + PASSAGE.recul);
         const [px, pz] = r.h ? [t, r.axe] : [r.axe, t];
         pose("rues", "CROSSING", px, pz, r.h ? 0 : 90);
       }
@@ -513,7 +454,7 @@ function poseRues(plan, { pose, plaque }, { detail, enrobe }) {
 }
 
 // --- les pates : villas et leurs jardins, immeubles empiles, parcs et leurs chemins, la place et sa fontaine
-function posePates(plan, poseur, { detail, tirage, beton }) {
+function posePates(plan, poseur, { detail, tirage, beton, lieux }) {
   const { pose } = poseur;
   // les bords d'un pate qui donnent sur une rue (pas ceux qui touchent le bord du socle)
   const bordsRue = (p) =>
@@ -536,6 +477,12 @@ function posePates(plan, poseur, { detail, tirage, beton }) {
     const liste = choix.length ? choix : bordsRue(p);
     return liste.sort((a, c) => distance(p, b, a) - distance(p, b, c))[0];
   };
+  // le milieu de chaque bord d'un pate sur une rue : l'entree d'un parc ou de la place
+  const bouts = (p) => {
+    const [cx, cz] = [(p.x[0] + p.x[1]) / 2, (p.z[0] + p.z[1]) / 2];
+    const bord = { "-x": [p.x[0], cz], "+x": [p.x[1], cz], "-z": [cx, p.z[0]], "+z": [cx, p.z[1]] };
+    return bordsRue(p).map((vers) => ({ seuil: bord[vers], vers }));
+  };
   for (const p of plan.pates) {
     if (p.type === "villas") poseVillas(p);
     else if (p.type === "immeubles")
@@ -543,6 +490,7 @@ function posePates(plan, poseur, { detail, tirage, beton }) {
     else if (p.type === "parc") poseParc(p);
     else if (p.type === "place")
       for (const b of p.boites) {
+        if (lieux) lieux.place = { fontaine: [b.x, b.z], bouts: bouts(p) };
         pose("nature", "FOUNTAIN", b.x, b.z);
         // quatre arbres autour de la fontaine : la place n'est pas un parking
         for (const [dx, dz] of [
@@ -594,6 +542,31 @@ function posePates(plan, poseur, { detail, tirage, beton }) {
             ),
           };
       if (a1 > a0) poseur.plaque(beton, rect, ALLEE.dessus, ALLEE.epaisseur);
+      // le garage (villas C et E) : une rampe en beton, de sa porte au bord de la parcelle cote rue
+      let rampe = null;
+      const g = GARAGES[lettre];
+      if (g && surRue.length && bord > g[1] + 0.5) {
+        const angle = (FACADE[vers] * Math.PI) / 180;
+        const [gx, gz] = [
+          b.x + g[0] * Math.cos(angle) + g[1] * Math.sin(angle),
+          b.z - g[0] * Math.sin(angle) + g[1] * Math.cos(angle),
+        ];
+        const l = RAMPE.largeur / 2;
+        const long = [g[1], bord].map((d) => (fx ? b.x + fx * d : b.z + fz * d)).sort((m, n) => m - n);
+        rampe = fx ? { x: long, z: [gz - l, gz + l] } : { x: [gx - l, gx + l], z: long };
+        poseur.plaque(beton, rampe, ALLEE.dessus, ALLEE.epaisseur);
+        rampe.porte = [gx, gz];
+        rampe.seuil = fx ? [b.x + fx * bord, gz] : [gx, b.z + fz * bord];
+      }
+      // la porte et le bout de l'allee sur le trottoir (une allee qui ne donne pas sur une rue n'a pas de seuil) ; le
+      // garage et le bout de sa rampe
+      if (lieux && surRue.length && a1 > a0)
+        lieux.villas.push({
+          porte: [b.x + fx * a0, b.z + fz * a0],
+          seuil: [b.x + fx * a1, b.z + fz * a1],
+          vers,
+          garage: rampe && { porte: rampe.porte, seuil: rampe.seuil },
+        });
       // les haies de thuyas : sur les bords de la parcelle, sauf cote rue. Un bord du pate : en retrait, dans la
       // parcelle ; un bord partage avec la parcelle voisine : une seule haie, sur le bord, posee par la parcelle a sa
       // gauche ou au-dessus (+x ou +z), pour ne jamais la doubler
@@ -635,7 +608,9 @@ function posePates(plan, poseur, { detail, tirage, beton }) {
       if (sapin) pose("nature", "FIR", tx, tz);
       else pose("nature", "TREE", tx, tz, 0, [k, k, k]);
       const buisson = tirage() < 0.5; // tire aussi en basse, pour que les deux versions gardent le meme tirage
-      if (detail && buisson)
+      const [bx, bz] = [b.x + fx * (bord - 2) - lx * 3, b.z + fz * (bord - 2) - lz * 3];
+      const surRampe = rampe && bx > rampe.x[0] - 1 && bx < rampe.x[1] + 1 && bz > rampe.z[0] - 1 && bz < rampe.z[1] + 1;
+      if (detail && buisson && !surRampe)
         pose(
           "nature",
           "BUSH",
@@ -655,6 +630,17 @@ function posePates(plan, poseur, { detail, tirage, beton }) {
     // une barre (24 m le long de X) ne regarde que +z ou -z : tournee, elle sortirait de son pate
     const vers = rueProche(p, b, plot ? null : ["-z", "+z"]);
     const angle = FACADE[vers];
+    if (lieux) {
+      // la porte, au milieu de la facade, et le bord du pate en face
+      const [fx, fz] = VECTEUR[vers];
+      const demi = (fx ? b.largeur : b.profondeur) / 2 + PORTE_IMMEUBLE;
+      const bord = distance(p, b, vers);
+      lieux.immeubles.push({
+        porte: [b.x + fx * demi, b.z + fz * demi],
+        seuil: [b.x + fx * bord, b.z + fz * bord],
+        vers,
+      });
+    }
     pose(
       "immeubles",
       `${nom}_${tirage() < 0.3 ? "GROUND_SHOP" : "GROUND"}`,
@@ -679,6 +665,7 @@ function posePates(plan, poseur, { detail, tirage, beton }) {
   function poseParc(p) {
     const cx = (p.x[0] + p.x[1]) / 2;
     const cz = (p.z[0] + p.z[1]) / 2;
+    if (lieux) lieux.parcs.push({ centre: [cx, cz], bouts: bouts(p) });
     const w = CHEMIN.largeur / 2;
     // deux chemins en beton qui se croisent au milieu du parc
     poseur.plaque(

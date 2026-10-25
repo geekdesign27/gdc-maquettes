@@ -108,6 +108,7 @@ export function checkInstance(THREE, mod, entry, ctx, partagees = new Set()) {
     try { inst.setState(state); } catch (e) { problems.push(`${label} setState(« ${state} ») sans données a échoué : ${e.message}`); continue; }
     try { inst.setState(state, sampleData(entry)); } catch (e) { problems.push(`${label} setState(« ${state} ») a échoué : ${e.message}`); continue; }
     const r = inst.update(0.016);
+    // un composant rend true ou false ; seule la carte (l'assemblage) rend "ambiance" (docs/contrat-composant.md)
     if (typeof r !== 'boolean') problems.push(`${label} update() doit renvoyer true ou false (état ${state})`);
     if (ctx.reducedMotion && r === true) problems.push(`${label} update() demande une animation alors que reducedMotion est actif (état ${state})`);
     const m = measure(inst.root);

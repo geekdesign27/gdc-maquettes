@@ -237,3 +237,85 @@ export function planVille(graine = "gdc") {
     pates,
   };
 }
+
+// Le reseau des rues, en nombres : la rue de chaque rectangle (le long de son grand cote), les croisements (un point ou
+// l'axe d'une rue rencontre celui d'une autre, y compris quand l'une s'arrete au bord de l'autre : un T ; les raccords
+// vers les routes du chantier ajoutent une branche a la rue de ceinture), et sur chaque rue ses bornes, du bord du
+// socle ou d'un croisement a l'autre. Partage par la pose des rues (ville-kits.js) et la circulation (circulation.js).
+export const DEMI_CARREFOUR = 5; // un carrefour fait 10 x 10 m
+export const DEMI_GIRATOIRE = 15; // le giratoire et ses trottoirs, 30 x 30 m
+// le passage pieton, a la sortie d'un carrefour (pas au bord du socle) : 3 m apres son bord, sur un troncon d'au moins
+// deux fois 8 m
+export const PASSAGE = { ecart: 8, recul: 3 };
+const EPS = 0.01;
+export function reseauRues(plan) {
+  const rues = plan.rues.map((r) =>
+    r.x[1] - r.x[0] > r.z[1] - r.z[0]
+      ? { h: true, axe: (r.z[0] + r.z[1]) / 2, de: r.x[0], a: r.x[1] }
+      : { h: false, axe: (r.x[0] + r.x[1]) / 2, de: r.z[0], a: r.z[1] },
+  );
+  const proche = (a, b) => Math.abs(a - b) < EPS;
+  const parCle = new Map();
+  const croisement = (x, z) => {
+    const cle = `${x}:${z}`;
+    if (!parCle.has(cle)) parCle.set(cle, { x, z, branches: new Set(), raccords: new Set() });
+    return parCle.get(cle);
+  };
+  const H = rues.filter((r) => r.h);
+  const V = rues.filter((r) => !r.h);
+  for (const h of H)
+    for (const v of V) {
+      const [x, z] = [v.axe, h.axe];
+      if (x < h.de - DEMI_CARREFOUR - EPS || x > h.a + DEMI_CARREFOUR + EPS) continue;
+      if (z < v.de - DEMI_CARREFOUR - EPS || z > v.a + DEMI_CARREFOUR + EPS) continue;
+      const c = croisement(x, z);
+      if (h.de < x - DEMI_CARREFOUR - EPS) c.branches.add("-x");
+      if (h.a > x + DEMI_CARREFOUR + EPS) c.branches.add("+x");
+      if (v.de < z - DEMI_CARREFOUR - EPS) c.branches.add("-z");
+      if (v.a > z + DEMI_CARREFOUR + EPS) c.branches.add("+z");
+    }
+  for (const r of plan.raccords) {
+    const [cx, cz] = [(r.x[0] + r.x[1]) / 2, (r.z[0] + r.z[1]) / 2];
+    const branche = (c, b) => {
+      c.branches.add(b);
+      c.raccords.add(b);
+    };
+    for (const v of V) {
+      if (cz < v.de || cz > v.a) continue;
+      if (proche(v.axe + DEMI_CARREFOUR, r.x[0])) branche(croisement(v.axe, cz), "+x");
+      if (proche(v.axe - DEMI_CARREFOUR, r.x[1])) branche(croisement(v.axe, cz), "-x");
+    }
+    for (const h of H) {
+      if (cx < h.de || cx > h.a) continue;
+      if (proche(h.axe + DEMI_CARREFOUR, r.z[0])) branche(croisement(cx, h.axe), "+z");
+      if (proche(h.axe - DEMI_CARREFOUR, r.z[1])) branche(croisement(cx, h.axe), "-z");
+    }
+  }
+  const croisements = [...parCle.values()];
+  for (const c of croisements) {
+    // les branches de la rue qui passe s'ajoutent quand un raccord se pose sur elle
+    for (const r of rues) {
+      const t = r.h ? c.x : c.z;
+      if (!proche(r.axe, r.h ? c.z : c.x) || t < r.de - EPS || t > r.a + EPS) continue;
+      if (r.de < t - DEMI_CARREFOUR - EPS) c.branches.add(r.h ? "-x" : "-z");
+      if (r.a > t + DEMI_CARREFOUR + EPS) c.branches.add(r.h ? "+x" : "+z");
+    }
+    c.giratoire = plan.giratoires.some(([gx, gz]) => proche(gx, c.x) && proche(gz, c.z));
+    c.demi = c.giratoire ? DEMI_GIRATOIRE : DEMI_CARREFOUR;
+  }
+  // les bornes de chaque rue : { t, demi, noeud } (noeud : le croisement, ou null au bord du socle)
+  for (const r of rues) {
+    const bornes = croisements
+      .filter((c) => {
+        const t = r.h ? c.x : c.z;
+        return proche(r.h ? c.z : c.x, r.axe) && t >= r.de - DEMI_CARREFOUR - EPS && t <= r.a + DEMI_CARREFOUR + EPS;
+      })
+      .map((c) => ({ t: r.h ? c.x : c.z, demi: c.demi, noeud: c }))
+      .sort((a, b) => a.t - b.t);
+    if (!bornes.length || bornes[0].t - bornes[0].demi > r.de + EPS) bornes.unshift({ t: r.de, demi: 0, noeud: null });
+    const fin = bornes[bornes.length - 1];
+    if (fin.t + fin.demi < r.a - EPS) bornes.push({ t: r.a, demi: 0, noeud: null });
+    r.bornes = bornes;
+  }
+  return { rues, croisements };
+}

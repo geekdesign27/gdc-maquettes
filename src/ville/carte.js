@@ -40,6 +40,7 @@ import {
 import { alea } from "./graine.js";
 import { planVille } from "./ville-autour.js";
 import { assembleVille, arbresDuPre } from "./ville-kits.js";
+import { creeScene as creeCirculationVille } from "./circulation-scene.js";
 import {
   groupFloors,
   anchorFor,
@@ -1473,14 +1474,29 @@ export async function creeCarte(THREE, options) {
     // la ville autour (lot G9) : son mode et son plan (ville-autour.js), ou null sans ville
     get villeAutour() {
       return ville
-        ? { mode: ville.mode, plan: ville.plan, triangles: ville.kits?.triangles ?? null, vitres: ville.kits?.vitres ?? null, loin: ville.kits?.loin ?? false }
+        ? {
+            mode: ville.mode,
+            plan: ville.plan,
+            triangles: ville.kits?.triangles ?? null,
+            vitres: ville.kits?.vitres ?? null,
+            loin: ville.kits?.loin ?? false,
+            circulation: ville.trafic?.etat ?? null,
+          }
         : null;
+    },
+    // La circulation de la ville (city-traffic) : l'hote l'endort quand la carte est cachee ou que l'utilisateur est
+    // absent depuis quelques minutes ; elle repart ou elle etait.
+    endorsVille(oui) {
+      ville?.trafic?.endors(oui);
     },
     // L'hote dit a combien de pixels par metre il affiche la carte (la hauteur de la vue, en pixels, sur sa hauteur au
     // sol, en metres) : sous 4 px par metre, la ville passe a ses pieces basses (city-plan). Rend true s'il faut
     // redessiner.
     vueVille(pxParMetre) {
-      return ville?.kits ? ville.kits.vue(pxParMetre) : false;
+      if (!ville?.kits) return false;
+      const pieces = ville.kits.vue(pxParMetre);
+      const passants = ville.trafic ? ville.trafic.vue(pxParMetre) : false; // sous 4 px par metre, plus de passants
+      return pieces || passants;
     },
     // Une nouvelle scene de GDC. La premiere se pose telle quelle ; les suivantes jouent leurs actions dans l'ordre,
     // puis l'etat recu s'applique. Une scene qui arrive pendant la lecture de la precedente la termine d'abord.
@@ -1590,7 +1606,12 @@ export async function creeCarte(THREE, options) {
         horloge = 0;
         if (majHeure()) encore = true;
       }
-      return encore || (anime && vivants.size > 0);
+      // la circulation de la ville (city-traffic) : une image d'ambiance, qui ne refait pas l'ombre (contrat, update)
+      const ambiance = ville?.trafic
+        ? ville.trafic.update(dt, { nuit: moment === "nuit", lumieres: jour < 0.5 })
+        : false;
+      if (encore || (anime && vivants.size > 0)) return true;
+      return ambiance ? "ambiance" : false;
     },
     // Les panneaux de decision de chaque lieu : ceux qui sont montres (six au plus, chacun avec son badge) et le total ;
     // badges : ce que porte le badge de chacun, 1, et pour le dernier quand il y en a plus de six, les decisions qu'il
@@ -2294,7 +2315,21 @@ export async function creeCarte(THREE, options) {
       const { vitres: allumees, lampes } = kits.allumables;
       for (const v of allumees) vitres.pose(v, "faible");
       for (const l of lampes) vitres.pose(l, "franche");
-      const objets = [sol?.root, kits.racine].filter(Boolean);
+      // la circulation (city-traffic) : les voitures et les passants, poses sur les lieux releves par les kits
+      const trafic =
+        connus.has("city-car") && connus.has("character")
+          ? await creeCirculationVille(THREE, {
+              plan,
+              lieux: kits.lieux,
+              cree,
+              quality: ctxOptions.quality,
+              reducedMotion: !anime,
+              graine,
+            })
+          : null;
+      if (trafic) plateau.add(trafic.racine);
+      else signale("ville autour : city-car ou character absent de la bibliotheque, pas de circulation");
+      const objets = [sol?.root, kits.racine, trafic?.racine].filter(Boolean);
       for (const o of objets)
         o.traverse((x) => {
           if (x.isMesh) x.raycast = () => {};
@@ -2304,12 +2339,14 @@ export async function creeCarte(THREE, options) {
         plan,
         objets,
         kits,
+        trafic,
         scenes,
         pre: null,
         libere() {
           sol?.root.removeFromParent();
           sol?.dispose();
           kits.dispose();
+          trafic?.dispose();
           ville.pre?.dispose();
         },
       };
