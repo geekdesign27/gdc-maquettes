@@ -18,6 +18,8 @@ Les deux premiers viennent sans doute de ce que ces changements ne suivent pas u
 
 **Ce que l'atelier propose** (à toi de choisir) : que `--depuis` compare l'état calculé avant et après, et rende toute ligne changée, quelle qu'en soit la cause ; et que `retirees` liste toute ligne qui n'existe plus. En attendant, le planning applique le contrat à la lettre ; dans la galerie, un saut d'étape lui donne la chronologie complète, et l'étape suivante lui donne `depuis`, si bien qu'on voit ces écarts en jouant les étapes une à une.
 
+**Encore vrai avec GDC 0.22.3** (séquences fusionnées le 25 octobre 2026) : `scripts/check-planning.mjs` compte exactement les mêmes écarts, 43 pièces, 1 ligne d'application et 4 lignes sans `retirees`. Les sections 2 et 3 n'ont pas été remesurées sur la 0.22.3.
+
 ## 2. Une pause qui commence « maintenant »
 
 Une pause déduite d'un silence ou du dossier (`deduit`) a pour début l'heure du calcul : sa date `de` change d'un appel à l'autre (`projet-type` 04 : `14:12:10.901` dans la chronologie, `14:12:11.087` dans `depuis`, pour la même pause). Ça ne casse rien, puisque `regime` est rendu entier à chaque fois, mais la bande du régime se déplace à chaque mise à jour. Est-ce voulu, ou la pause devrait-elle commencer au dernier événement qui la précède ?
