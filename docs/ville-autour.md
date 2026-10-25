@@ -79,6 +79,13 @@ Environ trente pâtés, répartis par une graine (même graine, même ville) :
 
 Chaque budget se mesure comme le constat D-1c : après la mise en route, sur la galerie, et un jour sur un vrai portable de 13 à 14 pouces.
 
+## L'assemblage
+
+`src/ville/ville-autour.js` donne le plan en nombres (`planVille(graine)` : le socle, la place, les rues, les raccords, les giratoires, et les pâtés avec leur type, leur côté et leurs volumes). La carte le pose avec l'option `villeAutour` de `creeCarte` ; absente, il n'y a pas de ville, et rien ne change pour GDC. `carte.villeAutour` rend le mode et le plan.
+
+- `villeAutour: "blanc"` : la maquette en volumes simples (MB_21), validée par Pierre-Alain le 25 octobre 2026. Le grand terrain (`city-ground`), un maillage pour les rues et un pour les volumes : 6 appels de dessin et 1 716 triangles pour toute la ville. Dans la galerie : `?ville=blanc`, qui recule aussi la caméra (485 m, plan lointain à 1 000 m) et cale le cadre de l'ombre sur la vue.
+- Mesure du 25 octobre 2026, galerie, 1280 × 690, de jour (indicative, sans frein processeur) : `trois-applications` 08, 1 368 → 1 451 appels ; `volume` 4, 1 198 → 1 480. La ville n'en prend que 6 : le reste vient de l'ombre calée sur la vue, qui fait porter leur ombre aux objets du chantier sortis de l'ancien cadre de ±30 m.
+
 ## L'ordre de fabrication (ajusté le 23 octobre 2026)
 
 1. Ces règles.

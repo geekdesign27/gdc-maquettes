@@ -38,6 +38,7 @@ import {
   COLORIS_VILLE,
 } from "./equipe.js";
 import { alea } from "./graine.js";
+import { planVille } from "./ville-autour.js";
 import {
   groupFloors,
   anchorFor,
@@ -130,7 +131,8 @@ const dist = (a, b) => Math.hypot(b[0] - a[0], b[1] - a[1]);
 // force (la mesure de fluidite : chaque parcelle en chantier prend son plafond d'ouvriers), lumieres ({ ciel, soleil,
 // scene } : la HemisphereLight, la DirectionalLight et la scene de la page, que la carte regle sur l'heure ; sans elles,
 // la page les regle avec recette()), heure ("jour", "aube", "nuit" ou de 0 a 1 : un moment fixe pour les revues ;
-// absente, l'heure du poste), maintenant (l'horloge, Date.now par defaut) }.
+// absente, l'heure du poste), maintenant (l'horloge, Date.now par defaut), villeAutour ("blanc" : la ville fictive
+// autour du chantier, en volumes simples, lot G9 ; absente, pas de ville) }.
 export async function creeCarte(THREE, options) {
   const { components, chargeur } = options;
   // le registre commun des materiaux du chargeur (plan D-1) : ctx.materiau des composants, et les teintes des tenues
@@ -1452,6 +1454,10 @@ export async function creeCarte(THREE, options) {
   const carte = {
     root,
     signalements,
+    // la ville autour (lot G9) : son mode et son plan (ville-autour.js), ou null sans ville
+    get villeAutour() {
+      return ville ? { mode: ville.mode, plan: ville.plan } : null;
+    },
     // Une nouvelle scene de GDC. La premiere se pose telle quelle ; les suivantes jouent leurs actions dans l'ordre,
     // puis l'etat recu s'applique. Une scene qui arrive pendant la lecture de la precedente la termine d'abord.
     // actions: false pose la scene telle quelle (un saut de plusieurs etapes).
@@ -1967,6 +1973,7 @@ export async function creeCarte(THREE, options) {
       anneauAgent?.dispose();
       if (anneauChoix) for (const r of Object.values(anneauChoix)) r.dispose();
       vitres.libere();
+      ville?.libere();
     },
   };
   let anneau = null;
@@ -2185,8 +2192,123 @@ export async function creeCarte(THREE, options) {
     coupe = null;
   }
 
+  // --- la ville autour (lot G9, fiche city-plan ; docs/ville-autour.md) : une ambiance, posee une fois, qui ne bouge
+  // jamais quand une application s'ajoute. "blanc" : la maquette en volumes simples (MB_21), pour valider la
+  // composition, la camera et le budget avant les kits. Rien ne s'y designe : un rayon la traverse, cible() rend null.
+  // Tout est fusionne par materiau : le grand terrain (city-ground), un maillage pour les rues, un pour les volumes.
+  let ville = null;
+  async function coucheVille(mode) {
+    if (mode !== "blanc") {
+      signale(`ville autour inconnue : ${mode}`);
+      return;
+    }
+    const plan = planVille(graine);
+    const [X0, X1] = plan.socle.x;
+    const [Z0, Z1] = plan.socle.z;
+    const centreSocle = [(X0 + X1) / 2, (Z0 + Z1) / 2];
+    const sol = connus.has("city-ground")
+      ? await cree("city-ground", { width: X1 - X0, depth: Z1 - Z0 })
+      : null;
+    if (sol) {
+      sol.root.position.set(centreSocle[0], 0, centreSocle[1]);
+      // la place de la fontaine, en beton
+      sol.setState("default", {
+        zones: plan.pates
+          .filter((p) => p.type === "place")
+          .map((p) => ({
+            x: (p.x[0] + p.x[1]) / 2 - centreSocle[0],
+            z: (p.z[0] + p.z[1]) / 2 - centreSocle[1],
+            width: p.x[1] - p.x[0],
+            depth: p.z[1] - p.z[0],
+            surface: "concrete",
+          })),
+      });
+      plateau.add(sol.root);
+    } else signale("ville autour : city-ground absent de la bibliotheque");
+    // des boites fusionnees en un maillage : positions et normales de chaque boite, mises a sa taille et a sa place
+    const boite = new THREE.BoxGeometry(1, 1, 1).toNonIndexed();
+    const pos = boite.getAttribute("position").array;
+    const nor = boite.getAttribute("normal").array;
+    const fusionne = (liste) => {
+      const positions = new Float32Array(liste.length * pos.length);
+      const normales = new Float32Array(liste.length * nor.length);
+      liste.forEach(([cx, cy, cz, sx, sy, sz], k) => {
+        for (let i = 0; i < pos.length; i += 3) {
+          positions[k * pos.length + i] = cx + pos[i] * sx;
+          positions[k * pos.length + i + 1] = cy + pos[i + 1] * sy;
+          positions[k * pos.length + i + 2] = cz + pos[i + 2] * sz;
+        }
+        normales.set(nor, k * nor.length);
+      });
+      const g = new THREE.BufferGeometry();
+      g.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+      g.setAttribute("normal", new THREE.BufferAttribute(normales, 3));
+      g.computeBoundingSphere();
+      return g;
+    };
+    const propres = [];
+    const materiau = (nom) => {
+      if (materiauPartage) return materiauPartage(nom);
+      const d = tokens.materiaux[nom];
+      const m = new THREE.MeshStandardMaterial({
+        name: nom,
+        color: new THREE.Color(tokens.monde[d.couleur]),
+        roughness: d.rugosite,
+        metalness: d.metal,
+      });
+      propres.push(m);
+      return m;
+    };
+    const ombres = ctxOptions.quality === "high";
+    const ENROBE = { dessus: 0.04, epaisseur: 0.1 }; // au niveau des routes du chantier (site-ground)
+    const rect = ({ x, z }) => [
+      (x[0] + x[1]) / 2,
+      ENROBE.dessus - ENROBE.epaisseur / 2,
+      (z[0] + z[1]) / 2,
+      x[1] - x[0],
+      ENROBE.epaisseur,
+      z[1] - z[0],
+    ];
+    const rues = new THREE.Mesh(
+      fusionne([...plan.rues, ...plan.raccords].map(rect)),
+      materiau("MAT_ASPHALT"),
+    );
+    rues.name = "VILLE_RUES";
+    rues.receiveShadow = ombres;
+    // les volumes : les maisons, les immeubles, les arbres, la fontaine ; et l'ilot de chaque giratoire
+    const volumes = [];
+    for (const p of plan.pates)
+      for (const b of p.boites)
+        volumes.push([b.x, b.hauteur / 2, b.z, b.largeur, b.hauteur, b.profondeur]);
+    for (const [gx, gz] of plan.giratoires) volumes.push([gx, 0.1, gz, 10, 0.2, 10]);
+    const blanc = new THREE.Mesh(fusionne(volumes), materiau("MAT_SURFACE"));
+    blanc.name = "VILLE_VOLUMES";
+    blanc.castShadow = ombres;
+    blanc.receiveShadow = ombres;
+    for (const m of [rues, blanc]) plateau.add(m);
+    const objets = [sol?.root, rues, blanc].filter(Boolean);
+    for (const o of objets)
+      o.traverse((x) => {
+        if (x.isMesh) x.raycast = () => {};
+      });
+    boite.dispose();
+    ville = {
+      mode,
+      plan,
+      objets,
+      libere() {
+        for (const o of objets) o.removeFromParent();
+        sol?.dispose();
+        rues.geometry.dispose();
+        blanc.geometry.dispose();
+        for (const m of propres) m.dispose();
+      },
+    };
+  }
+
   // la carte commence vide (le terrain, chantier ferme), jusqu'a la premiere scene
   await coucheFixe(["block"]);
+  if (options.villeAutour) await coucheVille(options.villeAutour);
   majHeure();
   return carte;
 }

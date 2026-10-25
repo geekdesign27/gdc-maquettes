@@ -58,6 +58,15 @@ const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 500);
 // n'est plus rognee par le plan proche
 camera.position.set(...lumiere.camera.position).multiplyScalar(4);
 camera.lookAt(...lumiere.camera.cible);
+// La ville autour (lot G9, ?ville=blanc : la maquette en volumes simples) : 325 x 270 m. La camera recule de 485 m
+// dans son axe et voit jusqu'a 1 000 m, pour que le coin avant de la ville ne soit pas rogne au dezoom (city-plan).
+const villeAutour = new URLSearchParams(location.search).get('ville');
+if (villeAutour) {
+  camera.position.set(...lumiere.camera.position).multiplyScalar(14);
+  camera.far = 1000;
+  camera.lookAt(...lumiere.camera.cible);
+  camera.updateProjectionMatrix();
+}
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.addEventListener('change', () => { dirty = true; });
 // La camera qui suit la selection (plan I-8) : un deplacement court, interrompu par une nouvelle selection ou quand on
@@ -467,7 +476,7 @@ async function instanceVille(id, state) {
   // la carte regle elle-meme la lumiere sur l'heure (l'heure reelle, ou le moment que l'on choisit en bas)
   const lumieres = { ciel, soleil: sun, scene: options.silhouette ? null : scene };
   // la ville suit l'heure reelle, comme dans GDC ; ?heure=nuit dans l'adresse la fixe pour une capture
-  const carte = await creeCarte(THREE, { components: byId, chargeur: charge, ...options, heure: Object.hasOwn(MOMENTS, heureDemandee ?? '') ? heureDemandee : undefined, lumieres, force: q.get('ouvriers') === 'max' });
+  const carte = await creeCarte(THREE, { components: byId, chargeur: charge, ...options, heure: Object.hasOwn(MOMENTS, heureDemandee ?? '') ? heureDemandee : undefined, lumieres, force: q.get('ouvriers') === 'max', villeAutour: villeAutour ?? undefined });
   const premier = etapes.includes(state) ? state : etapes[0];
   await carte.applique(sceneDe(premier));
   const actionsJusqua = (s) => etapes.slice(0, etapes.indexOf(s) + 1).flatMap((x) => sceneDe(x).actions || []);
@@ -1136,6 +1145,31 @@ function rapportEtalon(faces) {
   el.append(verdict);
 }
 
+// Le cadre de l'ombre cale sur la vue (city-plan) : avec la ville, la carte d'ombre de 2 048 px couvre l'empreinte au
+// sol de ce que la camera voit, plus 16 m (l'ombre d'un immeuble de 19 m), au lieu de +-30 m autour de l'origine ; il
+// est cale sur la grille des texels, contre le scintillement. Sans ville, le cadre d'origine.
+const visee = new THREE.OrthographicCamera();
+const cadreOmbre = { left: -30, right: 30, top: 30, bottom: -30, near: 0.5, far: 500 };
+function caleOmbre() {
+  const c = sun.shadow.camera;
+  if (!villeAutour || !current.ville) {
+    if (c.right !== cadreOmbre.right || c.near !== cadreOmbre.near) { Object.assign(c, cadreOmbre); c.updateProjectionMatrix(); }
+    return;
+  }
+  const demiL = (camera.right - camera.left) / 2 / camera.zoom;
+  const demiH = (camera.top - camera.bottom) / 2 / camera.zoom;
+  // l'empreinte au sol de la vue iso : la hauteur de l'ecran s'allonge au sol de 1 / sin(35 degres)
+  const rayon = Math.max(demiL, demiH / Math.sin(THREE.MathUtils.degToRad(35))) + 16;
+  visee.position.copy(sun.position);
+  visee.lookAt(sun.target.position);
+  visee.updateMatrixWorld();
+  const point = controls.target.clone().applyMatrix4(visee.matrixWorldInverse);
+  const texel = (2 * rayon) / sun.shadow.mapSize.x;
+  const [x, y] = [Math.round(point.x / texel) * texel, Math.round(point.y / texel) * texel];
+  Object.assign(c, { left: x - rayon, right: x + rayon, bottom: y - rayon, top: y + rayon, near: -600, far: 600 });
+  c.updateProjectionMatrix();
+}
+
 const clock = new THREE.Clock();
 let rapporte = 0;
 function loop() {
@@ -1146,6 +1180,7 @@ function loop() {
   // une animation qui s'arrete sur une image sans ombre refaite : une image de plus, qui la refait
   if (continu || ombre.enRetard) dirty = true;
   if (dirty) {
+    caleOmbre();
     ombre.avant(continu);
     renderer.render(scene, camera);
     if (current.mod === etalon && !options.silhouette) rapportEtalon(etalon.mesureFaces(THREE, renderer, camera, current.inst.root));

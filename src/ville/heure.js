@@ -227,8 +227,10 @@ export function creeVitres() {
     // libere les copies qu'aucun maillage de racine n'utilise plus (un batiment retire : son verre lui appartenait)
     purge(racine) {
       const servies = new Set();
+      // un maillage peut porter plusieurs materiaux (le plateau de city-ground : l'herbe et la terre)
       racine.traverse((o) => {
-        if (o.isMesh && o.material.userData.vitre) servies.add(o.material);
+        if (!o.isMesh) return;
+        for (const m of [].concat(o.material)) if (m.userData.vitre) servies.add(m);
       });
       for (const [m, parForce] of copies) {
         for (const [force, c] of Object.entries(parForce))
