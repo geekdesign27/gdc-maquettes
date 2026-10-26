@@ -1166,11 +1166,38 @@ function dessineCadres(layer) {
     if (frais) e.nom.classList.toggle('attenue', !frais[i].activee);
     // les coins sont fixes : le nom ne se replace que si la vue bouge
     if (e.pose && !reperes.vueBouge) continue;
-    const g = e.c.coins.map(projette).reduce((a, b) => (b[1] > a[1] ? b : a));
-    e.nom.style.left = `${g[0]}px`;
-    e.nom.style.top = `${g[1]}px`;
+    const coins = e.c.coins.map(projette);
+    const k = coins.reduce((m, b, j) => (b[1] > coins[m][1] ? j : m), 0);
+    e.candidats = candidatsDuNom(coins, k);
+    place(e.nom, e.candidats[0]);
     e.pose = true;
     reperes.etiquettesBougent = true;
+  }
+}
+// Les places possibles d'un nom de zone : son coin le plus proche de la camera, puis le long des deux bords qui en partent
+const place = (el, [x, y]) => { el.style.left = `${x}px`; el.style.top = `${y}px`; };
+function candidatsDuNom(coins, k) {
+  const g = coins[k];
+  const vers = (c, t) => [g[0] + (c[0] - g[0]) * t, g[1] + (c[1] - g[1]) * t];
+  const voisins = [coins[(k + 1) % 4], coins[(k + 3) % 4]];
+  return [g, ...[0.25, 0.5, 0.75].flatMap((t) => voisins.map((c) => vers(c, t)))];
+}
+// Aucun repere ne recouvre un nom de zone (constat de la scene de reference du 26 octobre 2026) : un nom recouvert
+// glisse le long de sa bordure jusqu'a une place libre ; les reperes, eux, restent sur leur lieu
+const touche = (a, b) => a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
+function evitement() {
+  if (!etiquettes.cadres || !reperes.etiquettesBougent) return;
+  const pris = [...etiquettes.tags.values()].map((t) => t.getBoundingClientRect());
+  for (const e of etiquettes.cadres) {
+    if (!e.candidats) continue;
+    let libre = null;
+    for (const c of e.candidats) {
+      place(e.nom, c);
+      const r = e.nom.getBoundingClientRect();
+      if (!pris.some((q) => touche(r, q))) { libre = r; break; }
+    }
+    if (!libre) place(e.nom, e.candidats[0]);
+    pris.push(e.nom.getBoundingClientRect());
   }
 }
 function drawAnchors() {
@@ -1213,6 +1240,7 @@ function dessineEtiquettes() {
     tag.style.top = `${y}px`;
     reperes.etiquettesBougent = true;
   }
+  if (current.scene) evitement();
 }
 
 // La demonstration d'un kit : ce que le batiment assemble mesure, et si toutes les pieces du plan sont dans le GLB.

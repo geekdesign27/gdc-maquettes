@@ -64,7 +64,9 @@
     .anchor.repere.pastille .icone, .anchor.repere.pastille .titre { display: none; }
     .anchor.repere.pastille:hover { padding-right: 7px; z-index: 1; }
     .anchor.repere.pastille:hover .icone, .anchor.repere.pastille:hover .titre { display: inline; }
-    .anchor.nom-zone { transform: translate(-50%, 25%); border-color: var(--zone); color: var(--zone); font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; }
+    /* le nom d'une zone a l'encre du theme, le meme contraste pour les quatre ; sa couleur d'equipe est sur le cadre
+       (constat de la scene de reference du 26 octobre 2026 : le bleu et le brun en sombre, le jaune en clair, illisibles) */
+    .anchor.nom-zone { transform: translate(-50%, 25%); border: 2px solid var(--zone); border-left-width: 6px; color: var(--ink); font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; }
     /* la ville : une zone jamais activee, son nom et ses reperes atténués, sans couleur d'etat */
     .anchor.repere.attenue, .anchor.nom-zone.attenue { filter: grayscale(1); opacity: .7; }
     footer { padding: 8px 12px; border-top: 1px solid var(--line); background: var(--panel); font-size: 13px; }
