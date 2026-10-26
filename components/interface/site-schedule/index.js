@@ -801,6 +801,7 @@ export function define(registry, ctx) {
     #index = new Map(); // id de ligne -> rang visible
     #deplies = new Set(); // les lignes ouvertes
     #pliesOuverts = new Set(); // les plis deplies (par la date de leur premier jour)
+    #pliFocus = null; // le dernier pli bascule : il garde l'arret de tabulation de la barre des jours
     #premier = true; // le premier rendu ouvre les etapes en cours et se centre
     #highlight = null;
     #selected = null;
@@ -905,6 +906,10 @@ export function define(registry, ctx) {
         if (b) this.#basculePli(b.dataset.pli);
       });
       jours.addEventListener("keydown", (ev) => this.#toucheJours(ev));
+      // sorti de la barre des jours, l'arret revient au premier pli en vue
+      jours.addEventListener("focusout", (ev) => {
+        if (!jours.contains(ev.relatedTarget)) this.#pliFocus = null;
+      });
       bascule.addEventListener("click", () => {
         this.#tableau = !this.#tableau;
         bascule.setAttribute("aria-pressed", String(this.#tableau));
@@ -913,7 +918,7 @@ export function define(registry, ctx) {
       telephone.addEventListener("click", (ev) => {
         const b = ev.target.closest("button.fiche-tel");
         const info = b && this.#infos.get(b);
-        if (info) this.#choisit(info.ligne, null);
+        if (info) this.#choisit(info.ligne, info.element);
       });
       ctx.hoverLink(this, (n) => this.#refs.get(n) ?? null);
     }
@@ -1123,11 +1128,12 @@ export function define(registry, ctx) {
         d.style.width = `${this.#axe.largeur - this.#axe.futur0}px`;
         enfants.push(d);
       }
+      // dans l'ordre des dates : le bouton « Replier » d'un pli deplie vient a sa place, pour le clavier aussi
+      enfants.sort((p, q) => parseFloat(p.style.left) - parseFloat(q.style.left));
       jours.replaceChildren(...enfants);
       jours.style.left = "var(--nom)";
       jours.style.width = `${this.#axe.largeur}px`;
-      const boutons = [...jours.querySelectorAll("button")];
-      if (boutons.length) boutons[0].tabIndex = 0;
+      this.#arretJours();
       coin.textContent = this.#etat.debut ? "" : "Projet non ouvert";
     }
 
@@ -1166,6 +1172,7 @@ export function define(registry, ctx) {
       this.#raf = requestAnimationFrame(() => {
         this.#raf = 0;
         this.#rendLignes();
+        this.#arretJours();
       });
     }
 
@@ -1741,6 +1748,7 @@ export function define(registry, ctx) {
     }
 
     #basculePli(cle) {
+      this.#pliFocus = cle;
       if (this.#pliesOuverts.has(cle)) this.#pliesOuverts.delete(cle);
       else this.#pliesOuverts.add(cle);
       const ancre = this.#ancre();
@@ -1754,6 +1762,20 @@ export function define(registry, ctx) {
         .querySelector(`button[data-pli="${cssEchappe(cle)}"]`)
         ?.focus();
       if (this.#tableau) this.#rendVue();
+    }
+
+    // l'arret de tabulation de la barre des jours : le pli qu'on vient de basculer, sinon le premier en vue (entrer au
+    // clavier ne fait pas defiler le planning vers un pli lointain) ; il ne bouge pas tant que le focus est dans la barre
+    #arretJours() {
+      const { jours, zone } = this.#els;
+      if (jours.contains(this.shadowRoot.activeElement)) return;
+      const boutons = [...jours.querySelectorAll("button")];
+      if (!boutons.length) return;
+      const cible =
+        boutons.find((b) => b.dataset.pli === this.#pliFocus) ??
+        boutons.find((b) => parseFloat(b.style.left || b.parentElement.style.left) >= zone.scrollLeft) ??
+        boutons[0];
+      for (const b of boutons) b.tabIndex = b === cible ? 0 : -1;
     }
 
     // les plis : une barre d'outils, un seul arret de tabulation, gauche et droite
@@ -2093,6 +2115,32 @@ export function define(registry, ctx) {
         parApp.get(f.app).push(f);
       }
       const enfants = [];
+      // en tete, les decisions du projet qui t'attendent (une etape, sans fiche) : celles des fiches sont dans leur fiche
+      // (decision de Pierre-Alain du 26 octobre 2026, planche a cocher, question 9)
+      const projet = this.#etat.jalons.filter((j) => j.etat === "attendue" && a.lignes.has(j.ligne) && !refDe(a.lignes.get(j.ligne)));
+      if (projet.length) {
+        enfants.push(el("p", "app-tel", projet.length > 1 ? "Les décisions qui t'attendent" : "La décision qui t'attend"));
+        const ul = el("ul", "");
+        ul.setAttribute("aria-label", "Les décisions du projet qui t'attendent");
+        for (const j of projet) {
+          const l = a.lignes.get(j.ligne);
+          const b = el("button", "fiche-tel");
+          b.type = "button";
+          const signe = el("span", "signe");
+          signe.append(signIcon(document, "waiting"));
+          const quand = j.demandee
+            ? j.demandee_source === "git"
+              ? `demandée vers ${fuseauFormat(this.#etat.fuseau, "approche").format(new Date(ms(j.demandee)))}, d'après git`
+              : `demandée ${fuseauFormat(this.#etat.fuseau, "date").format(new Date(ms(j.demandee)))}`
+            : null;
+          b.append(signe, el("span", "texte", j.nom ?? "Décision"), el("span", "sous", [nomDe(l), "attend ta décision", quand].filter(Boolean).join(" · ")));
+          this.#infos.set(b, { ligne: l, element: { sorte: "jalon", jalon: j } });
+          const li = el("li", "");
+          li.append(b);
+          ul.append(li);
+        }
+        enfants.push(ul);
+      }
       for (const [app, fs] of parApp) {
         if (parApp.size > 1 || a.applications > 1)
           enfants.push(el("p", "app-tel", nomsApp.get(app) ?? app));
@@ -2133,7 +2181,7 @@ export function define(registry, ctx) {
         }
         enfants.push(ul);
       }
-      if (!enfants.length)
+      if (!fiches.size)
         enfants.push(
           el(
             "p",
@@ -2148,12 +2196,19 @@ export function define(registry, ctx) {
       this.#marque();
     }
 
+    // le choix sur telephone : la fiche de la reference choisie, ou la decision du projet choisie (par son jalon, son
+    // evt ou son etape)
     #marqueTelephone() {
       const r = this.#refChoisie();
+      const s = this.#selected;
       for (const b of this.#els.telephone.querySelectorAll(".fiche-tel")) {
         const br = this.#refs.get(b);
-        if (r && br && sameRef(ficheDe(r), br))
-          b.setAttribute("aria-current", "true");
+        const j = this.#infos.get(b)?.element?.jalon;
+        const etape = j && this.#arbre?.lignes.get(j.ligne)?.numero;
+        const choisi = j
+          ? Boolean(s) && (s.id === j.id || (s.evt && (s.evt === j.prise_par || s.evt === j.demandee_par)) || (Number.isInteger(s.etape) && s.etape === etape))
+          : Boolean(r && br && sameRef(ficheDe(r), br));
+        if (choisi) b.setAttribute("aria-current", "true");
         else b.removeAttribute("aria-current");
       }
     }

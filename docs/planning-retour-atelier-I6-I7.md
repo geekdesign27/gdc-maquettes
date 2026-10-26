@@ -18,7 +18,7 @@ Les deux premiers viennent sans doute de ce que ces changements ne suivent pas u
 
 **Ce que l'atelier propose** (à toi de choisir) : que `--depuis` compare l'état calculé avant et après, et rende toute ligne changée, quelle qu'en soit la cause ; et que `retirees` liste toute ligne qui n'existe plus. En attendant, le planning applique le contrat à la lettre ; dans la galerie, un saut d'étape lui donne la chronologie complète, et l'étape suivante lui donne `depuis`, si bien qu'on voit ces écarts en jouant les étapes une à une.
 
-**Encore vrai avec GDC 0.22.3** (séquences fusionnées le 25 octobre 2026) : `scripts/check-planning.mjs` compte exactement les mêmes écarts, 43 pièces, 1 ligne d'application et 4 lignes sans `retirees`. Les sections 2 et 3 n'ont pas été remesurées sur la 0.22.3.
+**Encore vrai avec GDC 0.22.3** (séquences fusionnées le 25 octobre 2026) : `scripts/check-planning.mjs` compte exactement les mêmes écarts, 43 pièces, 1 ligne d'application et 4 lignes sans `retirees`. Les sections 2 et 3, remesurées le 26 octobre 2026 sur la 0.22.3, sont inchangées : la pause du pas 04 de `projet-type` commence encore à l'heure du calcul (`17:20:01.651` dans la chronologie, `17:20:01.804` dans `depuis`, chacune égale à son `maintenant`), et 84 traits sur 338 tombent encore hors de toute barre au dernier pas des quatre séquences. Un fait de plus : au dernier pas de `projet-long`, la scène dit « Le chantier s'arrête : il attend ta décision », mais le `regime` de la chronologie finit sur `ouvert`, sans la pause déduite que porte le même pas de `projet-type`. C'est peut-être un effet de l'horloge décalée de cette séquence.
 
 ## 2. Une pause qui commence « maintenant »
 
@@ -44,3 +44,7 @@ Rien de cela n'est une demande ; c'est écrit pour que GDC sache ce que le panne
 - **L'`id` d'un trait choisi** dans `gdc-select` (`{ id, ref, evt }`) est celui de la ligne qui porte le trait.
 - **Un groupe de traits** (un jour trop étroit pour les séparer) ne se choisit pas : il dit son nombre et ses phrases au survol ; le fil donne chaque action.
 - **Une ligne repliée** porte les jalons attendus de ses descendants, pour qu'une décision qui attend Pierre-Alain reste visible.
+- **Deux jalons d'une même ligne trop proches** (une seconde d'écart) se posent côte à côte, dans l'ordre de leur date, au lieu de se recouvrir.
+- **Sur téléphone**, la liste par fiche commence par les décisions du projet qui attendent Pierre-Alain (décision de Pierre-Alain du 26 octobre 2026).
+
+Pierre-Alain a validé le planning sur une planche à cocher le 26 octobre 2026 (neuf oui sur neuf) : les décisions attendues sur une ligne repliée, l'allure d'un jour, les groupes de traits, les formes des jalons, les jours repliés, le lien avec le fil et le survol, et la liste du téléphone.

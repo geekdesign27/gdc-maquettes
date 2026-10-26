@@ -78,6 +78,15 @@ const planningAvec = (apres) => (n) => {
 };
 const clicDans = (n, selecteur) => n.shadowRoot.querySelector(selecteur)?.click();
 const FICHE_TERRAIN = { application: "terrain", fiche: "004-saisir-un-constat-hors-ligne" };
+// Les faits choisis par les variantes, lus dans les sequences plutot qu'ecrits en dur : les identifiants des evenements
+// changent a chaque regeneration par GDC. Le passage au terrassement de la fiche terrain (quatre actions dans le fil),
+// l'essai rouge de cette fiche (un trait du planning), et les jalons refuse et perime du projet.
+const FAIT_TERRASSEMENT = actionsTroisApplications.flat().find((a) => a.ref?.application === "terrain" && /plot → excavation/.test(a.phrase ?? ""))?.cause ?? null;
+const TRAIT_ESSAI_ROUGE = chronoTrois.evenements.find((e) => e.kind === "preuve" && e.trait && e.ref?.fiche === FICHE_TERRAIN.fiche)?.id ?? null;
+const jalonTrois = (id) => {
+  const j = chronoTrois.jalons.find((x) => x.id === id);
+  return { id, evt: j?.prise_par ?? j?.demandee_par ?? undefined };
+};
 
 // Le choix relaye comme GDC le fera (derniere passe de GDC, section 6) : un premier choix, puis chaque gdc-select de
 // l'element lui revient en selected.
@@ -384,10 +393,10 @@ export const variantes = {
     },
     // 1.1.0 : un fait choisi ailleurs (le planning, la carte) ; la page relaie chaque clic du fil en selected, comme GDC
     {
-      titre: "Un fait choisi ailleurs (1.1.0) : les quatre actions de evt:004-…/de40e60e marquées, le fil y défile ; un clic est relayé en selected, comme GDC",
+      titre: "Un fait choisi ailleurs (1.1.0) : les quatre actions du passage au terrassement de la fiche terrain marquées, le fil y défile ; un clic est relayé en selected, comme GDC",
       style: "height: 320px; max-width: 380px",
       data: { actions: actionsTroisApplications.flat() },
-      cadre: (n) => relaieChoix(n, { id: "terrain", ref: { application: "terrain", fiche: "004-saisir-un-constat-hors-ligne" }, evt: "evt:004-saisir-un-constat-hors-ligne/de40e60e" }),
+      cadre: (n) => relaieChoix(n, { id: "terrain", ref: { application: "terrain", fiche: "004-saisir-un-constat-hors-ligne" }, evt: FAIT_TERRASSEMENT }),
     },
     {
       titre: "Un choix sans evt (1.1.0) : une fiche choisie dans l'arbre ; rien n'est marqué",
@@ -453,19 +462,19 @@ export const variantes = {
       titre: "Trait choisi ({ id, ref, evt } : l'essai rouge de la fiche terrain, choisi dans le fil) : son trait marqué",
       style: "height: 300px",
       data: { timeline: chronoTrois },
-      cadre: (n) => relaieChoix(n, { id: "developpeur-base", ref: { ...FICHE_TERRAIN, lot: "L1" }, evt: "evt:004-saisir-un-constat-hors-ligne/9958f34e" }),
+      cadre: (n) => relaieChoix(n, { id: "developpeur-base", ref: { ...FICHE_TERRAIN, lot: "L1" }, evt: TRAIT_ESSAI_ROUGE }),
     },
     {
       titre: "Jalon choisi, refusé : « On continue » et son motif (détail en haut)",
       style: "height: 260px",
       data: { timeline: chronoTrois },
-      cadre: (n) => relaieChoix(n, { id: "jalon:projet/on-continue/1", evt: "evt:projet/74393a6f" }),
+      cadre: (n) => relaieChoix(n, jalonTrois("jalon:projet/on-continue/1")),
     },
     {
       titre: "Jalon choisi, périmé : le permis de construire et sa date d'après git (repère pointillé)",
       style: "height: 260px",
       data: { timeline: chronoTrois },
-      cadre: (n) => relaieChoix(n, { id: "jalon:projet/permis-de-construire/1", evt: "evt:projet/1c835438" }),
+      cadre: (n) => relaieChoix(n, jalonTrois("jalon:projet/permis-de-construire/1")),
     },
     {
       titre: "Vue tableau (projet-type, pas 25) : une ligne par barre, par jalon et par repère, avec la source",
