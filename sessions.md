@@ -10,7 +10,8 @@ Les lots G0 à G9 sont fabriqués : 62 éléments livrés, 2 à faire. Le planni
 - Fluidité : registre des matériaux (166 → 59), `building` 2.1.0 (226 maillages → 31), ombre une image sur deux, un squelette par personnage ; la carte tourne à 58 images/s une fois lancée, processeur ralenti ×4.
 
 **Reste à faire**
-- Pierre-Alain : valider `site-schedule` (planche de neuf questions, session « Planning I-6 et I-7 ») et la scène de référence ; transmettre à GDC `docs/planning-retour-atelier-I6-I7.md` et la réponse de l'atelier dans `docs/gdc-0.22-pour-l-atelier.md` ; mesurer la carte avec la ville sur le portable de 13 pouces.
+- `site-schedule` et la scène de référence sont livrés (26 octobre) ; le lot G0 est terminé. Reste pour la scène : les chiffres blancs des repères sur fond jaune (étapes 4, 5, 6) n'ont qu'un contraste de 1,6.
+- Pierre-Alain : transmettre à GDC `docs/planning-retour-atelier-I6-I7.md` et la réponse de l'atelier dans `docs/gdc-0.22-pour-l-atelier.md` ; mesurer la carte avec la ville sur le portable de 13 pouces.
 - Décisions en attente : points de DA « à revoir plus tard » (`docs/planning-plan-atelier.md`, section 7). D-1c est tranché le 25 octobre : correction 3 faite, 2 en réserve (à sortir selon la mesure du 13 pouces), 5 écartée.
 - GDC 0.22.3 fusionné ; P1 (données de l'inspecteur), P2 (`agent-popup` 1.2.0, livré) et le code court (inspecteur) décidés : GDC doit porter `code` et l'outil dans la scène.
 - Seconde version : le rejeu de la carte à une date passée, avec l'option `instant` par la carte (`update(grand dt)`, décision du 25 octobre).

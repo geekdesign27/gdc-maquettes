@@ -115,14 +115,14 @@
       "category": "style",
       "name": "La scène de référence",
       "purpose": "Servir d'étalon : chaque nouveau composant est posé à côté pour vérifier qu'il appartient au même monde.",
-      "description": "Un assemblage dans la galerie, même caméra et même lumière : terrain, grue, un bureau, un bâtiment dans quatre états, un personnage, l'anneau de sélection, un panneau. La planche comparative (bible, section 14) pose chaque nouvel asset à côté de deux modèles maîtres validés. Réalisée dans la galerie (`src/scene-reference.js`) : la carte du harnais en trois quartiers, chaque étape repérée (docs/ville.md) ; planche entre le bâtiment terminé et le personnage maître. Reprise sur la décision de Pierre-Alain du 21 octobre 2026, à revalider.",
+      "description": "Un assemblage dans la galerie, même caméra et même lumière : terrain, grue, un bureau, un bâtiment dans quatre états, un personnage, l'anneau de sélection, un panneau. La planche comparative (bible, section 14) pose chaque nouvel asset à côté de deux modèles maîtres validés. Réalisée dans la galerie (`src/scene-reference.js`) : la carte du harnais en trois quartiers, chaque étape repérée (docs/ville.md) ; planche entre le bâtiment terminé et le personnage maître. Reprise sur la décision de Pierre-Alain du 21 octobre 2026 ; validée par Pierre-Alain le 26 octobre 2026, après correction des noms de zone (à l'encre du thème, jamais sous un repère).",
       "acceptance": [
         "Lisible en clair et en sombre",
         "Fluide sur un ordinateur portable ordinaire",
         "Planche comparative disponible pour chaque composant",
         "Validée ensemble"
       ],
-      "status": "à faire"
+      "status": "livré"
     },
     {
       "id": "ground",

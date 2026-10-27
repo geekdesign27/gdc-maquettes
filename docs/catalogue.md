@@ -2,7 +2,7 @@
 
 Fichier généré par `npm run catalogue` depuis `catalogue.json`. Ne pas le modifier à la main.
 
-66 éléments : 63 livré, 1 à faire, 2 exemple.
+66 éléments : 64 livré, 2 exemple.
 
 ## G0 : La ligne graphique
 
@@ -13,7 +13,7 @@ Fixer le style avant de produire : mood board, bible WORKSITE, bibliothèque de 
 | 1 | `moodboard` | Le mood board | Document de référence, pas de code | Réunir les images qui donnent le ton, avant toute production. | livré |
 | 2 | `bible` | La bible graphique | Document de référence, pas de code | La règle de production : univers, palette, matériaux, personnages, bâtiments, engins, caméra, conventions Blender, budgets, contrôles. | livré |
 | 3 | `material-library` | La bibliothèque de matériaux | Document de référence, pas de code | Des matériaux MAT_ partagés par tous les modèles, définis une seule fois. | livré |
-| 4 | `reference-scene` | La scène de référence | Document de référence, pas de code | Servir d'étalon : chaque nouveau composant est posé à côté pour vérifier qu'il appartient au même monde. | à faire |
+| 4 | `reference-scene` | La scène de référence | Document de référence, pas de code | Servir d'étalon : chaque nouveau composant est posé à côté pour vérifier qu'il appartient au même monde. | livré |
 
 ### Le mood board (`moodboard`)
 
@@ -43,7 +43,7 @@ src/palette.json, section materiaux : 30 matériaux et plus (bible, 18.4), chacu
 
 ### La scène de référence (`reference-scene`)
 
-Un assemblage dans la galerie, même caméra et même lumière : terrain, grue, un bureau, un bâtiment dans quatre états, un personnage, l'anneau de sélection, un panneau. La planche comparative (bible, section 14) pose chaque nouvel asset à côté de deux modèles maîtres validés. Réalisée dans la galerie (`src/scene-reference.js`) : la carte du harnais en trois quartiers, chaque étape repérée (docs/ville.md) ; planche entre le bâtiment terminé et le personnage maître. Reprise sur la décision de Pierre-Alain du 21 octobre 2026, à revalider.
+Un assemblage dans la galerie, même caméra et même lumière : terrain, grue, un bureau, un bâtiment dans quatre états, un personnage, l'anneau de sélection, un panneau. La planche comparative (bible, section 14) pose chaque nouvel asset à côté de deux modèles maîtres validés. Réalisée dans la galerie (`src/scene-reference.js`) : la carte du harnais en trois quartiers, chaque étape repérée (docs/ville.md) ; planche entre le bâtiment terminé et le personnage maître. Reprise sur la décision de Pierre-Alain du 21 octobre 2026 ; validée par Pierre-Alain le 26 octobre 2026, après correction des noms de zone (à l'encre du thème, jamais sous un repère).
 
 - Critères d'acceptation :
   - Lisible en clair et en sombre

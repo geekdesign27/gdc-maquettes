@@ -148,4 +148,4 @@ GDC a tout accepté (`docs/planning-derniers-mots-de-gdc.md`, même jour) : `pan
 | Ville | V-1 (fiches G9), V-2 (projecteurs), V-3 : `city-ground`, `road-kit`, `nature-kit`, `villa-kit`, `apartment-kit`, `city-plan` 1.1.0, `city-night`, `city-traffic` | La mesure sur le portable de 13 à 14 pouces de référence, que seul Pierre-Alain peut faire |
 | Carte | `city-map` et `agent-marker` 1.0.0 livrés ; la deuxième rangée de parcelles et la grille des panneaux (`volume`) | Points de DA notés pour plus tard : la charge de la grue, un usager sans casque, le gris lavé sombre, deux agents GDC pour une même personne ; le groupe de repères déplié qui couvre une étiquette dans un cadre très bas |
 
-Le catalogue compte 62 éléments livrés, 2 à faire (`reference-scene`, qui attend la validation de Pierre-Alain, et `site-schedule`) et 2 exemples.
+Le catalogue compte 64 éléments livrés, aucun à faire, et 2 exemples (`reference-scene` validée par Pierre-Alain le 26 octobre 2026, `site-schedule` le même jour).
