@@ -1,10 +1,10 @@
 """Le terrassement du batiment d'une application (catalogue : building, production mixte). Brief valide par
 Pierre-Alain le 20 octobre 2026.
 
-Le batiment lui-meme est assemble par le composant a partir du kit (building-kit, BLD_KIT_A_v003). Ce modele ne porte
+Le batiment lui-meme est assemble par le composant a partir du kit (building-kit, BLD_KIT_A_v004). Ce modele ne porte
 que ce qui est propre a la parcelle, avant et pendant la fouille :
-- PLOT_<NX>X2 : le socle maquette de la parcelle (bible 18.5), l'emprise de NX x 2 trames et 3 m de marge autour ;
-- PIT_<NX>X2 : le meme socle creuse de la fouille : 0,50 m de profondeur, talus a 45 degres, fond 0,60 m plus large
+- PLOT_<NX>X<NY> : le socle maquette de la parcelle (bible 18.5), l'emprise de NX x NY trames et 3 m de marge autour ;
+- PIT_<NX>X<NY> : le meme socle creuse de la fouille : 0,50 m de profondeur, talus a 45 degres, fond 0,60 m plus large
   que l'emprise de chaque cote (la place de coffrer les semelles) ;
 - SPOIL_HEAP : le tas de deblais, a cote de la fouille ;
 - BATTER_BOARD : une chaise d'implantation (trois piquets et deux lattes), posee a l'angle de l'emprise, en dehors ;
@@ -16,6 +16,9 @@ que ce qui est propre a la parcelle, avant et pendant la fouille :
   orange fluo (MAT_FABRIC_HIVIS) a deux bandes blanches (MAT_SURFACE), semelle orange : pas de caoutchouc, pour tenir
   le plafond de dix materiaux du batiment.
 L'emprise suit le type du batiment (2, 3 ou 4 trames de facade, 2 de profondeur) : un socle par emprise.
+v003 (building 3.0.0, temps B des etages, decisions de Pierre-Alain du 28 octobre 2026) : le plateau suit le nombre de
+lots de l'etage le plus charge (une piece de 3 x 3 m par lot) ; la facade s'allonge jusqu'a 5 trames, puis le batiment
+prend de la profondeur : trois socles de plus, 5 x 2, 4 x 3 et 5 x 3. Les pieces de la v002 sont inchangees.
 Origine de chaque piece : le centre de l'emprise, sur le dessus du socle (z = 0). Avant vers -Y.
 
 Qualite basse (bible 18.3) : SPOIL_HEAP_LOW aux aretes vives ; BATTER_BOARD_LOW, les lattes fusionnees en deux
@@ -27,12 +30,12 @@ restent : ils font la parcelle.
 import bmesh
 import bpy
 
-ASSET = {"id": "building", "categorie": "building", "nom": "BLD_SITEWORK_A_v002"}
+ASSET = {"id": "building", "categorie": "building", "nom": "BLD_SITEWORK_A_v003"}
 
 P = "BLD_SITEWORK_A_"
 TRAME = 3.0
-PROFONDEUR = 2  # trames de profondeur, pour tous les types
-FACADES = (2, 3, 4)  # trames de facade selon le nombre de fiches
+# les plateaux (trames de facade, de profondeur) : les trois de la v002, puis ceux de la v003
+PLATEAUX = ((2, 2), (3, 2), (4, 2), (5, 2), (4, 3), (5, 3))
 MARGE = 3.0  # du nu de l'emprise au bord du socle : echafaudage, tas de deblais, gabarits
 SOCLE = 0.60
 FOUILLE = 0.50
@@ -55,8 +58,8 @@ def _piece(c, nom, objets):
     return o
 
 
-def _socle(c, nom, nx):
-    return c.boite(P + nom, (nx * TRAME + 2 * MARGE, PROFONDEUR * TRAME + 2 * MARGE, SOCLE), (0, 0, -SOCLE), mat="MAT_EARTH")
+def _socle(c, nom, nx, ny):
+    return c.boite(P + nom, (nx * TRAME + 2 * MARGE, ny * TRAME + 2 * MARGE, SOCLE), (0, 0, -SOCLE), mat="MAT_EARTH")
 
 
 def _tas(c, nom, chanfrein):
@@ -130,16 +133,17 @@ def _cones(c, nom, basse):
 
 
 def construit(c):
-    for nx in FACADES:
-        emprise = (nx * TRAME, PROFONDEUR * TRAME)
-        _piece(c, "PLOT_%dX2" % nx, [c.chanfreine(_socle(c, "PLOT_%dX2" % nx, nx), C3, 3)])
-        socle = _socle(c, "PIT_%dX2" % nx, nx)
+    for nx, ny in PLATEAUX:
+        emprise = (nx * TRAME, ny * TRAME)
+        plot, pit = "PLOT_%dX%d" % (nx, ny), "PIT_%dX%d" % (nx, ny)
+        _piece(c, plot, [c.chanfreine(_socle(c, plot, nx, ny), C3, 3)])
+        socle = _socle(c, pit, nx, ny)
         # la fouille : le talus a 45 degres prolonge jusqu'a 0,5 m au-dessus du socle, pour couper net
         fond = (emprise[0] + 2 * FOND, emprise[1] + 2 * FOND)
         haut = 2 * FOUILLE
         c.creuse(socle, c.tronc(P + "PIT_TOOL", fond, (fond[0] + 2 * haut, fond[1] + 2 * haut), haut, (0, 0, -FOUILLE)))
         c.chanfreine(socle, C3, 3)
-        _piece(c, "PIT_%dX2" % nx, [socle])
+        _piece(c, pit, [socle])
 
     _piece(c, "SPOIL_HEAP", _tas(c, "SPOIL_HEAP", C3))
     _piece(c, "SPOIL_HEAP_LOW", _tas(c, "SPOIL_HEAP_LOW", 0))

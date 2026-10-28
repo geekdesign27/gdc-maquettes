@@ -1,13 +1,13 @@
 {
-  "nom": "BLD_SITEWORK_A_v002",
+  "nom": "BLD_SITEWORK_A_v003",
   "id": "building",
   "bible": "WORKSITE 1.2",
   "blender": "5.3.0 Beta",
   "script": "blender/assets/building.py",
-  "script_sha256": "4435da5b0924cc15c5e53dcc33e7dde74d88d2ea12730a0aeef26352669d1f12",
+  "script_sha256": "6a67333c2ab7ce130f529a993a8c785a341e145710d1d13239afb6d886a40248",
   "commun_sha256": "e8cb480c62b7bdb8b54460ec91e343989e89e93987616cc2711afd5dbcdf2f80",
   "palette_sha256": "028f1055493a2d25d665642cf946eb3c7160e4274b9724dd07878deff0dbc0ec",
-  "glb_sha256": "ce7679de3c4d46001a9ffca2fc9ec6c7109dbeec6b42b9e086c39dc95ae7f3f0",
+  "glb_sha256": "27881e8e4d30ae75ccce388800f3eeb4d964e4a84ca1f68360c640c6a3d52c61",
   "animations": [],
   "statut": "a valider"
 }

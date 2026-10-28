@@ -3,7 +3,8 @@
 // - une fiche par etage, la plus ancienne en bas (data.floors, ADR 0013 de GDC) ; un lot par piece, une travee de
 //   facade par piece, dans l'ordre avant, droite (les deux visibles en iso), arriere, gauche ; au-dela, deux lots
 //   partagent une travee ;
-// - six etages visibles au plus : la regle est ecrite une fois (src/etages.js) et injectee en ctx.groupFloors ;
+// - des etages visibles au plus (six, trente depuis 3.0.0) : la regle est ecrite une fois (src/etages.js) et injectee
+//   en ctx.groupFloors ;
 // - chaque etage a son stade : plot (rien de construit), excavation et foundations (au sol la fouille, la pelle, les
 //   semelles ; en etage la dalle a nu, puis les attentes), structure (poteaux, dalle, echafaudage ; la travee d'un lot
 //   fini se ferme en brique), envelope (brique, baies brutes), finishing (fenetres posees, echafaudage depose),
@@ -13,7 +14,8 @@
 // - la surelevation : au-dessus d'etages tous finis, l'etage en chantier n'a pas d'echafaudage tout autour mais une tour
 //   d'une travee sur la facade droite, avec trois cones de balisage a son pied (sans badge : le defaut reste un cone
 //   seul avec son badge), de excavation a envelope ;
-// - l'emprise est fixe par type : house 2 x 2 trames, block 3 x 2, hall 4 x 2 (le rez de la halle est aveugle) ;
+// - l'emprise part du type : house 2 x 2 trames, block 3 x 2, hall 4 x 2 (le rez de la halle est aveugle) ; elle
+//   suit les lots depuis 3.0.0 ;
 // - qualite basse : les pieces _LOW ; qualite haute : au-dela du budget, les etages du haut passent aux pieces _LOW ;
 // - un etage qui change monte en 0,8 s depuis sa dalle, la toiture glisse a sa hauteur ; sans animation, l'etat final.
 // Pour l'assemblage (survol partage, heure reelle) : un groupe FLOOR_n par etage visible (userData.floor), un groupe
@@ -23,12 +25,24 @@
 // construction, les pieces posees dans un meme groupe (la parcelle, un etage, une piece, la toiture) sont fusionnees
 // par materiau : un maillage par materiau et par groupe au lieu d'un par piece. Les groupes, leurs noms, leurs
 // userData, les ancres et les transitions ne changent pas ; la pelleteuse, animee, reste a part.
+// Version 3.0.0 (temps B des etages, brief et decisions de Pierre-Alain du 28 octobre 2026) :
+// - une fiche par etage jusqu'a 30 etages (ctx.groupFloors, plafond de 30) ;
+// - le plateau suit les lots : une piece de 3 x 3 m (une case) par lot, le plateau a la taille de l'etage le plus
+//   charge, a partir de la largeur du type (ctx.floorPlate, src/etages.js) ; le lot m prend la case m dans l'ordre de
+//   ctx.plateCells (le pourtour, puis le milieu), la meme que la coupe ; ROOM_n_m porte les travees de facade de sa case
+//   (aucune pour une case du milieu) et room:n-m est au centre de sa case ; au-dela de 15 lots, deux lots partagent
+//   une case ; la maison prend un toit plat quand son plateau a trois trames de profondeur ;
+// - l'allegement : au-dela du budget (20 000 en haute, 6 000 en basse, critere de la fiche), les etages finis du bas
+//   passent d'abord aux pieces _LOW (en haute), puis a l'etage simple du kit v004 ; s'il le faut encore, les etages en
+//   chantier du bas, de meme. Le rez reste plein. L'etage simple a l'aspect de son stade (ossature, brique, crepi),
+//   etire a son plateau en ecartant ce qui est de part et d'autre de son origine (les rives gardent leur largeur) ;
+//   il n'a ni echafaudage ni garde-corps.
 // Les modeles sont partages entre instances : on ne libere jamais leurs geometries ni leurs materiaux ici ; seuls le
-// verre eclaire et les geometries fusionnees, crees par ce composant, sont liberes. Aucune couleur d'etat dans la
+// verre eclaire, les geometries fusionnees et celles des etages simples etires, crees par ce composant, sont liberes. Aucune couleur d'etat dans la
 // scene ; aucun texte.
 
 const KIT = "kit:building-kit/BLD_KIT_A_v004.glb";
-const PARCELLE = "BLD_SITEWORK_A_v002.glb";
+const PARCELLE = "BLD_SITEWORK_A_v003.glb";
 const PELLETEUSE = "machine:excavator/VEH_EXCAVATOR_A_v001.glb";
 const CLIP_PELLETEUSE = "ANM_EXCAVATOR_A_DIGGING";
 const IMAGE_FIXE = 150 / 30; // sans animation : fleche levee, tournee vers le tas, godet plein (comme excavator)
@@ -47,9 +61,18 @@ const DEBORD_ECHAFAUDAGE = 0.3 + 0.8 - 0.04 - RIVE / 2; // du garde-corps de riv
 const FOUILLE = 0.5; // profondeur de la fouille
 const MARGE_FOUILLE = 1.1; // du nu de l'emprise au bord de la fouille (fond 0,60 m et talus de 0,50 m)
 const CONES = 2.1; // du nu de la facade droite au centre des cones, au pied de la tour d'echafaudage
-const PIECE = 1.5; // de la facade au centre d'une piece (une travee de 3 m, une case de profondeur)
 const TRANSITION = 0.8; // secondes
-const EMPRISE = { house: 2, block: 3, hall: 4 }; // trames de facade ; 2 de profondeur
+const PLAFOND_BASSE = 6000; // triangles en qualite basse (critere de la fiche)
+// l'etage simple du kit v004 selon le stade affiche
+const SIMPLE = {
+  excavation: "FLOOR_PLAIN_FRAME",
+  foundations: "FLOOR_PLAIN_FRAME",
+  structure: "FLOOR_PLAIN_FRAME",
+  envelope: "FLOOR_PLAIN_BRICK",
+  finishing: "FLOOR_PLAIN",
+  inspection: "FLOOR_PLAIN",
+  completed: "FLOOR_PLAIN",
+};
 // les stades, du moins avance au plus avance (src/etages.js)
 const STADES = [
   "plot",
@@ -66,7 +89,7 @@ const R = Object.fromEntries(STADES.map((s, i) => [s, i]));
 
 export const meta = {
   id: "building",
-  version: "2.1.1",
+  version: "3.0.0",
   category: "building",
   states: [
     "plot",
@@ -152,9 +175,18 @@ function trame(nx, ny) {
     [x1, y1, 180],
     [x0, y1, 270],
   ];
+  // chaque travee du pourtour et la case (i de gauche a droite, j de l'avant vers l'arriere) qu'elle ferme
+  const caseDe = {
+    avant: (i) => [i, 0],
+    droite: (i) => [nx - 1, i],
+    arriere: (i) => [nx - 1 - i, ny - 1],
+    gauche: (i) => [0, ny - 1 - i],
+  };
   const pourtour = [];
   for (const cle of ["avant", "droite", "arriere", "gauche"])
-    facades[cle].points.forEach((p, i) => pourtour.push({ cle, i, p }));
+    facades[cle].points.forEach((p, i) =>
+      pourtour.push({ cle, i, p, cell: caseDe[cle](i) }),
+    );
   return { nx, ny, ax, ay, cx, cy, facades, angles, pourtour };
 }
 
@@ -203,8 +235,16 @@ export function create(THREE, params, ctx) {
   const type = meta.params.type.values.includes(params.type)
     ? params.type
     : meta.params.type.default;
-  const t = trame(EMPRISE[type], 2);
-  const porte = Math.floor((t.nx - 1) / 2); // travee de la porte, sur la facade avant
+  // le plateau, sa trame, ses cases et la travee de la porte (facade avant) : refaits a chaque construction
+  let t = trame(ctx.floorPlate([], type).nx, 2);
+  let cases = ctx.plateCells(t.nx, t.ny);
+  let porte = Math.floor((t.nx - 1) / 2);
+  const plateau = (floors) => {
+    const { nx, ny } = ctx.floorPlate(floors, type);
+    t = trame(nx, ny);
+    cases = ctx.plateCells(nx, ny);
+    porte = Math.floor((nx - 1) / 2);
+  };
 
   // Le verre des fenetres de l'habite (MAT_GLASS_LIT) : en theme sombre, il luit un peu.
   const lit = ctx.tokens.materiaux.MAT_GLASS_LIT;
@@ -244,16 +284,21 @@ export function create(THREE, params, ctx) {
     }));
   };
 
-  // Les travees de chaque piece d'un etage : la piece m prend la travee m du pourtour ; au-dela, deux lots partagent
-  // une travee. Rend, par travee du pourtour, la liste des pieces qui l'occupent.
-  const travees = (rooms) => {
-    const parTravee = t.pourtour.map(() => []);
-    rooms.forEach((r, m) => parTravee[m % t.pourtour.length].push(m));
-    return parTravee;
-  };
+  // La case de chaque piece d'un etage : la piece m prend la case m de ctx.plateCells ; au-dela, deux lots partagent
+  // une case. Rend, par travee du pourtour, la liste des pieces de la case qu'elle ferme.
+  const caseDuLot = (m) => cases[m % cases.length];
+  const travees = (rooms) =>
+    t.pourtour.map(({ cell: [i, j] }) =>
+      rooms
+        .map((r, m) => m)
+        .filter((m) => caseDuLot(m).i === i && caseDuLot(m).j === j),
+    );
 
   // --- le plan : une liste de poses { modele, nom, x, y, z, rot, echelle, niveau, eclaire, groupe }
-  function plan(visibles) {
+  // simples : les niveaux (k, depuis 0 pour le rez) poses en etage simple
+  function plan(visibles, simples = new Set()) {
+    const simple = (k) =>
+      simples.has(k) && visibles[k] && rang(visibles[k].affiche) >= R.excavation;
     const poses = [];
     const pose = (nom, x, y, z, rot = 0, extra = {}) =>
       poses.push({
@@ -395,7 +440,7 @@ export function create(THREE, params, ctx) {
     };
     const toiture = (k, gardeCorps, o) => {
       const z = (k + 1) * ETAGE + DALLE; // dessus de la dalle du plafond
-      if (type === "house") {
+      if (type === "house" && t.ny === 2) {
         for (const x of t.cx) {
           pose("ROOF_SLOPE", x, 0, z, 0, o);
           pose("ROOF_SLOPE", x, 0, z, 180, o);
@@ -418,8 +463,9 @@ export function create(THREE, params, ctx) {
     const rezStade = rez ? rez.affiche : "plot";
 
     // le terrain : la parcelle, ou la fouille du rez
+    const socle = `${t.nx}X${t.ny}`;
     if (rang(rezStade) <= R.plot) {
-      terrain(`PLOT_${t.nx}X2`);
+      terrain(`PLOT_${socle}`);
       for (const [x, y, rot] of t.angles) terrain("BATTER_BOARD", x, y, rot);
       // le tracage de l'emprise sur les axes : une ligne etiree par facade, qui chevauche l'autre aux angles
       for (const f of Object.values(t.facades))
@@ -429,11 +475,11 @@ export function create(THREE, params, ctx) {
           1,
         ]);
     } else if (rang(rezStade) <= R.foundations) {
-      terrain(`PIT_${t.nx}X2`);
+      terrain(`PIT_${socle}`);
       // le tas de deblais sur la marge droite, entre la fouille et le bord du socle, dans le sens de la profondeur
       terrain("SPOIL_HEAP", t.ax[t.nx] + MARGE_FOUILLE + 0.9, 0.4, 90);
     } else {
-      terrain(`PLOT_${t.nx}X2`);
+      terrain(`PLOT_${socle}`);
       if (type !== "hall" && rang(rezStade) >= R.envelope)
         pose("STEPS", ...t.facades.avant.points[porte], 0, 0);
       if (rezStade === "completed")
@@ -441,13 +487,13 @@ export function create(THREE, params, ctx) {
     }
 
     // chaque etage a son stade
-    const salles = []; // les pieces de chaque etage : { n, m, travee }
+    const salles = []; // les pieces de chaque etage : { n, m, cell }
     visibles.forEach((f, k) => {
       const n = f.index;
       const o = { niveau: k, groupe: `F${n}` };
       const s = f.affiche;
       const sol = k * ETAGE + DALLE; // dessus de la dalle de l'etage
-      if (s === "foundations") {
+      if (s === "foundations" && !simple(k)) {
         if (k === 0) {
           for (const x of t.ax)
             for (const y of t.ay) {
@@ -463,18 +509,27 @@ export function create(THREE, params, ctx) {
             for (const y of t.ay) pose("COLUMN_STARTER", x, y, sol, 0, o);
       }
       // en etage, la dalle a nu (excavation, foundations) : garde-corps de rive (SST)
-      if (k > 0 && (s === "excavation" || s === "foundations"))
+      if (k > 0 && (s === "excavation" || s === "foundations") && !simple(k))
         parTravee("GUARDRAIL", sol, o);
       // chaque piece a son ancre, a tout stade (l'anneau du survol, le personnage de son lot)
       f.rooms.forEach((r, m) => {
-        const tr = m % t.pourtour.length;
-        salles.push({ n, m: m + 1, travee: t.pourtour[tr], room: r, floor: f });
+        salles.push({ n, m: m + 1, cell: caseDuLot(m), room: r, floor: f });
       });
+      // l'etage simple : sa dalle (celle du dessous) et son volume ; le plafond, si l'etage du dessus ne la porte pas
+      if (simple(k)) {
+        pose(SIMPLE[s], 0, 0, sol, 0, {
+          ...o,
+          etire: [t.nx, t.ny],
+          eclaire: s === "completed",
+        });
+        if (rang(s) >= R.structure && !simple(k + 1)) dalle((k + 1) * ETAGE, o);
+        return;
+      }
       if (rang(s) < R.structure) return;
 
       if (k === 0) dalle(0, o);
       poteaux(k, o, s === "structure");
-      dalle((k + 1) * ETAGE, o);
+      if (!simple(k + 1)) dalle((k + 1) * ETAGE, o); // un etage simple porte sa dalle
       const finition =
         s === "structure" || s === "envelope"
           ? "brute"
@@ -552,12 +607,16 @@ export function create(THREE, params, ctx) {
     } else {
       // un chantier ordinaire : chaque etage en structure ou en enveloppe a son echafaudage, pose sur l'etage du dessous
       // s'il est debout ; les etages finis, en second oeuvre ou en reception restent visibles (lisibilite d'abord)
-      const echafaude = (f) =>
-        f && (f.affiche === "structure" || f.affiche === "envelope");
+      // un etage simple n'a pas d'echafaudage
+      const echafaude = (k) =>
+        visibles[k] &&
+        !simple(k) &&
+        (visibles[k].affiche === "structure" ||
+          visibles[k].affiche === "envelope");
       for (let k = 0; k < visibles.length; k++) {
-        if (!echafaude(visibles[k]) || echafaude(visibles[k - 1])) continue;
+        if (!echafaude(k) || echafaude(k - 1)) continue;
         let a = k;
-        while (echafaude(visibles[a])) a++;
+        while (echafaude(a)) a++;
         echafaudage(
           k,
           a,
@@ -585,24 +644,82 @@ export function create(THREE, params, ctx) {
     if (!coutPieces.has(objet)) coutPieces.set(objet, triangles(objet));
     return coutPieces.get(objet);
   };
-  const choisit = (poses) => {
-    const total = (seuil) =>
-      poses.reduce(
-        (n, p) => n + cout(source(p, basse || p.niveau >= seuil)),
-        0,
+  // l'allegement (3.0.0) : rend le plan et la piece de chaque pose, sous le plafond de la qualite. Les etages finis du
+  // bas d'abord (en haute, leurs pieces _LOW, puis l'etage simple), puis les etages en chantier du bas, de meme ; le
+  // rez reste plein. La pelleteuse compte quand elle est posee.
+  const coutPelle = triangles(pelle);
+  const choisit = (visibles) => {
+    const plafond = basse ? PLAFOND_BASSE : meta.budget.triangles;
+    const legeres = new Set();
+    const simples = new Set();
+    let resultat = plan(visibles, simples);
+    const total = () =>
+      resultat.poses.reduce(
+        (n, p) => n + cout(source(p, basse || legeres.has(p.niveau))),
+        resultat.rezStade === "excavation" ? coutPelle : 0,
       );
-    let seuil = Infinity;
-    if (!basse) {
-      const hauts = [...new Set(poses.map((p) => p.niveau))].sort(
-        (a, b) => b - a,
-      );
-      for (const niveau of hauts) {
-        if (total(seuil) < meta.budget.triangles) break; // sous le plafond, pas a son niveau
-        if (niveau === 0) break; // le rez reste plein
-        seuil = niveau;
+    const bati = visibles
+      .map((f, k) => k)
+      .filter((k) => k > 0 && rang(visibles[k].affiche) >= R.excavation);
+    const finis = bati.filter((k) => visibles[k].affiche === "completed");
+    const enChantier = bati.filter((k) => visibles[k].affiche !== "completed");
+    for (const groupe of [finis, enChantier]) {
+      if (!basse)
+        for (const k of groupe) {
+          if (total() < plafond) break;
+          legeres.add(k);
+        }
+      // le moins d'etages simples qui suffit, par dichotomie (un etage simple coute toujours moins que l'etage plein)
+      if (total() > plafond) {
+        const avant = [...simples];
+        const essaie = (c) => {
+          simples.clear();
+          for (const k of [...avant, ...groupe.slice(0, c)]) simples.add(k);
+          resultat = plan(visibles, simples);
+          return total() < plafond;
+        };
+        let [bas, haut] = [1, groupe.length];
+        while (bas < haut) {
+          const c = Math.floor((bas + haut) / 2);
+          if (essaie(c)) haut = c;
+          else bas = c + 1;
+        }
+        essaie(bas);
       }
     }
-    return poses.map((p) => source(p, basse || p.niveau >= seuil));
+    return {
+      ...resultat,
+      simples,
+      objets: resultat.poses.map((p) =>
+        source(p, basse || legeres.has(p.niveau)),
+      ),
+    };
+  };
+
+  // l'etage simple etire a son plateau (nx x ny trames) : ses sommets s'ecartent de part et d'autre de l'origine, d'une
+  // demi-largeur de plus en X et en Z ; une geometrie par piece et par plateau, gardee jusqu'a dispose()
+  const etirees = new Map();
+  const etire = (objet, [nx, ny]) => {
+    const copie = objet.clone();
+    const dx = ((nx - 1) * TRAME) / 2;
+    const dz = ((ny - 1) * TRAME) / 2;
+    copie.traverse((o) => {
+      if (!o.isMesh) return;
+      const cle = `${o.geometry.uuid}|${nx}|${ny}`;
+      if (!etirees.has(cle)) {
+        const g = o.geometry.clone();
+        const pos = g.attributes.position;
+        for (let k = 0; k < pos.count; k++) {
+          pos.setX(k, pos.getX(k) + Math.sign(pos.getX(k)) * dx);
+          pos.setZ(k, pos.getZ(k) + Math.sign(pos.getZ(k)) * dz);
+        }
+        g.computeBoundingBox();
+        g.computeBoundingSphere();
+        etirees.set(cle, g);
+      }
+      o.geometry = etirees.get(cle);
+    });
+    return copie;
   };
 
   // --- la fusion (2.1.0) : dans un groupe, chaque piece posee (copie d'une piece du modele) est remplacee par un
@@ -732,9 +849,9 @@ export function create(THREE, params, ctx) {
     libereFusions();
     groupes.clear();
     transitions.clear();
+    plateau(Array.isArray(floors) ? floors : []);
     const visibles = etages(state, floors);
-    const { poses, salles, toit, rezStade } = plan(visibles);
-    const objets = choisit(poses);
+    const { poses, salles, toit, rezStade, objets } = choisit(visibles);
 
     // les groupes : un par etage visible, une piece par lot dans son etage, la toiture (de son etage)
     const groupe = (cle) => {
@@ -769,7 +886,8 @@ export function create(THREE, params, ctx) {
     };
 
     poses.forEach((p, i) => {
-      const piece = objets[i].clone(); // partage la geometrie et les materiaux du modele
+      // partage la geometrie et les materiaux du modele ; l'etage simple a sa geometrie etiree
+      const piece = p.etire ? etire(objets[i], p.etire) : objets[i].clone();
       piece.position.set(...versThree(p.x, p.y, p.z));
       piece.rotation.set(0, THREE.MathUtils.degToRad(p.rot), 0);
       piece.scale.set(p.echelle[0], p.echelle[2], p.echelle[1]);
@@ -829,13 +947,12 @@ export function create(THREE, params, ctx) {
     visibles.forEach((f, k) => {
       ancres[`floor:${f.index}`] = versThree(0, 0, base(f, k));
     });
+    // une piece au centre de sa case
     for (const s of salles) {
-      const { p, cle } = s.travee;
-      const nrm = t.facades[cle].n;
       const k = s.n - 1;
       ancres[`room:${s.n}-${s.m}`] = versThree(
-        p[0] - nrm[0] * PIECE,
-        p[1] - nrm[1] * PIECE,
+        t.cx[s.cell.i],
+        t.cy[s.cell.j],
         base(visibles[k], k),
       );
     }
@@ -942,6 +1059,8 @@ export function create(THREE, params, ctx) {
       mixer.uncacheRoot(pelle);
       root.clear();
       libereFusions();
+      for (const g of etirees.values()) g.dispose();
+      etirees.clear();
       verreEclaire.dispose();
     },
   };

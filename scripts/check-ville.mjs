@@ -204,6 +204,50 @@ const ISO = new THREE.Vector3(-1, -1.15, -1).normalize();
         }
   rapports.push(`coupe : budget tenu de 1 à 12 pièces, huit stades (au plus ${pire} triangles en qualité haute)`);
 }
+// --- Le batiment (building 3.0.0) tient son budget dans tous les cas : 1 a 30 etages, 0 a 15 lots, les trois types,
+// des etages tous finis, une tour qui monte, tout en chantier ou des stades meles, en qualite haute et basse (les
+// donnees d'essai du controle des composants n'ont qu'un etage) ; ses ancres floor:n et room:n-m sont toutes la
+{
+  const mod = modules.building;
+  await chargeur.prepare(mod.meta);
+  const assets = await chargeur.assetsPour(mod.meta);
+  const STADES = ['excavation', 'foundations', 'structure', 'envelope', 'finishing', 'inspection', 'completed'];
+  const stade = (mode, k, n) =>
+    mode === 'fini' ? 'completed'
+      : mode === 'tour' ? (k < n - 2 ? 'completed' : k === n - 2 ? 'envelope' : 'structure')
+        : mode === 'chantier' ? (k % 2 ? 'structure' : 'envelope')
+          : STADES[k % STADES.length];
+  const pire = { high: 0, low: 0 };
+  let essais = 0;
+  for (const quality of ['high', 'low'])
+    for (const type of ['house', 'block', 'hall'])
+      for (const n of [1, 2, 6, 8, 12, 20, 30])
+        for (const lots of [0, 4, 6, 10, 15])
+          for (const mode of ['fini', 'tour', 'chantier', 'meles']) {
+            const floors = Array.from({ length: n }, (_, k) => ({
+              id: `F${k + 1}`,
+              stage: stade(mode, k, n),
+              rooms: Array.from({ length: lots }, (_, m) => ({ id: `L${m + 1}`, done: m % 3 === 0 })),
+            }));
+            const inst = mod.create(THREE, { type }, makeContext({ theme: 'light', quality, reducedMotion: true }, assets));
+            inst.setState(floors[0].stage, { floors });
+            const m = measure(inst.root);
+            const plafond = quality === 'low' ? 6000 : mod.meta.budget.triangles;
+            pire[quality] = Math.max(pire[quality], m.triangles);
+            const cas = `${type}, ${n} étages, ${lots} lots, ${mode}, ${quality}`;
+            verifie((quality === 'low' ? m.triangles < plafond : m.triangles <= plafond) && m.materials <= mod.meta.budget.materials, `building : ${m.triangles} triangles, ${m.materials} matériaux (${cas})`);
+            const manquantes = [];
+            for (let k = 1; k <= n; k++) {
+              try { inst.anchor(`floor:${k}`); } catch { manquantes.push(`floor:${k}`); }
+              for (let r = 1; r <= lots; r++)
+                try { inst.anchor(`room:${k}-${r}`); } catch { manquantes.push(`room:${k}-${r}`); }
+            }
+            verifie(!manquantes.length, `building : ancres absentes (${cas}) : ${manquantes.slice(0, 4).join(', ')}`);
+            inst.dispose();
+            essais++;
+          }
+  rapports.push(`bâtiment : ${essais} essais de 1 à 30 étages et de 0 à 15 lots, budget tenu (au plus ${pire.high} triangles en haute, ${pire.low} en basse), ancres floor:n et room:n-m toutes posées`);
+}
 for (const [nom, scenes] of Object.entries(sequences))
   for (const reducedMotion of [false, true]) {
     const quality = reducedMotion ? 'low' : 'high';

@@ -1,8 +1,10 @@
 // Les etages d'un batiment (lot G8, building 2.0.0 et floor-selector) : une fiche par etage, la plus ancienne en bas
-// (ADR 0013 de GDC). La regle des six etages est ecrite ici une fois ; le batiment la recoit en ctx.groupFloors, le
-// selecteur d'etages la reprendra, pour qu'ils montrent toujours les memes etages. Decisions de Pierre-Alain du
-// 21 octobre 2026 : au-dela de six, le rez prend juste assez de fiches (n - 5), les livrees les plus anciennes d'abord,
-// puis les plus anciennes ; il prend l'aspect du moins avance d'entre elles ; survole, il vaut son application.
+// (ADR 0013 de GDC). La regle des etages est ecrite ici une fois ; le batiment la recoit en ctx.groupFloors, le
+// selecteur d'etages la reprend, pour qu'ils montrent toujours les memes etages. Decisions de Pierre-Alain du
+// 21 octobre 2026 : au-dela du plafond, le rez prend juste assez de fiches (n - plafond + 1), les livrees les plus
+// anciennes d'abord, puis les plus anciennes ; il prend l'aspect du moins avance d'entre elles ; survole, il vaut son
+// application. Le plafond passe de six a trente etages (building 3.0.0, decision du 28 octobre 2026 : une fiche par
+// etage, souvent 15 au plus, jusqu'a 30).
 
 // Les huit stades, du moins avance au plus avance (les etats de building).
 export const STAGES = [
@@ -15,7 +17,7 @@ export const STAGES = [
   "inspection",
   "completed",
 ];
-export const MAX_FLOORS = 6;
+export const MAX_FLOORS = 30;
 
 const rank = (stage) => STAGES.indexOf(stage);
 const delivered = (f) =>
@@ -56,6 +58,51 @@ export function groupFloors(floors, fallback = "plot", max = MAX_FLOORS) {
       floors: g,
     };
   });
+}
+
+// Le plateau d'un batiment (building 3.0.0, decisions de Pierre-Alain du 28 octobre 2026) : une piece de 3 x 3 m (une
+// case de la trame) par lot, le plateau a la taille de l'etage qui a le plus de lots, pour tout le batiment. Le type
+// donne la largeur de depart (house 2, block 3, hall 4 trames de facade, 2 de profondeur) ; la facade s'allonge
+// d'abord jusqu'a 5 trames, puis le batiment prend de la profondeur (4 x 3, 5 x 3). Au-dela de 15 lots, deux lots
+// partagent une piece. Rend { nx, ny } en trames.
+export const PLATE_TYPES = { house: 2, block: 3, hall: 4 };
+const PLATES = [
+  [2, 2],
+  [3, 2],
+  [4, 2],
+  [5, 2],
+  [4, 3],
+  [5, 3],
+];
+export function floorPlate(floors, type = "block") {
+  const lots = (Array.isArray(floors) ? floors : []).reduce(
+    (n, f) => Math.max(n, f && Array.isArray(f.rooms) ? f.rooms.length : 0),
+    0,
+  );
+  const min = PLATE_TYPES[type] || PLATE_TYPES.block;
+  const [nx, ny] =
+    PLATES.find(([x, y]) => x >= min && x * y >= lots) || PLATES[PLATES.length - 1];
+  return { nx, ny };
+}
+
+// Les cases d'un plateau de nx x ny trames, dans l'ordre ou les lots les prennent : le pourtour d'abord, dans l'ordre
+// des facades (avant de gauche a droite, droite de l'avant vers l'arriere, arriere de droite a gauche, gauche de
+// l'arriere vers l'avant : avant et droite sont les deux facades vues en iso), puis les cases du milieu, de l'avant
+// vers l'arriere et de gauche a droite. Une case : { i, j }, i de gauche a droite, j de l'avant (0) vers l'arriere.
+// Le lot m (depuis 0) prend la case m modulo leur nombre. Le batiment et la coupe (building-interior) suivent ce meme
+// ordre.
+export function plateCells(nx, ny) {
+  const cells = [];
+  const add = (i, j) => {
+    if (!cells.some((c) => c.i === i && c.j === j)) cells.push({ i, j });
+  };
+  for (let i = 0; i < nx; i++) add(i, 0);
+  for (let j = 0; j < ny; j++) add(nx - 1, j);
+  for (let i = nx - 1; i >= 0; i--) add(i, ny - 1);
+  for (let j = ny - 1; j >= 0; j--) add(0, j);
+  for (let j = 1; j < ny - 1; j++)
+    for (let i = 1; i < nx - 1; i++) add(i, j);
+  return cells;
 }
 
 // La reference d'un etage visible, ou d'une de ses pieces (le survol de la carte) : un etage complete la reference de

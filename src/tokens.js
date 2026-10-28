@@ -3,7 +3,7 @@
 // (bible WORKSITE 1.2). Les couleurs d'equipe habillent les tenues des personnages.
 import palette from "./palette.json" with { type: "json" };
 import lumiere from "./lumiere.json" with { type: "json" };
-import { groupFloors } from "./etages.js";
+import { groupFloors, floorPlate, plateCells } from "./etages.js";
 
 export const tokens = {
   monde: palette.monde,
@@ -35,8 +35,9 @@ export function paletteFor(theme) {
 
 // Le contexte passe a create() : le meme pour la galerie, le controle et GDC.
 // assets : une copie des modeles du composant pour cette instance (voir src/assets.js).
-// groupFloors : la regle des six etages (src/etages.js), injectee comme Three.js : un composant n'importe rien hors de
-// son dossier.
+// groupFloors : la regle des etages (src/etages.js), injectee comme Three.js : un composant n'importe rien hors de
+// son dossier. floorPlate et plateCells (building 3.0.0) : le plateau d'un batiment et l'ordre de ses cases, du meme
+// fichier, pour que le batiment et la coupe posent chaque lot dans la meme piece.
 // materiau : le materiau partage d'un MAT_ de la palette (chargeur.materiau(THREE), registre de src/materiaux.js) ; un
 // composant ne le libere jamais. Absent, le composant fabrique les siens, comme avant le registre.
 export function makeContext(
@@ -53,6 +54,8 @@ export function makeContext(
     reducedMotion: Boolean(reducedMotion),
     assets,
     groupFloors,
+    floorPlate,
+    plateCells,
     materiau,
   };
 }
