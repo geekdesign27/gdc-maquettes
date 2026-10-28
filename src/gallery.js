@@ -1105,11 +1105,21 @@ async function report() {
 // au survol.
 const tmp = new THREE.Vector3();
 let etiquettes = { inst: null, tags: new Map(), points: new Map(), cadres: null };
+// Le chiffre d'un repere : blanc, ou l'encre sombre de la signaletique (src/signes.js) quand le blanc se lit moins bien
+// sur la couleur de la zone (le jaune du chantier : 1,6 en blanc, 7,4 a l'encre ; WCAG 1.4.3).
+const ENCRE = '#303841';
+const luminance = (hex) => {
+  const c = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255).map((x) => (x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4));
+  return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+};
+const contraste = (a, b) => { const [h, l] = [luminance(a), luminance(b)].sort((x, y) => y - x); return (h + 0.05) / (l + 0.05); };
+const chiffreSur = (fond) => (contraste(fond, '#FFFFFF') >= contraste(fond, ENCRE) ? '#fff' : ENCRE);
 function remplit(tag, r) {
   tag.replaceChildren();
   tag.className = 'anchor repere' + (r.passage ? ' passage' : '') + (r.pastille ? ' pastille' : '') + (r.attenue ? ' attenue' : '');
   const couleur = r.zone ? reference.ZONES[r.zone].couleur : 'var(--ink)';
   tag.style.setProperty('--zone', couleur);
+  if (r.zone) tag.style.setProperty('--zone-chiffre', chiffreSur(couleur));
   if (r.numero) { const n = document.createElement('b'); n.textContent = r.numero; tag.append(n); }
   const svg = r.icone && illustrations['step-icons']?.[r.icone];
   if (svg) { const i = document.createElement('span'); i.className = 'icone'; i.innerHTML = svg; tag.append(i); }
