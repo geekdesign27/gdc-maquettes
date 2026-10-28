@@ -1,18 +1,22 @@
 // Le selecteur d'etages (lot G8) : choisir l'etage d'un batiment, c'est-a-dire la fiche a regarder en coupe. Un
 // panneau d'ascenseur, l'etage du haut en haut ; sur telephone, une rangee, le rez a gauche. Fiche validee par
 // Pierre-Alain le 21 octobre 2026.
-// - Six etages au plus, comme le batiment : la regle est ecrite une fois (src/etages.js) et injectee en
-//   ctx.groupFloors. Le rez regroupe se deplie pour choisir une de ses fiches.
+// - Les memes etages que le batiment : la regle est ecrite une fois (src/etages.js) et injectee en ctx.groupFloors.
+//   Le rez regroupe se deplie pour choisir une de ses fiches.
 // - L'etage d'une application existante (fiche null) est visible mais pas choisissable (decision de PA du
 //   22 octobre 2026) ; survole, il vaut son application, comme le rez regroupe (src/etages.js, refOf).
 // - Les boutons sont dans l'ordre du batiment, du rez vers le haut ; l'affichage les retourne (column-reverse). Un
 //   seul arret de tabulation (tabindex mobile) ; les fleches suivent ce qu'on voit.
 // - 1.1.0 : gdc-select porte aussi la reference de la fiche choisie, { id, ref, building } (derniere passe de GDC,
 //   section 6) ; building reste pour que GDC ne casse pas.
+// - 2.0.0 (building 3.0.0, decision de Pierre-Alain du 28 octobre 2026 : trente etages au plus, au lieu de six) : la
+//   liste tient dans une dizaine d'etages et defile (--gdc-floor-rows, 10,5 par defaut : la demi-ligne dit qu'il y en
+//   a d'autres) ; le bord ou des etages sont caches s'estompe ; le choisi, ou l'etage du haut, est amene en vue. Le
+//   rez ne se regroupe plus qu'au-dela de trente fiches. Les entrees et les sorties ne changent pas.
 
 export const meta = {
   id: "floor-selector",
-  version: "1.1.0",
+  version: "2.0.0",
   category: "interface",
   tag: "gdc-floor-selector",
   inputs: ["building", "floors", "selected", "highlight"],
@@ -29,7 +33,11 @@ nav { position: relative; display: flex; flex-direction: column; min-height: 0; 
   letter-spacing: .06em; color: var(--gdc-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 /* les boutons se touchent : aucune zone sans reference entre deux etages (le survol partage) */
 ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column-reverse; }
-.liste { min-height: 0; overflow: auto; scrollbar-width: thin; }
+.liste { min-height: 0; max-height: calc(var(--gdc-floor-rows, 10.5) * 40px); overflow: auto; scrollbar-width: thin; }
+/* 2.0.0 : le bord ou des etages sont caches s'estompe (rien ne bouge, aucune couleur) */
+.liste[data-haut] { mask-image: linear-gradient(to bottom, transparent, #000 24px); }
+.liste[data-bas] { mask-image: linear-gradient(to top, transparent, #000 24px); }
+.liste[data-haut][data-bas] { mask-image: linear-gradient(to bottom, transparent, #000 24px, #000 calc(100% - 24px), transparent); }
 li.rez { display: flex; flex-direction: column-reverse; }
 button { position: relative; display: flex; align-items: center; gap: 8px; width: 100%; min-height: 40px; padding: 5px 8px; border: 0; border-radius: 8px;
   background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
@@ -66,7 +74,11 @@ button[aria-expanded="true"] .pli { transform: rotate(180deg); }
   nav { flex-direction: row; align-items: center; padding: 4px; }
   .titre { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); margin: 0; }
   /* largeur nulle au depart : la rangee ne pousse jamais la page, elle defile */
-  .liste { flex: 1 1 0; width: 0; overflow-x: auto; overflow-y: hidden; }
+  .liste { flex: 1 1 0; width: 0; max-height: none; overflow-x: auto; overflow-y: hidden; }
+  .liste[data-haut], .liste[data-bas] { mask-image: none; }
+  .liste[data-gauche] { mask-image: linear-gradient(to right, transparent, #000 24px); }
+  .liste[data-droite] { mask-image: linear-gradient(to left, transparent, #000 24px); }
+  .liste[data-gauche][data-droite] { mask-image: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent); }
   ul, li.rez { flex-direction: row; }
   li { flex: none; }
   button { width: auto; max-width: 240px; min-height: 40px; padding: 4px 10px 4px 6px; }
@@ -88,6 +100,8 @@ export function define(registry, ctx) {
     #refs = new WeakMap(); // bouton -> reference (le survol partage)
     #ids = new WeakMap(); // bouton -> fiches qu'il represente (la marque du survol)
     #els = {};
+    #taille = null; // ResizeObserver : les bords estompes suivent la taille de la liste
+    #rangee = null; // la liste est-elle une rangee (telephone) : quand elle bascule, le choisi revient en vue
 
     constructor() {
       super();
@@ -118,10 +132,45 @@ export function define(registry, ctx) {
         if (b) for (const x of liste.querySelectorAll("button")) x.tabIndex = x === b ? 0 : -1;
       });
       ctx.hoverLink(this, (n) => this.#refs.get(n) ?? null);
+      liste.addEventListener("scroll", () => this.#bords(), { passive: true });
     }
 
     connectedCallback() {
-      requestAnimationFrame(() => this.#reveal());
+      if (typeof ResizeObserver === "function") {
+        this.#taille ??= new ResizeObserver(() => {
+          const rangee = this.#enRangee();
+          if (this.#rangee !== null && rangee !== this.#rangee) this.#reveal();
+          this.#rangee = rangee;
+          this.#bords();
+        });
+        this.#taille.observe(this.#els.liste);
+      }
+      requestAnimationFrame(() => {
+        this.#reveal();
+        this.#bords();
+      });
+    }
+
+    disconnectedCallback() {
+      this.#taille?.disconnect();
+    }
+
+    #enRangee() {
+      const ul = this.#els.liste.firstElementChild;
+      return Boolean(ul) && getComputedStyle(ul).flexDirection.startsWith("row");
+    }
+
+    // les bords de la liste ou des etages sont caches (2.0.0) : en colonne, haut et bas ; en rangee, gauche et droite
+    #bords() {
+      const c = this.#els.liste;
+      const cache = {
+        haut: c.scrollTop > 1,
+        bas: c.scrollTop + c.clientHeight < c.scrollHeight - 1,
+        gauche: c.scrollLeft > 1,
+        droite: c.scrollLeft + c.clientWidth < c.scrollWidth - 1,
+      };
+      for (const [bord, oui] of Object.entries(cache))
+        c.toggleAttribute(`data-${bord}`, oui);
     }
 
     get data() {
@@ -195,6 +244,7 @@ export function define(registry, ctx) {
       if (focusKey && !garde)
         this.#visibles().find((b) => b.tabIndex === 0)?.focus({ preventScroll: true });
       this.#reveal();
+      this.#bords();
     }
 
     // un etage, ou une fiche du rez deplie (index null, k son rang dans le rez)
@@ -348,9 +398,7 @@ export function define(registry, ctx) {
       const visibles = this.#visibles();
       const i = visibles.indexOf(this.shadowRoot.activeElement);
       if (i < 0) return;
-      const rangee = getComputedStyle(
-        this.#els.liste.firstElementChild,
-      ).flexDirection.startsWith("row");
+      const rangee = this.#enRangee();
       const last = visibles.length - 1;
       const pas = { ArrowUp: 1, ArrowDown: -1, ArrowRight: 1, ArrowLeft: -1 }[
         ev.key
@@ -392,10 +440,12 @@ export function define(registry, ctx) {
       const cr = c.getBoundingClientRect();
       let dx = 0;
       let dy = 0;
-      if (r.left < cr.left) dx = r.left - cr.left - 8;
-      else if (r.right > cr.right) dx = r.right - cr.right + 8;
-      if (r.top < cr.top) dy = r.top - cr.top - 8;
-      else if (r.bottom > cr.bottom) dy = r.bottom - cr.bottom + 8;
+      // la marge couvre le bord estompe (24 px) : le bouton amene en vue n'est jamais dans le fondu
+      const m = 28;
+      if (r.left < cr.left + m) dx = r.left - cr.left - m;
+      else if (r.right > cr.right - m) dx = r.right - cr.right + m;
+      if (r.top < cr.top + m) dy = r.top - cr.top - m;
+      else if (r.bottom > cr.bottom - m) dy = r.bottom - cr.bottom + m;
       if (!dx && !dy) return;
       const calme =
         getComputedStyle(this).getPropertyValue("--gdc-motion").trim() === "0";

@@ -120,6 +120,19 @@ const neufFiches = (selected, livrees = 4) => ({
   selected,
 });
 
+// floor-selector 2.0.0 : n fiches dans un batiment (trente au plus avant que le rez ne regroupe), les livrees en bas
+const nFiches = (n, livrees, selected) => ({
+  building: { id: "bureau", name: "Application de bureau" },
+  floors: Array.from({ length: n }, (_, i) => ({
+    id: `${String(i + 1).padStart(3, "0")}-fonction`,
+    name: `Fonction ${i + 1}`,
+    etape: i < livrees ? 9 : Math.max(2, 8 - ((i - livrees) % 7)),
+    delivered: i < livrees,
+    state: i < livrees ? "done" : ["active", "waiting", "done", "blocked", "active", undefined][(i - livrees) % 6],
+  })),
+  selected,
+});
+
 const sceneTrois = troisChantiers;
 const sceneLotFini = etapeGdc("projet-type", scenesProjetType, 16);
 // neuf fiches dans un batiment : quatre livrees sous « Livrees · 4 », des lots pour deux fiches en cours
@@ -361,14 +374,19 @@ export const variantes = {
       data: selecteurDe(batimentGdc("admin"), "003-gerer-les-droits-des-auditeurs"),
     },
     {
-      titre: "Neuf fiches : le rez regroupe les quatre livrées, les six états",
+      titre: "Neuf fiches : un étage chacune (2.0.0 : trente au plus avant le regroupement), les six états",
       style: "max-width: 340px",
       data: neufFiches("010-tableau-de-bord"),
     },
     {
-      titre: "Neuf fiches, deux livrées : le rez prend aussi les plus anciennes ; la choisie y est, il est déplié",
+      titre: "Trente fiches (2.0.0) : la liste défile, ses bords cachés s'estompent ; la fiche choisie, au milieu, est amenée en vue",
       style: "max-width: 340px",
-      data: neufFiches("005-planifier-les-audits", 2),
+      data: nFiches(30, 18, "012-fonction"),
+    },
+    {
+      titre: "Trente-trois fiches : le rez regroupe les quatre plus anciennes livrées ; la choisie y est, il est déplié",
+      style: "max-width: 340px",
+      data: nFiches(33, 6, "002-fonction"),
     },
     {
       titre: "Avant la première fiche (trois-applications, étape 1)",

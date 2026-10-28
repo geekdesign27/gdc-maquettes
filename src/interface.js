@@ -66,7 +66,7 @@ function agentOf(action) {
 }
 
 // Le contexte injecte dans chaque element : les jetons, la signaletique, les portraits, le survol partage et la regle
-// des six etages (lot G8, src/etages.js : le selecteur d'etages montre les memes etages que le batiment) ; pour le fil
+// des etages (lot G8, src/etages.js : le selecteur d'etages montre les memes etages que le batiment) ; pour le fil
 // des declencheurs, la lecture des actions de la carte (instants, src/ville/scene-gdc.js) et la personne d'une action
 // (agentOf). Une seule source.
 export const interfaceContext = {

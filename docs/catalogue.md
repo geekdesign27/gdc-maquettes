@@ -702,7 +702,7 @@ Un étage par fiche, la plus ancienne en bas (etages de GDC, ADR 0013). Chaque �
 
 ### Le sélecteur d'étages (`floor-selector`)
 
-Un panneau d'ascenseur, l'étage du haut en haut. Chaque bouton porte le niveau (R, 1, 2…), le nom de la fiche, le numéro de son étape et son signe d'état s'il en a un. Six étages au plus, comme le bâtiment : le rez regroupe les fiches livrées les plus anciennes (« Rez · 4 fiches livrées ») et se déplie pour en choisir une ; s'il reste encore trop d'étages, les plus anciens se fondent aussi dans le rez (« Rez · n fiches »). Fiche validée par Pierre-Alain le 21 octobre 2026. Version 1.1.0 : gdc-select porte aussi la référence de la fiche choisie, { id, ref, building }, pour que le panneau de GDC traite la sélection comme celle du fil et de l'arbre (docs/planning-derniere-passe-de-gdc.md, section 6) ; building reste. Version 1.1.0 validée par Pierre-Alain le 22 octobre 2026.
+Un panneau d'ascenseur, l'étage du haut en haut. Chaque bouton porte le niveau (R, 1, 2…), le nom de la fiche, le numéro de son étape et son signe d'état s'il en a un. Les mêmes étages que le bâtiment (trente au plus depuis la version 2.0.0, six avant) : au-delà, le rez regroupe les fiches livrées les plus anciennes (« Rez · 4 fiches livrées ») et se déplie pour en choisir une ; s'il reste encore trop d'étages, les plus anciens se fondent aussi dans le rez (« Rez · n fiches »). Fiche validée par Pierre-Alain le 21 octobre 2026. Version 1.1.0 : gdc-select porte aussi la référence de la fiche choisie, { id, ref, building }, pour que le panneau de GDC traite la sélection comme celle du fil et de l'arbre (docs/planning-derniere-passe-de-gdc.md, section 6) ; building reste. Version 1.1.0 validée par Pierre-Alain le 22 octobre 2026. Version 2.0.0 (temps B des étages, décision de Pierre-Alain du 28 octobre 2026 : trente étages au plus) : la liste tient dans une dizaine d'étages et défile (--gdc-floor-rows, 10,5 par défaut), le bord où des étages sont cachés s'estompe, la fiche choisie ou l'étage du haut est amené en vue ; sur téléphone, la rangée défile de même. Entrées et sorties inchangées.
 
 - Fabriqué par : intégrateur d'interface
 - Élément : `<gdc-floor-selector>`
@@ -713,6 +713,7 @@ Un panneau d'ascenseur, l'étage du haut en haut. Chaque bouton porte le niveau 
   - La règle de regroupement est écrite une seule fois (src/etages.js) et sert au bâtiment comme au sélecteur : ils montrent toujours les mêmes étages
   - Émet gdc-hover et lit highlight (le survol partagé)
   - Devient une rangée sur téléphone
+  - Trente étages restent utilisables : la liste défile, un bord estompé dit qu'il y a d'autres étages, la fiche choisie est en vue
   - Lisible en clair et en sombre
   - Ligne au journal des versions
 
