@@ -970,7 +970,8 @@ renderer.domElement.addEventListener('pointerup', async (ev) => {
   const fiche = gabarits ? cible.ref?.fiche : carte.refSous(objet)?.fiche;
   // le clic sur la carte est une selection, relayee au fil, a l'arbre et au planning comme GDC le fera
   const refChoisie = carte.refSous(objet) ?? (cible?.ref || null);
-  if (batiment && carte.coupe !== batiment) await carte.ouvreCoupe(batiment, fiche);
+  // un autre etage du batiment ouvert (voile autour de la coupe) ouvre cet etage
+  if (batiment && (carte.coupe !== batiment || (fiche && fiche !== carte.vueCoupe?.fiche))) await carte.ouvreCoupe(batiment, fiche);
   else carte.fermeCoupe();
   if (refChoisie) relaieChoix({ id: refChoisie.lot ? `${refChoisie.fiche}/${refChoisie.lot}` : refChoisie.fiche ?? batiment ?? cible.id, ref: refChoisie }, { depuisCarte: true });
   // l'anneau du survol d'avant le clic tombait sur le batiment, cache le temps de la coupe : le survol suivant le repose
@@ -978,19 +979,36 @@ renderer.domElement.addEventListener('pointerup', async (ev) => {
   await carte.surligne(null);
   dirty = true;
 });
+// Le nom de la fiche sous le pointeur, au survol d'un etage ou d'une piece (decision de Pierre-Alain du 28 octobre 2026) :
+// une bulle de l'interface, comme GDC la posera, jamais du texte dans la 3D. Le nom vient des etages de la scene recue.
+let bulleVille = null;
+function bulleFiche(ev, ref) {
+  const b = ref?.fiche && sceneVille?.elements?.find((e) => e.element === 'building' && (e.ref?.application ?? e.id) === ref.application);
+  const e = b && (b.etages || []).find((x) => x.fiche === ref.fiche);
+  if (!e) { if (bulleVille) bulleVille.hidden = true; return; }
+  if (!bulleVille?.isConnected) { bulleVille = document.createElement('div'); bulleVille.className = 'anchor bulle-ville'; stage.append(bulleVille); }
+  bulleVille.textContent = ref.lot ? `${e.nom} · ${ref.lot}` : e.nom;
+  const r = stage.getBoundingClientRect();
+  bulleVille.style.left = `${ev.clientX - r.left}px`;
+  bulleVille.style.top = `${ev.clientY - r.top - 12}px`;
+  bulleVille.hidden = false;
+}
 renderer.domElement.addEventListener('pointermove', (ev) => {
-  if (!current.ville || ev.buttons) return;
+  if (!current.ville || ev.buttons) return bulleFiche(ev, null);
   // un agent a moins de 12 px de sa silhouette passe devant le batiment ou le decor qui est derriere lui (agent-marker)
   if (survoleAgent(agentSousPointeur(ev))) {
+    bulleFiche(ev, null);
     if (survolVille !== 'null') { survolVille = 'null'; relaieSurvol('carte', null); }
     return;
   }
   const ref = current.ville.carte.refSous(sousPointeur(ev));
+  bulleFiche(ev, ref);
   if (JSON.stringify(ref) === survolVille) return;
   survolVille = JSON.stringify(ref);
   relaieSurvol('carte', ref);
 });
-renderer.domElement.addEventListener('pointerleave', () => {
+renderer.domElement.addEventListener('pointerleave', (ev) => {
+  bulleFiche(ev, null);
   if (current.ville) survoleAgent(null);
   if (!current.ville || survolVille === 'null') return;
   survolVille = 'null';

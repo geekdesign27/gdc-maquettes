@@ -78,6 +78,10 @@ const BRAQUAGE = 6; // 1/s, la vitesse a laquelle son cap rejoint celui de la vo
 const ECART_PERSONNES = 0.75; // m, deux personnes ne se posent jamais plus pres
 const ECART_PIECE = 0.9; // m, entre deux agents d'une meme piece de la vue en coupe
 const PALIER = 0.6; // m, du bord avant du socle de la coupe aux agents sans piece
+// le batiment autour de la coupe ouverte : en transparence, pour qu'on voie a quel etage on est (decision de
+// Pierre-Alain du 28 octobre 2026) ; l'opacite de ses copies de materiaux, et la duree du fondu
+const TRANSPARENCE = 0.18;
+const TRANSPARENCE_DUREE = 0.4; // secondes
 // Les phases du gros oeuvre, ou la grue est montee sur la parcelle (docs/ville.md : la structure et ses echafaudages,
 // la grue) ; GDC la fait lever (lifting) a la fusion vers dev, et la pose meme hors de ces phases.
 const PHASES_GRUE = ["structure", "envelope"];
@@ -377,11 +381,15 @@ export async function creeCarte(THREE, options) {
     return m;
   }
   function etat(m, state, data) {
+    // le batiment de la coupe ouverte retrouve ses materiaux le temps de changer d'etat, puis se revoile
+    const voile = coupe?.batiment === m;
+    if (voile) devoile(m.inst.root);
     m.inst.setState(state, data);
     m.state = state;
     if (m.casque) lampeDe(m);
     grise(m.inst.root, m.zone); // un composant peut refaire ses maillages a chaque etat (building)
     fenetresDe(m);
+    if (voile) voileBatiment();
   }
   function retire(cle) {
     const m = membres.get(cle);
@@ -1903,8 +1911,13 @@ export async function creeCarte(THREE, options) {
     // loin, les objets visibles), le premier qui designe un element de GDC ou une piece de la coupe ; null sinon. Le
     // rayon traverse ainsi les ouvriers, les usagers et le decor poses devant ou sur un batiment.
     designe(objets) {
+      // la coupe ouverte passe devant le batiment voile qui l'entoure : ses etages du haut ne volent pas le clic
+      const dansCoupe =
+        coupe && objets.find((o) => estDans(o, coupe.inst.root));
       return (
-        objets.find((o) => carte.cible(o) || carte.refSous(o)) || null
+        dansCoupe ||
+        objets.find((o) => carte.cible(o) || carte.refSous(o)) ||
+        null
       );
     },
     // La reference survolee sous un objet (le survol partage) : le batiment, l'etage ou la piece ; null ailleurs.
@@ -2033,8 +2046,8 @@ export async function creeCarte(THREE, options) {
     // ce que la coupe montre : l'etage ouvert, ses pieces (data.rooms) et la place de chaque agent (room:n ou palier)
     get vueCoupe() {
       if (!coupe) return null;
-      const { id, fiche, rooms, places } = coupe;
-      return { id, fiche, rooms, places };
+      const { id, fiche, etage, rooms, places } = coupe;
+      return { id, fiche, etage, rooms, places };
     },
     get regime() {
       return regime;
@@ -2202,11 +2215,16 @@ export async function creeCarte(THREE, options) {
       inst.dispose();
       return false;
     }
+    // la coupe se pose a la hauteur de son etage (l'ancre floor:n du batiment), pas au sol (decision de Pierre-Alain du
+    // 28 octobre 2026) ; un etage introuvable (un batiment sans etage) reste au sol
+    const niveau = etageVisible(mb.inst.root, etage.fiche);
     inst.root.position.copy(mb.inst.root.position);
+    if (niveau) inst.root.position.y += mb.inst.anchor(`floor:${niveau}`).y;
     plateau.add(inst.root);
     inst.setState("default", { floor: { stage: etage.stade }, rooms });
-    // le batiment et ce qui l'entoure (engins, grue de la parcelle) s'effacent, avec les agents des autres etages ; ceux
-    // de l'etage vont a leur piece, ou sur le palier, devant, s'ils n'en ont pas (controle, mission, relecture)
+    // le batiment reste, en transparence, son etage ouvert cache ; ce qui l'entoure (engins, grue de la parcelle)
+    // s'efface, avec les agents des autres etages ; ceux de l'etage vont a leur piece, ou sur le palier, devant, s'ils
+    // n'en ont pas (controle, mission, relecture)
     const autres = lu.personnages
       .filter((p) => p.batiment === id && !sesAgents.includes(p))
       .map((p) => membres.get(`gdc:${p.id}`))
@@ -2214,8 +2232,8 @@ export async function creeCarte(THREE, options) {
     const caches = [...membres.values()].filter(
       (m) =>
         m.inst.root.visible &&
-        (m === mb ||
-          autres.includes(m) ||
+        m !== mb &&
+        (autres.includes(m) ||
           m.batiment === id ||
           m.el?.ancre === id ||
           (m.vie && vivants.get(m.cle)?.spec.batiment === id)),
@@ -2266,13 +2284,19 @@ export async function creeCarte(THREE, options) {
     coupe = {
       id,
       fiche: etage.fiche,
+      etage: niveau,
       rooms,
       places,
       inst,
       caches,
       deplaces,
+      batiment: mb,
+      voiles: new Map(), // materiau du batiment -> sa copie transparente
+      etagesCaches: new Set(), // l'etage ouvert et sa toiture, caches le temps de la vue
+      opacite: anime ? 1 : TRANSPARENCE,
       fermeture: null,
     };
+    voileBatiment();
     return true;
   }
   function fermeCoupe(net = false) {
@@ -2284,15 +2308,32 @@ export async function creeCarte(THREE, options) {
   }
   function majCoupe(dt) {
     const bouge = coupe.inst.update(dt);
-    if (coupe.fermeture === null) return bouge;
+    // le fondu du voile : vers TRANSPARENCE a l'ouverture, vers l'opaque a la fermeture
+    const cible = coupe.fermeture === null ? TRANSPARENCE : 1;
+    const avant = coupe.opacite;
+    const pas = ((1 - TRANSPARENCE) * dt) / TRANSPARENCE_DUREE;
+    coupe.opacite =
+      avant < cible
+        ? Math.min(cible, avant + pas)
+        : Math.max(cible, avant - pas);
+    if (coupe.opacite !== avant) regleVoiles();
+    if (coupe.fermeture === null) return bouge || coupe.opacite !== avant;
     coupe.fermeture += dt;
-    if (!bouge || coupe.fermeture > 2) finitCoupe();
+    if ((!bouge && coupe.opacite === 1) || coupe.fermeture > 2) finitCoupe();
     return true;
   }
   function finitCoupe() {
-    const { inst, caches, deplaces } = coupe;
+    const { inst, caches, deplaces, batiment, voiles } = coupe;
     inst.root.removeFromParent();
     inst.dispose();
+    if (membres.has(batiment.cle)) {
+      devoile(batiment.inst.root);
+      for (const o of coupe.etagesCaches) o.visible = true;
+      // une zone qui s'est coloree pendant la vue : ses copies grises, gardees sous le voile, s'en vont
+      const z = batiment.zone && gris[batiment.zone];
+      if (!z || (z.actif && z.fondu === null)) colore(batiment.inst.root);
+    }
+    for (const c of voiles.values()) c.dispose();
     for (const m of caches) if (membres.has(m.cle)) m.inst.root.visible = true;
     for (const d of deplaces) {
       placeActeur(d.a, d.avant, d.y);
@@ -2300,6 +2341,67 @@ export async function creeCarte(THREE, options) {
     }
     coupe = null;
   }
+  // L'etage visible (FLOOR_n de building, son numero n) qui porte une fiche, ou null.
+  function etageVisible(racine, fiche) {
+    let n = null;
+    racine.traverse((o) => {
+      const f = o.userData.floor;
+      if (
+        n === null &&
+        f &&
+        o.name.startsWith("FLOOR_") &&
+        f.ids.includes(fiche)
+      )
+        n = f.index;
+    });
+    return n;
+  }
+  // Le batiment de la coupe en transparence, sur des copies de ses materiaux (une par materiau, gardees par la coupe et
+  // liberees a sa fin) ; son etage ouvert et la toiture posee dessus sont caches, la coupe prend leur place. Rappele
+  // quand le batiment change d'etat pendant la vue (il refait ses maillages).
+  function voileBatiment() {
+    const { batiment, voiles, etage } = coupe;
+    const racine = batiment.inst.root;
+    const copie = (m) => {
+      if (m.userData.voile) return m;
+      if (!voiles.has(m)) {
+        const c = m.clone();
+        c.userData = { voile: true, origine: m };
+        c.transparent = true;
+        c.depthWrite = false; // la coupe, dessous, reste entiere
+        c.opacity = coupe.opacite * m.opacity;
+        voiles.set(m, c);
+      }
+      return voiles.get(m);
+    };
+    racine.traverse((o) => {
+      if (o.isMesh)
+        o.material = Array.isArray(o.material)
+          ? o.material.map(copie)
+          : copie(o.material);
+      const f = o.userData.floor;
+      if (etage && f && f.index === etage && /^(FLOOR_|ROOF)/.test(o.name)) {
+        if (o.visible) coupe.etagesCaches.add(o);
+        o.visible = false;
+      }
+    });
+  }
+  function regleVoiles() {
+    for (const [m, c] of coupe.voiles) c.opacity = coupe.opacite * m.opacity;
+  }
+  function devoile(racine) {
+    const rend = (m) => (m.userData.voile ? m.userData.origine : m);
+    racine.traverse((o) => {
+      if (o.isMesh)
+        o.material = Array.isArray(o.material)
+          ? o.material.map(rend)
+          : rend(o.material);
+    });
+  }
+  const estDans = (objet, racine) => {
+    for (let o = objet; o; o = o.parent) if (o === racine) return true;
+    return false;
+  };
 
   // --- la ville autour (lot G9, fiche city-plan ; docs/ville-autour.md) : une ambiance, posee une fois, qui ne bouge
   // jamais quand une application s'ajoute. "blanc" : la maquette en volumes simples (MB_21), pour valider la

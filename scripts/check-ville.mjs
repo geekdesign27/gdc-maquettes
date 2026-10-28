@@ -21,6 +21,17 @@ import reglages from '../src/lumiere.json' with { type: 'json' };
 import { agentPris, RAYON_PRISE } from '../src/ville/prise.js';
 import { creeSuivi, DUREE_SUIVI } from '../src/ville/camera.js';
 
+// Le batiment d'une application et la coupe ouverte, dans l'arbre de la carte.
+function racinesCoupe(carte, id) {
+  let batiment = null;
+  let interieur = null;
+  carte.root.traverse((o) => {
+    if (!batiment && o.name === 'building' && carte.cible(o)?.id === id) batiment = o;
+    if (!interieur && o.name === 'building-interior') interieur = o;
+  });
+  return { batiment, interieur };
+}
+
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 const erreurs = [];
@@ -279,6 +290,7 @@ for (const [nom, scenes] of Object.entries(sequences))
       // la vue en coupe (building-interior 2.0.0) s'ouvre et se ferme sur chaque etage de chaque batiment de la derniere
       // scene : une piece par lot, chaque agent de l'etage a la piece de son lot ou sur le palier
       const derniere = lisScene(scenes[scenes.length - 1], connus);
+      let hautes = 0;
       for (const b of derniere.batiments)
         // l'etage d'une application existante (fiche nulle) ne se choisit pas, comme au selecteur d'etages
         for (const fiche of [undefined, ...(b.etages || []).map((e) => e.fiche).filter((f) => f !== null)]) {
@@ -295,10 +307,26 @@ for (const [nom, scenes] of Object.entries(sequences))
           for (let t = 0; t < 60; t++) carte.update(1 / 30);
           verifie(carte.compte().chevauchements === 0, `${ou} : des personnes posées l'une sur l'autre`);
           verifie(!carte.compte().grues.includes(b.id), `${ou} : la grue de la parcelle reste au milieu de la vue`);
+          // la coupe a la hauteur de son etage, dans le batiment en transparence, son etage cache (decision de
+          // Pierre-Alain du 28 octobre 2026) ; refermee, plus aucune copie transparente
+          const { batiment, interieur } = racinesCoupe(carte, b.id);
+          const voiles = () => { let n = 0; batiment.traverse((o) => { if (o.isMesh && [].concat(o.material).some((m) => m.userData.voile)) n++; }); return n; };
+          verifie(batiment.visible && voiles() > 0, `${ou} : le bâtiment n'est pas en transparence`);
+          if (vue.etage) {
+            const groupe = batiment.getObjectByName(`FLOOR_${vue.etage}`);
+            carte.root.updateMatrixWorld(true);
+            const bas = new THREE.Box3().setFromObject(groupe).min.y;
+            const y = interieur.getWorldPosition(new THREE.Vector3()).y;
+            verifie(!groupe.visible && Math.abs(bas - y) < 0.6, `${ou} : la coupe est à ${y.toFixed(2)} m, l'étage ${vue.etage} à ${bas.toFixed(2)} m`);
+            if (vue.etage > 1) hautes++;
+          }
           carte.fermeCoupe();
           for (let t = 0; t < 90; t++) carte.update(1 / 30);
           verifie(carte.coupe === null, `${ou} ne se ferme pas`);
+          verifie(voiles() === 0, `${ou} : des matériaux transparents restent après la fermeture`);
         }
+      if (nom === 'trois-applications') verifie(hautes > 0, `${nom} : aucune coupe ouverte au-dessus du rez`);
+      if (nom === 'trois-applications' && !reducedMotion) rapports.push(`coupe à son étage : ${hautes} étages au-dessus du rez ouverts à leur hauteur, bâtiment en transparence, matériaux rendus à la fermeture`);
       // la fiche du catalogue : trois-applications, etape 7, Julie est dans la piece L1 de « Saisir un constat hors ligne »
       if (nom === 'trois-applications') {
         await carte.applique(scenes[6], { actions: false });
