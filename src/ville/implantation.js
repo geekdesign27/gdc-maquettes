@@ -334,8 +334,9 @@ export function implantation(applications = 1, types = null, densite = DENSITE_P
     ...(densite === "dense" ? densites.dense : []),
   ];
 
-  // Une parcelle par application, de gauche a droite le long de l'allee : le batiment au centre, ses gabarits, sa grue,
-  // la place du camion de livraison et sa porte sur l'allee. Les applications 5 a 8 font la deuxieme rangee.
+  // Une parcelle par application, de gauche a droite le long de l'allee : le batiment au centre, ses gabarits, sa grue
+  // et son stock (la palette qu'elle prend, derriere le batiment a droite, a portee de fleche : crane 3.0.0), la place du
+  // camion de livraison et sa porte sur l'allee. Les applications 5 a 8 font la deuxieme rangee.
   const parcelles = [];
   for (let k = 0; k < apps; k++) {
     const x = centres[k];
@@ -345,7 +346,7 @@ export function implantation(applications = 1, types = null, densite = DENSITE_P
       index: k,
       rangee,
       position: [x, 0, z],
-      grue: { position: [x - 4.4, 0, z - 4.4], rotation: -Math.PI / 2 },
+      grue: { position: [x - 4.4, 0, z - 4.4], rotation: -Math.PI / 2, stock: [x + 3.5, z - 5.4] },
       camion: { position: [x + 3, 0, rangee === 1 ? 51 : Z_CAMION_2], rotation: Math.PI / 2 },
       porte: [x, rangee === 1 ? Z_ALLEE : Z_ALLEE_2],
     });

@@ -1,4 +1,4 @@
-"""La grue a tour (catalogue : crane), v003 (la v002, pivots poses a leur place) : troisieme etalon de l'atelier. Bible WORKSITE, section 7 (socle, mat,
+"""La grue a tour (catalogue : crane), v004 (v003 : pivots poses a leur place ; v004 : la charge a part, sans clip) : troisieme etalon de l'atelier. Bible WORKSITE, section 7 (socle, mat,
 pivot, fleche, contre-fleche, contrepoids, chariot, cable, crochet) ; cible MB_08 (moodboard/notes.md) : mat et fleche
 en treillis, pointe en A avec ses tirants, contre-fleche a garde-corps et contrepoids en blocs de beton, cabine claire,
 socle beton. Ecarte de MB_08 : le crochet rouge, les cables sous 0,06 m, le crepi du sol.
@@ -10,8 +10,10 @@ monte le pivot du haut d'autant. Le GLB porte la hauteur par defaut, 14 m.
 Qualite basse (bible 18.3 : ce qui mesure moins de 0,30 m disparait ou se fusionne) : les barres du treillis font
 0,07 a 0,12 m. Le GLB porte donc aussi des caissons pleins (noeuds *_LOW) que le composant montre a la place du treillis.
 
-Animation ANM_TOWER_CRANE_A_LIFTING : la fleche pivote d'un quart de tour pendant que la charge monte, puis revient ;
-boucle de 8 secondes (240 images a 30 i/s), sur place.
+Pas de clip : le composant calcule le cycle de levage (prise au stock, passage au-dessus de tout, depose sur le batiment)
+et pilote quatre noeuds : le pivot d'orientation (PIVOT_SLEW), le chariot (PIVOT_TROLLEY), le crochet (PIVOT_HOOK) et le
+cable (CABLE, etire en hauteur). La charge (LOAD : palette de briques et ses elingues) est un noeud a part, sous le
+crochet : le composant la decroche et la pose (v003 : charge et moufle fusionnees, un clip fige en boucle de 8 s).
 """
 
 import os
@@ -20,7 +22,7 @@ from pathlib import Path
 
 import bpy
 
-ASSET = {"id": "crane", "categorie": "machine", "nom": "VEH_TOWER_CRANE_A_v003"}
+ASSET = {"id": "crane", "categorie": "machine", "nom": "VEH_TOWER_CRANE_A_v004"}
 
 P = "VEH_TOWER_CRANE_A_"
 HAUTEUR = 14.0  # hauteur par defaut du haut du mat (parametre height de la fiche)
@@ -34,7 +36,6 @@ LONG_CONTRE = 4.2
 HAUT_FLECHE = 0.9  # hauteur du treillis triangulaire de la fleche
 POS_CHARIOT = 7.5
 CABLE_BAS = 9.0  # longueur du cable, charge posee
-CABLE_HAUT = 3.0  # longueur du cable, charge levee
 C1 = 0.02
 
 
@@ -174,7 +175,8 @@ def construit(c):
     contre_bas = c.boite(P + "COUNTERJIB_LOW", (LONG_CONTRE, 1.0, 0.35), (-LONG_CONTRE / 2, 0, z), mat="MAT_PAINTED_METAL_ORANGE")
     c.rattache(contre_bas, orient)
 
-    # le chariot sous la fleche, le cable qui s'etire depuis lui, la moufle et la charge (une palette de briques)
+    # le chariot sous la fleche, le cable qui s'etire depuis lui, la moufle ; la charge (une palette de briques et ses
+    # elingues) a part, sous le crochet, pour que le composant la decroche
     chariot = c.pivot(P + "PIVOT_TROLLEY", (POS_CHARIOT, 0, z), parent=orient)
     caisse = c.boite(P + "TROLLEY", (0.8, 1.0, 0.25), (POS_CHARIOT, 0, z - 0.25), mat="MAT_PAINTED_METAL_GRAPHITE", chanfrein=C1, segments=2)
     roues = [c.cylindre(P + "WHEEL_%d" % i, 0.11, 0.08, (POS_CHARIOT + dx, dy, z - 0.02), mat="MAT_PAINTED_METAL_GRAPHITE", cotes=10)
@@ -192,9 +194,12 @@ def construit(c):
     croc = c.cylindre(P + "HOOK", 0.08, 0.22, (POS_CHARIOT, 0, zc - 0.64), mat="MAT_STEEL", cotes=10)
     elingues = [_barre(c, P + "SLING_%d" % i, (POS_CHARIOT, 0, zc - 0.64), (POS_CHARIOT + dx, dy, zc - 1.45), 0.06, "MAT_STEEL")
                 for i, (dx, dy) in enumerate(((-0.42, -0.42), (0.42, -0.42), (0.42, 0.42), (-0.42, 0.42)))]
-    briques = c.boite(P + "LOAD", (1.0, 1.0, 0.62), (POS_CHARIOT, 0, zc - 2.07), mat="MAT_BRICK", chanfrein=0.04, segments=2)
+    briques = c.boite(P + "LOAD_BRICKS", (1.0, 1.0, 0.62), (POS_CHARIOT, 0, zc - 2.07), mat="MAT_BRICK", chanfrein=0.04, segments=2)
     palette = c.boite(P + "LOAD_PALLET", (1.1, 1.1, 0.15), (POS_CHARIOT, 0, zc - 2.22), mat="MAT_WOOD", chanfrein=C1, segments=2)
-    charge = c.fusionne(P + "HOOK_BLOCK", [moufle, croc] + elingues + [briques, palette])
+    moufle = c.fusionne(P + "HOOK_BLOCK", [moufle, croc])
+    c.lisse(moufle)
+    c.rattache(moufle, crochet)
+    charge = c.fusionne(P + "LOAD", elingues + [briques, palette])
     c.lisse(charge)
     c.rattache(charge, crochet)
     cable.scale = (1, 1, CABLE_BAS)
@@ -203,16 +208,9 @@ def construit(c):
     c.ancre("ANCHOR_LABEL", (0, 0, z + pointe_h + 1.2), parent=dessus)
     c.ancre("ANCHOR_BADGE", (0.9, -1.6, haut + 0.6), parent=dessus)
 
-    # une seule action pour les trois noeuds : un seul clip glTF, premiere cle a l'image 0
-    clip = "ANM_TOWER_CRANE_A_LIFTING"
-    c.anime(clip, orient, "rotation_euler", [(0, 0.0), (120, c.degres(90)), (240, 0.0)], index=2)
-    z0 = crochet.location.z
-    leve = z0 + (CABLE_BAS - CABLE_HAUT)
-    c.anime(clip, crochet, "location", [(0, z0), (120, leve), (240, z0)], index=2)
-    c.anime(clip, cable, "scale", [(0, CABLE_BAS), (120, CABLE_HAUT), (240, CABLE_BAS)], index=2)
     if "atelier" in sys.modules or any(Path(x).name == "atelier.py" for x in sys.argv):
         vue_atelier()
-    return {"triangles_vises": 9000, "animations": [clip], "hauteur": haut}
+    return {"triangles_vises": 9000, "animations": [], "hauteur": haut}
 
 
 def vue_atelier():

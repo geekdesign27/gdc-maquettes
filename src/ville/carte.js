@@ -38,6 +38,7 @@ import {
   COLORIS_VILLE,
 } from "./equipe.js";
 import { alea } from "./graine.js";
+import { lieuxGrue, hauteurGrue, hauteurDecalee, VOISINAGE_GRUES } from "./grue.js";
 import { planVille } from "./ville-autour.js";
 import { assembleVille, arbresDuPre } from "./ville-kits.js";
 import { creeScene as creeCirculationVille } from "./circulation-scene.js";
@@ -80,6 +81,11 @@ const PALIER = 0.6; // m, du bord avant du socle de la coupe aux agents sans pie
 // Les phases du gros oeuvre, ou la grue est montee sur la parcelle (docs/ville.md : la structure et ses echafaudages,
 // la grue) ; GDC la fait lever (lifting) a la fusion vers dev, et la pose meme hors de ces phases.
 const PHASES_GRUE = ["structure", "envelope"];
+// Le mat que l'on monte, avant de mesurer : un etage de batiment (building 2.x, 3 m) par etage, et la toiture ou le
+// garde-corps de l'echafaudage au-dessus ; puis les lieux de la grue, mesures toutes les REPERAGE_GRUES secondes.
+const ETAGE_BATIMENT = 3;
+const HAUT_DE_TOIT = 2.5;
+const REPERAGE_GRUES = 1.5; // s
 // Une zone jamais activee : en niveaux de gris, et lavee vers le fond, pour qu'elle se lise « pas encore la » sur une
 // carte dont le monde est deja peu colore (retour de Pierre-Alain du 22 octobre 2026).
 const LAVIS = { light: 0.45, dark: 0.3 };
@@ -1077,9 +1083,13 @@ export async function creeCarte(THREE, options) {
       const cle = `grue:${b.id}`;
       const pa = parcelleDe(b.id);
       if (!pa || membres.has(cle) || !veutGrue(b, scene)) continue;
-      const m = pose(cle, "crane", await cree("crane"), pa.grue.position, pa.grue.rotation);
+      // le mat, d'apres les etages du batiment, et decale des grues voisines ; rehausse ensuite sur ce qui est mesure
+      const etages = Math.min(Array.isArray(b.floors) ? b.floors.length : 1, 6) || 1;
+      const hauteur = hauteurDecalee(hauteurGrue(etages * ETAGE_BATIMENT + HAUT_DE_TOIT), voisinesDe(cle, pa.grue.position));
+      const m = pose(cle, "crane", await cree("crane", { height: hauteur }), pa.grue.position, pa.grue.rotation);
       m.inst.root.visible = false;
       m.batiment = b.id;
+      m.hauteur = hauteur;
     }
   }
 
@@ -1105,7 +1115,7 @@ export async function creeCarte(THREE, options) {
       }
       const el = grueGdc(b, scene);
       m.el = el;
-      etat(m, el && components.crane.meta.states.includes(el.etat) ? el.etat : "idle", {});
+      etat(m, el && components.crane.meta.states.includes(el.etat) ? el.etat : "idle", lieuxDe(cle, m).data);
       if (!m.inst.root.visible) {
         m.inst.root.visible = true;
         if (doucement && anime) {
@@ -1116,6 +1126,52 @@ export async function creeCarte(THREE, options) {
     }
     return duree;
   }
+
+  // Les lieux de la grue (crane 3.0.0, src/ville/grue.js) : la prise au stock de sa parcelle, les deposes sur la dalle
+  // du batiment, la hauteur de passage au-dessus de tout ce qu'elle balaie ; mesures sur la carte telle qu'elle est.
+  // Si ce qu'elle survole a monte plus haut que sa charge ne passe (un etage de plus), elle est rehaussee : elle se
+  // demonte et se remonte plus haute, comme a son arrivee. Elle ne redescend pas tant qu'elle est montee.
+  function lieuxDe(cle, m) {
+    const pa = parcelleDe(m.batiment);
+    const autour = [...membres.values()].filter((x) => x.id !== "crane" && x.inst.root.visible).map((x) => x.inst.root);
+    const l = lieuxGrue(THREE, {
+      grue: m.inst.root,
+      batiment: membres.get(`gdc:${m.batiment}`)?.inst.root ?? null,
+      autour,
+      stock: pa.grue.stock,
+    });
+    const voulue = hauteurDecalee(Math.max(l.hauteur, m.hauteur), voisinesDe(cle, pa.grue.position));
+    if (voulue > m.hauteur + 1e-6) rehausse(cle, voulue);
+    return l;
+  }
+  const voisinesDe = (cle, [x, , z]) =>
+    [...membres]
+      .filter(([c, v]) => c !== cle && c.startsWith("grue:") && !v.demonte && v.hauteur)
+      .filter(([, v]) => Math.hypot(v.inst.root.position.x - x, v.inst.root.position.z - z) < VOISINAGE_GRUES)
+      .map(([, v]) => v.hauteur);
+  async function rehausse(cle, hauteur) {
+    const m = membres.get(cle);
+    if (!m || m.rehausse >= hauteur) return;
+    m.rehausse = hauteur;
+    const inst = await cree("crane", { height: hauteur });
+    if (membres.get(cle) !== m || m.demonte) return inst.dispose();
+    const ancien = m.inst;
+    inst.root.position.copy(ancien.root.position);
+    inst.root.rotation.y = ancien.root.rotation.y;
+    inst.root.visible = ancien.root.visible;
+    colore(ancien.root);
+    ancien.root.removeFromParent();
+    ancien.dispose();
+    m.inst = inst;
+    m.hauteur = hauteur;
+    plateau.add(inst.root);
+    grise(inst.root, m.zone);
+    const state = m.state || "idle";
+    m.state = null;
+    etat(m, state, lieuxDe(cle, m).data);
+    if (anime && inst.root.visible) impulsion(m, 0, 1, null, "y", MONTAGE_GRUE);
+  }
+  let reperageGrues = 0; // s, depuis la derniere mesure des lieux des grues qui levent
 
   // --- le camion de livraison : il arrive par la voie et le portail jusqu'a sa place sur la parcelle, et repart par le
   // meme chemin (retours de Pierre-Alain du 22 octobre 2026 : il apparaissait « comme par miracle », puis vidait sa
@@ -1598,6 +1654,14 @@ export async function creeCarte(THREE, options) {
       }
       for (const m of membres.values())
         if (m.inst.root.visible && m.inst.update(dt)) encore = true;
+      // une grue qui leve mesure a nouveau ses lieux de temps en temps : le batiment monte pendant qu'elle travaille
+      reperageGrues += dt;
+      if (reperageGrues >= REPERAGE_GRUES) {
+        reperageGrues = 0;
+        for (const [cle, m] of [...membres])
+          if (cle.startsWith("grue:") && m.state === "lifting" && m.inst.root.visible && !m.demonte)
+            m.inst.setState("lifting", lieuxDe(cle, m).data);
+      }
       if (coupe) encore = majCoupe(dt) || encore;
       horloge += dt;
       // un choix qui retombe se voit tout de suite, sans attendre le pas de l'horloge

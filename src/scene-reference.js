@@ -22,10 +22,12 @@
 // (src/ville/implantation.js) : la scene de reference la lit au lieu de la repeter.
 import { materiauPalette } from "./etalon.js";
 import { ETAPES, ZONES, BORDURE, implantation } from "./ville/implantation.js";
+import { lieuxGrue } from "./ville/grue.js";
 
 export { ETAPES, ZONES };
 export const SCENE_ID = "scene";
 const RECUL = 2; // en metres, sur X et Z : la scene descend d'environ 1,6 m a l'ecran
+const REPERAGE_GRUES = 1.5; // s, entre deux mesures des lieux de la grue (crane 3.0.0)
 
 // Les phases d'un batiment, dans l'ordre : son etat (building), l'etape que dit sa pastille, et ce qui l'entoure
 // (gabarits, grue, ouvriers).
@@ -105,6 +107,8 @@ export function plan(applications = 1) {
         state: "lifting",
         position: p.grue.position,
         rotation: p.grue.rotation,
+        stock: p.grue.stock,
+        batiment: `building:${k + 1}`,
       },
       {
         ...personne(`julie:${k + 1}`, null, "work"),
@@ -280,6 +284,23 @@ export function create(THREE, instances, p) {
 
   let etat = PHASE_DEFAUT;
   const versScene = (v) => v.applyMatrix4(plateau.matrix);
+  // la grue, une fois tout le reste dans sa phase : ses lieux mesures sur la scene (src/ville/grue.js)
+  let reperage = 0;
+  function mesureGrues() {
+    for (const { m, inst } of Object.values(parCle)) {
+      if (m.id !== "crane" || !inst.root.visible) continue;
+      const autour = Object.values(parCle)
+        .filter((x) => x.m.id !== "crane" && x.inst.root.visible)
+        .map((x) => x.inst.root);
+      const { data } = lieuxGrue(THREE, {
+        grue: inst.root,
+        batiment: parCle[m.batiment]?.inst.root ?? null,
+        autour,
+        stock: m.stock,
+      });
+      inst.setState(m.state, data);
+    }
+  }
 
   return {
     root,
@@ -296,9 +317,16 @@ export function create(THREE, instances, p) {
           inst.setState(phase.batiment, { progress: 0.6 });
         if (m.quand) inst.root.visible = Boolean(phase[m.quand]);
       }
+      mesureGrues();
     },
     update(dt) {
       let encore = false;
+      // le batiment fait monter son etage pendant une seconde : la grue mesure a nouveau ses lieux de temps en temps
+      reperage += dt;
+      if (reperage >= REPERAGE_GRUES) {
+        reperage = 0;
+        mesureGrues();
+      }
       for (const inst of instances)
         if (inst.root.visible) encore = inst.update(dt) || encore;
       return encore;

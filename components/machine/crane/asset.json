@@ -1,15 +1,13 @@
 {
-  "nom": "VEH_TOWER_CRANE_A_v003",
+  "nom": "VEH_TOWER_CRANE_A_v004",
   "id": "crane",
   "bible": "WORKSITE 1.2",
   "blender": "5.3.0 Beta",
   "script": "blender/assets/crane.py",
-  "script_sha256": "b3373dd28f2535ec319cf0213270efd02114d3e3cf78c2423de5952e849024af",
+  "script_sha256": "3669cfc2b931021ddd877addd4e918041bea6c7766eb225cea5306cbbe0e90a8",
   "commun_sha256": "e8cb480c62b7bdb8b54460ec91e343989e89e93987616cc2711afd5dbcdf2f80",
   "palette_sha256": "028f1055493a2d25d665642cf946eb3c7160e4274b9724dd07878deff0dbc0ec",
-  "glb_sha256": "40fa228284cc0dc7a2eee95123b96ad31f07beda5f12b40e5d6a43fe3ab7482f",
-  "animations": [
-    "ANM_TOWER_CRANE_A_LIFTING"
-  ],
+  "glb_sha256": "d2c6afcd65d5eef38d8d819179728445e9afbc766a28f68a2abb4e30287547c7",
+  "animations": [],
   "statut": "a valider"
 }
