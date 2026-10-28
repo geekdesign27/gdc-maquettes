@@ -39,6 +39,19 @@
    ],
    "materiau": "MAT_EARTH",
    "chanfrein": 0.1
+  },
+  {
+   "taille": [
+    6.0,
+    6.0,
+    0.6
+   ],
+   "centre": [
+    11.0,
+    -10.5
+   ],
+   "materiau": "MAT_EARTH",
+   "chanfrein": 0.1
   }
  ],
  "pieces": [
@@ -1706,6 +1719,33 @@
     0.5
    ],
    "rotation": 90
+  },
+  {
+   "piece": "BLD_KIT_A_FLOOR_PLAIN",
+   "position": [
+    11.0,
+    -10.5,
+    0.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_FLOOR_PLAIN_BRICK",
+   "position": [
+    11.0,
+    -10.5,
+    3.3
+   ],
+   "rotation": 0
+  },
+  {
+   "piece": "BLD_KIT_A_FLOOR_PLAIN_FRAME",
+   "position": [
+    11.0,
+    -10.5,
+    6.3
+   ],
+   "rotation": 0
   }
  ]
 }

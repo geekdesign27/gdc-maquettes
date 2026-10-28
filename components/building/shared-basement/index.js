@@ -13,7 +13,7 @@
 // Qualite basse (bible 18.3) : sans echelles, les trois gaines fusionnees en une. Les dalles du kit sont partagees :
 // jamais liberees ici ; seuls la geometrie unite et les materiaux crees par ce composant le sont.
 
-const KIT = "kit:building-kit/BLD_KIT_A_v003.glb";
+const KIT = "kit:building-kit/BLD_KIT_A_v004.glb";
 const TRAME = 3.0;
 const SOL = { dessus: -3.9, dalle: 0.3 }; // dessus du radier
 const PLAFOND = -1.2; // sous-face de la dalle de couverture (hauteur libre 2,70 m)
@@ -34,7 +34,7 @@ const GAINES = [
 
 export const meta = {
   id: "shared-basement",
-  version: "1.0.0",
+  version: "1.0.1",
   category: "building",
   states: ["default", "active"],
   params: {

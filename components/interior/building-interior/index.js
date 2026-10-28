@@ -20,7 +20,7 @@
 // Les modeles sont partages entre instances : on ne libere jamais leurs geometries ni leurs materiaux ici ; seuls le
 // socle et son materiau, crees par ce composant, sont liberes. Aucune couleur d'etat dans la scene ; aucun texte.
 
-const KIT = "kit:building-kit/BLD_KIT_A_v003.glb";
+const KIT = "kit:building-kit/BLD_KIT_A_v004.glb";
 const INTERIEUR = "BLD_INTERIOR_A_v002.glb";
 const K = "BLD_KIT_A_";
 const I = "BLD_INTERIOR_A_";
@@ -58,7 +58,7 @@ const STADE_PAR_DEFAUT = "completed"; // sans data.floor : l'enveloppe finie, se
 
 export const meta = {
   id: "building-interior",
-  version: "2.0.0",
+  version: "2.0.1",
   category: "interior",
   states: ["default", "hidden"],
   params: { rooms: { type: "number", default: 4, min: 1, max: 12 } },

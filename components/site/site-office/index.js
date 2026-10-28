@@ -11,7 +11,7 @@
 // reprennent ceux d'architect-office : le contrat interdit d'importer d'un autre dossier de composant.
 
 const KIT = "kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb";
-const KIT_BATIMENT = "kit:building-kit/BLD_KIT_A_v003.glb";
+const KIT_BATIMENT = "kit:building-kit/BLD_KIT_A_v004.glb";
 const P = "ENV_CONTAINER_KIT_A_";
 const HAUT = 3.0; // le conteneur du haut est pose a 3,00 m
 const PLANCHER = 0.2;
@@ -29,7 +29,7 @@ const SOCLE = {
 
 export const meta = {
   id: "site-office",
-  version: "1.0.2",
+  version: "1.0.3",
   category: "site",
   states: ["idle", "active"],
   params: {},

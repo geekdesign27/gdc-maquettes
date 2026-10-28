@@ -19,11 +19,20 @@ d'assemblage. En qualite basse, on assemble <PIECE>_LOW quand elle existe, sinon
 
 v003 : les menuiseries a part, pour les poser dans la brique (batiment en reception, avant le crepi) : WINDOW (cadre
 et verre de la baie de 1,50 x 1,50), DOOR (cadre et vantail) et WALL_BRICK_DOOR (brique, baie de porte brute).
+
+v004 : les etages simples (temps B des etages, decisions de Pierre-Alain du 28 octobre 2026), pour les batiments de
+30 etages sous le budget : un etage d'un seul volume, aretes vives, sur une case de 3 x 3 m (le plateau d'un etage),
+origine au centre, z = 0 au dessus de sa dalle (la dalle de -0,30 a 0, comme SLAB sous un etage). L'assemblage
+l'etire a son plateau en ecartant ce qui est de part et d'autre de l'origine (et non par une echelle, qui elargirait
+la rive) : les rives gardent 0,20 m et les poteaux d'angle leur section. Trois aspects, pour que le stade se lise :
+FLOOR_PLAIN (dalle et rive, crepi, bandeau vitre continu de la hauteur des fenetres : finishing, inspection,
+completed), FLOOR_PLAIN_BRICK (la meme en brique, bandeau de baies brutes en retrait : envelope) et FLOOR_PLAIN_FRAME
+(dalle et rive, quatre poteaux d'angle : excavation, foundations, structure). Les autres pieces sont inchangees.
 """
 
 import math
 
-ASSET = {"id": "building-kit", "categorie": "kit", "nom": "BLD_KIT_A_v003"}
+ASSET = {"id": "building-kit", "categorie": "kit", "nom": "BLD_KIT_A_v004"}
 
 P = "BLD_KIT_A_"
 TRAME = 3.0
@@ -276,7 +285,36 @@ def construit(c):
     ])
 
     _basses(c)
+    _etages_simples(c)
     return {"triangles_vises": 8000, "animations": []}
+
+
+def _etages_simples(c):
+    """v004 : les trois etages simples, sur une case de 3 x 3 m (voir l'en-tete). Aretes vives et boites seules : une
+    boite fait 12 triangles, et l'etirement ne deforme aucun chanfrein. Le verre depasse le parement de 0,02 m (pas de
+    scintillement) ; le bandeau des baies brutes est une brique en retrait de 0,15 m : par une baie brute on voit la
+    brique et la dalle de l'interieur, pas un vide sombre, et le stade se lit a la couleur."""
+    def vive(nom, taille, position=(0, 0, 0), mat="MAT_CONCRETE"):
+        return c.boite(P + nom, taille, position, mat=mat)
+
+    plateau = TRAME + 2 * RIVE  # la dalle et sa rive, de nu a nu
+    dalle = lambda nom: vive(nom + "_SLAB", (plateau, plateau, DALLE), (0, 0, -DALLE))
+    l, h = FENETRE
+    _piece(c, "FLOOR_PLAIN", [
+        dalle("FLOOR_PLAIN"),
+        vive("FLOOR_PLAIN", (TRAME, TRAME, SOUS_DALLE), mat="MAT_SURFACE"),
+        vive("FLOOR_PLAIN_GLASS", (TRAME + 0.04, TRAME + 0.04, h), (0, 0, ALLEGE), mat="MAT_GLASS"),
+    ])
+    retrait = 0.15
+    _piece(c, "FLOOR_PLAIN_BRICK", [
+        dalle("FLOOR_PLAIN_BRICK"),
+        vive("FLOOR_PLAIN_BRICK", (TRAME, TRAME, ALLEGE), mat="MAT_BRICK"),
+        vive("FLOOR_PLAIN_BRICK_LINTEL", (TRAME, TRAME, SOUS_DALLE - ALLEGE - h), (0, 0, ALLEGE + h), mat="MAT_BRICK"),
+        vive("FLOOR_PLAIN_BRICK_OPENING", (TRAME - 2 * retrait, TRAME - 2 * retrait, h), (0, 0, ALLEGE), mat="MAT_BRICK"),
+    ])
+    poteaux = [vive("FLOOR_PLAIN_FRAME_COLUMN_" + str(k), (POTEAU, POTEAU, SOUS_DALLE), (sx * TRAME / 2, sy * TRAME / 2, 0))
+               for k, (sx, sy) in enumerate([(-1, -1), (1, -1), (1, 1), (-1, 1)])]
+    _piece(c, "FLOOR_PLAIN_FRAME", [vive("FLOOR_PLAIN_FRAME", (plateau, plateau, DALLE), (0, 0, -DALLE)), *poteaux])
 
 
 def _basses(c):
@@ -370,7 +408,8 @@ def demonstration():
       etage en construction (corail, baie brute, travee ouverte sous poutre, garde-corps de rive) ; escalier dans
       la case avant droite, tremie a l'etage ; toit plat a acrotere et garde-corps ; echafaudage sur la facade droite.
     - La maison (2 x 2 trames, un niveau) : finie, toit a deux pans et pignons.
-    - Les fondations (2 x 1 trames) : semelles, longrines et attentes, avant le rez."""
+    - Les fondations (2 x 1 trames) : semelles, longrines et attentes, avant le rez.
+    - Les etages simples (v004, une case) : crepi, brique et ossature, empiles."""
     pieces = []
 
     def pose(piece, x, y, z, rotation=0):
@@ -489,6 +528,11 @@ def demonstration():
         for y in f.cy:
             pose("FOUNDATION_STRIP", x, y, haut, 90)
     socles.append({"taille": [9.0, 6.0, 0.60], "centre": [-1.0, -10.5]})
+
+    # --- v004, les etages simples sur une case, empiles du plus avance au moins avance : crepi, brique, ossature
+    for k, piece in enumerate(("FLOOR_PLAIN", "FLOOR_PLAIN_BRICK", "FLOOR_PLAIN_FRAME")):
+        pose(piece, 11.0, -10.5, DALLE + k * ETAGE)
+    socles.append({"taille": [6.0, 6.0, 0.60], "centre": [11.0, -10.5]})
 
     for s in socles:
         s.update({"materiau": "MAT_EARTH", "chanfrein": C3})

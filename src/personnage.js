@@ -28,7 +28,7 @@ export const OCCUPANTS = {
 // Les agents de passage d'exemple, aux places crew:n d'un lieu (ceux qui ont fini reviennent a la baraque).
 export const PASSAGE = { "site-office": ["emma", "julie", "robin"] };
 export const ETAT_OCCUPANTS = { "control-office": "inspect" };
-const KIT_BATIMENT = "kit:building-kit/BLD_KIT_A_v003.glb";
+const KIT_BATIMENT = "kit:building-kit/BLD_KIT_A_v004.glb";
 const RANG = 10; // personnes par rang sur le socle
 const PAS = 0.9;
 const SOCLE = { taille: [10.6, 0.6, 4.4], chanfrein: 0.1 }; // bible 18.5 : 0,60 m de terre, aretes du dessus en C3

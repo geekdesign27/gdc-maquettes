@@ -27,7 +27,7 @@
 // verre eclaire et les geometries fusionnees, crees par ce composant, sont liberes. Aucune couleur d'etat dans la
 // scene ; aucun texte.
 
-const KIT = "kit:building-kit/BLD_KIT_A_v003.glb";
+const KIT = "kit:building-kit/BLD_KIT_A_v004.glb";
 const PARCELLE = "BLD_SITEWORK_A_v002.glb";
 const PELLETEUSE = "machine:excavator/VEH_EXCAVATOR_A_v001.glb";
 const CLIP_PELLETEUSE = "ANM_EXCAVATOR_A_DIGGING";
@@ -66,7 +66,7 @@ const R = Object.fromEntries(STADES.map((s, i) => [s, i]));
 
 export const meta = {
   id: "building",
-  version: "2.1.0",
+  version: "2.1.1",
   category: "building",
   states: [
     "plot",

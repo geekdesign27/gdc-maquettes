@@ -215,7 +215,7 @@
       "kit": "container-kit",
       "assets": [
         "kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb",
-        "kit:building-kit/BLD_KIT_A_v003.glb"
+        "kit:building-kit/BLD_KIT_A_v004.glb"
       ]
     },
     {
@@ -256,7 +256,7 @@
       "kit": "container-kit",
       "assets": [
         "kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb",
-        "kit:building-kit/BLD_KIT_A_v003.glb"
+        "kit:building-kit/BLD_KIT_A_v004.glb"
       ]
     },
     {
@@ -296,7 +296,7 @@
       "kit": "container-kit",
       "assets": [
         "kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb",
-        "kit:building-kit/BLD_KIT_A_v003.glb"
+        "kit:building-kit/BLD_KIT_A_v004.glb"
       ]
     },
     {
@@ -334,7 +334,7 @@
       "kit": "container-kit",
       "assets": [
         "kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb",
-        "kit:building-kit/BLD_KIT_A_v003.glb"
+        "kit:building-kit/BLD_KIT_A_v004.glb"
       ]
     },
     {
@@ -372,7 +372,7 @@
       "kit": "container-kit",
       "assets": [
         "kit:container-kit/ENV_CONTAINER_KIT_A_v003.glb",
-        "kit:building-kit/BLD_KIT_A_v003.glb"
+        "kit:building-kit/BLD_KIT_A_v004.glb"
       ]
     },
     {
@@ -644,7 +644,7 @@
       "purpose": "Les pièces modulaires communes à tous les bâtiments, aux mêmes dimensions d'assemblage.",
       "description": "Sols, fondations, poteaux, poutres, dalles, murs, portes, fenêtres, toitures, escaliers, échafaudages, enseignes (bible, section 6) ; trame commune de 3 mètres. Utilisé par building, building-interior et les bureaux.",
       "assets": [
-        "BLD_KIT_A_v003.glb"
+        "BLD_KIT_A_v004.glb"
       ],
       "budget": {
         "triangles": 20000,
@@ -710,11 +710,11 @@
       "kit": "building-kit",
       "assets": [
         "BLD_SITEWORK_A_v002.glb",
-        "kit:building-kit/BLD_KIT_A_v003.glb",
+        "kit:building-kit/BLD_KIT_A_v004.glb",
         "machine:excavator/VEH_EXCAVATOR_A_v001.glb"
       ],
       "role": "modeleur",
-      "version": "2.1.0"
+      "version": "2.1.1"
     },
     {
       "id": "survey-poles",
@@ -783,7 +783,7 @@
       "production": "mixte",
       "kit": "building-kit",
       "assets": [
-        "kit:building-kit/BLD_KIT_A_v003.glb"
+        "kit:building-kit/BLD_KIT_A_v004.glb"
       ]
     },
     {
@@ -1098,10 +1098,10 @@
       "kit": "building-kit",
       "assets": [
         "BLD_INTERIOR_A_v002.glb",
-        "kit:building-kit/BLD_KIT_A_v003.glb"
+        "kit:building-kit/BLD_KIT_A_v004.glb"
       ],
       "role": "modeleur",
-      "version": "2.0.0"
+      "version": "2.0.1"
     },
     {
       "id": "office-interior",
