@@ -417,8 +417,12 @@ export async function creeCarte(THREE, options) {
   const cube = new THREE.BoxGeometry(1, 1, 1);
   const plan = new THREE.PlaneGeometry(1, 1);
   // types : le type de chaque parcelle (house, block, hall) ; la couche se refait quand ils changent
-  async function coucheFixe(types) {
-    const cle = types.slice(0, 4).join(",");
+  async function coucheFixe(types, plateaux = null) {
+    // la cle : les types et les plateaux (building 3.0.0 : une parcelle prend la largeur de son plateau)
+    const cle = [
+      types.slice(0, 4).join(","),
+      (plateaux || []).map((p) => `${p.nx}x${p.ny}`).join(","),
+    ].join("|");
     if (imp && imp.types === cle) return;
     for (const cle of fixes) retire(cle);
     for (const b of peintures.splice(0)) {
@@ -426,7 +430,7 @@ export async function creeCarte(THREE, options) {
       b.material.dispose();
     }
     for (const z of Object.values(gris)) retireVoile(z);
-    imp = implantation(types.length, types);
+    imp = implantation(types.length, types, undefined, plateaux);
     imp.types = cle;
     chemins = creeChemins(imp.voies);
     fixes = [];
@@ -1092,6 +1096,13 @@ export async function creeCarte(THREE, options) {
     for (const b of scene.batiments) {
       const cle = `grue:${b.id}`;
       const pa = parcelleDe(b.id);
+      // building 3.0.0 : un plateau qui s'elargit deplace la grue de sa parcelle ; montee, elle suit (ses lieux se
+      // remesurent a la scene suivante, grues)
+      const montee = membres.get(cle);
+      if (pa && montee) {
+        montee.inst.root.position.set(...pa.grue.position);
+        montee.inst.root.rotation.y = pa.grue.rotation;
+      }
       if (!pa || membres.has(cle) || !veutGrue(b, scene)) continue;
       // le mat, d'apres les etages du batiment, et decale des grues voisines ; rehausse ensuite sur ce qui est mesure
       const etages = Math.min(Array.isArray(b.floors) ? b.floors.length : 1, 6) || 1;
@@ -1572,7 +1583,7 @@ export async function creeCarte(THREE, options) {
       if (file.length) termine();
       const suivante = lisScene(scene, connus);
       for (const m of suivante.inconnus) signale(m);
-      await coucheFixe(suivante.types);
+      await coucheFixe(suivante.types, suivante.plateaux);
       lu = suivante;
       await prepare(lu);
       await prepareVie(lu);

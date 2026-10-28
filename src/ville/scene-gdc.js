@@ -1,7 +1,7 @@
 // Lire une scene de GDC (gdc scene, schema 3 : plan, elements, actions ; contrat dans docs/maquette.md du depot GDC)
 // pour la carte : les batiments dans l'ordre des parcelles, leur phase, les personnages et leur lieu, le regime du
 // chantier et les zones deja activees. Sans Three.js ; ne change rien a la scene recue.
-import { STAGES, groupFloors, floorsFromEtages } from "../etages.js";
+import { STAGES, groupFloors, floorsFromEtages, floorPlate } from "../etages.js";
 
 export const REGIMES = ["ferme", "ouvert", "pause"];
 // Les types de batiment de GDC vers le parametre type de building.
@@ -71,6 +71,11 @@ export function lisScene(scene, connus) {
     const p = (scene?.plan?.parcelles || []).find((x) => x.batiment === id);
     return TYPES[b?.type || p?.type] || "block";
   });
+  // le plateau de chaque parcelle (building 3.0.0) : la largeur du type, elargie par les lots de l'etage le plus charge
+  const plateaux = ordre.map((id, k) => {
+    const b = batiments.find((x) => x.id === id);
+    return floorPlate(floorsFromEtages(b?.etages), types[k]);
+  });
   const personnages = gardes
     .filter((e) => e.element === "character")
     .map((e) => ({ ...e, ...lisLieu(e.lieu) }));
@@ -85,6 +90,7 @@ export function lisScene(scene, connus) {
     zones,
     applications: Math.max(ordre.length, 1),
     types: types.length ? types : ["block"],
+    plateaux: plateaux.length ? plateaux : null,
     parcelle,
     elements: new Map(gardes.map((e) => [e.id, e])),
     batiments: batiments.map((b) => ({

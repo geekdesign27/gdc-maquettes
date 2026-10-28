@@ -93,11 +93,41 @@ for (const types of [['house'], ['block', 'block', 'block'], ['hall', 'hall', 'h
   });
   verifie(creeChemins(imp.voies).chemin('baraque', `allee:${types.length}`), `${types} : la dernière parcelle n'est pas desservie`);
 }
+// building 3.0.0 : la parcelle prend la largeur de son plateau (jusqu'a 21 m), le terrain va jusqu'a 140 m ; un
+// plateau profond a sa grue au coin arriere gauche, hors des panneaux du feu vert, du chemin du fond et des socles
+// voisins, son stock a portee de fleche (11 m)
+{
+  const P = (nx, ny) => ({ nx, ny });
+  for (const plateaux of [[P(5, 3), P(5, 3), P(5, 3), P(5, 3)], Array(8).fill(P(5, 3)), [P(2, 2), P(5, 3), P(4, 2), P(4, 3)], [P(5, 2), P(3, 2), P(5, 3)]]) {
+    const types = plateaux.map(() => 'block');
+    const imp = implantation(types.length, types, undefined, plateaux);
+    const nom = plateaux.map((p) => `${p.nx}×${p.ny}`).join(', ');
+    verifie(imp.terrain.x[1] - imp.terrain.x[0] <= 140, `${nom} : terrain de ${imp.terrain.x[1] - imp.terrain.x[0]} m`);
+    const socle = (p) => [p.position[0] - (p.plateau.nx * 3 + 6) / 2, p.position[0] + (p.plateau.nx * 3 + 6) / 2];
+    imp.parcelles.forEach((p, k) => {
+      const [g, d] = socle(p);
+      verifie(g > imp.chantier.x[0] && d < imp.chantier.x[1] && g > 40.6, `${nom} : la parcelle ${k + 1} sort du chantier`);
+      const voisine = imp.parcelles[k - 1];
+      if (voisine && voisine.rangee === p.rangee) verifie(g >= socle(voisine)[1], `${nom} : les parcelles ${k} et ${k + 1} se chevauchent`);
+      if (p.plateau.ny < 3) return;
+      const [gx, , gz] = p.grue.position;
+      const pied = { x: [gx - 1.4, gx + 1.4], z: [gz - 1.4, gz + 1.4] };
+      const croise = (a, b) => a[0] < b[1] && b[0] < a[1];
+      verifie(!croise(pied.x, [40.6, 43]) || !croise(pied.z, [34.9, 40.1]), `${nom} : la grue ${k + 1} est sur les panneaux du feu vert`);
+      verifie(pied.x[1] < p.position[0] - p.plateau.nx * 1.5 - 1.1, `${nom} : la grue ${k + 1} est dans l'échafaudage`);
+      verifie(!voisine || voisine.rangee !== p.rangee || pied.x[0] >= socle(voisine)[1], `${nom} : la grue ${k + 1} est sur la parcelle voisine`);
+      verifie(pied.z[0] > imp.chantier.z[0] + 1.2 + 0.4, `${nom} : la grue ${k + 1} est sur le chemin du fond`);
+      verifie(Math.hypot(p.grue.stock[0] - gx, p.grue.stock[1] - gz) < 11, `${nom} : le stock ${k + 1} est hors de portée de la flèche`);
+    });
+    const chemins = creeChemins(imp.voies);
+    for (const p of imp.parcelles) verifie(chemins.chemin('baraque', `allee:${p.index + 1}`), `${nom} : la parcelle ${p.index + 1} n'est pas desservie`);
+  }
+}
 
 let rapportRangee = '';
 // --- Au-dela de quatre applications, la deuxieme rangee sous l'allee (decision de Pierre-Alain du 22 octobre 2026) :
 // aucune parcelle ne se pose sur une autre ni sur la place d'un camion, tout reste dans le chantier, le terrain garde
-// 120 m de large au plus, chaque parcelle est desservie et l'entree du chantier ne bouge pas
+// 140 m de large au plus (site-ground 1.2.0), chaque parcelle est desservie et l'entree du chantier ne bouge pas
 {
   const boite = (cx, cz, lx, lz) => ({ x: [cx - lx / 2, cx + lx / 2], z: [cz - lz / 2, cz + lz / 2] });
   const coupe = (a, b) => a.x[0] < b.x[1] && b.x[0] < a.x[1] && a.z[0] < b.z[1] && b.z[0] < a.z[1];
@@ -115,7 +145,7 @@ let rapportRangee = '';
       camions.forEach((c, j) => verifie(!coupe(socles[k], c), `${nom} : le camion de la parcelle ${j + 1} est sur la parcelle ${k + 1}`));
       verifie(creeChemins(imp.voies).chemin('baraque', `allee:${k + 1}`), `${nom} : la parcelle ${k + 1} n'est pas desservie`);
     });
-    verifie(imp.terrain.x[1] - imp.terrain.x[0] <= 120, `${nom} : terrain de ${imp.terrain.x[1] - imp.terrain.x[0]} m, plus que les 120 m de site-ground`);
+    verifie(imp.terrain.x[1] - imp.terrain.x[0] <= 140, `${nom} : terrain de ${imp.terrain.x[1] - imp.terrain.x[0]} m, plus que les 140 m de site-ground`);
     const entree = imp.clotures.find((c) => c.cle === 'fence:entree');
     verifie(entree.position[2] === implantation(1).clotures.find((c) => c.cle === 'fence:entree').position[2], `${nom} : l'entrée du chantier a bougé`);
   }

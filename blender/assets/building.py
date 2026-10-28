@@ -18,7 +18,9 @@ que ce qui est propre a la parcelle, avant et pendant la fouille :
 L'emprise suit le type du batiment (2, 3 ou 4 trames de facade, 2 de profondeur) : un socle par emprise.
 v003 (building 3.0.0, temps B des etages, decisions de Pierre-Alain du 28 octobre 2026) : le plateau suit le nombre de
 lots de l'etage le plus charge (une piece de 3 x 3 m par lot) ; la facade s'allonge jusqu'a 5 trames, puis le batiment
-prend de la profondeur : trois socles de plus, 5 x 2, 4 x 3 et 5 x 3. Les pieces de la v002 sont inchangees.
+prend de la profondeur : trois socles de plus, 5 x 2, 4 x 3 et 5 x 3. Les pieces de la v002 sont inchangees. Un
+plateau de trois trames de profondeur garde une parcelle de 12 m : 1,50 m de marge devant et derriere au lieu de 3 m
+(decision de Pierre-Alain du 28 octobre 2026), les cotes gardent 3 m (tas de deblais, cones, grue).
 Origine de chaque piece : le centre de l'emprise, sur le dessus du socle (z = 0). Avant vers -Y.
 
 Qualite basse (bible 18.3) : SPOIL_HEAP_LOW aux aretes vives ; BATTER_BOARD_LOW, les lattes fusionnees en deux
@@ -37,6 +39,7 @@ TRAME = 3.0
 # les plateaux (trames de facade, de profondeur) : les trois de la v002, puis ceux de la v003
 PLATEAUX = ((2, 2), (3, 2), (4, 2), (5, 2), (4, 3), (5, 3))
 MARGE = 3.0  # du nu de l'emprise au bord du socle : echafaudage, tas de deblais, gabarits
+MARGE_PROFOND = 1.5  # devant et derriere un plateau de trois trames de profondeur : la parcelle garde 12 m
 SOCLE = 0.60
 FOUILLE = 0.50
 FOND = 0.60  # du nu de l'emprise au pied du talus
@@ -59,7 +62,8 @@ def _piece(c, nom, objets):
 
 
 def _socle(c, nom, nx, ny):
-    return c.boite(P + nom, (nx * TRAME + 2 * MARGE, ny * TRAME + 2 * MARGE, SOCLE), (0, 0, -SOCLE), mat="MAT_EARTH")
+    marge = MARGE if ny < 3 else MARGE_PROFOND
+    return c.boite(P + nom, (nx * TRAME + 2 * MARGE, ny * TRAME + 2 * marge, SOCLE), (0, 0, -SOCLE), mat="MAT_EARTH")
 
 
 def _tas(c, nom, chanfrein):

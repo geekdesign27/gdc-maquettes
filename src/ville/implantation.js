@@ -55,10 +55,14 @@ export const PAS_PARCELLE = 14; // socle de 12 m (une fiche) et 2 m entre deux p
 // La largeur du socle de building 2.0.0 selon son type (en X), et l'ecart entre deux socles.
 export const SOCLES = { house: 12, block: 15, hall: 18 };
 const ECART_SOCLES = 2;
+// La largeur du socle d'un plateau (building 3.0.0) : ses trames de facade et 3 m de marge de chaque cote ; la
+// profondeur reste 12 m (un plateau de trois trames n'a que 1,50 m de marge devant et derriere).
+const MARGE_SOCLE = 3;
+export const largeurSocle = (plateau) => plateau.nx * 3 + 2 * MARGE_SOCLE;
 const BORD_PARCELLES = 43; // le bord gauche de la premiere parcelle, a droite du chemin des experts
 export const MAX_APPLICATIONS = 8;
 // Au-dela de quatre applications, une deuxieme rangee de parcelles sous l'allee (decision de Pierre-Alain du 22 octobre
-// 2026) : le chantier s'approfondit, le terrain garde sa largeur (120 m au plus pour site-ground), aucun composant ne
+// 2026) : le chantier s'approfondit, le terrain garde sa largeur (120 m au plus pour site-ground, 140 m depuis building 3.0.0), aucun composant ne
 // change. La deuxieme rangee commence apres la bande des bennes, du stock et des camions de la premiere, a sa propre
 // allee devant ses portes et la place de ses camions devant elle.
 export const PAR_RANGEE = 4;
@@ -197,21 +201,27 @@ function cloture(enceinte, cle, bord, [a, b], gate = false) {
 // L'implantation pour un nombre d'applications (1 a 8 ; au-dela de 4, la deuxieme rangee) : terrain, chantier, cadres des zones, dalles du sol, clotures,
 // lieux fixes, decor du chantier, parcelles, points de la vie du chantier et voies. types : le type de chaque batiment
 // (house, block, hall), dans l'ordre des parcelles ; chaque parcelle prend alors la largeur de son socle. Sans types,
-// les parcelles sont au pas de 14 m (la scene de reference).
+// les parcelles sont au pas de 14 m (la scene de reference). plateaux (building 3.0.0, decisions de Pierre-Alain du
+// 28 octobre 2026) : le plateau { nx, ny } de chaque batiment (src/etages.js, floorPlate) ; la parcelle prend la largeur
+// de son plateau (jusqu'a 21 m pour 5 trames : quatre parcelles font 133 m, le terrain va jusqu'a 140 m) ; un plateau
+// de trois trames de profondeur a sa grue sur son cote gauche, et son stock devant elle, a portee de fleche.
 // La densite des projecteurs (V-2) : sobre, moyenne ou dense.
 export const DENSITE_PROJECTEURS = "moyenne";
 
-export function implantation(applications = 1, types = null, densite = DENSITE_PROJECTEURS) {
+export function implantation(applications = 1, types = null, densite = DENSITE_PROJECTEURS, plateaux = null) {
   const apps = Math.min(
     Math.max(Math.round(Number(types ? types.length : applications)) || 1, 1),
     MAX_APPLICATIONS,
   );
+  // la largeur du socle de la parcelle k : son plateau, sinon son type, sinon le pas de la scene de reference
+  const largeurParcelle = (k) =>
+    plateaux?.[k] ? largeurSocle(plateaux[k]) : types ? SOCLES[types[k]] || SOCLES.block : PAS_PARCELLE - ECART_SOCLES;
   // chaque rangee repart du bord gauche ; le chantier va jusqu'au bout de la plus longue
   const centres = [];
   let finParcelles = 0;
   for (let k = 0, bord = BORD_PARCELLES; k < apps; k++) {
     if (k === PAR_RANGEE) bord = BORD_PARCELLES;
-    const largeur = types ? SOCLES[types[k]] || SOCLES.block : PAS_PARCELLE - ECART_SOCLES;
+    const largeur = largeurParcelle(k);
     centres.push(types ? bord + largeur / 2 : 49 + PAS_PARCELLE * (k % PAR_RANGEE));
     finParcelles = Math.max(finParcelles, centres[k] + largeur / 2);
     bord = centres[k] + largeur / 2 + ECART_SOCLES;
@@ -299,7 +309,7 @@ export function implantation(applications = 1, types = null, densite = DENSITE_P
   // les ecarts entre deux socles voisins : le milieu de chacun
   const ecarts = [];
   for (let k = 0; k + 1 < Math.min(apps, PAR_RANGEE); k++) {
-    const l = (n) => (types ? SOCLES[types[n]] || SOCLES.block : PAS_PARCELLE - ECART_SOCLES);
+    const l = largeurParcelle;
     ecarts.push((centres[k] + l(k) / 2 + centres[k + 1] - l(k + 1) / 2) / 2);
   }
   const densites = {
@@ -342,11 +352,20 @@ export function implantation(applications = 1, types = null, densite = DENSITE_P
     const x = centres[k];
     const rangee = k < PAR_RANGEE ? 1 : 2;
     const z = rangee === 1 ? Z_PARCELLE : Z_PARCELLE_2;
+    const plateau = plateaux?.[k] || null;
+    // la grue derriere a gauche ; un plateau profond (trois trames) n'en laisse pas la place : elle passe sur le cote
+    // gauche, au coin arriere, au-dela de l'echafaudage (1,1 m) avec son pied de 2,8 m (a mi-profondeur, elle serait
+    // sur les panneaux du feu vert de la premiere parcelle) ; son stock devant elle, a 6,1 m (fleche de 11 m)
+    const demi = plateau ? (plateau.nx * 3) / 2 : 0;
+    const grue = plateau && plateau.ny >= 3
+      ? { position: [x - demi - 2.6, 0, z - 4.6], rotation: -Math.PI / 2, stock: [x - demi - 2.2, z + 1.5] }
+      : { position: [x - 4.4, 0, z - 4.4], rotation: -Math.PI / 2, stock: [x + 3.5, z - 5.4] };
     parcelles.push({
       index: k,
       rangee,
       position: [x, 0, z],
-      grue: { position: [x - 4.4, 0, z - 4.4], rotation: -Math.PI / 2, stock: [x + 3.5, z - 5.4] },
+      plateau,
+      grue,
       camion: { position: [x + 3, 0, rangee === 1 ? 51 : Z_CAMION_2], rotation: Math.PI / 2 },
       porte: [x, rangee === 1 ? Z_ALLEE : Z_ALLEE_2],
     });
