@@ -1067,9 +1067,11 @@
       "category": "interior",
       "name": "L'intérieur d'un bâtiment",
       "purpose": "La vue micro : un étage ouvert, c'est-à-dire une fiche, avec une pièce par lot, l'étape où en est chaque lot et les experts au travail.",
-      "description": "Une coupe en maison de poupée, comme en 1.0, mais d'un seul étage, celui choisi au sélecteur d'étages (floor-selector). Une pièce de 6 × 3 m par lot, en grappe, jamais en ligne ; l'enveloppe suit le stade de l'étage (data.floor.stage). Chaque pièce montre où en est son lot par un aspect : todo (vide : à faire, cadre, explore, plan), preparing (traçage au sol, attentes : tests), building (en travaux : code, verifie, securite, ou en_cours sans phase), finishing (finitions : relis, corrige), done (finie : prouve, livre, fini), defect (un défaut visible, comme en 1.0). La traduction de la phase du lot (pieces[].phase de GDC, les phases du run) en aspect est faite par l'assemblage, sur le modèle du regroupement des étages de GDC ; quand phase manque, il se rabat sur statut. Le nom de la phase s'affiche au survol, dans l'interface, jamais dans la 3D. Les agents sont des composants character posés par GDC à l'ancre de leur pièce (piece du personnage). État default : la vue s'ouvre ; hidden : elle se ferme. Fiche validée par Pierre-Alain le 21 octobre 2026. Décisions du 22 octobre 2026 : une pièce n'est defect que si un defect-sign porte son lot (ref.lot), un défaut sur la fiche seule ne touche aucune pièce ; les agents de l'étage sans pièce attendent sur le palier, devant ; un clic sur un étage du bâtiment ouvre cet étage (sur le rez regroupé ou le bâtiment : l'étage en chantier le plus haut, sinon le dernier) ; abandonne donne todo, lecon, deploie et retour donnent done ; un lot fini est done et un lot abandonné todo quelle que soit la phase de son run (comme building, où seul fini ferme la travée).",
+      "description": "Une coupe en maison de poupée, comme en 1.0, mais d'un seul étage, celui choisi au sélecteur d'étages (floor-selector). Une pièce de 6 × 3 m par lot, en grappe, jamais en ligne ; l'enveloppe suit le stade de l'étage (data.floor.stage). Chaque pièce montre où en est son lot par un aspect : todo (vide : à faire, cadre, explore, plan), preparing (traçage au sol, attentes : tests), building (en travaux : code, verifie, securite, ou en_cours sans phase), finishing (finitions : relis, corrige), done (finie : prouve, livre, fini), defect (un défaut visible, comme en 1.0). La traduction de la phase du lot (pieces[].phase de GDC, les phases du run) en aspect est faite par l'assemblage, sur le modèle du regroupement des étages de GDC ; quand phase manque, il se rabat sur statut. Le nom de la phase s'affiche au survol, dans l'interface, jamais dans la 3D. Les agents sont des composants character posés par GDC à l'ancre de leur pièce (piece du personnage). État default : la vue s'ouvre ; hidden : elle se ferme. Fiche validée par Pierre-Alain le 21 octobre 2026. Décisions du 22 octobre 2026 : une pièce n'est defect que si un defect-sign porte son lot (ref.lot), un défaut sur la fiche seule ne touche aucune pièce ; les agents de l'étage sans pièce attendent sur le palier, devant ; un clic sur un étage du bâtiment ouvre cet étage (sur le rez regroupé ou le bâtiment : l'étage en chantier le plus haut, sinon le dernier) ; abandonne donne todo, lecon, deploie et retour donnent done ; un lot fini est done et un lot abandonné todo quelle que soit la phase de son run (comme building, où seul fini ferme la travée). Version 3.0.0 (temps B des étages, décisions de Pierre-Alain du 28 octobre 2026) : la coupe se range exactement dans le plateau de son bâtiment, une pièce de 3 × 3 m (une case de la trame) par lot, dans l'ordre des cases du bâtiment (src/etages.js, plateCells : le pourtour, puis le milieu) ; une case sans lot reste vide ; au-delà du nombre de cases, deux lots partagent une pièce. Le mobilier est resserré contre le fond de la case. Le socle maquette ne se pose qu'au rez ; en étage, la coupe repose sur la dalle du bâtiment.",
       "params": {
-        "rooms": "nombre de lots, 1 à 12, défaut 4"
+        "rooms": "nombre de lots, 1 à 30, défaut 4",
+      "columns": "trames de façade du plateau du bâtiment, 2 à 5 ; 0 (défaut) : selon rooms",
+      "rows": "trames de profondeur du plateau, 2 ou 3 ; 0 (défaut) : selon rooms"
       },
       "states": [
         "default",
@@ -1088,6 +1090,7 @@
         "La vue s'ouvre depuis le sélecteur d'étages, sur l'étage choisi",
         "fixtures/trois-applications, étape 7 : Julie est dans la pièce L1 de « Saisir un constat hors ligne »",
         "Transition d'entrée et de sortie douce, figée si reducedMotion",
+        "La coupe a le plateau de son bâtiment : même nombre de cases, même dalle, à la hauteur de son étage ; chaque lot dans la case que le bâtiment lui donne",
         "Ligne au journal des versions"
       ],
       "status": "livré",
@@ -1102,7 +1105,7 @@
         "kit:building-kit/BLD_KIT_A_v004.glb"
       ],
       "role": "modeleur",
-      "version": "2.0.1"
+      "version": "3.0.0"
     },
     {
       "id": "office-interior",

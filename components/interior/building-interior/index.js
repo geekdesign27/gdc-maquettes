@@ -3,8 +3,8 @@
 // 22 octobre 2026 ; la 1.0 (une piece par fiche) avait son brief valide le 20 octobre 2026.
 // - une coupe de plain-pied en maison de poupee, comme les bureaux en conteneur : pas de toit, murs cote camera (avant
 //   et droite) et cloisons coupes a l'allege, murs du fond (arriere et gauche) pleins ;
-// - une piece de 6 x 3 m (2 x 1 trames) par lot, en grappe, jamais en ligne : colonnes = ceil(racine(n / 2)),
-//   rangees = ceil(n / colonnes), numerotees du devant vers le fond, de gauche a droite ;
+// - (2.0.0 : une piece de 6 x 3 m par lot, en grappe ; 3.0.0, ci-dessous : une case de 3 x 3 m par lot, sur le
+//   plateau du batiment) ;
 // - l'enveloppe suit le stade de l'etage (data.floor.stage) : facades, poteaux, dalle, garde-corps (ENVELOPPES) ;
 // - l'interieur de chaque piece suit l'aspect de son lot (data.rooms[n].state) : cloisons, sol et mobilier (todo vide,
 //   preparing trace et attentes, building en travaux, finishing crepi et parquet a moitie pose, done finie, defect
@@ -17,6 +17,13 @@
 //   redescendent, puis la vue disparait ; image fixe avec reducedMotion ;
 // - qualite basse : les pieces _LOW des deux modeles ; qualite haute : au-dela du budget, les rangees du fond passent
 //   aux pieces _LOW (comme building).
+// Version 3.0.0 (temps B des etages, decisions de Pierre-Alain du 28 octobre 2026) : la coupe se range exactement dans
+// le plateau de son batiment. Une piece de 3 x 3 m par lot, une case de la trame ; le plateau a nx x ny cases
+// (params.columns et params.rows, ceux du batiment ; a 0, ctx.floorPlate d'apres rooms) ; le lot m prend la case m de
+// ctx.plateCells (le pourtour, puis le milieu), la meme que le batiment ; au-dela du nombre de cases, deux lots
+// partagent une case ; une case sans lot reste une piece vide, sans reference. Le mobilier est replace pour une case
+// (le milieu reste aux personnages) ; les pieces du modele, deja a la trame, ne changent pas. Le socle maquette ne se
+// pose qu'au rez (data.floor.index absent ou 1) : en etage, la coupe repose sur la dalle du batiment.
 // Les modeles sont partages entre instances : on ne libere jamais leurs geometries ni leurs materiaux ici ; seuls le
 // socle et son materiau, crees par ce composant, sont liberes. Aucune couleur d'etat dans la scene ; aucun texte.
 
@@ -25,7 +32,6 @@ const INTERIEUR = "BLD_INTERIOR_A_v002.glb";
 const K = "BLD_KIT_A_";
 const I = "BLD_INTERIOR_A_";
 const TRAME = 3.0;
-const LARGE = 2 * TRAME; // une piece : deux trames de large, une de profondeur
 const DALLE = 0.3;
 const PARQUET = 0.03;
 const MARGE = 1.2; // du nu des pieces au bord du socle (le palier, devant)
@@ -58,10 +64,14 @@ const STADE_PAR_DEFAUT = "completed"; // sans data.floor : l'enveloppe finie, se
 
 export const meta = {
   id: "building-interior",
-  version: "2.0.1",
+  version: "3.0.0",
   category: "interior",
   states: ["default", "hidden"],
-  params: { rooms: { type: "number", default: 4, min: 1, max: 12 } },
+  params: {
+    rooms: { type: "number", default: 4, min: 1, max: 30 },
+    columns: { type: "number", default: 0, min: 0, max: 5 },
+    rows: { type: "number", default: 0, min: 0, max: 3 },
+  },
   anchors: ["label", "room:*"],
   budget: { triangles: 20000, materials: 10 },
   animated: true,
@@ -89,58 +99,32 @@ function triangles(objet) {
   return n;
 }
 
-// Le plan : la case de chaque piece, et ses quatre cotes. Un cote est une cloison s'il touche une autre piece, sinon un
-// mur de facade, coupe a l'allege cote camera (avant, droite), plein au fond (arriere, gauche). rot : la rotation des
-// pieces du kit qui pose leur epaisseur vers l'interieur de la piece (et leur parement exterieur sur l'axe).
-function grappe(n) {
-  const colonnes = Math.ceil(Math.sqrt(n / 2));
-  const rangees = Math.ceil(n / colonnes);
-  const occupe = (i, j) =>
-    i >= 0 && i < colonnes && j >= 0 && j * colonnes + i < n;
-  const pieces = Array.from({ length: n }, (_, k) => {
-    const i = k % colonnes;
-    const j = Math.floor(k / colonnes);
-    const cx = (i - (colonnes - 1) / 2) * LARGE;
-    const cy = (j - (rangees - 1) / 2) * TRAME;
+// Le plan (3.0.0) : le plateau de nx x ny cases de 3 x 3 m, centre sur l'origine comme celui du batiment, et ses
+// quatre cotes par case. Un cote est une cloison s'il touche une autre case, sinon un mur de facade, coupe a l'allege
+// cote camera (avant, droite), plein au fond (arriere, gauche). rot : la rotation des pieces du kit qui pose leur
+// epaisseur vers l'interieur de la case (et leur parement exterieur sur l'axe). cells : l'ordre des cases ou les lots
+// se posent (ctx.plateCells, le meme que le batiment) ; k : le rang de la case dans cet ordre.
+function plateau(nx, ny, cells) {
+  const dedansPlateau = (i, j) => i >= 0 && i < nx && j >= 0 && j < ny;
+  const pieces = cells.map(({ i, j }, k) => {
+    const cx = (i - (nx - 1) / 2) * TRAME;
+    const cy = (j - (ny - 1) / 2) * TRAME;
+    const cote = (rot, di, dj, plein, axe) => ({
+      rot,
+      voisin: dedansPlateau(i + di, j + dj),
+      plein,
+      axe,
+      segments: [axe],
+    });
     const cotes = {
-      avant: {
-        rot: 0,
-        voisin: occupe(i, j - 1),
-        plein: false,
-        axe: [cx, cy - TRAME / 2],
-        segments: [
-          [cx - TRAME / 2, cy - TRAME / 2],
-          [cx + TRAME / 2, cy - TRAME / 2],
-        ],
-      },
-      droite: {
-        rot: 90,
-        voisin: occupe(i + 1, j),
-        plein: false,
-        axe: [cx + LARGE / 2, cy],
-        segments: [[cx + LARGE / 2, cy]],
-      },
-      arriere: {
-        rot: 180,
-        voisin: occupe(i, j + 1),
-        plein: true,
-        axe: [cx, cy + TRAME / 2],
-        segments: [
-          [cx - TRAME / 2, cy + TRAME / 2],
-          [cx + TRAME / 2, cy + TRAME / 2],
-        ],
-      },
-      gauche: {
-        rot: 270,
-        voisin: occupe(i - 1, j),
-        plein: true,
-        axe: [cx - LARGE / 2, cy],
-        segments: [[cx - LARGE / 2, cy]],
-      },
+      avant: cote(0, 0, -1, false, [cx, cy - TRAME / 2]),
+      droite: cote(90, 1, 0, false, [cx + TRAME / 2, cy]),
+      arriere: cote(180, 0, 1, true, [cx, cy + TRAME / 2]),
+      gauche: cote(270, -1, 0, true, [cx - TRAME / 2, cy]),
     };
     return { k, i, j, cx, cy, cotes };
   });
-  return { colonnes, rangees, pieces };
+  return { colonnes: nx, rangees: ny, pieces };
 }
 
 export function create(THREE, params, ctx) {
@@ -151,7 +135,18 @@ export function create(THREE, params, ctx) {
   root.userData.component = meta.id;
   const basse = ctx.quality === "low";
   const n = borne(params.rooms, meta.params.rooms);
-  const plan = grappe(n);
+  // le plateau du batiment ; a 0, celui que la regle donne a n lots (src/etages.js)
+  const auto = ctx.floorPlate([{ rooms: Array.from({ length: n }) }], "block");
+  const cote = (v, min, max, defaut) =>
+    Number(v) > 0 ? Math.round(Math.min(Math.max(Number(v), min), max)) : defaut;
+  const nx = cote(params.columns, 2, 5, auto.nx);
+  const ny = cote(params.rows, 2, 3, auto.ny);
+  const plan = plateau(nx, ny, ctx.plateCells(nx, ny));
+  const N = plan.pieces.length;
+  // les lots de chaque case (m modulo le nombre de cases), et la case de chaque lot
+  const lotsDe = plan.pieces.map(() => []);
+  for (let m = 0; m < n; m++) lotsDe[m % N].push(m);
+  const caseDuLot = (m) => m % N;
 
   // Un seul materiau par MAT_ : les pieces de l'interieur prennent ceux du kit de meme nom.
   const materiauxKit = new Map();
@@ -201,15 +196,14 @@ export function create(THREE, params, ctx) {
       poteaux.set(cle, p);
     };
     for (const p of plan.pieces) {
-      const aspect = aspectDe(rooms[p.k]);
+      // une case prend l'aspect de son premier lot ; sans lot, une piece vide
+      const lot = lotsDe[p.k][0];
+      const aspect = lot === undefined ? "todo" : aspectDe(rooms[lot]);
       const fini = aspect === "done" || aspect === "defect";
       const sol = z0 + (fini ? PARQUET : 0);
       // la dalle, ses rives sur les cotes de facade et ses angles saillants
       if (env.dalle) {
-        pose("kit", "SLAB", p.cx, p.cy, 0, 0, p.k, {
-          leve: false,
-          echelle: [2, 1, 1],
-        });
+        pose("kit", "SLAB", p.cx, p.cy, 0, 0, p.k, { leve: false });
         for (const c of Object.values(p.cotes))
           if (!c.voisin)
             pose("kit", "SLAB_EDGE", ...c.axe, 0, c.rot, p.k, {
@@ -218,20 +212,22 @@ export function create(THREE, params, ctx) {
             });
         const { avant, droite, arriere, gauche } = p.cotes;
         for (const [a, b, x, y, rot] of [
-          [avant, gauche, p.cx - LARGE / 2, p.cy - TRAME / 2, 0],
-          [avant, droite, p.cx + LARGE / 2, p.cy - TRAME / 2, 90],
-          [arriere, droite, p.cx + LARGE / 2, p.cy + TRAME / 2, 180],
-          [arriere, gauche, p.cx - LARGE / 2, p.cy + TRAME / 2, 270],
+          [avant, gauche, p.cx - TRAME / 2, p.cy - TRAME / 2, 0],
+          [avant, droite, p.cx + TRAME / 2, p.cy - TRAME / 2, 90],
+          [arriere, droite, p.cx + TRAME / 2, p.cy + TRAME / 2, 180],
+          [arriere, gauche, p.cx - TRAME / 2, p.cy + TRAME / 2, 270],
         ])
           if (!a.voisin && !b.voisin)
             pose("kit", "SLAB_CORNER", x, y, 0, rot, p.k, { leve: false });
       }
-      // le sol : le parquet d'une piece finie ; en finitions, sur la case de gauche seulement
-      if (fini || aspect === "finishing")
-        for (const dx of fini ? [-TRAME / 2, TRAME / 2] : [-TRAME / 2])
-          pose("interieur", "FLOOR_WOOD", p.cx + dx, p.cy, z0, 0, p.k, {
-            leve: false,
-          });
+      // le sol : le parquet d'une piece finie ; en finitions, sur la moitie gauche seulement
+      if (fini)
+        pose("interieur", "FLOOR_WOOD", p.cx, p.cy, z0, 0, p.k, { leve: false });
+      else if (aspect === "finishing")
+        pose("interieur", "FLOOR_WOOD", p.cx - TRAME / 4, p.cy, z0, 0, p.k, {
+          leve: false,
+          echelle: [0.5, 1, 1],
+        });
 
       // les cotes : facades selon le stade de l'etage, cloisons selon l'aspect de la piece
       const ferme = env.facades === "open" && aspect === "done"; // la travee d'un lot fini se ferme (building)
@@ -244,11 +240,9 @@ export function create(THREE, params, ctx) {
       }[aspect];
       for (const [cle, c] of Object.entries(p.cotes)) {
         c.segments.forEach(([x, y], s) => {
-          // la porte de chaque piece : dans la travee droite de son cote avant, et en face chez la piece de devant
+          // la porte de chaque piece : au milieu de son cote avant, et en face chez la piece de devant
           const d =
-            s === 1 && (cle === "avant" || (cle === "arriere" && c.voisin))
-              ? "_DOOR"
-              : "";
+            cle === "avant" || (cle === "arriere" && c.voisin) ? "_DOOR" : "";
           const [nx, ny] = dedans(c.rot);
           let mur = true;
           if (c.voisin) {
@@ -331,21 +325,21 @@ export function create(THREE, params, ctx) {
       // le mobilier de l'aspect, contre le fond de la piece ; le milieu reste aux personnages (ancre room:n)
       const meuble = (nom, dx, dy, z = sol, rot = 0) =>
         pose("interieur", nom, p.cx + dx, p.cy + dy, z, rot, p.k);
+      // 3.0.0 : une case de 3 x 3 m, 2,60 m entre les faces des murs ; le meme mobilier, resserre contre le fond
       if (aspect === "preparing") {
-        meuble("SERVICE_STUBS", -1.7, 0.9);
-        meuble("SERVICE_STUBS", 1.9, 0.9);
+        meuble("SERVICE_STUBS", -0.8, 0.95);
+        meuble("SERVICE_STUBS", 0.8, 0.95);
       } else if (aspect === "building") {
-        meuble("SCAFFOLD_TOWER", -1.7, 0.75);
-        meuble("PALLET", 1.6, 0.75);
-        meuble("BUCKET", 0.55, 1.0);
+        meuble("SCAFFOLD_TOWER", -0.45, 0.8);
+        meuble("PALLET", 0.85, 0.55, sol, 90);
       } else if (aspect === "finishing") {
-        meuble("PLANK_STACK", 1.6, 0.8);
+        meuble("PLANK_STACK", 0.75, 0.6, sol, 90);
       } else if (aspect === "done") {
-        meuble("TABLE", 1.5, 0.7);
+        meuble("TABLE", 0, 0.8);
       } else if (aspect === "defect") {
-        meuble("TARP", -1.5, 0.55);
-        meuble("STEPLADDER", -1.7, 0.75, sol + 0.02, 90);
-        meuble("BUCKET", -0.55, 0.95, sol + 0.02);
+        meuble("TARP", -0.4, 0.6);
+        meuble("STEPLADDER", -0.6, 0.75, sol + 0.02, 90);
+        meuble("BUCKET", 0.6, 0.95, sol + 0.02);
       }
     }
     // les poteaux, ou leurs attentes d'armatures en fondations
@@ -388,7 +382,7 @@ export function create(THREE, params, ctx) {
   };
 
   // --- le socle maquette : dalle de terre de 0,60 m, dessus a y = 0, aretes arrondies (classe C3)
-  const demiX = (plan.colonnes * LARGE) / 2 + MARGE;
+  const demiX = (plan.colonnes * TRAME) / 2 + MARGE;
   const demiY = (plan.rangees * TRAME) / 2 + MARGE;
   const b = SOCLE.chanfrein;
   const forme = new THREE.Shape();
@@ -420,16 +414,29 @@ export function create(THREE, params, ctx) {
   const ancres = {};
   const construit = (rooms, floor) => {
     root.clear();
-    root.add(socle);
+    // le socle maquette au rez seulement : en etage, la coupe repose sur la dalle du batiment
+    const index = Number(floor && floor.index);
+    if (!(index > 1)) root.add(socle);
     const env = enveloppeDe(floor);
-    const groupes = plan.pieces.map((p) => {
+    // un groupe par case : ROOM_m (le premier lot de la case, userData.room) ou CELL_i_j sans lot ; le second lot d'une
+    // case partagee a un groupe ROOM vide, pour sa reference
+    const groupeLot = (m) => {
       const g = new THREE.Group();
-      g.name = `ROOM_${p.k + 1}`;
-      const room = rooms[p.k];
+      g.name = `ROOM_${m + 1}`;
+      const room = rooms[m];
       g.userData.room = {
-        index: p.k + 1,
+        index: m + 1,
         id: room && room.id !== undefined ? room.id : null,
       };
+      root.add(g);
+      return g;
+    };
+    const groupes = plan.pieces.map((p) => {
+      const [premier, ...autres] = lotsDe[p.k];
+      for (const m of autres) groupeLot(m);
+      if (premier !== undefined) return groupeLot(premier);
+      const g = new THREE.Group();
+      g.name = `CELL_${p.i}_${p.j}`;
       root.add(g);
       return g;
     });
@@ -458,15 +465,17 @@ export function create(THREE, params, ctx) {
     // les ancres suivent la hauteur du sol de chaque piece
     const z0 = env.dalle ? DALLE : 0;
     ancres.label = versThree(0, (plan.rangees * TRAME) / 2, z0 + 3.6);
-    for (const p of plan.pieces) {
-      const a = aspectDe(rooms[p.k]);
+    for (const k of Object.keys(ancres)) if (k.startsWith("room:")) delete ancres[k];
+    for (let m = 0; m < n; m++) {
+      const p = plan.pieces[caseDuLot(m)];
+      const a = aspectDe(rooms[lotsDe[p.k][0]]);
       const sol = z0 + (a === "done" || a === "defect" ? PARQUET : 0);
-      ancres[`room:${p.k + 1}`] = versThree(p.cx, p.cy, sol);
+      ancres[`room:${m + 1}`] = versThree(p.cx, p.cy, sol);
     }
   };
 
   // --- la transition : t va de 0 (ferme) a OUVERTURE (ouvert) ; la piece k monte apres un delai, en MONTEE secondes
-  const delai = (k) => (n > 1 ? (k / (n - 1)) * (OUVERTURE - MONTEE) : 0);
+  const delai = (k) => (N > 1 ? (k / (N - 1)) * (OUVERTURE - MONTEE) : 0);
   let t = 0;
   const applique = () => {
     leves.forEach((liste, k) => {

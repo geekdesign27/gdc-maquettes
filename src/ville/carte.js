@@ -47,6 +47,7 @@ import {
   anchorFor,
   refOf,
   roomsFromPieces,
+  floorPlate,
 } from "../etages.js";
 import { tokens, makeContext, paletteFor } from "../tokens.js";
 import {
@@ -82,6 +83,7 @@ const PALIER = 0.6; // m, du bord avant du socle de la coupe aux agents sans pie
 // Pierre-Alain du 28 octobre 2026) ; l'opacite de ses copies de materiaux, et la duree du fondu
 const TRANSPARENCE = 0.18;
 const TRANSPARENCE_DUREE = 0.4; // secondes
+const DALLE_COUPE = 0.3; // l'epaisseur de la dalle de building-interior, posee sur celle du batiment
 // Les phases du gros oeuvre, ou la grue est montee sur la parcelle (docs/ville.md : la structure et ses echafaudages,
 // la grue) ; GDC la fait lever (lifting) a la fusion vers dev, et la pose meme hors de ces phases.
 const PHASES_GRUE = ["structure", "envelope"];
@@ -2202,13 +2204,17 @@ export async function creeCarte(THREE, options) {
           x.ref?.lot,
       )
       .map((x) => x.ref.lot);
-    // douze pieces au plus (la fiche) : les agents des lots suivants attendent sur le palier
+    // trente lots au plus (la fiche) : les agents des lots suivants attendent sur le palier. La coupe a le plateau de
+    // son batiment (building-interior 3.0.0, src/etages.js) : elle s'y range exactement
     const rooms = roomsFromPieces(etage.pieces, { defects, trades }).slice(
       0,
       components["building-interior"].meta.params.rooms.max,
     );
+    const { nx, ny } = floorPlate(b.floors, b.type);
     const inst = await cree("building-interior", {
       rooms: Math.max(rooms.length, 1),
+      columns: nx,
+      rows: ny,
     });
     // une autre ouverture, ou une fermeture, est passee pendant le chargement : celle-ci n'a plus lieu d'etre
     if (jeton !== ouvertures) {
@@ -2219,9 +2225,19 @@ export async function creeCarte(THREE, options) {
     // 28 octobre 2026) ; un etage introuvable (un batiment sans etage) reste au sol
     const niveau = etageVisible(mb.inst.root, etage.fiche);
     inst.root.position.copy(mb.inst.root.position);
-    if (niveau) inst.root.position.y += mb.inst.anchor(`floor:${niveau}`).y;
+    inst.root.quaternion.copy(mb.inst.root.quaternion);
+    // 3.0.0 : sa dalle sur celle du batiment (l'ancre est le dessus de la dalle), 5 mm au-dessus pour ne pas scintiller
+    // avec la dalle voilee de l'etage du dessous ; un etage en plot n'a pas de dalle
+    if (niveau)
+      inst.root.position.y +=
+        mb.inst.anchor(`floor:${niveau}`).y -
+        (etage.stade === "plot" ? 0 : DALLE_COUPE) +
+        0.005;
     plateau.add(inst.root);
-    inst.setState("default", { floor: { stage: etage.stade }, rooms });
+    inst.setState("default", {
+      floor: { stage: etage.stade, index: niveau || 1 },
+      rooms,
+    });
     // le batiment reste, en transparence, son etage ouvert cache ; ce qui l'entoure (engins, grue de la parcelle)
     // s'efface, avec les agents des autres etages ; ceux de l'etage vont a leur piece, ou sur le palier, devant, s'ils
     // n'en ont pas (controle, mission, relecture)

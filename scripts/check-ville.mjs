@@ -5,6 +5,7 @@ import { creeChemins, positionSur, MARCHE_MAX } from '../src/ville/chemins.js';
 import { lisScene } from '../src/ville/scene-gdc.js';
 import { equipes, usagers, PLAFONDS } from '../src/ville/vie.js';
 import { creeCarte } from '../src/ville/carte.js';
+import { floorPlate } from '../src/etages.js';
 import { readFile, readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -180,8 +181,9 @@ const rapportCamionPlus = () => rapportCamion && rapports.push(rapportCamion);
 // la direction de visee de la camera isometrique de la galerie, a peu pres : de haut et de biais
 const ISO = new THREE.Vector3(-1, -1.15, -1).normalize();
 
-// --- La coupe (building-interior 2.0.0) tient son budget dans tous les cas : 1 a 12 pieces, chaque stade, des aspects
-// meles, en qualite haute et basse (les donnees d'essai du controle des composants n'ont que deux pieces)
+// --- La coupe (building-interior 3.0.0) tient son budget dans tous les cas : 1 a 30 lots, sur le plateau qu'ils
+// demandent et sur le plus grand (5 x 3), chaque stade, des aspects meles, en qualite haute et basse (les donnees
+// d'essai du controle des composants n'ont que deux pieces)
 {
   const mod = modules['building-interior'];
   await chargeur.prepare(mod.meta);
@@ -190,19 +192,20 @@ const ISO = new THREE.Vector3(-1, -1.15, -1).normalize();
   const STADES = ['plot', 'excavation', 'foundations', 'structure', 'envelope', 'finishing', 'inspection', 'completed'];
   let pire = 0;
   for (const quality of ['high', 'low'])
-    for (let n = 1; n <= 12; n++)
+    for (const [n, plaque] of [...Array.from({ length: 15 }, (_, k) => [k + 1, {}]), [4, { columns: 5, rows: 3 }], [20, {}], [30, {}]])
       for (const stage of STADES)
         for (let d = 0; d < ASPECTS.length + 1; d++) {
           // d < 6 : les aspects meles a partir du d-ieme ; d = 6 : toutes les pieces en travaux (le plus lourd)
           const rooms = Array.from({ length: n }, (_, k) => ({ id: `L${k + 1}`, state: d === 6 ? 'building' : ASPECTS[(k + d) % 6] }));
-          const inst = mod.create(THREE, { rooms: n }, makeContext({ theme: 'light', quality, reducedMotion: true }, assets));
+          const inst = mod.create(THREE, { rooms: n, ...plaque }, makeContext({ theme: 'light', quality, reducedMotion: true }, assets));
           inst.setState('default', { floor: { stage }, rooms });
+          for (let m = 1; m <= n; m++) inst.anchor(`room:${m}`);
           const m = measure(inst.root);
           if (quality === 'high') pire = Math.max(pire, m.triangles);
           verifie(m.triangles <= mod.meta.budget.triangles && m.materials <= mod.meta.budget.materials, `building-interior : ${m.triangles} triangles, ${m.materials} matériaux (${n} pièces, ${stage}, ${quality})`);
           inst.dispose();
         }
-  rapports.push(`coupe : budget tenu de 1 à 12 pièces, huit stades (au plus ${pire} triangles en qualité haute)`);
+  rapports.push(`coupe : budget tenu de 1 à 30 lots sur tous les plateaux, huit stades (au plus ${pire} triangles en qualité haute)`);
 }
 // --- Le batiment (building 3.0.0) tient son budget dans tous les cas : 1 a 30 etages, 0 a 15 lots, les trois types,
 // des etages tous finis, une tour qui monte, tout en chantier ou des stades meles, en qualite haute et basse (les
@@ -364,6 +367,16 @@ for (const [nom, scenes] of Object.entries(sequences))
             verifie(!groupe.visible && Math.abs(bas - y) < 0.6, `${ou} : la coupe est à ${y.toFixed(2)} m, l'étage ${vue.etage} à ${bas.toFixed(2)} m`);
             if (vue.etage > 1) hautes++;
           }
+          // building-interior 3.0.0 : la coupe a le plateau de son batiment, une case de 3 x 3 m par piece ; sa dalle
+          // (rives comprises) a les cotes de celle du batiment
+          const { nx, ny } = floorPlate(b.floors, b.type);
+          const cases = interieur.children.filter((g) => /^(ROOM|CELL)_/.test(g.name) && g.children.length).length;
+          const dalle = new THREE.Box3();
+          interieur.traverse((o) => { if (o.isMesh && o.name.startsWith('BLD_KIT_A_SLAB')) dalle.expandByObject(o); });
+          const cotes = dalle.isEmpty() ? null : [dalle.max.x - dalle.min.x, dalle.max.z - dalle.min.z].sort((a, c) => a - c);
+          const voulues = [nx * 3 + 0.4, ny * 3 + 0.4].sort((a, c) => a - c);
+          verifie(cases === nx * ny, `${ou} : ${cases} cases pour un plateau de ${nx} × ${ny}`);
+          verifie(!cotes || cotes.every((v, k) => Math.abs(v - voulues[k]) < 0.05), `${ou} : la dalle de la coupe fait ${cotes?.map((v) => v.toFixed(2)).join(' × ')} m, le plateau ${voulues.join(' × ')} m`);
           carte.fermeCoupe();
           for (let t = 0; t < 90; t++) carte.update(1 / 30);
           verifie(carte.coupe === null, `${ou} ne se ferme pas`);
