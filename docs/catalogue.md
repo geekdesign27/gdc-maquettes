@@ -351,23 +351,25 @@ Une pelleteuse à chenilles ; en état digging, le bras creuse.
 
 ### La grue (`crane`)
 
-Une grue à tour ; en état lifting, elle prend une palette au stock de sa parcelle, la monte au-dessus de tout ce qui l'entoure, pivote et la dépose sur le bâtiment, puis revient à vide ; en idle, crochet haut, rangé au-dessus du stock. Version 3.0.0 (retour de Pierre-Alain du 28 octobre 2026 : la grue bouclait sur les mêmes gestes et traversait les bâtiments) : le cycle est calculé par le composant à partir des lieux que donne l'hôte (data), la charge est une pièce à part du crochet (GLB v004), plus de clip figé ; la carte règle la hauteur du mât et la hauteur de passage sur les volumes à portée de flèche.
+Une grue à tour ; en état lifting, elle prend une palette au stock de sa parcelle, la monte au-dessus de tout ce qui l'entoure, pivote et la dépose sur le bâtiment, puis revient à vide ; en idle, crochet haut, rangé au-dessus du stock. Version 3.0.0 (retour de Pierre-Alain du 28 octobre 2026 : la grue bouclait sur les mêmes gestes et traversait les bâtiments) : le cycle est calculé par le composant à partir des lieux que donne l'hôte (data), la charge est une pièce à part du crochet (GLB v004), plus de clip figé ; la carte règle la hauteur du mât et la hauteur de passage sur les volumes à portée de flèche. Version 3.1.0 (décision de Pierre-Alain du 28 octobre 2026 : la grue monte avec la tour) : le mât suit le dernier étage commencé, jusqu'à 103 m ; une nouvelle hauteur (data.height) le fait grimper tronçon par tronçon, le levage arrêté le temps de monter ; les membrures du mât passent sans chanfrein (classe C0, GLB v005) pour tenir le budget.
 
 - Fichier : `components/machine/crane/index.js`
-- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `VEH_TOWER_CRANE_A_v004`
-- Modèles : `VEH_TOWER_CRANE_A_v004.glb`
+- Production : Modèle GLB produit par un script Blender du dépôt ; le composant le pilote (états, animations, ancres) ; modèle `VEH_TOWER_CRANE_A_v005`
+- Modèles : `VEH_TOWER_CRANE_A_v005.glb`
 - Animations : aucune
-- Paramètres : `height` (nombre, 6 à 30, défaut 14)
+- Paramètres : `height` (nombre, 6 à 103, défaut 14)
 - États : `idle`, `lifting`
 - Ancres : `label`, `badge`
-- Données reçues par setState : `pick` ([x, y, z] dans le repère de la grue : le dessous de la palette qui attend au stock (défaut [7.5, 0, 0])) ; `drops` (liste de [x, y, z] dans le repère de la grue : les points de la dalle où la palette se pose, pris tour à tour (défaut [[0, 0, -7.5]])) ; `clearance` (hauteur, dans le repère de la grue, sous laquelle le dessous de la charge ne descend jamais hors de la prise et de la dépose : au-dessus de tout volume à portée de flèche (défaut 4))
-- Budget : 15000 triangles, 8 matériaux
+- Données reçues par setState : `pick` ([x, y, z] dans le repère de la grue : le dessous de la palette qui attend au stock (défaut [7.5, 0, 0])) ; `drops` (liste de [x, y, z] dans le repère de la grue : les points de la dalle où la palette se pose, pris tour à tour (défaut [[0, 0, -7.5]])) ; `clearance` (hauteur, dans le repère de la grue, sous laquelle le dessous de la charge ne descend jamais hors de la prise et de la dépose : au-dessus de tout volume à portée de flèche (défaut 4)) ; `height` (hauteur du mât voulue, en mètres (6 à 103) : le mât grimpe jusqu'à elle ; absente, il reste à la sienne)
+- Budget : 20000 triangles, 8 matériaux
 - Critères d'acceptation :
   - Exemple fourni : sert de modèle de composant produit par Blender
   - Grue reconnaissable à son mât, sa flèche et son crochet
   - lifting sans animation : charge levée au-dessus de la dalle, image fixe
   - lifting : la charge ne traverse jamais un volume de la scène, la flèche passe au-dessus de tout ce qui est à sa portée (contrôle de la carte)
   - idle : rien ne pend dans le bâtiment
+  - Le mât grimpe tronçon par tronçon vers une nouvelle hauteur ; sans animation, il y est d'emblée
+  - Budget tenu à toutes les hauteurs, de 6 à 103 m, en qualité haute et basse ; la flèche passe au-dessus d'une tour de 1 à 30 étages (contrôle de la carte)
 
 ### Le camion de livraison (`delivery-truck`)
 

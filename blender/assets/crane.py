@@ -1,4 +1,5 @@
-"""La grue a tour (catalogue : crane), v004 (v003 : pivots poses a leur place ; v004 : la charge a part, sans clip) : troisieme etalon de l'atelier. Bible WORKSITE, section 7 (socle, mat,
+"""La grue a tour (catalogue : crane), v005 (v003 : pivots poses a leur place ; v004 : la charge a part, sans clip ; v005 :
+membrures du mat sans chanfrein, classe C0, pour un mat jusqu'a 103 m) : troisieme etalon de l'atelier. Bible WORKSITE, section 7 (socle, mat,
 pivot, fleche, contre-fleche, contrepoids, chariot, cable, crochet) ; cible MB_08 (moodboard/notes.md) : mat et fleche
 en treillis, pointe en A avec ses tirants, contre-fleche a garde-corps et contrepoids en blocs de beton, cabine claire,
 socle beton. Ecarte de MB_08 : le crochet rouge, les cables sous 0,06 m, le crepi du sol.
@@ -22,7 +23,7 @@ from pathlib import Path
 
 import bpy
 
-ASSET = {"id": "crane", "categorie": "machine", "nom": "VEH_TOWER_CRANE_A_v004"}
+ASSET = {"id": "crane", "categorie": "machine", "nom": "VEH_TOWER_CRANE_A_v005"}
 
 P = "VEH_TOWER_CRANE_A_"
 HAUTEUR = 14.0  # hauteur par defaut du haut du mat (parametre height de la fiche)
@@ -53,12 +54,14 @@ def _barre(c, nom, a, b, epaisseur, mat):
 
 
 def _troncon(c, nom, z0):
-    """Un troncon de mat de 1,5 m : quatre membrures, une croix de Saint-Andre par face, une ceinture en bas."""
+    """Un troncon de mat de 1,5 m : quatre membrures, une croix de Saint-Andre par face, une ceinture en bas. Les
+    membrures (0,12 m) sont en classe C0, sans chanfrein (bible 18.3 : pieces de moins de 0,15 m) : 192 triangles le
+    troncon au lieu de 576, pour un mat qui suit une tour de trente etages (v005)."""
     h, l = TRONCON, LARGEUR_MAT / 2
     coins = [(-l, -l), (l, -l), (l, l), (-l, l)]
     pieces = []
     for i, (x, y) in enumerate(coins):
-        m = c.boite("%s_CHORD_%d" % (nom, i), (MEMBRURE, MEMBRURE, h), (x, y, z0), mat="MAT_PAINTED_METAL_ORANGE", chanfrein=C1, segments=2)
+        m = c.boite("%s_CHORD_%d" % (nom, i), (MEMBRURE, MEMBRURE, h), (x, y, z0), mat="MAT_PAINTED_METAL_ORANGE")
         pieces.append(m)
     for i in range(4):
         (x0, y0), (x1, y1) = coins[i], coins[(i + 1) % 4]

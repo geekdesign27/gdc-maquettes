@@ -1102,16 +1102,27 @@ export async function creeCarte(THREE, options) {
       if (pa && montee) {
         montee.inst.root.position.set(...pa.grue.position);
         montee.inst.root.rotation.y = pa.grue.rotation;
+        montee.etages = etageDuHaut(b); // le mat grimpe a la prochaine mesure de ses lieux (lieuxDe)
       }
       if (!pa || membres.has(cle) || !veutGrue(b, scene)) continue;
-      // le mat, d'apres les etages du batiment, et decale des grues voisines ; rehausse ensuite sur ce qui est mesure
-      const etages = Math.min(Array.isArray(b.floors) ? b.floors.length : 1, 6) || 1;
+      // le mat, d'apres le dernier etage commence du batiment, et decale des grues voisines
+      const etages = etageDuHaut(b);
       const hauteur = hauteurDecalee(hauteurGrue(etages * ETAGE_BATIMENT + HAUT_DE_TOIT), voisinesDe(cle, pa.grue.position));
       const m = pose(cle, "crane", await cree("crane", { height: hauteur }), pa.grue.position, pa.grue.rotation);
       m.inst.root.visible = false;
       m.batiment = b.id;
+      m.etages = etages;
       m.hauteur = hauteur;
     }
+  }
+
+  // Le mat suit le dernier etage commence (crane 3.1.0, decision de Pierre-Alain du 28 octobre 2026) : le plus haut qui
+  // n'est plus en plot (au-dessus, rien n'est construit) ; tant que le rez n'est pas debout, le rez seul (building).
+  function etageDuHaut(b) {
+    const visibles = groupFloors(Array.isArray(b.floors) ? b.floors : [], b.phase);
+    if (!visibles.length || ["plot", "excavation", "foundations"].includes(visibles[0].stage)) return 1;
+    const commences = visibles.filter((f) => f.stage !== "plot");
+    return commences.length ? commences[commences.length - 1].index : 1;
   }
 
   // --- la grue de chaque parcelle : montee pendant le gros oeuvre, ou quand GDC la pose (lifting, la fusion vers dev) ;
@@ -1150,8 +1161,8 @@ export async function creeCarte(THREE, options) {
 
   // Les lieux de la grue (crane 3.0.0, src/ville/grue.js) : la prise au stock de sa parcelle, les deposes sur la dalle
   // du batiment, la hauteur de passage au-dessus de tout ce qu'elle balaie ; mesures sur la carte telle qu'elle est.
-  // Si ce qu'elle survole a monte plus haut que sa charge ne passe (un etage de plus), elle est rehaussee : elle se
-  // demonte et se remonte plus haute, comme a son arrivee. Elle ne redescend pas tant qu'elle est montee.
+  // Un etage de plus, ou ce qu'elle survole plus haut que sa charge ne passe : son mat grimpe (data.height, crane
+  // 3.1.0, au lieu de se demonter et se remonter). Il ne redescend pas tant qu'elle est montee.
   function lieuxDe(cle, m) {
     const pa = parcelleDe(m.batiment);
     const autour = [...membres.values()].filter((x) => x.id !== "crane" && x.inst.root.visible).map((x) => x.inst.root);
@@ -1161,37 +1172,16 @@ export async function creeCarte(THREE, options) {
       autour,
       stock: pa.grue.stock,
     });
-    const voulue = hauteurDecalee(Math.max(l.hauteur, m.hauteur), voisinesDe(cle, pa.grue.position));
-    if (voulue > m.hauteur + 1e-6) rehausse(cle, voulue);
-    return l;
+    const etages = hauteurGrue((m.etages || 1) * ETAGE_BATIMENT + HAUT_DE_TOIT);
+    const voulue = hauteurDecalee(Math.max(l.hauteur, m.hauteur, etages), voisinesDe(cle, pa.grue.position));
+    if (voulue > m.hauteur + 1e-6) m.hauteur = voulue;
+    return { ...l, data: { ...l.data, height: m.hauteur } };
   }
   const voisinesDe = (cle, [x, , z]) =>
     [...membres]
       .filter(([c, v]) => c !== cle && c.startsWith("grue:") && !v.demonte && v.hauteur)
       .filter(([, v]) => Math.hypot(v.inst.root.position.x - x, v.inst.root.position.z - z) < VOISINAGE_GRUES)
       .map(([, v]) => v.hauteur);
-  async function rehausse(cle, hauteur) {
-    const m = membres.get(cle);
-    if (!m || m.rehausse >= hauteur) return;
-    m.rehausse = hauteur;
-    const inst = await cree("crane", { height: hauteur });
-    if (membres.get(cle) !== m || m.demonte) return inst.dispose();
-    const ancien = m.inst;
-    inst.root.position.copy(ancien.root.position);
-    inst.root.rotation.y = ancien.root.rotation.y;
-    inst.root.visible = ancien.root.visible;
-    colore(ancien.root);
-    ancien.root.removeFromParent();
-    ancien.dispose();
-    m.inst = inst;
-    m.hauteur = hauteur;
-    plateau.add(inst.root);
-    grise(inst.root, m.zone);
-    const state = m.state || "idle";
-    m.state = null;
-    etat(m, state, lieuxDe(cle, m).data);
-    if (anime && inst.root.visible) impulsion(m, 0, 1, null, "y", MONTAGE_GRUE);
-  }
   let reperageGrues = 0; // s, depuis la derniere mesure des lieux des grues qui levent
 
   // --- le camion de livraison : il arrive par la voie et le portail jusqu'a sa place sur la parcelle, et repart par le

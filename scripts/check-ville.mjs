@@ -6,6 +6,7 @@ import { lisScene } from '../src/ville/scene-gdc.js';
 import { equipes, usagers, PLAFONDS } from '../src/ville/vie.js';
 import { creeCarte } from '../src/ville/carte.js';
 import { floorPlate } from '../src/etages.js';
+import { lieuxGrue, hauteurGrue, hauteurDecalee } from '../src/ville/grue.js';
 import { readFile, readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -280,6 +281,97 @@ const ISO = new THREE.Vector3(-1, -1.15, -1).normalize();
             essais++;
           }
   rapports.push(`bâtiment : ${essais} essais de 1 à 30 étages et de 0 à 15 lots, budget tenu (au plus ${pire.high} triangles en haute, ${pire.low} en basse), ancres floor:n et room:n-m toutes posées`);
+}
+// --- La grue (crane 3.1.0) monte avec la tour (decision de Pierre-Alain du 28 octobre 2026) : budget tenu de 6 a 103 m,
+// directement ou apres avoir grimpe ; le mat grimpe jusqu'a la hauteur voulue (sans animation, il y est d'emblee) ;
+// sur une tour de 1 a 30 etages, plateau ordinaire et profond, la fleche passe au-dessus du sommet et la charge levee
+// tient la hauteur de passage mesuree (le crochet n'est pas plafonne par un mat trop court)
+{
+  const mod = modules.crane;
+  await chargeur.prepare(mod.meta);
+  await chargeur.prepare(modules.building.meta);
+  const ctxGrue = async (quality, reducedMotion = true) => makeContext({ theme: 'light', quality, reducedMotion }, await chargeur.assetsPour(mod.meta));
+  const haut = (inst) => inst.root.getObjectByName('VEH_TOWER_CRANE_A_PIVOT_TOP').position.y;
+  let pire = { high: 0, low: 0 };
+  for (const quality of ['high', 'low']) {
+    for (let h = 6; h <= 103; h += 1.5) {
+      const inst = mod.create(THREE, { height: h }, await ctxGrue(quality));
+      const m = measure(inst.root);
+      pire[quality] = Math.max(pire[quality], m.triangles);
+      verifie(m.triangles <= mod.meta.budget.triangles && m.materials <= mod.meta.budget.materials, `crane : ${m.triangles} triangles, ${m.materials} matériaux (mât de ${h} m, ${quality})`);
+      inst.dispose();
+    }
+    // le mat qui grimpe de 6 a 103 m, en levage : il y arrive, troncon par troncon, sans depasser le budget
+    const inst = mod.create(THREE, { height: 6 }, await ctxGrue(quality, false));
+    inst.setState('lifting', {});
+    for (let k = 0; k < 20; k++) inst.update(0.1);
+    inst.setState('lifting', { height: 103 });
+    let pas = 0;
+    let monte = true;
+    for (let avant = haut(inst); pas < 2000 && Math.abs(haut(inst) - mod.meta.params.height.max) > 1.5; pas++) {
+      inst.update(0.1);
+      if (haut(inst) < avant - 1e-9) monte = false;
+      avant = haut(inst);
+    }
+    verifie(monte && pas < 2000, `crane : le mât ne grimpe pas jusqu'à 103 m (${haut(inst).toFixed(1)} m, ${quality})`);
+    const m = measure(inst.root);
+    verifie(m.triangles <= mod.meta.budget.triangles, `crane : ${m.triangles} triangles après avoir grimpé (${quality})`);
+    inst.dispose();
+  }
+  // sans animation, la nouvelle hauteur d'emblee
+  {
+    const inst = mod.create(THREE, { height: 14 }, await ctxGrue('high'));
+    inst.setState('idle', {});
+    inst.setState('idle', { height: 50 });
+    verifie(Math.abs(haut(inst) - 49.9) < 1e-6 && !inst.update(0.1), `crane : sans animation, le mât n'est pas d'emblée à 50 m (${haut(inst)} m)`);
+    inst.dispose();
+  }
+  // la tour : 1 a 30 etages, le dernier en structure ; le mat de la carte (le dernier etage commence, puis ce que la
+  // grue mesure autour d'elle)
+  let essais = 0;
+  let plusHaut = 0;
+  for (const lots of [6, 15])
+    for (let n = 1; n <= 30; n++) {
+      const floors = Array.from({ length: n }, (_, k) => ({
+        id: `F${k + 1}`,
+        stage: k < n - 2 ? 'completed' : k === n - 2 ? 'envelope' : 'structure',
+        rooms: Array.from({ length: lots }, (_, m) => ({ id: `L${m + 1}`, done: false })),
+      }));
+      const plaque = floorPlate(floors, 'block');
+      const imp = implantation(1, ['block'], undefined, [plaque]);
+      const p = imp.parcelles[0];
+      const parent = new THREE.Group();
+      const bat = modules.building.create(THREE, { type: 'block' }, makeContext({ theme: 'light', quality: 'high', reducedMotion: true }, await chargeur.assetsPour(modules.building.meta)));
+      bat.setState('structure', { floors });
+      bat.root.position.set(...p.position);
+      parent.add(bat.root);
+      const sonde = mod.create(THREE, { height: 14 }, await ctxGrue('high'));
+      sonde.root.position.set(...p.grue.position);
+      sonde.root.rotation.y = p.grue.rotation;
+      parent.add(sonde.root);
+      const l = lieuxGrue(THREE, { grue: sonde.root, batiment: bat.root, autour: [bat.root], stock: p.grue.stock });
+      sonde.root.removeFromParent();
+      sonde.dispose();
+      const hauteur = hauteurDecalee(Math.max(l.hauteur, hauteurGrue(n * 3 + 2.5)), []);
+      const grue = mod.create(THREE, { height: hauteur }, await ctxGrue('high'));
+      grue.root.position.set(...p.grue.position);
+      grue.root.rotation.y = p.grue.rotation;
+      parent.add(grue.root);
+      grue.setState('lifting', l.data); // sans animation : la charge levee a la hauteur de passage, au-dessus d'une depose
+      parent.updateMatrixWorld(true);
+      const sommet = new THREE.Box3().setFromObject(bat.root).max.y;
+      const fleche = new THREE.Box3().setFromObject(grue.root.getObjectByName('VEH_TOWER_CRANE_A_JIB')).min.y;
+      const charge = new THREE.Box3().setFromObject(grue.root.getObjectByName('VEH_TOWER_CRANE_A_LOAD')).min.y;
+      const cas = `${n} étages, plateau ${plaque.columns ?? plaque.nx}×${plaque.rows ?? plaque.ny}, mât de ${hauteur} m`;
+      verifie(hauteur <= mod.meta.params.height.max, `crane : mât de ${hauteur} m au-delà de la fiche (${cas})`);
+      verifie(fleche > sommet + 0.8, `crane : la flèche (${fleche.toFixed(2)} m) ne passe pas au-dessus de la tour (${sommet.toFixed(2)} m, ${cas})`);
+      verifie(charge >= l.data.clearance - 0.01 && charge > sommet, `crane : la charge levée à ${charge.toFixed(2)} m, sous le passage (${l.data.clearance.toFixed(2)} m) ou la tour (${cas})`);
+      plusHaut = Math.max(plusHaut, hauteur);
+      grue.dispose();
+      bat.dispose();
+      essais++;
+    }
+  rapports.push(`grue : budget tenu de 6 à 103 m (au plus ${pire.high} triangles en haute, ${pire.low} en basse), le mât grimpe jusqu'à 103 m ; ${essais} tours de 1 à 30 étages, la flèche au-dessus du sommet (mât jusqu'à ${plusHaut} m)`);
 }
 for (const [nom, scenes] of Object.entries(sequences))
   for (const reducedMotion of [false, true]) {

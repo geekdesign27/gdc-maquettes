@@ -15,7 +15,7 @@ const CONTRE_FLECHE = 4.9;
 const DEMI_LARGEUR = 0.9;
 const MARGE = 0.8; // m, entre la charge et le haut de ce qu'elle survole
 const HAUTEUR_MIN = 14; // la hauteur par defaut de la fiche
-const HAUTEUR_MAX = 30;
+const HAUTEUR_MAX = 103; // le parametre height de la fiche (crane 3.1.0 : trente etages et le decalage d'une voisine)
 const SOCLE = 0.4;
 const TRONCON = 1.5;
 // Deux grues dont les fleches se croisent : decalees de trois troncons, la contre-fleche et ses blocs de beton de la

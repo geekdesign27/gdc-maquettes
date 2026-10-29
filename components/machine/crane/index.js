@@ -1,11 +1,13 @@
-// La grue a tour : signale une fusion vers dev (catalogue : crane). v002 : mat et fleche en treillis (MB_08) ; v003 : pivots poses a leur place (correction de commun.rattache) ; v004 : la charge a part, sans clip.
+// La grue a tour : signale une fusion vers dev (catalogue : crane). v002 : mat et fleche en treillis (MB_08) ; v003 : pivots poses a leur place (correction de commun.rattache) ; v004 : la charge a part, sans clip ; v005 : membrures du mat sans chanfrein.
 // La geometrie vient du GLB (blender/assets/crane.py) ; le code empile les troncons du mat selon la hauteur, choisit
 // treillis ou caissons pleins selon la qualite, et calcule le cycle de levage (3.0.0) : le crochet descend sur la
 // palette qui attend au stock, la monte a la hauteur de passage, pivote, la descend sur le batiment, la pose et revient.
-// L'hote donne les lieux (data : pick, drops, clearance) ; le composant ne connait pas la scene. Le modele est partage
+// Le mat grimpe avec la tour (3.1.0) : une nouvelle hauteur (data.height) l'eleve troncon par troncon, le haut pousse
+// par le dernier troncon comme dans une cage de telescopage ; le levage s'arrete le temps de monter.
+// L'hote donne les lieux (data : pick, drops, clearance, height) ; le composant ne connait pas la scene. Le modele est partage
 // entre instances : on ne libere jamais ses geometries ni ses materiaux ici.
 
-const MODELE = "VEH_TOWER_CRANE_A_v004.glb";
+const MODELE = "VEH_TOWER_CRANE_A_v005.glb";
 const P = "VEH_TOWER_CRANE_A_";
 const SOCLE = 0.4; // dessus du socle beton
 const TRONCON = 1.5; // hauteur d'un troncon de mat
@@ -22,17 +24,20 @@ const ORIENTATION = 0.45; // rad/s
 const DIRECTION = 1.4; // m/s
 const LEVAGE = 1.8; // m/s
 const ACCROCHAGE = 1.2; // s, le temps d'accrocher ou de decrocher la palette
+// Le mat qui grimpe : un troncon en 0,5 s, un etage (3 m) en une seconde, a peu pres le temps qu'un etage du batiment
+// met a monter (0,8 s) : la charge suspendue reste au-dessus de la dalle qui pousse.
+const TELESCOPAGE = 3.0; // m/s
 // Sans donnees (la grue seule, en galerie) : le stock a droite, la depose devant, la charge passe a 4 m.
 const DEFAUT = { pick: [7.5, 0, 0], drops: [[0, 0, -7.5]], clearance: 4 };
 
 export const meta = {
   id: "crane",
-  version: "3.0.0",
+  version: "3.1.0",
   category: "machine",
   states: ["idle", "lifting"],
-  params: { height: { type: "number", default: 14, min: 6, max: 30 } },
+  params: { height: { type: "number", default: 14, min: 6, max: 103 } },
   anchors: ["label", "badge"],
-  budget: { triangles: 15000, materials: 8 },
+  budget: { triangles: 20000, materials: 8 },
   animated: true,
   assets: [MODELE],
 };
@@ -62,15 +67,16 @@ export function create(THREE, params, ctx) {
   const basse = ctx.quality === "low";
 
   // La hauteur : n troncons de 1,5 m au-dessus du socle ; le haut de la grue monte d'autant.
-  const hauteur = Math.min(
-    Math.max(
-      Number(params.height) || meta.params.height.default,
-      meta.params.height.min,
-    ),
-    meta.params.height.max,
-  );
-  const n = Math.max(1, Math.round((hauteur - SOCLE) / TRONCON));
-  const haut = SOCLE + n * TRONCON;
+  const hauteurDe = (v) => {
+    const h = Math.min(
+      Math.max(Number(v) || meta.params.height.default, meta.params.height.min),
+      meta.params.height.max,
+    );
+    return SOCLE + Math.max(1, Math.round((h - SOCLE) / TRONCON)) * TRONCON;
+  };
+  const dessus = scene.getObjectByName(P + "PIVOT_TOP");
+  const haut0 = dessus.position.y; // la hauteur du GLB
+  const matBas = scene.getObjectByName(P + "MAST_LOW");
   const troncons = [];
   scene.traverse((o) => {
     if (o.name.startsWith(P + "MAST_SECTION_")) troncons.push(o);
@@ -78,14 +84,34 @@ export function create(THREE, params, ctx) {
   troncons.sort((a, b) => a.name.localeCompare(b.name));
   const modeleTroncon = troncons[0];
   for (const t of troncons.slice(1)) t.removeFromParent();
-  for (let k = 1; k < n; k++) {
-    const t = modeleTroncon.clone(); // partage la geometrie et le materiau du modele
-    t.name = `${P}MAST_SECTION_${String(k).padStart(2, "0")}`;
-    t.position.y += k * TRONCON;
-    modeleTroncon.parent.add(t);
+  const y0 = modeleTroncon.position.y;
+  const sections = [modeleTroncon];
+  const troncon = (k) => {
+    while (sections.length <= k) {
+      const t = modeleTroncon.clone(); // partage la geometrie et le materiau du modele
+      t.name = `${P}MAST_SECTION_${String(sections.length).padStart(2, "0")}`;
+      modeleTroncon.parent.add(t);
+      sections.push(t);
+    }
+    return sections[k];
+  };
+  // Le mat a la hauteur h (haut du dernier troncon) : les troncons entiers a leur place ; en cours de telescopage, le
+  // dernier monte avec le haut et chevauche celui du dessous. Qualite basse : le caisson plein seul.
+  const mat = { h: hauteurDe(params.height), vise: null };
+  function dresse(h) {
+    mat.h = h;
+    dessus.position.y = h;
+    if (matBas.parent) matBas.scale.y = h - SOCLE;
+    if (basse) return;
+    const entiers = Math.floor((h - SOCLE) / TRONCON + 1e-6);
+    const besoin = Math.max(1, Math.ceil((h - SOCLE) / TRONCON - 1e-6));
+    for (let k = 0; k < besoin; k++) {
+      const t = troncon(k);
+      t.visible = true;
+      t.position.y = y0 + (k < entiers ? k * TRONCON : h - SOCLE - TRONCON);
+    }
+    for (let k = besoin; k < sections.length; k++) sections[k].visible = false;
   }
-  scene.getObjectByName(P + "PIVOT_TOP").position.y = haut;
-  scene.getObjectByName(P + "MAST_LOW").scale.y = haut - SOCLE;
 
   // Treillis ou caissons pleins : la piece qui ne sert pas est retiree de la copie (elle ne compte pas au budget).
   const aRetirer = [];
@@ -99,12 +125,14 @@ export function create(THREE, params, ctx) {
     if (o.isMesh) o.castShadow = !basse;
   });
 
-  // Le gréement : orientation, chariot, crochet et cable, mesures dans la pose du GLB (cable de 9 m).
+  // Le gréement : orientation, chariot, crochet et cable, mesures dans la pose du GLB (cable de 9 m, mat a haut0) ;
+  // pose.h est dans le repere de la grue, le crochet et le cable compensent ce que le mat a monte depuis haut0.
   const orient = scene.getObjectByName(P + "PIVOT_SLEW");
   const chariot = scene.getObjectByName(P + "PIVOT_TROLLEY");
   const crochet = scene.getObjectByName(P + "PIVOT_HOOK");
   const cable = scene.getObjectByName(P + "CABLE");
   const charge = scene.getObjectByName(P + "LOAD");
+  dresse(haut0);
   root.updateMatrixWorld(true);
   const enRacine = (o) =>
     root.worldToLocal(o.getWorldPosition(new THREE.Vector3()));
@@ -113,7 +141,8 @@ export function create(THREE, params, ctx) {
   const h0 = enRacine(crochet).y; // le crochet, dans le repere de la grue
   const cable0 = cable.scale.y;
   const dessousCharge = h0 - new THREE.Box3().setFromObject(charge).min.y; // du crochet au dessous de la palette
-  const hMax = h0 + cable0 - CABLE_MIN; // le crochet au plus haut
+  const hMax = (h) => h0 + cable0 - CABLE_MIN + (h - haut0); // le crochet au plus haut, mat a h
+  dresse(hauteurDe(params.height));
 
   // Les deux palettes posees : celle qui attend au stock et celle qui vient d'etre deposee. Des copies de la charge
   // (memes geometries, memes materiaux), dans la racine des la creation pour que l'hote les traite comme le reste.
@@ -133,8 +162,8 @@ export function create(THREE, params, ctx) {
   function applique() {
     orient.rotation.y = pose.a;
     chariot.position.x = pose.r;
-    crochet.position.y = crochetY0 + (pose.h - h0);
-    cable.scale.y = cable0 + (h0 - pose.h);
+    crochet.position.y = crochetY0 + (pose.h - h0) - (mat.h - haut0);
+    cable.scale.y = cable0 + (h0 - pose.h) + (mat.h - haut0);
   }
   // La palette du crochet, figee a sa place dans la racine (une palette posee la ou le crochet la tient).
   function fige(c, cible) {
@@ -147,9 +176,11 @@ export function create(THREE, params, ctx) {
     applique();
   }
 
-  // Les lieux, recus de l'hote ou par defaut : ou attend la palette, ou elle se pose, a quelle hauteur elle passe.
+  // Les lieux, recus de l'hote ou par defaut : ou attend la palette, ou elle se pose, a quelle hauteur elle passe ;
+  // le crochet plafonne a ce que permet le mat une fois monte.
   let lieux = null;
   function lit(data) {
+    const plafond = hMax(mat.vise ?? mat.h);
     const pick = point(data?.pick) || DEFAUT.pick;
     const drops = Array.isArray(data?.drops)
       ? data.drops.map(point).filter(Boolean)
@@ -160,9 +191,9 @@ export function create(THREE, params, ctx) {
     const vise = ([x, y, z]) => ({
       a: Math.atan2(-z, x),
       r: Math.min(Math.max(Math.hypot(x, z), RAYON_MIN), RAYON_MAX),
-      h: Math.min(y + dessousCharge, hMax),
+      h: Math.min(y + dessousCharge, plafond),
     });
-    const passage = Math.min(clearance + dessousCharge, hMax);
+    const passage = Math.min(clearance + dessousCharge, plafond);
     lieux = {
       prise: vise(pick),
       deposes: (drops.length ? drops : DEFAUT.drops).map(vise),
@@ -278,6 +309,42 @@ export function create(THREE, params, ctx) {
     applique();
   }
 
+  // Le telescopage : troncon par troncon, chacun en douceur ; le crochet monte avec le haut (le cable ne bouge pas).
+  // Monte, la grue reprend son geste de la ou elle est (au repos, elle se range).
+  let montee = null;
+  function grimpe(dt) {
+    montee.t = Math.min(montee.t + dt * TELESCOPAGE, montee.distance);
+    const k = Math.floor(montee.t / TRONCON - 1e-9);
+    const fait_ = Math.max(0, k) * TRONCON;
+    const reste = Math.min(TRONCON, montee.distance - fait_);
+    const s = fait_ + reste * doux(Math.min(1, (montee.t - fait_) / reste));
+    const h = montee.de + Math.sign(mat.vise - montee.de) * s;
+    pose.h += h - mat.h;
+    dresse(h);
+    if (montee.t >= montee.distance) {
+      dresse(mat.vise);
+      mat.vise = null;
+      montee = null;
+      if (state === "idle") repos();
+      else reprend();
+    }
+    applique();
+  }
+  function hausse(data) {
+    if (data?.height === undefined) return false;
+    const vise = hauteurDe(data.height);
+    if (Math.abs(vise - (mat.vise ?? mat.h)) < 1e-6) return false;
+    if (ctx.reducedMotion || state === null) {
+      dresse(vise);
+      mat.vise = null;
+      montee = null;
+      return false;
+    }
+    mat.vise = vise;
+    montee = { de: mat.h, distance: Math.abs(vise - mat.h), t: 0 };
+    return true;
+  }
+
   let state = null;
   return {
     root,
@@ -286,7 +353,9 @@ export function create(THREE, params, ctx) {
         throw new Error(`état inconnu : ${next}`);
       const premier = state === null;
       const avant = lieux;
+      const grimpant = hausse(data) || montee !== null;
       lit(data);
+      if (grimpant && next === state) return; // le geste reprend une fois le mat monte, avec ces lieux
       if (next === state && !premier) {
         // les lieux changent (un batiment qui monte d'un etage) : au repos, la grue se range a nouveau ; en levage, le
         // cycle continue et les prend a sa prochaine etape, et la palette deposee sur l'ancienne dalle disparait
@@ -316,6 +385,10 @@ export function create(THREE, params, ctx) {
       root.updateMatrixWorld(true);
     },
     update(dt) {
+      if (montee) {
+        grimpe(dt);
+        return true;
+      }
       if (state !== "lifting" || ctx.reducedMotion) return false;
       avance(dt);
       return true;
@@ -329,6 +402,7 @@ export function create(THREE, params, ctx) {
       return root.worldToLocal(noeud.getWorldPosition(new THREE.Vector3()));
     },
     dispose() {
+      for (const t of sections.slice(1)) t.removeFromParent();
       attente.removeFromParent();
       deposee.removeFromParent();
       root.remove(scene);
